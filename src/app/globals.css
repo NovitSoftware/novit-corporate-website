@@ -1,26 +1,1490 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Novit — tokens
+
+   The brand palette comes from `novit-design-system.md` (brandbook ene-2024 +
+   paleta 2015). The derived steps below are same-hue, same-saturation shades
+   of those brand colors — hsl(244.5 100% L) for the azul family and
+   hsl(198.7 75% L) for the celeste family. They exist only to build depth
+   (grounds, gradients, hover states) and never add a new brand hue.
+   ========================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand */
+  --azul: #0a0089;
+  --azul-deep: #07005c;
+  --celeste: #3db0e4;
+  /* Accent for light grounds. Reads almost the same as celeste but is not
+     interchangeable: on the card surface celeste falls to 2.3:1 and cyan
+     holds; over violet it inverts. Each is picked for its ground. */
+  --cyan: #3398dc;
+  --negro: #000000;
+  --blanco: #ffffff;
+  /* Body copy on a light ground. The palette declared #000; the radar uses
+     this, 11.6:1 on the card surface and easier on screen than pure black. */
+  --texto: #333333;
+
+  /* Novit's own voice. In the radar azul is the world — the news, the fact,
+     what happened — and violet is Novit talking, so the colour says whose
+     voice it is. `--violeta` is the ramp's end, `--violeta-medio` its middle
+     and the one that carries text (12.1:1 on the card surface). This replaces
+     the 2024 magenta, which leaves commercial material entirely. */
+  --violeta: #85067b;
+  --violeta-medio: #510371;
+  /* Instagram and the rest of social, where the 2024 identity still lives in
+     full. Never on this site's own surfaces. */
+  --magenta: #ba08a8;
+
+  /*
+   * There is no alert red, and there was one for about an hour.
+   *
+   * The risk band on `/inteligencia-artificial` needs its six headings to read
+   * as damage rather than as features, and the brochure it comes from does
+   * that in red — so a `--rojo-alerta` went in. On screen, next to a page
+   * built entirely out of blues and violets, a brick red reads as orange: a
+   * colour from no system at all. The palette is closed, and the band gets its
+   * emphasis from `--violeta-medio` instead, which is the mark for Novit
+   * speaking — and the six risks are Novit's reading of what happens, not a
+   * neutral fact about the market. Do not reintroduce a warning hue.
+   */
+
+  /* Derived — azul family */
+  --ink: #040038;
+  --azul-700: #080070;
+  --azul-500: #0d00ad;
+
+  /* Derived — celeste family */
+  --celeste-deep: #187caa;
+  --celeste-pale: #d2edf9;
+
+  /* Greys, from the AI Radar. The 2015 pair (#EAEBEC, #58585B) is superseded —
+     keeping two sets in parallel is what let every past piece invent its own.
+     Only the surface and the border are carried over: the ramp's three steps
+     of de-emphasized text (#8A94A0 and lighter) sit under 3:1 on this
+     surface, and there is nothing on this page that is written to not be
+     read. Anything quieter is set smaller in `--texto`, not paler. */
+  --gris-superficie: #f3f6f8;
+  --gris-borde: #e4e9ed;
+
+  /* Derived neutral */
+  --gris-suave: #f5f6f7;
+
+  /* Channel triplets, for alpha composition */
+  --rgb-azul: 10 0 137;
+  --rgb-azul-deep: 7 0 92;
+  --rgb-celeste: 61 176 228;
+  --rgb-magenta: 186 8 168;
+  --rgb-azul-500: 13 0 173;
+  --rgb-ink: 4 0 56;
+  /* `cierre`'s own endpoint (#85067B), for the atmosphere layers below — the
+     brandbook has no gradient past this violet, so the page-wide ground
+     settles here instead of inventing a magenta stage. Magenta itself stays
+     reserved for the one deliberate accent in `AcademyBlock`. */
+  --rgb-violeta: 133 6 123;
+  /* The two accents the cards compose against their light surface: cyan for
+     the market's own material, violeta-medio where Novit is the one talking.
+     Both are only ever used at alpha here — as a rule, or a hover border — so
+     cyan's 2.9:1 on the surface never carries information. */
+  --rgb-cyan: 51 152 220;
+  --rgb-violeta-medio: 81 3 113;
+
+  /* On-color text hierarchy — the brand manual's opacity ramp for white copy
+     over the scene gradient, headline down to label. Consumed via the
+     `.text-on-*` utilities near the other type utilities below. */
+  --on-link: rgba(255, 255, 255, 0.95);
+  --on-heading: rgba(255, 255, 255, 0.9);
+  --on-eyebrow: rgba(255, 255, 255, 0.85);
+  --on-detail: rgba(255, 255, 255, 0.82);
+  --on-label: rgba(255, 255, 255, 0.62);
+  --on-box-fill: rgba(255, 255, 255, 0.09);
+  --on-box-border: rgba(255, 255, 255, 0.2);
+
+  /* Scene gradient — the site's one background, read by `body` below. It
+     lives on the one element in this layout that never scrolls, so it reads
+     as a fixed atmosphere behind the whole page: every section is
+     transparent on top of it, nothing repaints it band by band. Starts on
+     the brandbook's "cabecera" ramp; `useSceneGradient` in SmoothScroll.tsx
+     walks it through a brighter blue and into the "cierre" ramp, holding
+     there for the last stretch — so azul settles into violet, Novit's own
+     voice, by the foot of the page, without going past what the brandbook
+     actually specifies. These four are the resting, JS-off values: the
+     cabecera ramp, unanimated. Keep them equal to stage 0 in SmoothScroll. */
+  --scene-0: 13 11 146; /* #0D0B92 */
+  --scene-1: 27 75 185; /* #1B4BB9 */
+  --scene-2: 79 142 213; /* #4F8ED5 */
+  --scene-3: 51 152 220; /* #3398DC */
+  /* Scroll progress, 0 to 1, written alongside the stops above. The only
+     thing it drives is `opacity` on the atmosphere blooms: opacity on an
+     already-composited layer is a re-composite, while folding progress into
+     a gradient's own colour stops would re-raster the layer every frame. */
+  --scene-mix: 0;
+
+  /* Layout */
+  --space-1: 0.25rem;
+  --space-4: 1rem;
+  --space-9: 2.25rem;
+  --header-height: 4.5rem;
+  --measure: 68ch;
+  /* Panels stay almost square; chips and CTA buttons are full pills. */
+  --card-radius: 0.125rem;
+  --chip-radius: 999px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 620ms;
+
+  /* No elevation tokens. Every section is transparent over one saturated
+     gradient now, and a drop shadow on that ground reads as dirt rather than
+     as height — so nothing on this page casts. Depth comes from the border,
+     a small lift, and the atmosphere behind it. */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-azul: var(--azul);
+  --color-azul-deep: var(--azul-deep);
+  --color-azul-700: var(--azul-700);
+  --color-azul-500: var(--azul-500);
+  --color-ink: var(--ink);
+  --color-celeste: var(--celeste);
+  --color-celeste-deep: var(--celeste-deep);
+  --color-celeste-pale: var(--celeste-pale);
+  --color-cyan: var(--cyan);
+  --color-violeta: var(--violeta);
+  --color-violeta-medio: var(--violeta-medio);
+  --color-texto: var(--texto);
+  --color-gris-superficie: var(--gris-superficie);
+  --color-gris-borde: var(--gris-borde);
+  --color-gris-suave: var(--gris-suave);
+  --color-negro: var(--negro);
+  --color-blanco: var(--blanco);
+  --font-sans: var(--font-lato);
+  --spacing-header: var(--header-height);
+  /* Where an in-page link should stop: clear of the header, plus air. */
+  --spacing-anchor: calc(var(--header-height) + 1rem);
+  --radius-card: var(--card-radius);
+  --radius-chip: var(--chip-radius);
+  --ease-expo: var(--ease-out-expo);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    background: var(--ink);
+    height: 100%;
+  }
+
+  /*
+   * The document is a fixed frame; `.scroll-shell` inside it is what moves.
+   * Because `body` never scrolls, its background reads as a constant
+   * atmosphere sitting behind the whole site: it is the page's only
+   * background, sections carry none of their own, so it shows through
+   * everywhere rather than only between opaque bands. The 100deg angle is
+   * the brandbook's; the color stops are tweened by `useSceneGradient` in
+   * SmoothScroll.tsx.
+   */
+  body {
+    background-color: var(--azul-700);
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--scene-0)) 0%,
+      rgb(var(--scene-1)) 34%,
+      rgb(var(--scene-2)) 74%,
+      rgb(var(--scene-3)) 100%
+    );
+    color: var(--negro);
+    font-family: var(--font-lato), "Lato", sans-serif;
+    height: 100%;
+    overflow: hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--celeste);
+    color: var(--azul-deep);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--celeste);
+    outline-offset: 3px;
+  }
+
+  /* Celeste on white sits below the 3:1 the indicator needs, so on light
+     grounds the azul carries it on its own — it clears 3:1 unaided, which is
+     why losing the celeste halo with the rest of the shadows costs nothing. */
+  [data-tone="light"] :focus-visible {
+    outline-color: var(--azul);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--gris-borde);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--rgb-azul-deep) / 0.45);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--azul-deep);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 40px;
+  }
+}
+
+/*
+ * The atmosphere's idle drift — translate and nothing else.
+ *
+ * Every one of these used to carry a `scale()`, and the sweep a `rotate()`.
+ * Both are the reason the layers were expensive: a promoted layer is rastered
+ * once at one scale, and changing its raster scale (or rotating it) throws
+ * that raster away and redraws the gradient, every frame, forever. Measured on
+ * /inteligencia-artificial, the five loops together cost 30ms of a 46ms
+ * frame — pausing them alone took the median to 18.7ms. Translate is the one
+ * transform the compositor really does move for free, so that is all they do
+ * now. Travel is up a little to carry the drift that the scale used to.
+ *
+ * Travel stays capped near 18%: past that the soft edge crosses a line of text
+ * fast enough for the eye to pursue it, and it pulls focus off the copy.
+ */
+@keyframes scene-sweep-drift {
+  0%,
+  100% {
+    transform: translate3d(-13%, -6.5%, 0);
+  }
+  50% {
+    transform: translate3d(13%, 6.5%, 0);
+  }
+}
+
+@keyframes scene-bloom-azul {
+  0%,
+  100% {
+    transform: translate3d(-7%, -5%, 0);
+  }
+  50% {
+    transform: translate3d(9%, 5%, 0);
+  }
+}
+
+@keyframes scene-bloom-celeste {
+  0%,
+  100% {
+    transform: translate3d(-2%, 2%, 0);
+  }
+  50% {
+    transform: translate3d(18%, -13%, 0);
+  }
+}
+
+@keyframes scene-bloom-violeta {
+  0%,
+  100% {
+    transform: translate3d(2%, -2%, 0);
+  }
+  50% {
+    transform: translate3d(-16%, 12%, 0);
+  }
+}
+
+/* Echoes the isotipo: bars of unequal length settling into place. */
+@keyframes bar-breathe {
+  0%,
+  100% {
+    transform: scaleX(0.7);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes bloom-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.09);
+  }
+}
+
+@keyframes cue-travel {
+  0% {
+    transform: translateY(-110%);
+  }
+  100% {
+    transform: translateY(110%);
+  }
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+@layer components {
+  /* --- Scroll shell ------------------------------------------------------- */
+
+  /**
+   * The page does not scroll: this does.
+   *
+   * The document is pinned to the viewport and the whole site lives inside one
+   * scroll container that Lenis drives, so scroll position is a value the site
+   * owns rather than one the browser hands us. It is what the reference does,
+   * and it is what makes the header rail the only reading indicator on screen.
+   *
+   * It stays a real scroll container — `auto`, not `hidden` — so the wheel,
+   * the keyboard, find-in-page and a visitor with no JavaScript all still move
+   * the page; only the scrollbar itself is taken away.
+   */
+  .scroll-shell {
+    position: relative;
+    height: 100dvh;
+    overflow-x: clip;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+    scrollbar-width: none;
+  }
+
+  .scroll-shell::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  /**
+   * Lenis' own stylesheet is not loaded: in wrapper mode its only rules are
+   * these three, and its `lenis-stopped` rule parks the scroller at
+   * `overflow: clip`, which stops reporting a scrollHeight — and
+   * ScrollTrigger measures this element. `hidden` holds the scroll still and
+   * keeps the measurement.
+   */
+  .scroll-shell.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .scroll-shell [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .scroll-shell.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  /* --- Atmosphere -----------------------------------------------------------
+     Everything in this block is a fixed, decorative layer sitting between
+     `body`'s gradient and the page's content. Together they are what makes the
+     background read as alive while the visitor is sitting still reading.
+
+     None of them may have a z-index. `.scroll-shell` is `position: relative`
+     with no z-index, so it paints with positioned descendants in tree order;
+     these are `position: fixed` with no z-index, so they land in that same
+     step and are ordered purely by where they sit in layout.tsx. Give any one
+     of them a z-index and you have to give all of them — plus the shell — an
+     explicit value, and a negative one paints the layer behind `body`'s own
+     propagated canvas background, where it is invisible.
+
+     They also all stay outside `.scroll-shell`. Inside it, a negatively-inset
+     child changes `scrollHeight`, which every ScrollTrigger measures against.
+
+     Sized in percentages, never `dvh`: fixed elements resolve against the
+     large viewport, so an iOS URL bar collapsing cannot expose an edge. */
+
+  /* The whole ground drifting diagonally. A gradient on a transform, rather
+     than an animated `background-position` on `body`: background-position is
+     not a compositable property, so animating it would re-raster a
+     full-viewport gradient every frame forever, even at rest. This is one
+     cached quad that the compositor moves for free. */
+  .scene-sweep {
+    position: fixed;
+    /* Overhang exceeds the travel plus the rotation's corner sweep. */
+    inset: -18%;
+    pointer-events: none;
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--rgb-azul-500) / 0.34) 0%,
+      rgb(var(--rgb-azul-500) / 0) 34%,
+      rgb(var(--rgb-celeste) / 0.15) 58%,
+      rgb(var(--rgb-violeta) / 0.24) 100%
+    );
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  /* The drifting colour blooms, and the one thing on this page holding the
+     type legible. */
+  .scene-blooms {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /*
+   * The contrast floor, and the reason the ground is allowed to get bright at
+   * all. #1B4BB9 is the brightest colour in the brand set that can sit behind
+   * body copy and still clear AA, and stops 2 and 3 of the ramp are well past
+   * it. So this veil darkens in step with the gradient's own stop positions
+   * (0 / 34 / 74 / 100): it barely touches the deep end and pulls the bright
+   * end back under the copy.
+   *
+   * It never animates and never repaints. If it is ever weakened, the first
+   * thing to fail is #4F8ED5 at the middle stage — see SmoothScroll.tsx.
+   * `::after` is last in tree order, so it paints over the blooms below.
+   */
+  .scene-blooms::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--rgb-ink) / 0.14) 0%,
+      rgb(var(--rgb-ink) / 0.32) 34%,
+      rgb(var(--rgb-ink) / 0.5) 74%,
+      rgb(var(--rgb-ink) / 0.56) 100%
+    );
+  }
+
+  /*
+   * Soft blooms drawn as radial-gradients rather than blurred circles. A
+   * gradient falloff is folded into the layer's one-time raster, while
+   * `filter: blur()` needs a second surface and — because these animate
+   * `scale` — can re-run the blur whenever the raster scale changes. Same
+   * look, a fraction of the cost, and it survives on a low-end phone.
+   *
+   * `farthest-side` inscribes the ellipse in the box on all four sides, which
+   * is what `border-radius: 50%` plus a blur used to give.
+   */
+  /* Promoted up front, so the gradient is rastered once rather than on the
+     frame the drift starts. Only `transform` is ever animated on these now —
+     see the keyframes above for why that matters. */
+  .scene-bloom {
+    position: absolute;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .scene-bloom-azul {
+    left: -30%;
+    top: -26%;
+    width: 122%;
+    height: 106%;
+    background-image: radial-gradient(
+      ellipse farthest-side at 50% 50%,
+      rgb(var(--rgb-azul-500) / 0.52) 0%,
+      rgb(var(--rgb-azul-500) / 0.32) 38%,
+      rgb(var(--rgb-azul-500) / 0.1) 68%,
+      transparent 90%
+    );
+  }
+
+  /* The only lightener on the layer, so it carries the lowest alpha — and it
+     fades back as the page turns violet. */
+  .scene-bloom-celeste {
+    left: -20%;
+    top: -16%;
+    width: 84%;
+    height: 76%;
+    background-image: radial-gradient(
+      ellipse farthest-side at 50% 50%,
+      rgb(var(--rgb-celeste) / 0.3) 0%,
+      rgb(var(--rgb-celeste) / 0.17) 40%,
+      rgb(var(--rgb-celeste) / 0.05) 70%,
+      transparent 90%
+    );
+    opacity: clamp(0.18, 1 - 1.15 * var(--scene-mix, 0), 1);
+  }
+
+  /* Arrives with the footer. Its opacity clamps to exactly 0 for the first
+     quarter of the page, where the compositor skips it entirely. */
+  .scene-bloom-violeta {
+    left: 30%;
+    top: 36%;
+    width: 94%;
+    height: 88%;
+    background-image: radial-gradient(
+      ellipse farthest-side at 50% 50%,
+      rgb(var(--rgb-violeta) / 0.42) 0%,
+      rgb(var(--rgb-violeta) / 0.24) 40%,
+      rgb(var(--rgb-violeta) / 0.08) 70%,
+      transparent 90%
+    );
+    opacity: clamp(0, 1.5 * var(--scene-mix, 0) - 0.42, 1);
+  }
+
+  /* The isotipo's own grid — bandas horizontales y rectángulos — drawn once
+     for the whole page instead of once per section, so it doesn't restart at
+     every section boundary. Last of the atmosphere layers in layout.tsx, so
+     its celeste hairlines stay crisp on top of the veil instead of being
+     muted by it. */
+  .scene-cells {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    mask-image: radial-gradient(
+      ellipse 130% 110% at 50% 38%,
+      var(--negro) 55%,
+      transparent 96%
+    );
+  }
+
+  /* The pattern is a separate child so the drift can be a transform while the
+     vignette above stays pinned. One tile of overhang on every side, and the
+     travel is exactly one tile, so the loop is seamless. */
+  .scene-cells_pattern {
+    position: absolute;
+    inset: -56px;
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        rgb(var(--rgb-celeste) / 0.26) 0,
+        rgb(var(--rgb-celeste) / 0.26) 1.5px,
+        transparent 1.5px,
+        transparent 56px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        rgb(var(--rgb-celeste) / 0.18) 0,
+        rgb(var(--rgb-celeste) / 0.18) 1.5px,
+        transparent 1.5px,
+        transparent 56px
+      );
+    transform: translate3d(0, 0, 0);
+  }
+
+  /*
+   * The idle loops. All transform-only, all gated: this is the motion nobody
+   * asked for, so `reduce` stops it dead, and every keyframe rests at its
+   * authored position when it does.
+   *
+   * Durations are near-coprime and the delays negative, so the layers start
+   * mid-cycle, never together, and never visibly re-sync. Easing is sine-ish
+   * in-out; --ease-in-out-quint would park each layer at its extremes for
+   * several seconds a side, which reads as stopped.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    .scene-sweep {
+      animation: scene-sweep-drift 21s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+    }
+
+    .scene-bloom-azul {
+      animation: scene-bloom-azul 19s cubic-bezier(0.37, 0, 0.63, 1) -8s
+        infinite;
+    }
+
+    .scene-bloom-celeste {
+      animation: scene-bloom-celeste 14s cubic-bezier(0.37, 0, 0.63, 1) -3s
+        infinite;
+    }
+
+    .scene-bloom-violeta {
+      animation: scene-bloom-violeta 17s cubic-bezier(0.37, 0, 0.63, 1) -11s
+        infinite;
+    }
+
+    /*
+     * The grid does not drift any more.
+     *
+     * Its own animation was the cheap kind — one tile of translate, nothing
+     * else — but `.scene-cells` above masks it with a radial vignette, and a
+     * mask has to be re-composited against whatever moves underneath it. So
+     * the tile slid for free and the mask re-ran every frame: 19ms of a 46ms
+     * frame, for the least visible motion on the page. Static, the mask
+     * composites once and the grid reads exactly the same — it is a texture,
+     * not a movement. The vignette is worth more than the drift was.
+     */
+
+    /*
+     * The intro curtain is opaque and covers the whole viewport for up to four
+     * seconds, over hydration and font loading. Nothing behind it is worth a
+     * frame, so hold the atmosphere until it unmounts — React takes the
+     * overlay out of the DOM and the loops start on their own. A negative
+     * animation-delay survives the pause: it shifts the timeline origin, and
+     * unpausing resumes from the shifted position.
+     *
+     * `[data-motion="on"]` is load-bearing. With JavaScript off the overlay is
+     * still in the markup — only hidden further down this file — and a bare
+     * `:has()` would pause the atmosphere for good. That attribute is only
+     * ever set by a script, so this cannot match without one.
+     */
+    html[data-motion="on"]:has(.intro-overlay) .scene-sweep,
+    html[data-motion="on"]:has(.intro-overlay) .scene-bloom {
+      animation-play-state: paused;
+    }
+  }
+
+  /*
+   * Phones: the sweep is the largest texture on the page and the least
+   * visible on a small screen, and the blooms already read as a sweep at this
+   * size. Dropping it keeps layer memory in range on low-RAM devices, where
+   * eviction shows up as re-raster jank on scroll.
+   */
+  @media (max-width: 767px) {
+    .scene-sweep {
+      display: none;
+    }
+
+    .scene-bloom-azul {
+      left: -14%;
+      top: -10%;
+      width: 96%;
+      height: 62%;
+    }
+
+    .scene-bloom-celeste {
+      left: -18%;
+      top: -12%;
+      width: 92%;
+      height: 52%;
+    }
+
+    .scene-bloom-violeta {
+      left: 18%;
+      top: 44%;
+      width: 96%;
+      height: 60%;
+    }
+  }
+
+  /* --- Grounds --------------------------------------------------------------
+     Sections — and every card and panel inside them — carry no background of
+     their own any more; `body`'s scene gradient (see above) is the site's
+     one background, and everything sits on it transparent, cards included, so
+     the animated ground shows through everywhere rather than being blocked by
+     flat panels repeating its own colour family. This one remains, for the
+     two things that genuinely need to hide what is behind them rather than
+     sit on the atmosphere: the intro curtain and the open-menu panel. */
+
+  .ground-deep {
+    background:
+      radial-gradient(
+        ellipse 70% 55% at 14% 10%,
+        rgb(var(--rgb-celeste) / 0.2),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 62% 52% at 88% 80%,
+        rgb(var(--rgb-azul) / 0.6),
+        transparent 62%
+      ),
+      linear-gradient(
+        180deg,
+        var(--ink) 0%,
+        var(--azul-deep) 30%,
+        var(--azul-700) 64%,
+        var(--azul-deep) 100%
+      );
+  }
+
+  /* --- Textures ----------------------------------------------------------- */
+
+  .bar-grid {
+    background-image:
+      linear-gradient(
+        to right,
+        rgb(var(--rgb-celeste) / 0.14) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgb(var(--rgb-celeste) / 0.09) 1px,
+        transparent 1px
+      );
+    background-size: 40px 40px;
+    /* Fade the tile at the edges so it reads as depth, not wallpaper. */
+    mask-image: radial-gradient(
+      ellipse 88% 78% at 38% 22%,
+      var(--negro) 18%,
+      transparent 76%
+    );
+  }
+
+  .bar-grid-dark {
+    background-image:
+      linear-gradient(
+        to right,
+        rgb(var(--rgb-azul) / 0.1) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgb(var(--rgb-azul) / 0.07) 1px,
+        transparent 1px
+      );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bar-grid-drift {
+      animation: grid-drift 34s linear infinite;
+    }
+  }
+
+  .bar-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .bar-field-row {
+    position: absolute;
+    left: var(--bar-left, 0);
+    top: var(--bar-top);
+    height: var(--bar-height, 2px);
+    width: var(--bar-width);
+    transform-origin: left center;
+    opacity: 0.45;
+    background: linear-gradient(
+      90deg,
+      rgb(var(--rgb-celeste) / 0.7) 0%,
+      rgb(var(--rgb-celeste) / 0.22) 55%,
+      rgb(var(--rgb-celeste) / 0) 100%
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bar-field-row {
+      animation: bar-breathe var(--bar-duration) var(--ease-in-out-quint)
+        infinite;
+      animation-delay: var(--bar-delay);
+    }
+  }
+
+  .bloom {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    filter: blur(70px);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bloom-drift {
+      animation: bloom-drift 26s var(--ease-in-out-quint) infinite;
+    }
+  }
+
+  .hairline {
+    height: 1px;
+    transform-origin: left center;
+    background: linear-gradient(
+      90deg,
+      rgb(var(--rgb-celeste) / 0) 0%,
+      rgb(var(--rgb-celeste) / 0.85) 10%,
+      rgb(var(--rgb-celeste) / 0.25) 55%,
+      rgb(var(--rgb-celeste) / 0) 100%
+    );
+  }
+
+  .hairline-azul {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--rgb-azul) / 0) 0%,
+      rgb(var(--rgb-azul) / 0.6) 10%,
+      rgb(var(--rgb-azul) / 0.18) 55%,
+      rgb(var(--rgb-azul) / 0) 100%
+    );
+  }
+
+  /* --- Display scale ------------------------------------------------------ */
+
+  /* Three display sizes, all fluid, so the very large statements this layout
+     is built around never need a per-breakpoint override. The two largest run
+     at 900 — Lato's Black, and the weight the manual's cover uses for its own
+     title. At this size 700 reads as body text that happened to be enlarged. */
+  .display-hero {
+    font-size: clamp(2.5rem, 6.6vw, 5.25rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .display-xl {
+    font-size: clamp(1.875rem, 4.6vw, 3.75rem);
+    font-weight: 900;
+    line-height: 1.07;
+    letter-spacing: -0.03em;
+  }
+
+  .display-m {
+    font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.32;
+    letter-spacing: -0.018em;
+  }
+
+  /* --- The reading plane --------------------------------------------------- */
+
+  /*
+   * The system's two gradients belong to the cabecera and the cierre, and
+   * neither one ever sits behind a long block of reading — between them the
+   * page is white or this surface. So on this site every paragraph lives on
+   * one of these panels, floating on the gradient with air around it: the
+   * ground still reads everywhere, in the hero, in the gutters and at the
+   * close, and nothing long is set on top of it.
+   *
+   * Carries `data-tone="light"` wherever it is used, which is what turns the
+   * focus ring azul — celeste on this surface is under the 3:1 an indicator
+   * needs.
+   */
+  .surface {
+    background-color: var(--gris-superficie);
+    border: 1px solid var(--gris-borde);
+    color: var(--texto);
+  }
+
+  /* --- Cards ---------------------------------------------------------------
+   *
+   * `.surface` is the quiet reading plane; a card is a surface that answers
+   * the pointer. On hover the card comes forward to white and its border takes
+   * the accent — no lift-and-drop-shadow, because that treatment is on every
+   * card kit there is and says nothing about Novit.
+   *
+   * `--card-accent` is the knob. Each card sets it once and the rule, the
+   * hover border and the kicker all follow, so a violet card is one custom
+   * property away from a cyan one.
+   */
+  .card {
+    --card-accent: var(--cyan);
+    --card-accent-rgb: var(--rgb-cyan);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--card-radius);
+    background-color: var(--gris-superficie);
+    border: 1px solid var(--gris-borde);
+    color: var(--texto);
+    transition:
+      background-color var(--dur-base) var(--ease-out-quart),
+      border-color var(--dur-base) var(--ease-out-quart);
+  }
+
+  /* Only where a pointer can actually rest. On a touch screen `:hover` sticks
+     after the tap and leaves one card lit for good. */
+  @media (hover: hover) {
+    .card:hover {
+      background-color: var(--blanco);
+      border-color: rgb(var(--card-accent-rgb) / 0.5);
+    }
+  }
+
+  /* Keyboard parity: the same state the pointer gets, so tabbing through a
+     grid of cards is as legible as pointing at it. */
+  .card:focus-within {
+    background-color: var(--blanco);
+    border-color: rgb(var(--card-accent-rgb) / 0.5);
+  }
+
+  /* The head rule: the accent runs the full width of the card's top edge
+     instead of sitting inside it as a stub. This is how the Transformación IA
+     brochure draws every card it has, and it is what makes a grid of them read
+     as one instrument panel rather than as loose tiles — the rules line up
+     across the row whatever height the cards settle at.
+
+     It takes whatever `--card-accent` is set to, so the colour still says what
+     it says everywhere else: celeste for the world, violet for Novit. */
+  .card-head {
+    border-top: 3px solid var(--card-accent);
+  }
+
+  /* Celeste rather than cyan, and only here: cyan is the accent tuned for
+     contrast *as text* on this surface, and a 3px rule carries no text. The
+     brochure's own rule is #3DB0E4. */
+  .card-celeste {
+    --card-accent: var(--celeste);
+    --card-accent-rgb: var(--rgb-celeste);
+  }
+
+  /* The `voice` card: Novit speaking, so violet. Not competing for attention
+     with its neighbours — it is the answer they lead to. */
+  .card-voice {
+    --card-accent: var(--violeta-medio);
+    --card-accent-rgb: var(--rgb-violeta-medio);
+  }
+
+  /* --- Form fields ---------------------------------------------------------
+   *
+   * Only ever used on the light reading surface, so the colours are the
+   * surface's own: white well, grey rule, azul on focus. The focus ring is
+   * the border going azul and thickening rather than an outline, because an
+   * outline on a 2px-radius box at this size reads as a second border.
+   */
+  .field {
+    width: 100%;
+    border-radius: var(--card-radius);
+    border: 1px solid var(--gris-borde);
+    background-color: var(--blanco);
+    color: var(--texto);
+    padding: 0.8rem 0.9rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition:
+      border-color var(--dur-base) var(--ease-out-quart),
+      box-shadow var(--dur-base) var(--ease-out-quart);
+  }
+
+  .field::placeholder {
+    /* The 2015 greys are gone from the token set on purpose (all under 3:1 on
+       this surface). A placeholder is a hint next to a real label, so half the
+       text colour is enough and it stays clearly not-yet-filled. */
+    color: rgb(51 51 51 / 0.5);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--azul);
+    box-shadow: 0 0 0 1px var(--azul);
+  }
+
+  /* Set by the form only after a failed submit attempt, never on first paint:
+     a field that is red before anyone has typed in it is scolding the visitor
+     for not having started. */
+  .field[aria-invalid="true"] {
+    border-color: var(--violeta);
+    box-shadow: 0 0 0 1px var(--violeta);
+  }
+
+  .field-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--azul);
+  }
+
+  /* --- The hero's news rows ------------------------------------------------
+   *
+   * The one card-like thing on the page that sits on the gradient rather than
+   * on the reading surface, because the hero is one of the two bands where the
+   * gradient *is* the surface. So the states are built out of white alpha
+   * instead of the light-surface tokens: the well brightens, the rule between
+   * label and arrow draws across, and the arrow leans the way every other
+   * arrow on the site leans.
+   */
+  .hero-news {
+    background-color: transparent;
+    transition: background-color var(--dur-base) var(--ease-out-quart);
+  }
+
+  .hero-news_rule {
+    transform: scaleX(0.35);
+    transform-origin: left center;
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .hero-news_arrow {
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  @media (hover: hover) {
+    .hero-news:hover {
+      background-color: rgb(255 255 255 / 0.07);
+    }
+
+    .hero-news:hover .hero-news_rule {
+      transform: scaleX(1);
+    }
+
+    .hero-news:hover .hero-news_arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  .hero-news:focus-visible {
+    background-color: rgb(255 255 255 / 0.07);
+  }
+
+  .hero-news:focus-visible .hero-news_rule {
+    transform: scaleX(1);
+  }
+
+  /* --- On-color text hierarchy --------------------------------------------- */
+
+  /* The brand manual's deliberate opacity ramp for white copy sitting on the
+     scene gradient — headline near-opaque down to the most de-emphasized
+     label. Tokens live in `:root` above, next to `--rgb-violeta`. Not every
+     existing ad hoc opacity in the codebase maps onto this scale (some sit
+     intentionally below `--on-label` as a quieter meta tier); only swap in a
+     class where it's a genuine match. */
+
+  .text-on-link {
+    color: var(--on-link);
+  }
+
+  .text-on-heading {
+    color: var(--on-heading);
+  }
+
+  .text-on-eyebrow {
+    color: var(--on-eyebrow);
+  }
+
+  .text-on-detail {
+    color: var(--on-detail);
+  }
+
+  .text-on-label {
+    color: var(--on-label);
+  }
+
+  /* --- Section labels ----------------------------------------------------- */
+
+  /* The small stacked labels that open every section: an outlined index over
+     a filled name. Lato bold with wide tracking stands in for the reference's
+     monospace, since the design system names Lato as the only family. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--chip-radius);
+    /* A pill needs the horizontal room its own curve takes away: at this
+       radius the old 0.5rem left the first and last letter sitting on the
+       arc. */
+    padding: 0.34rem 0.8rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .chip-outline {
+    border: 1px solid currentColor;
+  }
+
+  /* --- CTA chip ----------------------------------------------------------- */
+
+  /* Label block plus a separate arrow block, as one unit. The arrow block
+     slides on hover and the label fill wipes behind it. */
+  .chip-cta {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 2px;
+    border-radius: var(--chip-radius);
+    padding: 2px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition:
+      background-color var(--dur-base) var(--ease-out-quart),
+      transform var(--dur-fast) var(--ease-out-quart);
+  }
+
+  .chip-cta:active {
+    transform: translateY(1px);
+  }
+
+  .chip-cta_label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: calc(var(--chip-radius) - 2px);
+    padding: 0.7rem 1.1rem;
+  }
+
+  .chip-cta_label > span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .chip-cta_label::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .chip-cta:hover .chip-cta_label::before,
+  .chip-cta:focus-visible .chip-cta_label::before {
+    transform: scaleX(1);
+  }
+
+  .chip-cta_arrow {
+    /* A grid, so both glyphs share one cell and the block is sized by the
+       larger of them rather than by their sum. */
+    display: grid;
+    place-items: center;
+    /* An explicit width, not `aspect-ratio`. The parent stretches this block
+       to the label's height, so the height is only definite after the main
+       size is resolved — and a ratio with nothing but a 10px glyph to size
+       from collapses the block to a sliver. */
+    width: 2.4rem;
+    overflow: hidden;
+    border-radius: calc(var(--chip-radius) - 2px);
+  }
+
+  /*
+   * The arrow leaves to the right and its replacement arrives from the left,
+   * so the glyph reads as travelling in the direction the button goes rather
+   * than nudging 3px and stopping, which is what it did before.
+   *
+   * Two glyphs in one cell, not one glyph animated twice: a single element
+   * cannot exit right and enter left in one continuous transition without
+   * visibly flying back across the block on the return. `overflow: hidden` on
+   * the parent is what hides each one while it is outside.
+   */
+  .chip-cta_glyph {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  /*
+   * The travel has to be longer than the block is wide, or two arrows show
+   * at once.
+   *
+   * This moved 26px inside a 38px block, which meant that halfway through
+   * both glyphs were fully inside it — two whole arrows at opposite edges
+   * with a hole between them, for about a fifth of a second. The block is
+   * 38.4px, the arrow is 5.4px of ink, and the glyphs are always exactly
+   * one travel apart: separate them by more than 38.4 + 5.4 and there is no
+   * position where both fit. 460% of the 10px glyph is 46px, which clears it
+   * with room to spare, and still parks each glyph fully outside the block
+   * so `overflow: hidden` has something to hide.
+   *
+   * They move in lockstep, on the same clock as the label wipe, so the two
+   * halves of the button read as one gesture. Nothing is staggered: the gap
+   * between one arrow leaving and the next appearing is under 10ms, and a
+   * delay wide enough to be worth having is also wide enough to leave the
+   * block visibly empty.
+   */
+  .chip-cta_glyph-in {
+    transform: translateX(-460%);
+  }
+
+  .chip-cta:hover .chip-cta_glyph-out,
+  .chip-cta:focus-visible .chip-cta_glyph-out {
+    transform: translateX(460%);
+  }
+
+  .chip-cta:hover .chip-cta_glyph-in,
+  .chip-cta:focus-visible .chip-cta_glyph-in {
+    transform: translateX(0);
+  }
+
+  /* One arrow, parked, for anyone who does not want the movement. */
+  @media (prefers-reduced-motion: reduce) {
+    .chip-cta_glyph {
+      transition: none;
+    }
+
+    .chip-cta_glyph-in {
+      display: none;
+    }
+  }
+
+  /* On dark grounds the unit is celeste with an azul arrow, and inverts. */
+  .chip-cta-light {
+    background: var(--celeste);
+    color: var(--azul-deep);
+  }
+
+  .chip-cta-light .chip-cta_label::before {
+    background: var(--blanco);
+  }
+
+  .chip-cta-light .chip-cta_arrow {
+    background: var(--azul-deep);
+    color: var(--celeste);
+  }
+
+  /* A lift, not a glow: nothing on this page casts onto the ground. */
+  .chip-cta-light:hover,
+  .chip-cta-light:focus-visible {
+    transform: translateY(-1px);
+  }
+
+  /* On light grounds it is azul with a white arrow. */
+  .chip-cta-dark {
+    background: var(--azul);
+    color: var(--blanco);
+  }
+
+  .chip-cta-dark .chip-cta_label::before {
+    background: var(--azul-500);
+  }
+
+  .chip-cta-dark .chip-cta_arrow {
+    background: var(--blanco);
+    color: var(--azul);
+  }
+
+  .chip-cta-dark:hover,
+  .chip-cta-dark:focus-visible {
+    transform: translateY(-1px);
+  }
+
+  /* --- Interactions ------------------------------------------------------- */
+
+  /* Header steps aside on the way down and returns on the way up. The
+     attribute is written by the scroll subscription in SiteHeader. */
+  .site-header {
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .site-header[data-hidden="true"] {
+    transform: translateY(-100%);
+  }
+
+  /*
+   * The scrim behind the two controls, once the page has moved at all.
+   *
+   * This is what replaced the header's tone switching. The logo and the menu
+   * used to invert to azul whenever a `[data-tone="light"]` box passed under
+   * them, and because the white reading panels are interior cards, crossing one
+   * band could repaint them two or three times — the controls read as broken
+   * rather than adaptive. They stay white now, and this gradient is what keeps
+   * white legible when a white panel goes under it.
+   *
+   * A gradient, not a bar: no edge, no rule, nothing that reads as a toolbar,
+   * so the page still runs under the controls the way it always did. No blur —
+   * a backdrop-filter on a fixed layer over a transform-driven scroller
+   * repaints the whole strip every frame.
+   */
+  .site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 8.5rem;
+    opacity: 0;
+    background: linear-gradient(
+      180deg,
+      rgb(4 0 56 / 0.85) 0%,
+      rgb(4 0 56 / 0.58) 42%,
+      rgb(4 0 56 / 0) 100%
+    );
+    transition: opacity var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .site-header[data-scrolled="true"]::before {
+    opacity: 1;
+  }
+
+  /*
+   * And it leaves with the header. The scrim is taller than the header box it
+   * hangs off — 8.5rem of gradient against a 4.5rem rail — so `translateY(-100%)`
+   * on the way down only lifts it by its own 4.5rem and left the bottom 64px of
+   * gradient sitting at the top of the viewport, a grey band over whatever white
+   * panel was passing under it.
+   */
+  .site-header[data-hidden="true"]::before {
+    opacity: 0;
+  }
+
+  /*
+   * The logo's hover is gone with the vector it was built on.
+   *
+   * It walked a highlight down the five rows of the isotipo — bars stretching,
+   * squares scaling as it passed — which needed one addressable DOM node per
+   * shape and a `--i` row index set inline. The logo is a single PNG now (see
+   * `lib/brand-logo.ts`), and a raster has no rows to address. Reproducing the
+   * effect would mean slicing the artwork or putting a filter over it, and the
+   * brandbook does not allow effects on the logo, so there is no hover here.
+   */
+
+  /* Underline that grows from the origin rather than fading in. */
+  .link-rule {
+    position: relative;
+    transition: color var(--dur-base) var(--ease-out-quart);
+  }
+
+  .link-rule::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .link-rule:hover::after,
+  .link-rule:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .scroll-cue-track {
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-cue-track::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      height: 45%;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        var(--celeste),
+        transparent
+      );
+      animation: cue-travel 2.4s var(--ease-in-out-quint) infinite;
+    }
+  }
+
+  /* --- Type --------------------------------------------------------------- */
+
+  .section-index {
+    color: var(--celeste);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-4);
+    top: 0;
+    z-index: 100;
+    transform: translateY(-120%);
+    background: var(--blanco);
+    color: var(--azul);
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    transition: transform var(--dur-base) var(--ease-out-expo);
+  }
+
+  .skip-link:focus {
+    transform: translateY(var(--space-4));
+  }
+
+  /* Word-level mask behind every headline reveal. Rendered on the server, so
+     the copy ships in the HTML and reads normally without JS. */
+  .split-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    /* Headroom for descenders so the mask never clips a g or a p. */
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+    clip-path: inset(0 -0.14em 0 -0.04em);
+    /* Both of these are inline-blocks, which makes each of them a block
+       container that inherits the heading first-line indent and applies it
+       again to its one word. Left alone, an indented headline pushes every
+       word right by the indent twice over. */
+    text-indent: 0;
+  }
+
+  .split-item {
+    display: inline-block;
+    text-indent: 0;
+  }
+}
+
+/* ==========================================================================
+   Motion entry states
+
+   Applied only once the pre-paint script confirms JS is running and the
+   visitor has not asked for reduced motion. Without that flag the page is
+   fully visible — crawlers, no-JS visitors and reduced-motion visitors all
+   get the finished layout, never a blank one.
+   ========================================================================== */
+
+@layer components {
+  [data-motion="on"] [data-anim="rise"] {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+
+  [data-motion="on"] [data-anim="fade"] {
+    opacity: 0;
+  }
+
+  [data-motion="on"] [data-anim="wipe"] {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  [data-motion="on"] [data-anim="bar"] {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  [data-motion="on"] [data-anim="card"] {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0);
+  }
+
+  [data-motion="on"] [data-anim="chip"] {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.96);
+  }
+
+  [data-motion="on"] [data-anim="media"] {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  [data-motion="on"] [data-anim-inner] {
+    transform: scale(1.16);
+  }
+
+  [data-motion="on"] [data-anim="words"] .split-item {
+    transform: translate3d(0, 115%, 0);
+  }
+
+  /* Scrubbed statements start dim and are brought up word by word as the
+     section passes. Driven by ScrollWords, not by Scene — hence its own
+     attribute. */
+  [data-motion="on"] [data-scrub] .split-item {
+    opacity: 0.18;
+  }
+}
+
+/* The curtain is rendered on the server so it can cover the first paint, so
+   it has to be taken away by CSS for anyone the timeline will never run for:
+   no scripts, or reduced motion. Until then it is a full-screen fixed layer,
+   and a fixed layer swallows the wheel — the page underneath would not
+   scroll.
+
+   The other case it used to cover — "already played" — is now a module
+   variable read in a layout effect, which re-renders before the browser
+   paints, so there is nothing left here for CSS to do. See `lib/intro.ts`. */
+html:not([data-motion="on"]) .intro-overlay {
+  display: none !important;
+}
+
+/* Four full-viewport fixed layers would each land on page one in some engines,
+   and the brandbook is explicit that in print the two gradients never touch —
+   the page goes white between them. On paper the atmosphere has no job. */
+@media print {
+  .scene-sweep,
+  .scene-blooms,
+  .scene-cells {
+    display: none;
+  }
 }
