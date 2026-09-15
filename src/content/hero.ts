@@ -61,8 +61,8 @@ export const heroContent = {
    * It is a pointer to the section below, not an announcement: the course
    * name, the load and the modality, all from the temario. No edition dates,
    * no "inscripción abierta", nothing that goes stale between cohorts. News
-   * about an edition is not published on this site at all — see
-   * `academyPageContent.sections.registration`.
+   * about an edition is not published on this site at all; it goes out on
+   * Novit's own accounts.
    */
   announcement: {
     kicker: "Academia Novit",

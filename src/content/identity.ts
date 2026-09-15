@@ -41,6 +41,19 @@ export const siteContact = {
   ],
 } as const;
 
+/**
+ * The Academia's own inbox. Everything about the cursada — requisitos,
+ * contenidos, entregas, cuándo abre la próxima edición — goes here and not to
+ * `siteContact.email`, which is the company's commercial channel.
+ *
+ * The socials are the same two accounts: Novit announces its editions on them,
+ * and the Academia has none of its own.
+ */
+export const academyContact = {
+  email: { label: "academia@novit.com.ar", href: "mailto:academia@novit.com.ar" },
+  social: siteContact.social,
+} as const;
+
 export const metadataContent = {
   title: "Novit Software — Software a medida y agentes de IA integrados",
   description:

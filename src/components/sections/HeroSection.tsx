@@ -116,8 +116,7 @@ export function HeroSection() {
  * It is a pointer, not a bulletin. The strip carries the course name, the load
  * and the modality, all from the temario, and it links to the section below.
  * Nothing about an edition — an opening date, a cupo, a closing — is published
- * on this site; those go out on Novit's own accounts. See
- * `academyPageContent.sections.registration`.
+ * on this site; those go out on Novit's own accounts.
  *
  * It started life as a two-row block below the CTAs: one row for the Academia
  * and one for the AI practice. The services row repeated the H1 and the lead

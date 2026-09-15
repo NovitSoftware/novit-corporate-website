@@ -1,7 +1,7 @@
 /* The chrome around the bands: the two footers and the intro curtain. */
 
-import { academyContent, academyProgram } from "./academy";
-import { siteContact } from "./identity";
+import { academyProgram } from "./academy";
+import { academyContact, siteContact } from "./identity";
 
 export const footerContent = {
   tagline: "Hacemos simple lo complejo.",
@@ -52,6 +52,15 @@ export const footerContent = {
   legal: [] as Array<{ label: string; href: string }>,
   /** Instagram and LinkedIn, both live and linked from novitsoftware.com. */
   social: siteContact.social,
+  /** The two direct channels: the WhatsApp number and the commercial inbox. */
+  channels: [
+    {
+      id: "whatsapp",
+      label: siteContact.phone.label,
+      href: siteContact.phone.href,
+    },
+    { id: "email", label: siteContact.email.label, href: siteContact.email.href },
+  ],
   /**
    * The footer's one call to action, and it stays on this page.
    *
@@ -76,7 +85,8 @@ export const footerContent = {
  * for them.
  */
 export type FooterContent = {
-  mission: string;
+  /** Optional: a route whose footer is a short index reads better without it. */
+  mission?: string;
   columns: ReadonlyArray<{
     title: string;
     links: ReadonlyArray<{ label: string; href?: string }>;
@@ -84,6 +94,16 @@ export type FooterContent = {
   legal: ReadonlyArray<{ label: string; href: string }>;
   social: ReadonlyArray<{
     id: "instagram" | "linkedin";
+    label: string;
+    href: string;
+  }>;
+  /**
+   * The direct channels listed under the chip, each with the glyph its `id`
+   * selects. Per route, because the inbox that answers depends on what the
+   * page is about: the Academia's consultas go to its own address.
+   */
+  channels: ReadonlyArray<{
+    id: "whatsapp" | "email";
     label: string;
     href: string;
   }>;
@@ -100,22 +120,17 @@ export type FooterContent = {
  * of the temario is deciding whether to write, not shopping the rest of the
  * site.
  *
- * So the columns index *this* page — its three bands, and the edition it is
- * announcing — and no link here leaves the route. Novit's own accounts stay in
- * the row below, because that is the site's identity rather than navigation,
- * and the inbox is the chip: on this page it is the only thing to do.
+ * So the one column here is the edition this page is announcing, no link
+ * leaves the route, and the inbox is the chip: on this page it is the only
+ * thing to do. Novit's own accounts stay in the row below, because that is the
+ * site's identity rather than navigation.
+ *
+ * No mission line under the logo and no index of the page's own bands: this
+ * footer sits three screens below an opener that says the same thing, under a
+ * page short enough to scroll back up.
  */
 export const academyFooterContent: FooterContent = {
-  mission: academyContent.description,
   columns: [
-    {
-      title: "La cursada",
-      links: [
-        { label: "Cinco bloques", href: "#cursada" },
-        { label: "Evaluación", href: "#evaluacion" },
-        { label: "Consultas", href: "#inscripcion" },
-      ],
-    },
     {
       /* Facts, not links — there is nowhere on this page for a date to go. */
       title: academyProgram.edition.label,
@@ -125,11 +140,21 @@ export const academyFooterContent: FooterContent = {
     },
   ],
   legal: [],
-  social: siteContact.social,
+  social: academyContact.social,
+  /* The Academia's inbox alone. The WhatsApp number is the company's
+     commercial line and answers for sales, not for a question about the
+     cursada. */
+  channels: [
+    {
+      id: "email",
+      label: academyContact.email.label,
+      href: academyContact.email.href,
+    },
+  ],
   contact: {
     label: "Consultas",
-    value: "Escribir a Novit",
-    href: siteContact.email.href,
+    value: "Consultanos",
+    href: academyContact.email.href,
   },
 };
 

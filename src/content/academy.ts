@@ -1,6 +1,6 @@
 /* The Academia: the home page band, the programme itself, and everything on `/academianovit`. */
 
-import { siteContact } from "./identity";
+import { academyContact } from "./identity";
 
 export const academyContent = {
   id: "academia",
@@ -23,7 +23,7 @@ export const academyContent = {
   note: {
     label: "Cursada",
     icon: "academy",
-    text: "32 horas: 14 clases teórico-prácticas y 2 talleres de consulta, 100% online.",
+    text: "32 horas: 14 clases y 2 talleres de consulta, 100% online.",
   },
   /* No `cta`, on purpose. This band had one pointing at `#contacto` — a
      sales form for a question about teaching — and then one pointing at
@@ -59,7 +59,7 @@ export const academyProgram = {
   format: {
     facts: [
       { label: "Carga total", value: "32 horas", icon: "clock" },
-      { label: "Clases", value: "14 teórico-prácticas", icon: "academy" },
+      { label: "Clases", value: "14", icon: "academy" },
       { label: "Talleres de consulta", value: "2", icon: "team" },
       { label: "Modalidad", value: "100% online", icon: "globe" },
     ],
@@ -184,21 +184,17 @@ export const academyProgram = {
  * scaffolding — its metadata, the words that open it and the heading of each
  * band. Nothing is repeated from it: the page reads both.
  *
- * ## Four bands, and there were six
+ * ## Three bands
  *
- * "Qué es" (the aim and the agent/agentic-software distinction) and "A quién
- * está dirigida" (the four prerequisites under "no es una academia de nivel
- * inicial") were removed on request. What is left is the course as it runs —
- * the opener, the five blocks, the marking criteria, and how to reach Novit
- * about it. The material for both bands is intact in
- * `docs/novit/academia-novit.md` if either comes back.
+ * The course as it runs: the opener, the five blocks, the marking criteria.
+ * `docs/novit/academia-novit.md` carries the rest of the temario, and it is
+ * the source for every word here.
  *
  * ## The way in is an inbox
  *
- * The opener's button is a `mailto:`, not an anchor. Email is the channel for
- * anything to do with the Academia, and putting it on the button means a
- * reader who arrives knowing what they want to ask does not have to scroll the
- * programme to find out where to ask it.
+ * The opener's button is a `mailto:` to the Academia's own address, not an
+ * anchor — it is the only way to ask about the cursada, so it is on the one
+ * button the page has and a reader never has to scroll to find it.
  */
 export const academyPageContent = {
   meta: {
@@ -210,9 +206,9 @@ export const academyPageContent = {
   title: "Desarrollo de Agentes IA y Software Agéntico",
   lead: "Una cursada de 32 horas sobre cómo se diseña, se construye y se sostiene un sistema agéntico: arquitectura, orquestación, contexto, costos, seguridad y observabilidad.",
   /* Not "Inscribirse" and not "Cuándo abre la inscripción": the first promises
-     a mechanism that is not decided, the second promised a date. This one goes
-     where it says it goes. */
-  cta: { label: "Escribir a Novit", href: siteContact.email.href },
+     a mechanism that is not decided, the second a date this site does not
+     publish. A consulta is what the inbox actually takes. */
+  cta: { label: "Consultanos", href: academyContact.email.href },
   /** One heading per band, in reading order. No indices — see `AcademyPage`. */
   sections: {
     schedule: {
@@ -224,75 +220,7 @@ export const academyPageContent = {
     evaluation: {
       id: "evaluacion",
       eyebrow: "Evaluación",
-      title: "Un trabajo integrador de sector energético",
-    },
-    /**
-     * How to reach Novit about the Academia. Three channels, no form and no
-     * news.
-     *
-     * ## What this band is not allowed to do
-     *
-     * It has twice tried to be the announcement itself. First a form — four
-     * fields and a submit button with no endpoint, so a postulación went
-     * nowhere and the page admitted it in small print underneath. Then a date:
-     * "Las inscripciones abren el 22 de septiembre", with "Esta página" listed
-     * first among the channels, which committed this site to publishing an
-     * edition's opening, closing and cupo.
-     *
-     * Neither is this site's job. Novit announces its editions on its own
-     * accounts, and that is the only place this page points to for news; the
-     * date is out because no source document carries it. If an edition's
-     * announcement is ever mirrored here, it is because someone decided that —
-     * not because the page pre-announced itself into the commitment.
-     *
-     * ## The inbox is first, and it is first on purpose
-     *
-     * Everything about the Academia — consultas sobre la cursada, sobre los
-     * requisitos, sobre cuándo abre la próxima edición — goes to the same
-     * address, and it is the one channel where an answer comes back. The two
-     * accounts under it are where announcements land, and they are links, not
-     * inboxes.
-     */
-    registration: {
-      id: "inscripcion",
-      eyebrow: "Consultas",
-      title: "Las consultas sobre la cursada se responden por correo",
-      lead: "Escribinos para consultar cualquier información sobre la cursada, sus requisitos, contenidos o próximas ediciones. Siguenos en nuestras redes para no perderte ninguna novedad.",
-      /**
-       * The inbox first, then the two accounts the announcements land on.
-       *
-       * No `icon`. These three carry their own brand marks, which live in
-       * `ui/ContactIcons` and are keyed off `id` — the generic set had the two
-       * accounts sharing one speech-bubble glyph, so the row that was supposed
-       * to tell Instagram from LinkedIn at a glance drew them identically.
-       *
-       * Each `detail` says what that channel is for and nothing the label
-       * already said. Two of them used to end on the same seven words, which
-       * made the pair read as one entry printed twice.
-       */
-      channels: [
-        {
-          id: "correo",
-          label: siteContact.email.label,
-          detail:
-            "Requisitos, contenidos, entregas o cuándo abre la próxima edición. Es el canal donde una consulta se responde.",
-          href: siteContact.email.href,
-        },
-        {
-          id: "instagram",
-          label: "Instagram",
-          detail:
-            "@novit.software. Ahí sale el anuncio de cada edición, con el resto de lo que hace Novit.",
-          href: siteContact.social[0].href,
-        },
-        {
-          id: "linkedin",
-          label: "LinkedIn",
-          detail:
-            "Novit Software. El mismo anuncio, para quien sigue a la empresa por trabajo.",
-          href: siteContact.social[1].href,
-        },
-      ],
+      title: "Un trabajo integrador del sector energético",
     },
   },
 } as const;

@@ -8,16 +8,17 @@ import {
 import { Divider } from "@/components/ui/Divider";
 import { Logo } from "@/components/ui/Logo";
 import { Scene } from "@/components/motion/Scene";
-import {
-  footerContent,
-  site,
-  siteContact,
-  type FooterContent,
-} from "@/content/site";
+import { footerContent, site, type FooterContent } from "@/content/site";
 import { cn } from "@/lib/cn";
 
 const footerLink =
   "link-rule inline-flex w-fit items-center gap-2 text-on-link hover:text-celeste";
+
+/** The glyph each direct channel gets, keyed off the `id` the content sets. */
+const CHANNEL_ICONS = {
+  whatsapp: WhatsAppIcon,
+  email: MailIcon,
+} as const;
 
 /**
  * The id is `pie`, not `contacto`. The footer carried that anchor back when
@@ -46,7 +47,17 @@ export function SiteFooter({
           the footer reveals as it enters rather than at 82% of the viewport. */}
       <Scene className="relative" start="top bottom">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
+          {/* One track per column the route actually has. The three-up
+              template leaves an empty third of the measure under a footer that
+              indexes a single thing. */}
+          <div
+            className={cn(
+              "grid gap-12",
+              content.columns.length > 1
+                ? "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]"
+                : "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]",
+            )}
+          >
             <div data-anim-block>
               <div data-anim="rise">
                 <Logo />
@@ -56,12 +67,14 @@ export function SiteFooter({
                 aria-hidden="true"
                 className="hairline mt-7 w-24"
               />
-              <p
-                data-anim="rise"
-                className="mt-5 max-w-[var(--measure)] text-sm leading-7 text-on-detail"
-              >
-                {content.mission}
-              </p>
+              {content.mission ? (
+                <p
+                  data-anim="rise"
+                  className="mt-5 max-w-[var(--measure)] text-sm leading-7 text-on-detail"
+                >
+                  {content.mission}
+                </p>
+              ) : null}
               <div data-anim="rise" className="mt-7">
                 <ChipButton href={content.contact.href} variant="light">
                   {content.contact.value}
@@ -74,19 +87,23 @@ export function SiteFooter({
                 data-anim="rise"
                 className="mt-6 flex flex-col gap-2 text-sm"
               >
-                <a
-                  href={siteContact.phone.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={footerLink}
-                >
-                  <WhatsAppIcon className="size-4 shrink-0" />
-                  {siteContact.phone.label}
-                </a>
-                <a href={siteContact.email.href} className={footerLink}>
-                  <MailIcon className="size-4 shrink-0" />
-                  {siteContact.email.label}
-                </a>
+                {content.channels.map((channel) => {
+                  const ChannelIcon = CHANNEL_ICONS[channel.id];
+                  const external = channel.href.startsWith("http");
+
+                  return (
+                    <a
+                      key={channel.id}
+                      href={channel.href}
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noreferrer" : undefined}
+                      className={footerLink}
+                    >
+                      <ChannelIcon className="size-4 shrink-0" />
+                      {channel.label}
+                    </a>
+                  );
+                })}
               </div>
             </div>
             {content.columns.map((column) => (
