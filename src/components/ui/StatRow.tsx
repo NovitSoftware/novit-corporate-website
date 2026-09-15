@@ -1,7 +1,6 @@
 import { CountUp } from "@/components/motion/CountUp";
-import { Icon, type IconName } from "@/components/ui/Icon";
+import { IconLine, type IconName } from "@/components/ui/Icon";
 import { cn } from "@/lib/cn";
-import { variantClass } from "@/lib/variants";
 
 type Stat = {
   label: string;
@@ -12,34 +11,8 @@ type Stat = {
   icon?: IconName;
 };
 
-/**
- * Three grounds, because the accent that works on one fails on the next:
- * celeste over the gradient, cyan on the reading surface — celeste falls to
- * 2.3:1 there — and violet where the figures are Novit's own.
- */
-const ruleTone = {
-  dark: "bg-[linear-gradient(90deg,var(--celeste),transparent)]",
-  light: "bg-[linear-gradient(90deg,var(--cyan),transparent)]",
-  voice: "bg-[linear-gradient(90deg,var(--violeta),transparent)]",
-} as const;
-
-const labelTone = {
-  dark: "text-celeste",
-  light: "text-azul",
-  voice: "text-violeta-medio",
-} as const;
-
-const valueTone = {
-  dark: "text-blanco",
-  light: "text-azul",
-  voice: "text-violeta-medio",
-} as const;
-
-export type StatTone = keyof typeof ruleTone;
-
 type StatRowProps = {
   items: ReadonlyArray<Stat>;
-  tone?: StatTone;
   className?: string;
 };
 
@@ -47,8 +20,19 @@ type StatRowProps = {
  * A row of figures, each under a small tracked label and over a rule that
  * draws itself in. Quantities count up as they arrive; years and non-numeric
  * values are left alone — see CountUp.
+ *
+ * ## One ground, because that is the only one it ever sits on
+ *
+ * This carried a `tone` of `dark` | `light` | `voice` with three parallel
+ * class maps, and both call sites — `AboutSection` and `AcademyOpener` — take
+ * the default. Two thirds of the component was a variant nobody asked for.
+ *
+ * If a row ever does need the reading surface, the numbers are: celeste falls
+ * to 2.3:1 on `gris-superficie` and cannot carry the label there, so a light
+ * row would be a cyan rule with azul text, and a violet one violet throughout.
+ * Add it then, with a call site.
  */
-export function StatRow({ items, tone = "dark", className }: StatRowProps) {
+export function StatRow({ items, className }: StatRowProps) {
   return (
     <dl
       data-anim-batch
@@ -63,29 +47,14 @@ export function StatRow({ items, tone = "dark", className }: StatRowProps) {
           <span
             data-anim="bar"
             aria-hidden="true"
-            className={cn(
-              "mb-4 block h-px w-full",
-              variantClass(ruleTone, tone),
-            )}
+            className="mb-4 block h-px w-full bg-[linear-gradient(90deg,var(--celeste),transparent)]"
           />
           <div data-anim="rise">
-            <dt
-              className={cn(
-                "flex items-center gap-2 text-[0.625rem] font-bold uppercase tracking-[0.18em]",
-                variantClass(labelTone, tone),
-              )}
-            >
-              {item.icon ? (
-                <Icon name={item.icon} className="size-3.5" />
-              ) : null}
+            <dt className="flex items-start gap-2 text-[0.625rem] font-bold uppercase tracking-[0.18em] text-celeste">
+              {item.icon ? <IconLine name={item.icon} size="micro" /> : null}
               {item.label}
             </dt>
-            <dd
-              className={cn(
-                "display-m mt-2 tabular-nums",
-                variantClass(valueTone, tone),
-              )}
-            >
+            <dd className="display-m mt-2 tabular-nums text-blanco">
               <CountUp value={item.value} />
             </dd>
           </div>

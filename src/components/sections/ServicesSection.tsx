@@ -1,3 +1,4 @@
+import { CardGrid } from "@/components/cards/CardGrid";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
 import { HighlightCard } from "@/components/cards/HighlightCard";
@@ -40,24 +41,27 @@ export function ServicesSection() {
             }
             below={
               <>
-                <div data-anim-batch className="grid gap-4 md:grid-cols-3">
+                <CardGrid columns={3}>
                   {highlights.map((item) => (
-                    <div key={item.id} data-anim="card">
+                    <li key={item.id} data-anim="card">
                       <HighlightCard highlight={item} />
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </CardGrid>
 
-                <div data-anim-batch className="mt-4 grid gap-4 lg:grid-cols-2">
-                  <div data-anim="card" className="lg:col-span-2">
+                {/* The featured line runs the width of the grid it stands in,
+                    which is what `col-span` on the wrapper is for — the card
+                    itself does not know how wide it is. */}
+                <CardGrid columns={2} className="mt-4">
+                  <li data-anim="card" className="sm:col-span-2">
                     <ServiceCard service={featured} />
-                  </div>
+                  </li>
                   {rest.map((service) => (
-                    <div key={service.id} data-anim="card">
+                    <li key={service.id} data-anim="card">
                       <ServiceCard service={service} />
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </CardGrid>
 
                 {/* One route out of the grid rather than five, and it goes to
                     the page that argues the case rather than to the enquiry:

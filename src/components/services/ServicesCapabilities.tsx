@@ -1,12 +1,12 @@
-import { Card, CardText, cardInk } from "@/components/cards/Card";
+import { CardGrid } from "@/components/cards/CardGrid";
+import { CardList } from "@/components/cards/CardList";
+import { Card, CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
-import { Icon } from "@/components/ui/Icon";
+import { IconLine } from "@/components/ui/Icon";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
 import { servicesPageContent } from "@/content/site";
-import { cn } from "@/lib/cn";
-import { variantClass } from "@/lib/variants";
 
 /**
  * The offer: three service lines, and the method under them.
@@ -51,18 +51,19 @@ export function ServicesCapabilities() {
             }
             below={
               <div className="space-y-4">
-                <div data-anim-batch className="space-y-4">
-                  <div data-anim="card">
+                <CardGrid columns={2}>
+                  {/* The AI line across the whole grid, the other two side by
+                      side under it — one grid, so all three share the row
+                      structure every other card set on the site uses. */}
+                  <li data-anim="card" className="sm:col-span-2">
                     <OfferLine line={featured} featured />
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {rest.map((line) => (
-                      <div key={line.id} data-anim="card">
-                        <OfferLine line={line} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                  </li>
+                  {rest.map((line) => (
+                    <li key={line.id} data-anim="card">
+                      <OfferLine line={line} />
+                    </li>
+                  ))}
+                </CardGrid>
 
                 <MethodBlock />
               </div>
@@ -95,36 +96,14 @@ type OfferLineProps = {
  * be. The badge is the image this card wants.
  */
 function OfferLine({ line, featured = false }: OfferLineProps) {
-  const accent = featured ? "voice" : "celeste";
-
-  const items = (
-    <ul className="space-y-2.5">
-      {line.items.map((item) => (
-        <li
-          key={item}
-          className="flex items-start gap-2.5 text-[0.9375rem] leading-relaxed text-texto"
-        >
-          <Icon
-            name="check"
-            /* The card's own ink, not the accent: a 16px glyph is a
-               graphical object and cyan is 2.9:1 here, just under the 3:1 it
-               needs. Same reason the badge draws its icon in azul. */
-            className={cn("mt-1 size-4 shrink-0", variantClass(cardInk, accent))}
-          />
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
+  const items = <CardList items={line.items} />;
 
   return (
     <Card
       icon={line.icon}
       label={line.meta}
       title={line.title}
-      accent={accent}
       size={featured ? "xl" : "lg"}
-      className={featured ? "sm:p-10" : undefined}
     >
       {featured ? (
         <div className="grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
@@ -174,8 +153,8 @@ function MethodBlock() {
         <ul data-anim="rise" className="grid gap-5 sm:grid-cols-2">
           {method.items.map((item) => (
             <li key={item.title}>
-              <div className="flex items-center gap-2.5">
-                <Icon name={item.icon} className="size-4 text-celeste" />
+              <div className="flex items-start gap-2.5">
+                <IconLine name={item.icon} size="inline" className="text-celeste" />
                 <span className="text-[0.8125rem] font-bold uppercase tracking-[0.14em] text-celeste">
                   {item.title}
                 </span>

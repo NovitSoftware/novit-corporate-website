@@ -1,3 +1,4 @@
+import { CardGrid } from "@/components/cards/CardGrid";
 import { Card, CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
 import { Scene } from "@/components/motion/Scene";
@@ -43,19 +44,15 @@ export function AcademyEvaluation() {
               </p>
             }
             below={
-              <ul data-anim-batch className="grid gap-4 lg:grid-cols-3">
+              <CardGrid columns={3}>
                 {academyProgram.evaluation.criteria.map((criterion) => (
                   <li key={criterion.title} data-anim="card">
-                    <Card
-                      icon={criterion.icon}
-                      title={criterion.title}
-                      accent="voice"
-                    >
+                    <Card icon={criterion.icon} title={criterion.title}>
                       <CardText>{criterion.detail}</CardText>
                     </Card>
                   </li>
                 ))}
-              </ul>
+              </CardGrid>
             }
           />
         </Container>

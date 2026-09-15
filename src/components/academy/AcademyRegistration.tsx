@@ -1,6 +1,7 @@
+import { CardText } from "@/components/cards/Card";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { Icon } from "@/components/ui/Icon";
+import { PanelRow } from "@/components/ui/PanelRow";
 import { PinnedIntro } from "@/components/ui/PinnedIntro";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
@@ -10,7 +11,7 @@ import { academyPageContent } from "@/content/site";
 /**
  * When registration opens, and where the announcement will be.
  *
- * ## There is no form here any more
+ * ## There is no form here, and none is promised
  *
  * There was one: four fields, validation, a submit button — and no endpoint,
  * so a postulación went nowhere and the page admitted it in small print
@@ -19,9 +20,15 @@ import { academyPageContent } from "@/content/site";
  * them are sentences: it opens on 22 September, and the announcement lands on
  * this page and on Instagram. Nothing about that needs a text input.
  *
- * The form is not commented out anywhere — `useUnsentForm` and `FormField`
- * are still in use by the contact section, so when the endpoint exists this
- * band is four `FormField`s away from having one again.
+ * The copy that replaced the form then promised one anyway — "el formulario
+ * aparece acá el 22 de septiembre" — which is the same commitment moved into
+ * a caption. Whether registration is taken by form has not been decided, so
+ * both channels now describe the announcement and neither describes how to
+ * sign up. Do not reintroduce a mechanism here before it is confirmed.
+ *
+ * Nothing is commented out: `useUnsentForm` and `FormField` are still in use
+ * by the contact section, so if a form is confirmed this band is four
+ * `FormField`s away from having one.
  *
  * Last on the page, which is deliberate and also structural: `SectionHandoff`
  * excludes the final band from the exit fade, so the date is at full strength
@@ -38,35 +45,33 @@ export function AcademyRegistration() {
             eyebrow={registration.eyebrow}
             title={registration.title}
             beside={
-              <ReadingPanel voice as="div">
+              <ReadingPanel as="div">
                 <ul data-anim-batch className="grid gap-6 sm:grid-cols-2">
                   {registration.channels.map((channel) => (
                     <li key={channel.id} data-anim="rise">
-                      <h3 className="flex items-center gap-2.5 text-[1.0625rem] font-bold leading-snug text-azul">
-                        <Icon
-                          name={channel.icon}
-                          className="size-5 shrink-0 text-violeta-medio"
-                        />
-                        {/* `in` rather than an optional property, so the
-                            content stays a plain `as const` object and the
-                            icon names keep their literal types. Only one of
-                            the two channels is somewhere to go. */}
-                        {"href" in channel ? (
-                          <a
-                            href={channel.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="link-rule"
-                          >
-                            {channel.label}
-                          </a>
-                        ) : (
-                          channel.label
-                        )}
-                      </h3>
-                      <p className="mt-2 text-[0.9375rem] leading-relaxed text-texto">
-                        {channel.detail}
-                      </p>
+                      <PanelRow
+                        icon={channel.icon}
+                        title={
+                          /* `in` rather than an optional property, so the
+                             content stays a plain `as const` object and the
+                             icon names keep their literal types. Only one of
+                             the two channels is somewhere to go. */
+                          "href" in channel ? (
+                            <a
+                              href={channel.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="link-rule"
+                            >
+                              {channel.label}
+                            </a>
+                          ) : (
+                            channel.label
+                          )
+                        }
+                      >
+                        <CardText>{channel.detail}</CardText>
+                      </PanelRow>
                     </li>
                   ))}
                 </ul>
@@ -76,11 +81,9 @@ export function AcademyRegistration() {
                     the exception, not the instruction. */}
                 <div
                   data-anim="rise"
-                  className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-t-gris-borde pt-7"
+                  className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-t-gris-borde-suave pt-7"
                 >
-                  <p className="text-[0.9375rem] leading-relaxed text-texto">
-                    {registration.aside.text}
-                  </p>
+                  <CardText>{registration.aside.text}</CardText>
                   <ChipButton href={registration.aside.cta.href}>
                     {registration.aside.cta.label}
                   </ChipButton>

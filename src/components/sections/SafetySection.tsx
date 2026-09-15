@@ -1,4 +1,4 @@
-import { ChipButton } from "@/components/ui/ChipButton";
+import { CardGrid } from "@/components/cards/CardGrid";
 import { Card, CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
@@ -39,24 +39,21 @@ export function SafetySection() {
                     <SplitWords text={safetyContent.statement} />
                   </p>
 
+                  {/* No button under this. It read "Leer el enfoque de
+                      gobierno" and went to /inteligencia-artificial, and
+                      nothing links to that route now — see the note in
+                      `safetyContent`. The four cards beside this are where
+                      the reader goes next. */}
                   <ReadingPanel className="mt-9 max-w-[62ch]">
                     <p className="text-base leading-7 text-texto">
                       {safetyContent.description}
                     </p>
-                    <div className="mt-7">
-                      <ChipButton
-                        href={safetyContent.cta.href}
-                        variant="dark"
-                      >
-                        {safetyContent.cta.label}
-                      </ChipButton>
-                    </div>
                   </ReadingPanel>
                 </div>
               </SectionIntro>
             </div>
 
-            <ul data-anim-batch className="grid gap-4">
+            <CardGrid>
               {safetyContent.pillars.map((pillar) => (
                 <li key={pillar.title} data-anim="card">
                   <Card title={pillar.title} icon={pillar.icon}>
@@ -64,7 +61,7 @@ export function SafetySection() {
                   </Card>
                 </li>
               ))}
-            </ul>
+            </CardGrid>
           </div>
         </Container>
       </Scene>

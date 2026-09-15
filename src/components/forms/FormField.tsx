@@ -51,7 +51,7 @@ export function FormField({
   } as const;
 
   return (
-    <div>
+    <div className="field-row">
       <label className="field-label" htmlFor={id}>
         {label}
       </label>

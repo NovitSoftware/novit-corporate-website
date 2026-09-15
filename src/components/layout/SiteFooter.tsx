@@ -19,8 +19,7 @@ const footerLink =
  * the nav's "Redes" item pointed at it and there was no contact section on the
  * page. `ContactSection` owns it now, and two elements answering to one id is
  * invalid markup — the browser jumps to whichever comes first, which was this
- * one, past the form entirely. `SiteHeader` looks the footer up by this id to
- * make it inert while the menu is open.
+ * one, past the form entirely.
  */
 export function SiteFooter() {
   return (

@@ -1,3 +1,4 @@
+import { CardGrid } from "@/components/cards/CardGrid";
 import { CaseCard } from "@/components/cards/CaseCard";
 import { Container } from "@/components/ui/Container";
 import { Scene } from "@/components/motion/Scene";
@@ -47,16 +48,13 @@ export function ServicesCases() {
               </p>
             }
             below={
-              <ul
-                data-anim-batch
-                className="grid gap-4 sm:grid-cols-2 lg:gap-5"
-              >
+              <CardGrid columns={2}>
                 {casesContent.cases.map((study) => (
                   <li key={study.id} data-anim="card">
                     <CaseCard study={study} />
                   </li>
                 ))}
-              </ul>
+              </CardGrid>
             }
           />
         </Container>

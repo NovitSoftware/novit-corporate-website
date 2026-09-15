@@ -26,11 +26,11 @@ export function SectionLabel({ index, name, className }: SectionLabelProps) {
         className="mb-4 block h-0.5 w-6 bg-celeste"
       />
       {index ? (
-        <span className="text-[0.6875rem] font-bold tabular-nums tracking-[0.16em] text-celeste">
+        <span className="eyebrow tabular-nums text-celeste">
           {index}
         </span>
       ) : null}
-      <span className="mt-1 text-[0.6875rem] font-bold uppercase leading-5 tracking-[0.16em] text-on-eyebrow">
+      <span className="eyebrow mt-1 leading-5 text-on-eyebrow">
         {name}
       </span>
     </div>

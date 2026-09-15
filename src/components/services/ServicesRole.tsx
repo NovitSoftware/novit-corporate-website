@@ -1,3 +1,4 @@
+import { CardGrid } from "@/components/cards/CardGrid";
 import { Card, CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
 import { PinnedIntro } from "@/components/ui/PinnedIntro";
@@ -39,20 +40,19 @@ export function ServicesRole() {
             eyebrow={partner.eyebrow}
             title={partner.title}
             beside={
-              <ul data-anim-batch className="grid gap-4 sm:grid-cols-2">
+              <CardGrid columns={2}>
                 {partner.items.map((item) => (
                   <li key={item.title} data-anim="card">
                     <Card
                       icon={item.icon}
                       label={item.label}
                       title={item.title}
-                      accent="voice"
                     >
                       <CardText>{item.description}</CardText>
                     </Card>
                   </li>
                 ))}
-              </ul>
+              </CardGrid>
             }
           >
             <p

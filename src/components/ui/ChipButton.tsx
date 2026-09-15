@@ -18,8 +18,10 @@ type ChipButtonProps = {
 
 /**
  * The site's call to action: a label block and a separate arrow block joined
- * into one unit. On hover the label fill wipes in from the left and the arrow
- * travels — out to the right, with its replacement arriving from the left.
+ * into one unit. On hover and on keyboard focus the arrow block crosses to the
+ * other side of the label, the label slides over into the room the block left,
+ * and the label's fill wipes in behind it. All of that is `.chip-cta` in
+ * globals.css — the markup only supplies the two blocks.
  */
 export function ChipButton({
   variant = "dark",
@@ -49,27 +51,34 @@ export function ChipButton({
  * contact form's submit, which has to be a `<button>` and cannot use
  * `ChipButton` — cannot drift away from this one.
  *
- * Two glyphs, both inside the block and therefore both in its colour: the
- * first leaves to the right, the second arrives from the left to take its
- * place. The travel and the clipping live in `.chip-cta_arrow` in globals.css.
+ * Two blocks, one parked at each end of the chip, of which only one is ever
+ * inside it: the trailing one slides out past the end edge as the leading one
+ * arrives from the start edge. They are identical, so which is which is a
+ * matter of where `.chip-cta_arrow-lead` and `-trail` park them, in
+ * globals.css.
+ *
+ * An SVG triangle rather than a "▸" — cap. 06 of the design system is explicit
+ * that arrows are not a typographic character here.
  */
 export function ChipArrow() {
   return (
-    <span className="chip-cta_arrow" aria-hidden="true">
-      <span className="chip-cta_glyph chip-cta_glyph-out">
+    <>
+      <span className="chip-cta_arrow chip-cta_arrow-lead" aria-hidden="true">
         <ArrowGlyph />
       </span>
-      <span className="chip-cta_glyph chip-cta_glyph-in">
+      <span className="chip-cta_arrow chip-cta_arrow-trail" aria-hidden="true">
         <ArrowGlyph />
       </span>
-    </span>
+    </>
   );
 }
 
 function ArrowGlyph() {
   return (
-    <svg viewBox="0 0 10 10" className="size-2.5" focusable="false">
-      <path d="M2 1.4 7.4 5 2 8.6Z" fill="currentColor" />
-    </svg>
+    <span className="chip-cta_glyph">
+      <svg viewBox="0 0 10 10" className="size-2.5" focusable="false">
+        <path d="M2 1.4 7.4 5 2 8.6Z" fill="currentColor" />
+      </svg>
+    </span>
   );
 }

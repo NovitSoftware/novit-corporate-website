@@ -15,11 +15,13 @@ import { cn } from "@/lib/cn";
  * own conclusion was to draw the arrow as SVG instead. This is the same
  * conclusion applied to the rest of the set.
  *
- * So these are inline SVG on a 24-unit grid, 1.75 stroke, round caps and
- * joins — the Material Symbols Outlined idiom, drawn rather than copied. One
- * flat `currentColor`, which is the convention `ContactIcons` already
- * established: an icon inherits the colour of the text it labels, so it works
- * on the gradient, on a light plate and inside a chip without a variant each.
+ * So these are inline SVG on a 24-unit grid, round caps and joins — the
+ * Material Symbols Outlined idiom, drawn rather than copied. The stroke is not
+ * a constant: see `iconSize` below, which pairs each size with the width that
+ * holds apparent weight even across the set. One flat `currentColor`, which is
+ * the convention `ContactIcons` already established: an icon inherits the
+ * colour of the text it labels, so it works on the gradient, on a light plate
+ * and inside a chip without a variant each.
  *
  * ## Why one registry
  *
@@ -182,26 +184,12 @@ const ICONS = {
       <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
     </>
   ),
-  /** A rising line. How the practice evolves from a first agent. */
-  growth: (
-    <>
-      <path d="m3 17 6-6 4 4 7-7" />
-      <path d="M15 8h5v5" />
-    </>
-  ),
   /** A target. The first case, with an owner and a metric. */
   target: (
     <>
       <circle cx="12" cy="12" r="9" />
       <circle cx="12" cy="12" r="4.6" />
       <circle cx="12" cy="12" r="1.1" />
-    </>
-  ),
-  /** An open book. Syllabus, bibliography. */
-  book: (
-    <>
-      <path d="M12 6.6S9.4 4.5 4 4.5V19c5.4 0 8 2 8 2s2.6-2 8-2V4.5c-5.4 0-8 2.1-8 2.1Z" />
-      <path d="M12 6.6V21" />
     </>
   ),
   /** A globe. Active projects across five countries. */
@@ -231,30 +219,109 @@ const ICONS = {
 
 export type IconName = keyof typeof ICONS;
 
+/**
+ * Four sizes, each paired with the text size it labels — and each carrying the
+ * `strokeWidth` that keeps its *apparent* weight identical to the others.
+ *
+ * ## Why the stroke changes with the size
+ *
+ * `strokeWidth` is in viewBox units, and the viewBox is a fixed 24, so the
+ * stroke scales with the box: one hardcoded `1.75` rendered at 1.02px inside a
+ * 14px icon and 1.46px inside a 20px one. That is a 43% spread in weight
+ * between two icons a reader sees in the same scroll, which is why the set
+ * never looked like a set. Worse, not one of those values landed on a whole
+ * pixel, so every icon on the site was a blurred sub-pixel line at 1×.
+ *
+ * Apparent stroke in CSS pixels is `strokeWidth × size / 24`. Solving that for
+ * a constant 1.25px at each size gives the table below. 1.25 rather than 1 or
+ * 1.5 because it sits right against Lato's bold stems at these sizes; 18px is
+ * off Tailwind's scale but it is declared once, here, instead of being written
+ * as an arbitrary value at call sites.
+ */
+const iconSize = {
+  /** 14px, beside a 10px uppercase micro-label. `StatRow`. */
+  micro: { className: "size-3.5", strokeWidth: 2.143 },
+  /** 16px, beside body copy. Checklists, list items. */
+  inline: { className: "size-4", strokeWidth: 1.875 },
+  /** 18px, beside a card or row title. */
+  heading: { className: "size-[1.125rem]", strokeWidth: 1.667 },
+  /** 20px, inside `IconBadge`'s 40px plate. */
+  badge: { className: "size-5", strokeWidth: 1.5 },
+} as const;
+
+export type IconSize = keyof typeof iconSize;
+
 type IconProps = Omit<SVGProps<SVGSVGElement>, "children"> & {
   name: IconName;
+  size?: IconSize;
 };
 
 /**
- * Sized by the class it is given, coloured by the text around it. Always
- * `aria-hidden`: every icon on this site labels a heading that is already
- * beside it, so announcing it would read the same thing twice.
+ * Coloured by the text around it, sized by its job. Always `aria-hidden`:
+ * every icon on this site labels a heading that is already beside it, so
+ * announcing it would read the same thing twice.
+ *
+ * `className` is for colour and position. The size comes from `size`, so that
+ * a call site cannot pick a width without also picking the stroke that goes
+ * with it — which is exactly how the set drifted to four weights.
  */
-export function Icon({ name, className, ...props }: IconProps) {
+export function Icon({ name, size = "inline", className, ...props }: IconProps) {
+  const { className: sizeClass, strokeWidth } = iconSize[size];
+
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.75}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
-      className={cn("shrink-0", className)}
+      className={cn("shrink-0", sizeClass, className)}
       {...props}
     >
       {ICONS[name]}
     </svg>
+  );
+}
+
+/**
+ * An icon that sits beside text, centred on the text's **first line**.
+ *
+ * ## Why this exists
+ *
+ * Three call sites used to correct this by hand, with three different
+ * mechanisms — `mt-1`, `mt-0.5` and `translate-y-0.5` — against three
+ * different parent alignments (`items-start`, `items-start`,
+ * `items-baseline`). Every one of those numbers was fitted to one type size
+ * and one leading, so any change to either broke all three silently and
+ * independently. Two of them already disagreed by 2px for no reason anyone
+ * could state.
+ *
+ * The fix is to stop guessing. `h-[1lh]` is *the adjacent text's own line
+ * height*, so an icon centred in that box is centred on the first line by
+ * construction, at any size, any leading, forever. `items-center` would centre
+ * it on the whole paragraph — fine for one line, wrong for two. `items-baseline`
+ * aligns a replaced element by its bottom margin edge, which is why it needed
+ * a correction on top of a correction.
+ *
+ * Use it inside `flex items-start gap-2.5`. Where the text is guaranteed to be
+ * one line a bare `<Icon>` in an `items-center` row is equivalent — but it
+ * stops being equivalent the moment the text wraps, so prefer this.
+ */
+export function IconLine({
+  name,
+  size = "heading",
+  className,
+}: {
+  name: IconName;
+  size?: IconSize;
+  className?: string;
+}) {
+  return (
+    <span className={cn("flex h-[1lh] shrink-0 items-center", className)}>
+      <Icon name={name} size={size} />
+    </span>
   );
 }

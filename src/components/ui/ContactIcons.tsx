@@ -2,7 +2,7 @@ import type { SVGProps } from "react";
 
 /**
  * The glyphs next to every direct channel — the two socials, WhatsApp and
- * email — in the header's open menu and the footer. Plain text next to
+ * email — in the footer. Plain text next to
  * plain text ("Instagram", "LinkedIn", a phone number, an inbox) reads as
  * one undifferentiated list; a mark in front of each is what lets an eye
  * skimming the row sort a channel out before reading its label.

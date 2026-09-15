@@ -1,10 +1,11 @@
 import { Container } from "@/components/ui/Container";
-import { Icon } from "@/components/ui/Icon";
+import { PanelRow, panelRowRule } from "@/components/ui/PanelRow";
 import { PinnedIntro } from "@/components/ui/PinnedIntro";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
 import { academyPageContent, academyProgram } from "@/content/site";
+import { cn } from "@/lib/cn";
 
 /**
  * The five blocks, in the order they are taught, and nothing else.
@@ -51,18 +52,13 @@ export function AcademySchedule() {
                     <li
                       key={module.title}
                       data-anim="rise"
-                      className="flex items-baseline gap-5 border-t border-t-gris-borde py-5 first:border-t-0 first:pt-0 last:pb-0 sm:gap-7"
+                      className={cn(panelRowRule, "pb-5 last:pb-0")}
                     >
-                      <span className="w-7 shrink-0 text-[0.8125rem] font-bold tabular-nums tracking-[0.12em] text-violeta-medio">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <h3 className="flex items-baseline gap-2.5 text-[1.0625rem] font-bold leading-snug text-azul">
-                        <Icon
-                          name={module.icon}
-                          className="size-[1.125rem] shrink-0 translate-y-0.5 text-violeta-medio"
-                        />
-                        {module.title}
-                      </h3>
+                      <PanelRow
+                        index={String(index + 1).padStart(2, "0")}
+                        icon={module.icon}
+                        title={module.title}
+                      />
                     </li>
                   ))}
                 </ol>

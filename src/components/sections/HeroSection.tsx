@@ -13,11 +13,10 @@ import { heroContent } from "@/content/site";
  * the gradient they sat on; a founding-year figure floating over the corner
  * that the Nosotros stat row states again a screen later; the two 4:3 corner
  * tiles, which were filled with a 158° azul-into-azul-deep gradient — a third
- * gradient in a system that has exactly two — to point at the section the
- * primary button already goes to and the menu already lists; and the bled
- * isotipo watermark, which repeated the header's own mark as decoration
- * rather than information. What is left is the claim, and the room to read
- * it.
+ * gradient in a system that has exactly two — to point at a section the copy
+ * already names; and the bled isotipo watermark, which repeated the header's
+ * own mark as decoration rather than information. What is left is the claim,
+ * and the room to read it.
  */
 export function HeroSection() {
   return (
@@ -68,7 +67,7 @@ export function HeroSection() {
               </ChipButton>
               <a
                 href={heroContent.secondaryCta.href}
-                className="link-rule px-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-celeste hover:text-blanco"
+                className="link-rule px-2 eyebrow text-celeste hover:text-blanco"
               >
                 {heroContent.secondaryCta.label}
               </a>
@@ -85,7 +84,7 @@ export function HeroSection() {
             {/* Each pillar carries its own mark now. On the gradient the glyph
                 is celeste like the label beside it — the badge plate would put
                 a light box on a dark ground for no reason at this size. */}
-            <ul className="flex flex-wrap gap-x-7 gap-y-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-celeste">
+            <ul className="flex flex-wrap gap-x-7 gap-y-2 eyebrow text-celeste">
               {heroContent.pillars.map((pillar) => (
                 <li
                   key={pillar.label}
@@ -93,7 +92,7 @@ export function HeroSection() {
                   data-hero="pillar"
                   className="inline-flex items-center gap-2"
                 >
-                  <Icon name={pillar.icon} className="size-4" />
+                  <Icon name={pillar.icon} size="inline" />
                   {pillar.label}
                 </li>
               ))}
@@ -142,15 +141,20 @@ function AcademyAnnouncement() {
          ran 65px past the card's inner edge and got clipped mid-word. Filling
          the column leaves the rule slack to absorb, which is what `flex-1`
          on it is for, and gives the hero the one full-measure element it was
-         missing. */
-      className="hero-news mb-8 flex w-full flex-col gap-2.5 rounded-card border border-blanco/20 bg-blanco/5 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5"
+         missing.
+
+         Layout only. The ground, the border and the celeste rule across the
+         top are `.hero-news` in globals.css — they were utilities here, and a
+         `border-blanco/20` utility quietly outranks the accent rule the class
+         tries to draw. */
+      className="hero-news mb-8 flex w-full flex-col gap-2.5 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5"
     >
       <span className="flex shrink-0 items-center gap-3">
         <span
           aria-hidden="true"
           className="h-1.5 w-1.5 shrink-0 rounded-full bg-celeste"
         />
-        <span className="text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-celeste">
+        <span className="eyebrow text-celeste">
           {announcement.kicker}
         </span>
       </span>

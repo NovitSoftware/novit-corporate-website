@@ -44,7 +44,7 @@ export function ServicesStart() {
               </p>
             }
             below={
-              <ReadingPanel voice as="section" className="p-7 sm:p-10">
+              <ReadingPanel as="section">
                 <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-14">
                   <p className="max-w-[62ch] text-[0.9375rem] font-bold leading-relaxed text-violeta-medio">
                     {start.commitment}

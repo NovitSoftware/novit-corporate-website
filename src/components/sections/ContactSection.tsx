@@ -63,7 +63,7 @@ export function ContactSection() {
               </SectionIntro>
             </div>
 
-            <ReadingPanel as="div" className="p-6 sm:p-8">
+            <ReadingPanel as="div">
               <form onSubmit={onSubmit} noValidate className="space-y-5">
                 <FormField
                   prefix={PREFIX}

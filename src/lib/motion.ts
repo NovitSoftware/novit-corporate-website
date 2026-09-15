@@ -113,3 +113,15 @@ const ANIM_NAMES = new Set<string>(Object.keys(animRecipes));
 export function isAnimName(value: string | null | undefined): value is AnimName {
   return typeof value === "string" && ANIM_NAMES.has(value);
 }
+
+/**
+ * The easing Lenis is given for every programmatic scroll — an anchor jump,
+ * Home/End, the way back to the top. It is the curve `--ease-out-expo` draws
+ * in CSS, written as a function because Lenis takes one.
+ *
+ * Shared because two places scroll the page on purpose (`SmoothScroll` and
+ * `SiteHeader`), and a second copy of a curve is how two gestures that should
+ * feel identical stop feeling identical.
+ */
+export const easeOutExpo = (time: number) =>
+  time === 1 ? 1 : 1 - Math.pow(2, -10 * time);

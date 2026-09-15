@@ -1,6 +1,6 @@
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { Icon, type IconName } from "@/components/ui/Icon";
+import { IconLine, type IconName } from "@/components/ui/Icon";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
@@ -47,7 +47,7 @@ export function TeamSection() {
                 >
                   {teamContent.values.map((value) => (
                     <li key={value.title} className="h-full">
-                      <ValueCard
+                      <ValueEntry
                         title={value.title}
                         text={value.text}
                         icon={value.icon}
@@ -94,7 +94,7 @@ function FounderEntry({ name, role }: FounderEntryProps) {
   );
 }
 
-type ValueCardProps = {
+type ValueEntryProps = {
   title: string;
   text: string;
   icon: IconName;
@@ -105,8 +105,14 @@ type ValueCardProps = {
  * to be seen between two light panels. The rule above each was an
  * azul-into-celeste gradient — a third gradient, which the system does not
  * have — and is now simply celeste.
+ *
+ * Not `ValueCard`, which is what it was called: there is no card here and
+ * there is deliberately not going to be one. It is a rule, a heading and a
+ * paragraph standing on the gradient, and a name with "Card" in it invites
+ * the next person to reach for `Card` and put four boxes on a surface the
+ * card ground was never meant to sit on.
  */
-function ValueCard({ title, text, icon }: ValueCardProps) {
+function ValueEntry({ title, text, icon }: ValueEntryProps) {
   return (
     <article className="h-full">
       <span
@@ -115,8 +121,8 @@ function ValueCard({ title, text, icon }: ValueCardProps) {
         className="block h-0.5 w-full bg-celeste"
       />
       <div data-anim="rise">
-        <h3 className="mt-5 flex items-center gap-2.5 text-lg font-bold text-blanco">
-          <Icon name={icon} className="size-5 text-celeste" />
+        <h3 className="mt-5 flex items-start gap-2.5 text-lg font-bold text-blanco">
+          <IconLine name={icon} size="heading" className="text-celeste" />
           {title}
         </h3>
         <p className="mt-3 text-sm leading-7 text-on-detail">{text}</p>

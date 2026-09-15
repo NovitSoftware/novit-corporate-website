@@ -1,5 +1,7 @@
+import { CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
-import { Icon } from "@/components/ui/Icon";
+import { PanelRow } from "@/components/ui/PanelRow";
+import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
@@ -98,33 +100,28 @@ export function ServicesArchitecture() {
                   />
                 </div>
 
-                {/* The platform: one block, violet-headed because this is the
-                    part Novit builds and owns with the client. */}
-                <div
-                  data-tone="light"
-                  data-anim="card"
-                  className="surface card-head card-voice mt-6 rounded-card p-6 sm:p-8"
-                >
+                {/* The platform: one solid block, which is the whole point
+                    of the drawing — the agents above it float, this does not.
+
+                    It carried the violet card rule, because this is the part
+                    Novit builds and owns. That rule is gone site-wide (violet
+                    marks Novit's *comment*, never a whole object — see
+                    `cards/Card.tsx`); the violet label inside it still says
+                    whose platform it is. */}
+                <ReadingPanel data-anim="card" className="mt-6">
                   <p className="text-[0.625rem] font-bold uppercase tracking-[0.18em] text-violeta-medio">
                     {architecture.platformLabel}
                   </p>
-                  <dl className="mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+                  <ul className="mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
                     {architecture.shared.map((service) => (
-                      <div key={service.title}>
-                        <dt className="flex items-center gap-2.5 text-[1.0625rem] font-bold leading-snug text-azul">
-                          <Icon
-                            name={service.icon}
-                            className="size-5 shrink-0 text-violeta-medio"
-                          />
-                          {service.title}
-                        </dt>
-                        <dd className="mt-2 text-[0.9375rem] leading-relaxed text-texto">
-                          {service.detail}
-                        </dd>
-                      </div>
+                      <li key={service.title}>
+                        <PanelRow icon={service.icon} title={service.title}>
+                          <CardText>{service.detail}</CardText>
+                        </PanelRow>
+                      </li>
                     ))}
-                  </dl>
-                </div>
+                  </ul>
+                </ReadingPanel>
               </figure>
             }
           />

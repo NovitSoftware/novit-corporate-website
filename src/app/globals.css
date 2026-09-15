@@ -60,15 +60,22 @@
 
   /* Greys, from the AI Radar. The 2015 pair (#EAEBEC, #58585B) is superseded —
      keeping two sets in parallel is what let every past piece invent its own.
-     Only the surface and the border are carried over: the ramp's three steps
-     of de-emphasized text (#8A94A0 and lighter) sit under 3:1 on this
-     surface, and there is nothing on this page that is written to not be
-     read. Anything quieter is set smaller in `--texto`, not paler. */
+     Three of the seven steps are carried over, and the cut is by job rather
+     than by taste. `gris-1` through `gris-4` (#8A94A0 and lighter) are the
+     ramp's *text* steps and they sit under 3:1 on this surface; nothing on
+     this page is written to not be read, so anything quieter is set smaller
+     in `--texto`, never paler.
+
+     `gris-borde-suave` is the exception, because it is not a text colour —
+     the system labels it "separadores internos" and a 1px rule answers to no
+     contrast minimum. With it the greys read as three weights of division,
+     which is the whole point: `gris-borde` is where a card ends,
+     `gris-borde-suave` is where a zone ends inside it, and the accent is
+     where the card's voice speaks. A separator at the same weight as the
+     outer edge reads as another box instead of a division. */
   --gris-superficie: #f3f6f8;
   --gris-borde: #e4e9ed;
-
-  /* Derived neutral */
-  --gris-suave: #f5f6f7;
+  --gris-borde-suave: #edf0f3;
 
   /* Channel triplets, for alpha composition */
   --rgb-azul: 10 0 137;
@@ -82,12 +89,18 @@
      settles here instead of inventing a magenta stage. Magenta itself stays
      reserved for the one deliberate accent in `AcademyBlock`. */
   --rgb-violeta: 133 6 123;
-  /* The two accents the cards compose against their light surface: cyan for
-     the market's own material, violeta-medio where Novit is the one talking.
-     Both are only ever used at alpha here — as a rule, or a hover border — so
-     cyan's 2.9:1 on the surface never carries information. */
-  --rgb-cyan: 51 152 220;
-  --rgb-violeta-medio: 81 3 113;
+  /* Cyan and celeste sat here as triplets too, so they could be taken at
+     alpha, and `--rgb-violeta-medio` beside them. All three are gone: the
+     card's rule is a registered `<color>` now and `color-mix` takes its
+     alpha, and the violet triplet never had a consumer.
+
+     The reasoning they carried is worth keeping. Cap. 01 assigns each accent a
+     ground and measures why: on the card grey celeste falls to 2,3:1 and cyan
+     holds 2,9:1, and over the violet it inverts — cyan drops to 4,2:1 while
+     celeste rises to 5,3:1. So cyan is the light-ground accent ("etiquetas,
+     categorías, líneas") and celeste the dark-ground one, which is why the
+     hero's strip — the one card-like thing standing on the gradient — carries
+     the only celeste rule on the site. */
 
   /* On-color text hierarchy — the brand manual's opacity ramp for white copy
      over the scene gradient, headline down to label. Consumed via the
@@ -126,14 +139,43 @@
   --space-9: 2.25rem;
   --header-height: 4.5rem;
   --measure: 68ch;
-  /* Panels stay almost square; chips and CTA buttons are full pills. */
-  --card-radius: 0.125rem;
+  /* Panels are square; chips and CTA buttons are full pills.
+     Zero, and it was 2px. At this scale a 2px radius is not a soft corner,
+     it is one lit pixel per corner — invisible at a glance and just enough to
+     stop the card, the badge plate and the form well reading as cut from the
+     same sheet. The system is rules and right angles, and the one place a
+     curve means something is the pill, which is fully round. Kept as a token
+     rather than deleted so the decision stays in one place. */
+  --card-radius: 0;
   --chip-radius: 999px;
+  /* The CTA arrow block, and the room it stands in: the block plus the 2px
+     of trim on either side of it. The two are one number because the chip
+     trades that room between its start and end edges as the block crosses,
+     and the button must not change width while it does. */
+  --chip-arrow: 2.4rem;
+  --chip-slot: calc(var(--chip-arrow) + 4px);
 
-  /* Motion */
+  /* Motion
+   *
+   * Two families, and which one a rule belongs to depends on whether the thing
+   * was already moving.
+   *
+   * `--ease-out-*` are for motion that arrives: a reveal, the header stepping
+   * aside, the intro. They start at full speed and decelerate, which is what
+   * something entering from elsewhere does — `expo` puts about 80% of the
+   * travel in the first quarter of the time.
+   *
+   * `--ease-in-out-quad` is for a control answering a pointer. Those start
+   * from rest and come back to rest, so they need to accelerate as well as
+   * decelerate; an out-curve on them snaps and then crawls, which is exactly
+   * how the hover states read before this token existed. Everything
+   * interactive — the CTA, fields, labels, cards, links — now runs on it at
+   * `--dur-base`, so the whole site answers a pointer at one speed.
+   */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-in-out-quad: cubic-bezier(0.4, 0, 0.2, 1);
   --dur-fast: 180ms;
   --dur-base: 320ms;
   --dur-slow: 620ms;
@@ -159,7 +201,7 @@
   --color-texto: var(--texto);
   --color-gris-superficie: var(--gris-superficie);
   --color-gris-borde: var(--gris-borde);
-  --color-gris-suave: var(--gris-suave);
+  --color-gris-borde-suave: var(--gris-borde-suave);
   --color-negro: var(--negro);
   --color-blanco: var(--blanco);
   --font-sans: var(--font-lato);
@@ -179,6 +221,29 @@
   html {
     background: var(--ink);
     height: 100%;
+  }
+
+  /*
+   * The UA stylesheet gives `<a href>` a pointer and `<button>` a plain
+   * arrow, which is a historical accident rather than a distinction anyone
+   * wants: the contact form's submit and the header's back-to-top are the same
+   * kind of thing as every link-shaped CTA beside them, and both were reading
+   * as inert. Stated once here so no control has to remember it, and only for
+   * controls that can actually be used.
+   */
+  button:not(:disabled),
+  summary,
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
+  /* A label wired to a control is a control: clicking it focuses the field, so
+     it gets the same pointer. Only when it is actually wired — a `for` that
+     names something, or a control nested inside it. A bare `<label>` used as
+     a caption would be lying about being clickable. */
+  label[for],
+  label:has(input, select, textarea) {
+    cursor: pointer;
   }
 
   /*
@@ -676,7 +741,7 @@
      the animated ground shows through everywhere rather than being blocked by
      flat panels repeating its own colour family. This one remains, for the
      two things that genuinely need to hide what is behind them rather than
-     sit on the atmosphere: the intro curtain and the open-menu panel. */
+     sit on the atmosphere: the intro curtain. */
 
   .ground-deep {
     background:
@@ -807,7 +872,7 @@
     );
   }
 
-  /* --- Display scale ------------------------------------------------------ */
+  /* --- Type scale ---------------------------------------------------------- */
 
   /* Three display sizes, all fluid, so the very large statements this layout
      is built around never need a per-breakpoint override. The two largest run
@@ -834,93 +899,408 @@
     letter-spacing: -0.018em;
   }
 
-  /* --- The reading plane --------------------------------------------------- */
-
   /*
-   * The system's two gradients belong to the cabecera and the cierre, and
-   * neither one ever sits behind a long block of reading — between them the
-   * page is white or this surface. So on this site every paragraph lives on
-   * one of these panels, floating on the gradient with air around it: the
-   * ground still reads everywhere, in the hero, in the gutters and at the
-   * close, and nothing long is set on top of it.
+   * The card's heading, in the same family as the displays above.
    *
-   * Carries `data-tone="light"` wherever it is used, which is what turns the
-   * focus ring azul — celeste on this surface is under the 3:1 an indicator
-   * needs.
+   * It was three pairs of Tailwind steps — `text-lg sm:text-xl` and so on — so
+   * the third-largest type on the site was the only type on the site that
+   * jumped at a breakpoint instead of scaling, and it jumped by two pixels at
+   * 640px, where nothing else changes. Fluid removes the jump and removes the
+   * `sm:` override with it: one declaration per step, responsive on its own.
+   *
+   * These take a two-term clamp rather than the bare `vw` the displays use.
+   * A display spans 30px or more, so a plain `vw` slope is already steep
+   * enough to cross its whole range inside the viewport range; a 2px step is
+   * not — `clamp(1.25rem, 1.4vw, 1.375rem)` would sit pinned at its minimum
+   * until about 1290px and then move for 150px, which is a breakpoint again,
+   * only an unplanned one. The offset plus slope form spans 400px to 1440px
+   * exactly.
+   *
+   * Tracking and leading tighten as the size grows, the same way they do up
+   * the display scale: a 30px bold line set at the leading a 18px line wants
+   * reads as loose, and at these sizes Lato's default spacing is a touch wide
+   * for a heading. `text-wrap: balance` is the one decoration-free way to keep
+   * a three-line title from ending on a single orphaned word, which is the
+   * most common thing that makes one card in a row look unlike the rest.
    */
-  .surface {
-    background-color: var(--gris-superficie);
-    border: 1px solid var(--gris-borde);
-    color: var(--texto);
+  .card-title {
+    font-size: var(--card-title-size, clamp(1.125rem, 1.08rem + 0.19vw, 1.25rem));
+    font-weight: 700;
+    line-height: var(--card-title-leading, 1.34);
+    letter-spacing: -0.008em;
+    text-wrap: balance;
   }
 
-  /* --- Cards ---------------------------------------------------------------
+  .card-title-lg {
+    --card-title-size: clamp(1.25rem, 1.2rem + 0.19vw, 1.375rem);
+    --card-title-leading: 1.28;
+    letter-spacing: -0.012em;
+  }
+
+  .card-title-xl {
+    --card-title-size: clamp(1.5rem, 1.36rem + 0.58vw, 1.875rem);
+    --card-title-leading: 1.18;
+    letter-spacing: -0.016em;
+  }
+
+  /*
+   * The micro-label: the card's category, the form's field name, the step
+   * number, the eyebrow over a hero list. 11px at 700 with 0.16em of tracking,
+   * written out in ten places and now in one.
    *
-   * `.surface` is the quiet reading plane; a card is a surface that answers
-   * the pointer. On hover the card comes forward to white and its border takes
-   * the accent — no lift-and-drop-shadow, because that treatment is on every
-   * card kit there is and says nothing about Novit.
+   * No `line-height` and no colour on purpose. The ink is the caller's — cyan
+   * files a card, violet is Novit speaking, celeste sits on the gradient — and
+   * leaving the leading alone is what makes this a drop-in for the ten strings
+   * it replaces, two of which set their own.
+   */
+  .eyebrow,
+  .field-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* --- The card ground -----------------------------------------------------
    *
-   * `--card-accent` is the knob. Each card sets it once and the rule, the
-   * hover border and the kicker all follow, so a violet card is one custom
-   * property away from a cyan one.
+   * This is also the reading plane. The system's two gradients belong to the
+   * cabecera and the cierre and neither ever sits behind a long block of
+   * reading, so between them the page is this: every paragraph on the site
+   * lives on one of these panels, floating on the gradient with air around it.
+   * The ground still reads everywhere — in the hero, in the gutters, at the
+   * close — and nothing long is set on top of it.
+   *
+   * Carries `data-tone="light"` wherever it is used, which is what turns the
+   * focus ring azul: celeste on this surface is under the 3:1 an indicator
+   * needs.
+   *
+   * One class, and it used to be two. `.surface` declared the same
+   * background, the same border and the same text colour as `.card`, so every
+   * reading panel on the site was a card with the accent machinery taken out
+   * and the name changed. That is how `ServicesArchitecture` came to paste
+   * a violet card together by hand: the two were indistinguishable, so nobody
+   * noticed the div was silently missing the states a real card has.
+   *
+   * ## The rule is on the class, not on an opt-in beside it
+   *
+   * The 3px accent across the top edge used to be `.card-head`, added by
+   * `Card` always and by `ReadingPanel` only when it was given an accent — so
+   * eight panels on the site had no rule while every card beside them did.
+   * Read down a page that is the same complaint the eight bespoke cards
+   * produced: "others have a border in the top, others don't". A card either
+   * has the rule or the rule is not part of a card, and the Transformación IA
+   * brochure — the design authority for these — draws one across every card it
+   * has. So it lives here, where nothing can be built without it.
+   *
+   * That rule is also what makes a grid of cards read as one instrument panel
+   * rather than as loose tiles: the rules line up across the row whatever
+   * height the cards settle at.
+   *
+   * ## One accent, and it is cyan
+   *
+   * `--card-accent` was a knob with two settings — celeste and violet — and a
+   * card could be either. Both halves of that were wrong by the system.
+   *
+   * Cap. 01 assigns cyan `#3398DC` to "fondo claro. Etiquetas, categorías,
+   * líneas" and celeste `#3DB0E4` to "fondo oscuro o de color". A card is a
+   * light ground, so its rule is cyan; the celeste rule came from the IA deck,
+   * which cap. 07 lists as "generada con IA, sin criterio de marca aplicado ·
+   * rehacer con el sistema". And the violet card inverted the one rule the
+   * system calls its most important: violet marks *Novit's comment inside* a
+   * ficha, never the ficha. See `cards/Card.tsx`.
+   *
+   * So the property is not a knob a caller can turn, and it does not move
+   * either. It was a travelling rainbow band for one pass — the rule drawn as
+   * a doubled five-stop gradient in the card's own background over a
+   * transparent top border, swept by `background-position-x` on a 28s clock,
+   * with every card started at a different phase so no two in a band showed
+   * the same slice. It is one colour again: a rule is a rule, and the card
+   * finally says that in one word rather than five.
+   *
+   * What the band left behind, in case it ever comes back: a border takes
+   * exactly one colour, so a gradient rule has to be a `background-image` with
+   * `background-origin: border-box` painting into a transparent border; the
+   * ramp has to be stated twice at `background-size: 200%` for the loop to
+   * close without a snap; and the stops have to clear 3:1 *individually*,
+   * which is what ruled cyan out of a moving band and keeps it fine as a still
+   * one.
+   *
+   * `--card-pad` is the second knob, and it exists so `.card-zone` can cancel
+   * the padding exactly. Writing `p-6 sm:p-7` at the call site put that number
+   * in two places that had to agree at two breakpoints.
    */
   .card {
     --card-accent: var(--cyan);
-    --card-accent-rgb: var(--rgb-cyan);
+    --card-pad: 1.5rem;
+    /* Named once, because hover and focus both raise the card and only hover
+       also moves it. Two layers: a tight one that draws the edge and a wide,
+       offset one that carries the distance. */
+    --card-shadow-lifted:
+      0 3px 6px -3px color-mix(in srgb, var(--ink) 40%, transparent),
+      0 22px 44px -16px color-mix(in srgb, var(--ink) 62%, transparent);
     position: relative;
     display: flex;
     flex-direction: column;
+    padding: var(--card-pad);
     border-radius: var(--card-radius);
+    /* `gris-superficie` #F3F6F8 and not white, which it reads as against the
+       gradient. Two things sit *on* this ground and are themselves white — a
+       client's logo plate and a form's well — and on a white card both of them
+       disappear. The system's own name for this step is "superficie". */
     background-color: var(--gris-superficie);
     border: 1px solid var(--gris-borde);
+    /* The accent rule, one colour, on every card ground without exception —
+       see the note above the class. */
+    border-top: 3px solid var(--card-accent);
     color: var(--texto);
+    /* The same two layers the hover state fills in, declared here at zero
+       alpha so there is geometry to interpolate from. */
+    box-shadow:
+      0 3px 6px -3px transparent,
+      0 22px 44px -16px transparent;
     transition:
-      background-color var(--dur-base) var(--ease-out-quart),
-      border-color var(--dur-base) var(--ease-out-quart);
+      border-color var(--dur-base) var(--ease-in-out-quad),
+      box-shadow var(--dur-base) var(--ease-in-out-quad),
+      translate var(--dur-base) var(--ease-in-out-quad);
   }
 
-  /* Only where a pointer can actually rest. On a touch screen `:hover` sticks
-     after the tap and leaves one card lit for good. */
-  @media (hover: hover) {
-    .card:hover {
-      background-color: var(--blanco);
-      border-color: rgb(var(--card-accent-rgb) / 0.5);
+  /* Long-form. A panel holding four paragraphs wants more room than a card
+     holding a title and three lines. One extra step, replacing the three
+     different paddings that had accumulated across the panels. */
+  .card-roomy {
+    --card-pad: 1.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .card {
+      --card-pad: 1.75rem;
+    }
+
+    .card-roomy {
+      --card-pad: 2rem;
     }
   }
 
-  /* Keyboard parity: the same state the pointer gets, so tabbing through a
-     grid of cards is as legible as pointing at it. */
+  /* --- The card's two states ------------------------------------------------
+   *
+   * ## Hover lifts the card, and it only lifts it
+   *
+   * There was no hover state for a while, for a good reason: nothing on this
+   * site is a clickable card, and the old treatment — ground to white, border
+   * to the accent — was a pointer response that promised a destination the
+   * card does not have. The answer to that is not "no response at all",
+   * though. A page of panels that never acknowledges the cursor reads as a
+   * screenshot, so the card answers the pointer in the one language that says
+   * *object* rather than *link*: it comes off the page.
+   *
+   * Shadow and 2px of travel, nothing else. No colour moves, because colour
+   * on this card is meaning — cyan files it, violet is Novit talking — and a
+   * hover that recolours anything is claiming something changed. Depth claims
+   * nothing.
+   *
+   * ## The shadow is `ink`, not black
+   *
+   * `--ink` #040038 is the palette's own darkest azul, so the shadow reads as
+   * the card occluding the gradient it floats on rather than as a grey haze
+   * laid over it. Two layers: a tight one that draws the edge and a wide,
+   * offset one that carries the distance. The rest state declares the same two
+   * layers at `transparent`, which is what lets `box-shadow` interpolate —
+   * from `none` there is no geometry to animate and the shadow would appear at
+   * full size instantly.
+   *
+   * ## `translate`, not `transform`
+   *
+   * GSAP writes reveals into `transform`, and several of these panels are
+   * themselves reveal targets. `translate` is its own property, so the lift
+   * composes with whatever the timeline is doing instead of being overwritten
+   * by an inline style the moment a card enters.
+   *
+   * ## Focus gets the depth, not the lift
+   *
+   * `:focus-within` fires when a focusable child takes focus — the contact
+   * form, a link in a channel list — and tells a keyboard user which container
+   * they are inside, so it earns the same shadow. It does not get the travel:
+   * tabbing between two fields is not a gesture at the card, and a panel that
+   * hops every time focus moves inside it is noise. What focus adds instead is
+   * the accent on the edges, below.
+   */
+  /* `hover: hover` because a touch screen has no hover to give: `:hover`
+     there latches on tap and stays on, which would leave one card raised for
+     as long as the reader stays on the page — a state they cannot clear
+     because the card was never theirs to press. */
+  @media (hover: hover) {
+    .card:hover {
+      translate: 0 -2px;
+      box-shadow: var(--card-shadow-lifted);
+    }
+
+    /* The lift is the one part that is motion for its own sake, so it goes.
+       The shadow stays: it is the state itself, not an animation of it. */
+    @media (prefers-reduced-motion: reduce) {
+      .card:hover {
+        translate: none;
+      }
+    }
+  }
+
+  /* Three sides, not four: the top border *is* the accent rule, and
+     `border-color` would take it to the same 50% as the rest — so focusing a
+     field inside a card faded the one line the card is recognised by. The
+     ring brightens the three quiet edges up to the rule instead.
+
+     `color-mix` and not an `rgb(… / 0.5)` triplet, so the alpha is taken on
+     the token rather than on a copy of its channels kept in step by hand. */
   .card:focus-within {
-    background-color: var(--blanco);
-    border-color: rgb(var(--card-accent-rgb) / 0.5);
+    border-inline-color: color-mix(in srgb, var(--card-accent) 50%, transparent);
+    border-bottom-color: color-mix(
+      in srgb,
+      var(--card-accent) 50%,
+      transparent
+    );
+    box-shadow: var(--card-shadow-lifted);
   }
 
-  /* The head rule: the accent runs the full width of the card's top edge
-     instead of sitting inside it as a stub. This is how the Transformación IA
-     brochure draws every card it has, and it is what makes a grid of them read
-     as one instrument panel rather than as loose tiles — the rules line up
-     across the row whatever height the cards settle at.
+  /* The head zone: mark, category and title, closed by one rule.
 
-     It takes whatever `--card-accent` is set to, so the colour still says what
-     it says everywhere else: celeste for the world, violet for Novit. */
-  .card-head {
-    border-top: 3px solid var(--card-accent);
+     ## There was a wash here, at 6% of the card's accent
+
+     It was the answer to a real problem — a celeste card and a violet card
+     differed by a 3px line at the top edge and the hue of the heading, and
+     that did not register as two accents — but it was the wrong answer to it.
+     A tinted band across the head of every card is a colour field where the
+     design system asks for a rule, it put two card grounds on a page that is
+     meant to have one, and it was read exactly that way: "others have the
+     header colored, i don't like". The accent's job here is to name the voice,
+     not to fill an area. It is back to naming it on the top edge, and on
+     *every* card ground now rather than only the ones that opted in.
+
+     ## The rule, and why it is `gris-borde`
+
+     `gris-borde-suave` was the right weight while the wash was carrying the
+     division — the colour change did the work and the line only finished it.
+     On the plain surface #EDF0F3 against #F3F6F8 is about 1,04:1, which is no
+     line at all, and this separator is the one thing holding the card's parts
+     apart. So it takes `gris-borde`, the token cap. 01 calls "bordes y
+     filetes", and `gris-borde-suave` keeps the job it is named for —
+     "separadores internos", rows *inside* a panel, sitting close enough that a
+     whisper is audible. See `PanelRow`.
+
+     ## The bleed
+
+     The zone cancels the card's padding on three sides and re-applies its own,
+     so the rule runs the full width of the card and meets both edges. That is
+     what `--card-pad` is for; the alternative is a magic number that has to
+     track the card's padding at every breakpoint. A separator that stops short
+     of the edges reads as a stray line rather than as a division. */
+  /* ## The rhythm inside it
+
+     One gap between the zone's parts, because there are only two kinds of
+     adjacency in here: a label and the title it files, which are one unit and
+     sit a 12px pair's distance apart, and a picture above both, which is a
+     different kind of thing and takes a step more. That is the whole rule, so
+     it is a `gap` and an eight-pixel nudge on the picture rather than three
+     margins in the markup that each had to be looked up.
+
+     12px and not the 16px this used to be: the label is 11px tall, and 16px
+     between a label and its own title is more air than the title takes to the
+     separator under it, which inverts the pairing. */
+  .card-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: calc(-1 * var(--card-pad));
+    margin-bottom: var(--card-pad);
+    padding: var(--card-pad);
+    border-bottom: 1px solid var(--gris-borde);
   }
 
-  /* Celeste rather than cyan, and only here: cyan is the accent tuned for
-     contrast *as text* on this surface, and a 3px rule carries no text. The
-     brochure's own rule is #3DB0E4. */
-  .card-celeste {
-    --card-accent: var(--celeste);
-    --card-accent-rgb: var(--rgb-celeste);
+  .card-media {
+    margin-bottom: 0.5rem;
   }
 
-  /* The `voice` card: Novit speaking, so violet. Not competing for attention
-     with its neighbours — it is the answer they lead to. */
-  .card-voice {
-    --card-accent: var(--violeta-medio);
-    --card-accent-rgb: var(--rgb-violeta-medio);
+  /* Everything after the zone. `flex: 1` so the footer can pin itself to the
+     foot of the card however short the body runs. */
+  .card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  /* Novit's read on what the card said, behind its own rule.
+
+     The air above it is the card's own padding, so the footer stands off the
+     body by the same measure the card stands off its edges — at 24px on a
+     phone and 32px on a roomy panel. It was a fixed 24px, which read as
+     generous in a small card and as a crease in a large one.
+
+     The rule is a `::before` and not a `<div aria-hidden>`: it is a division
+     drawn by the block it opens, so it has no reason to exist in the DOM, and
+     as a pseudo-element there is nothing for a screen reader to be told to
+     ignore. `--card-foot-rule` narrows it — `ServicesEvolution` sets four
+     widths that grow across the row, which is that band's whole argument. */
+  .card-foot {
+    margin-top: auto;
+    padding-top: var(--card-pad);
+  }
+
+  .card-foot::before {
+    content: "";
+    display: block;
+    width: var(--card-foot-rule, 100%);
+    height: 1px;
+    margin-bottom: 1rem;
+    /* Violet, and fading right like every other rule on the site: this one
+       opens Novit's comment, the one place on a card the violet ramp
+       belongs. */
+    background: linear-gradient(90deg, var(--violeta-medio), transparent);
+  }
+
+  /* --- The card grid -------------------------------------------------------
+   *
+   * One gap for every grid of cards on the site, and — where the browser has
+   * subgrid — one shared row structure, so the cards in a row divide at the
+   * same height instead of each dividing wherever its own title happens to
+   * end.
+   *
+   * ## Why this is not cosmetic
+   *
+   * The four case cards carry titles of two and three lines. With each card
+   * laying itself out alone, that put the head separator at four different
+   * heights across one row and started four bodies at four different heights,
+   * which is exactly the "similar cards looking different" the card work was
+   * meant to end. Nothing about the cards differed; only the copy did.
+   *
+   * ## How
+   *
+   * Every card has two rows — `.card-zone` and `.card-body` — so each grid
+   * item spans two rows of the grid and passes that structure down twice:
+   * once through the animation wrapper, once through the card itself. Row 1
+   * sizes to the tallest head in the row; row 2 takes the rest.
+   *
+   * The grid's own `row-gap` then lands between those two rows as well, i.e.
+   * inside every card, so `.card-body` cancels exactly that much. It reads as
+   * a correction because it is one — but it is written in the same variable
+   * that created it, so the two cannot drift.
+   *
+   * `@supports` rather than a polyfill: without subgrid every card lays itself
+   * out as it did before, which is untidy, not broken. */
+  .card-grid {
+    --card-grid-gap: var(--space-4);
+    display: grid;
+    gap: var(--card-grid-gap);
+  }
+
+  @supports (grid-template-rows: subgrid) {
+    .card-grid > *,
+    .card-grid > * > .card {
+      display: grid;
+      grid-row: span 2;
+      grid-template-rows: subgrid;
+    }
+
+    .card-grid > * > .card > .card-body {
+      margin-top: calc(-1 * var(--card-grid-gap));
+    }
   }
 
   /* --- Form fields ---------------------------------------------------------
@@ -940,8 +1320,8 @@
     font-size: 1rem;
     line-height: 1.5;
     transition:
-      border-color var(--dur-base) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart);
+      border-color var(--dur-base) var(--ease-in-out-quad),
+      box-shadow var(--dur-base) var(--ease-in-out-quad);
   }
 
   .field::placeholder {
@@ -965,17 +1345,29 @@
     box-shadow: 0 0 0 1px var(--violeta);
   }
 
+  /* `.field-row` carries no styling of its own — it is the wrapper the label
+     and the field share, and it exists so `:has` below can reach back up to
+     it from the field. Label and field are siblings in that order, and there
+     is no combinator that walks backwards. */
   .field-label {
+    /* The 11px uppercase type itself is shared with `.eyebrow` up in the type
+       scale — a field's name and a card's category are the same label. */
     display: block;
     margin-bottom: 0.5rem;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
     color: var(--azul);
+    transition: color var(--dur-base) var(--ease-in-out-quad);
   }
 
-  /* --- The hero's news rows ------------------------------------------------
+  /* The label brightens with its own field, on the same clock as the field's
+     border, so focusing one input reads as one thing lighting up rather than a
+     box changing colour next to a caption that did not notice. `azul-500` is
+     the same step the CTA's fill uses for its own focus state, and measured
+     at 11,9:1 on this panel it is still a heading-weight contrast. */
+  .field-row:has(.field:focus) .field-label {
+    color: var(--azul-500);
+  }
+
+  /* --- The hero's news row -------------------------------------------------
    *
    * The one card-like thing on the page that sits on the gradient rather than
    * on the reading surface, because the hero is one of the two bands where the
@@ -983,20 +1375,42 @@
    * instead of the light-surface tokens: the well brightens, the rule between
    * label and arrow draws across, and the arrow leans the way every other
    * arrow on the site leans.
+   *
+   * ## It carries the card's rule, in its own ground's accent
+   *
+   * It had a plain 1px border all round and nothing on top, which made it the
+   * last box on the site that read as a card with its rule missing. Now it has
+   * one — in celeste `#3DB0E4`, because `novit-design-system.md` cap. 01
+   * assigns celeste to "fondo oscuro o de color" and cyan to light grounds.
+   * The card's cyan would sink into this gradient; celeste on the card grey
+   * falls to 2,3:1. Same device, each in the colour its ground calls for.
+   *
+   * ## The ground lives here, not in the class list
+   *
+   * Border, radius and fill were Tailwind utilities on the element, and a
+   * utility outranks this layer — so the rule above was declared, shipped, and
+   * silently beaten by `border-blanco/20` for as long as it took to screenshot
+   * it. The element keeps its layout classes and nothing else.
    */
   .hero-news {
-    background-color: transparent;
-    transition: background-color var(--dur-base) var(--ease-out-quart);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-top: 3px solid var(--celeste);
+    border-radius: var(--card-radius);
+    background-color: rgb(255 255 255 / 0.05);
+    transition: background-color var(--dur-base) var(--ease-in-out-quad);
   }
 
+  /* `--dur-base`, not `--dur-slow`: 620ms is the clock a section reveal runs
+     on, and on a hover it reads as the strip still settling long after the
+     pointer arrived. */
   .hero-news_rule {
     transform: scaleX(0.35);
     transform-origin: left center;
-    transition: transform var(--dur-slow) var(--ease-out-expo);
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
   }
 
   .hero-news_arrow {
-    transition: transform var(--dur-slow) var(--ease-out-expo);
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
   }
 
   @media (hover: hover) {
@@ -1079,23 +1493,75 @@
 
   /* --- CTA chip ----------------------------------------------------------- */
 
-  /* Label block plus a separate arrow block, as one unit. The arrow block
-     slides on hover and the label fill wipes behind it. */
+  /*
+   * Label block plus a separate arrow block, as one unit. On hover the arrow
+   * block crosses to the other side of the label and the label slides over to
+   * where the block was.
+   *
+   * ## `width: fit-content`, or the button is as wide as whatever holds it
+   *
+   * `inline-flex` sizes to its content only while the element is not itself a
+   * flex or grid item. Every CTA on the site sits inside `.card` or a
+   * `flex-col` block, whose default `align-items: stretch` overrides that and
+   * pulls the chip to the full width of the column — reported as a stretched
+   * bar with the label marooned at its left end. `fit-content` is the width
+   * the chip would have had, stated in a form `stretch` cannot override, and
+   * `max-width` lets it shrink on a narrow screen instead of overflowing.
+   *
+   * ## The arrow's slot is padding, so the two sides can trade it
+   *
+   * The blocks are absolutely positioned and the room they stand in is a
+   * padding on whichever side is theirs. Both are lengths, so the swap is two
+   * interpolations rather than a reflow, and because the two paddings always
+   * sum to the same total the button never changes width while it animates.
+   *
+   * `overflow: hidden` is the other half of the effect: it is what lets the
+   * trailing block leave past the end edge and the leading one arrive from the
+   * start edge, each clipped by the pill's own curve.
+   */
   .chip-cta {
+    position: relative;
     display: inline-flex;
-    align-items: stretch;
-    gap: 2px;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    overflow: hidden;
     border-radius: var(--chip-radius);
+    /* 2px of trim on three sides; the fourth side is the arrow's slot. */
     padding: 2px;
+    padding-inline-start: 2px;
+    padding-inline-end: var(--chip-slot);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
+    /* The ground, the slot the arrow stands in and the lift were on three
+       different curves and two clocks, so the four moving parts of one button
+       arrived at four different times. One curve, and the only thing still on
+       its own clock is the press, which has to feel immediate. */
     transition:
-      background-color var(--dur-base) var(--ease-out-quart),
-      transform var(--dur-fast) var(--ease-out-quart);
+      background-color var(--dur-base) var(--ease-in-out-quad),
+      padding var(--dur-base) var(--ease-in-out-quad),
+      transform var(--dur-fast) var(--ease-in-out-quad);
   }
 
+  .chip-cta:hover,
+  .chip-cta:focus-visible {
+    padding-inline-start: var(--chip-slot);
+    padding-inline-end: 2px;
+  }
+
+  /*
+   * The press, and it did nothing for months.
+   *
+   * `.chip-cta:active` and `.chip-cta-light:hover` are both one class and one
+   * pseudo-class, so they carry identical specificity and the later rule in
+   * the file wins — which was the hover lift, 120 lines below. A pointer that
+   * is pressing a button is also hovering it, so the press was always losing
+   * to the state it happens inside. `:where()` on the lifts drops them to zero
+   * specificity (see `.chip-cta-light:hover` below) so this wins on its own
+   * merits rather than on line order.
+   */
   .chip-cta:active {
     transform: translateY(1px);
   }
@@ -1121,7 +1587,9 @@
     z-index: 0;
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform var(--dur-slow) var(--ease-out-expo);
+    /* Same clock and curve as the arrow, so the fill and the hand-over are
+       one gesture rather than two effects that happen to overlap. */
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
   }
 
   .chip-cta:hover .chip-cta_label::before,
@@ -1129,77 +1597,104 @@
     transform: scaleX(1);
   }
 
+  /*
+   * The arrow block: two of them, one parked at each end, and only ever one of
+   * them inside the button.
+   *
+   * ## Why not one block that crosses
+   *
+   * A single block sliding from one end to the other was tried first and it is
+   * wrong: it has to travel the whole length of the label — 181px on the
+   * widest CTA — while the label only steps aside by the 42px it gives up, so
+   * for about a third of the transition the block is sitting on top of the
+   * words. Measured, it covered all 38px of its width in letters.
+   *
+   * ## So the block leaves the button instead
+   *
+   * The trailing one slides out past the end edge as the leading one slides in
+   * from the start edge, both clipped by the chip's `overflow: hidden`. That is
+   * the gesture as the client described it — "slide to right and appear in the
+   * left side" — and the arithmetic says the two can never touch the text:
+   * each block travels its own width plus the 2px trim, exactly the distance
+   * the label's padding gives up on the other side, so the 1.1rem of padding
+   * inside the label stays between the glyph and the block for the whole
+   * transition.
+   *
+   * `transform`, not `left`: the distance is now the block's own width, which
+   * a percentage translate states directly, and it stays off the layout.
+   *
+   * An explicit width, not `aspect-ratio`: the block's height comes from the
+   * label beside it, so it is only definite after layout, and a ratio with
+   * nothing but a 10px glyph to size from collapses the block to a sliver.
+   */
   .chip-cta_arrow {
-    /* A grid, so both glyphs share one cell and the block is sized by the
-       larger of them rather than by their sum. */
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
     display: grid;
     place-items: center;
-    /* An explicit width, not `aspect-ratio`. The parent stretches this block
-       to the label's height, so the height is only definite after the main
-       size is resolved — and a ratio with nothing but a 10px glyph to size
-       from collapses the block to a sliver. */
-    width: 2.4rem;
-    overflow: hidden;
+    width: var(--chip-arrow);
     border-radius: calc(var(--chip-radius) - 2px);
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
   }
 
-  /*
-   * The arrow leaves to the right and its replacement arrives from the left,
-   * so the glyph reads as travelling in the direction the button goes rather
-   * than nudging 3px and stopping, which is what it did before.
-   *
-   * Two glyphs in one cell, not one glyph animated twice: a single element
-   * cannot exit right and enter left in one continuous transition without
-   * visibly flying back across the block on the return. `overflow: hidden` on
-   * the parent is what hides each one while it is outside.
-   */
-  .chip-cta_glyph {
-    grid-area: 1 / 1;
-    display: inline-flex;
-    transition: transform var(--dur-slow) var(--ease-out-expo);
+  .chip-cta_arrow-trail {
+    right: 2px;
   }
 
-  /*
-   * The travel has to be longer than the block is wide, or two arrows show
-   * at once.
-   *
-   * This moved 26px inside a 38px block, which meant that halfway through
-   * both glyphs were fully inside it — two whole arrows at opposite edges
-   * with a hole between them, for about a fifth of a second. The block is
-   * 38.4px, the arrow is 5.4px of ink, and the glyphs are always exactly
-   * one travel apart: separate them by more than 38.4 + 5.4 and there is no
-   * position where both fit. 460% of the 10px glyph is 46px, which clears it
-   * with room to spare, and still parks each glyph fully outside the block
-   * so `overflow: hidden` has something to hide.
-   *
-   * They move in lockstep, on the same clock as the label wipe, so the two
-   * halves of the button read as one gesture. Nothing is staggered: the gap
-   * between one arrow leaving and the next appearing is under 10ms, and a
-   * delay wide enough to be worth having is also wide enough to leave the
-   * block visibly empty.
-   */
-  .chip-cta_glyph-in {
-    transform: translateX(-460%);
+  /* Parked just outside the start edge, where the pill's curve hides it. */
+  .chip-cta_arrow-lead {
+    left: 2px;
+    transform: translateX(calc(-100% - 2px));
   }
 
-  .chip-cta:hover .chip-cta_glyph-out,
-  .chip-cta:focus-visible .chip-cta_glyph-out {
-    transform: translateX(460%);
+  .chip-cta:hover .chip-cta_arrow-trail,
+  .chip-cta:focus-visible .chip-cta_arrow-trail {
+    transform: translateX(calc(100% + 2px));
   }
 
-  .chip-cta:hover .chip-cta_glyph-in,
-  .chip-cta:focus-visible .chip-cta_glyph-in {
+  .chip-cta:hover .chip-cta_arrow-lead,
+  .chip-cta:focus-visible .chip-cta_arrow-lead {
     transform: translateX(0);
   }
 
-  /* One arrow, parked, for anyone who does not want the movement. */
+  /*
+   * The glyph does not move on its own any more. There used to be two of them
+   * in here, one leaving right as the other arrived from the left, both
+   * travelling 14px inside a 38px block — an attempt to suggest the movement
+   * without any, which at that scale reads as a twitch, and whose first
+   * version overshot the block and showed a half arrow sliced by the corner.
+   * The block carries it now.
+   *
+   * It points the same way on both sides: onward is what the button does
+   * whichever end its block is standing at.
+   */
+  .chip-cta_glyph {
+    display: inline-flex;
+  }
+
+  /* One block, parked at the trailing end, for anyone who does not want the
+     movement. The leading one is not rendered at all rather than held off the
+     edge, so nothing is waiting behind the curve. */
   @media (prefers-reduced-motion: reduce) {
-    .chip-cta_glyph {
+    .chip-cta,
+    .chip-cta_arrow {
       transition: none;
     }
 
-    .chip-cta_glyph-in {
+    .chip-cta:hover,
+    .chip-cta:focus-visible {
+      padding-inline-start: 2px;
+      padding-inline-end: var(--chip-slot);
+    }
+
+    .chip-cta_arrow-lead {
       display: none;
+    }
+
+    .chip-cta:hover .chip-cta_arrow-trail,
+    .chip-cta:focus-visible .chip-cta_arrow-trail {
+      transform: none;
     }
   }
 
@@ -1218,9 +1713,37 @@
     color: var(--celeste);
   }
 
-  /* A lift, not a glow: nothing on this page casts onto the ground. */
+  /*
+   * The pill's own ground goes wherever the label's fill goes, so hover and
+   * focus change one continuous field instead of only the middle of it.
+   *
+   * ## Why the field and not the block
+   *
+   * The label's fill was the only thing that moved, which left the arrow block
+   * looking like the half of the button that had not noticed — reported as the
+   * focus background "not fitting well with the arrow button". Recolouring the
+   * block to match was tried first and is worse: the chip keeps 2px of its own
+   * ground as trim around both halves, so a white label beside a white block
+   * still had a celeste crescent between the two curves, and the block stopped
+   * reading as a plate at all. Moving the ground instead settles both — the
+   * trim matches the fill, so there is no seam to see, and the plate keeps the
+   * contrast that makes it a plate.
+   *
+   * Not `:where()`: one class plus a pseudo-class outranks the variant's own
+   * one-class rule, so this does not depend on sitting further down the file
+   * the way the old hover lift silently did.
+   */
   .chip-cta-light:hover,
   .chip-cta-light:focus-visible {
+    background: var(--blanco);
+  }
+
+  /* A lift, not a glow: nothing on this page casts onto the ground.
+
+     `:where()` so the whole selector weighs nothing and `.chip-cta:active`
+     above beats it. Without that the press lost to the hover it happens
+     inside, on nothing but line order. */
+  .chip-cta-light:where(:hover, :focus-visible) {
     transform: translateY(-1px);
   }
 
@@ -1239,8 +1762,14 @@
     color: var(--azul);
   }
 
+  /* Same idea as the light variant above: the whole field follows the fill. */
   .chip-cta-dark:hover,
   .chip-cta-dark:focus-visible {
+    background: var(--azul-500);
+  }
+
+  /* `:where()` for the same reason as the light variant above. */
+  .chip-cta-dark:where(:hover, :focus-visible) {
     transform: translateY(-1px);
   }
 
@@ -1259,9 +1788,9 @@
   /*
    * The scrim behind the two controls, once the page has moved at all.
    *
-   * This is what replaced the header's tone switching. The logo and the menu
-   * used to invert to azul whenever a `[data-tone="light"]` box passed under
-   * them, and because the white reading panels are interior cards, crossing one
+   * This is what replaced the header's tone switching. The logo and the button
+   * beside it used to invert to azul whenever a `[data-tone="light"]` box passed
+   * under them, and because the white reading panels are interior cards, crossing one
    * band could repaint them two or three times — the controls read as broken
    * rather than adaptive. They stay white now, and this gradient is what keeps
    * white legible when a white panel goes under it.
@@ -1315,7 +1844,7 @@
   /* Underline that grows from the origin rather than fading in. */
   .link-rule {
     position: relative;
-    transition: color var(--dur-base) var(--ease-out-quart);
+    transition: color var(--dur-base) var(--ease-in-out-quad);
   }
 
   .link-rule::after {
@@ -1328,7 +1857,7 @@
     background: currentColor;
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform var(--dur-slow) var(--ease-out-expo);
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
   }
 
   .link-rule:hover::after,
@@ -1360,13 +1889,6 @@
 
   /* --- Type --------------------------------------------------------------- */
 
-  .section-index {
-    color: var(--celeste);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-
   .skip-link {
     position: absolute;
     inset-inline-start: var(--space-4);
@@ -1377,7 +1899,7 @@
     color: var(--azul);
     padding: 0.75rem 1rem;
     font-weight: 700;
-    transition: transform var(--dur-base) var(--ease-out-expo);
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
   }
 
   .skip-link:focus {

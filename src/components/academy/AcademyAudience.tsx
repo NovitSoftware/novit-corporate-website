@@ -1,3 +1,4 @@
+import { CardList } from "@/components/cards/CardList";
 import { Container } from "@/components/ui/Container";
 import { PinnedIntro } from "@/components/ui/PinnedIntro";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
@@ -52,28 +53,8 @@ function Checklist({ heading }: { heading: string }) {
 
   return (
     <ReadingPanel as="section">
-      <h3 className="text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-violeta-medio">
-        {heading}
-      </h3>
-      <ul data-anim-batch className="mt-6 grid gap-px">
-        {items.map((item) => (
-          <li
-            key={item}
-            data-anim="rise"
-            /* A shared hairline between rows rather than a border on each:
-               four bordered rows read as four fields in a form. */
-            className="flex items-baseline gap-4 border-t border-t-gris-borde py-4 first:border-t-0 first:pt-0"
-          >
-            <span
-              aria-hidden="true"
-              className="mt-2 h-0.5 w-4 shrink-0 bg-violeta-medio"
-            />
-            <span className="text-[0.9375rem] leading-relaxed text-texto">
-              {item}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <h3 className="eyebrow text-violeta-medio">{heading}</h3>
+      <CardList items={items} kind="rule" divided reveal className="mt-6" />
     </ReadingPanel>
   );
 }

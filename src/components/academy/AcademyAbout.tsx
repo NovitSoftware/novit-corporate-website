@@ -36,7 +36,7 @@ export function AcademyAbout() {
             eyebrow={about.eyebrow}
             title={about.title}
             beside={
-              <ReadingPanel voice as="section">
+              <ReadingPanel as="section">
                 {/* Both capped in `ch`, which resolves against each ones own
                     font size, so the two measures stay right if either size
                     changes. Uncapped they ran to the panel width — about 95

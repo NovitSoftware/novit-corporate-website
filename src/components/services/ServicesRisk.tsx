@@ -1,5 +1,6 @@
+import { CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
-import { Icon } from "@/components/ui/Icon";
+import { PanelRow } from "@/components/ui/PanelRow";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
@@ -69,25 +70,17 @@ export function ServicesRisk() {
                         className="mb-4 block h-px w-full bg-[linear-gradient(90deg,var(--violeta-medio),transparent)]"
                       />
                       <div data-anim="rise">
-                        <h3 className="flex items-start gap-2.5 text-[1.0625rem] font-bold leading-snug text-azul">
-                          <Icon
-                            name={item.icon}
-                            className="mt-0.5 size-[1.125rem] shrink-0 text-violeta-medio"
-                          />
-                          {/* Two spans, not one string with markup in it: the
-                              split is data (see `servicesPageContent.risk`) so
-                              whoever rewrites the subject also sees which
-                              words are the damage. */}
-                          <span>
-                            {item.title}{" "}
-                            <span className="text-violeta-medio">
-                              {item.negative}
-                            </span>
-                          </span>
-                        </h3>
-                        <p className="mt-2 text-[0.9375rem] leading-7 text-texto">
-                          {item.description}
-                        </p>
+                        {/* `titleAside` rather than markup inside one string:
+                            the split is data (see `servicesPageContent.risk`)
+                            so whoever rewrites the subject also sees which
+                            words are the damage. */}
+                        <PanelRow
+                          icon={item.icon}
+                          title={item.title}
+                          titleAside={item.negative}
+                        >
+                          <CardText>{item.description}</CardText>
+                        </PanelRow>
                       </div>
                     </li>
                   ))}

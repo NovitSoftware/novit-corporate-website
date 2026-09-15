@@ -68,7 +68,7 @@ export function AcademyOpener() {
                   key={fact.label}
                   className="chip chip-outline inline-flex items-center gap-2 text-celeste"
                 >
-                  <Icon name={fact.icon} className="size-3.5" />
+                  <Icon name={fact.icon} size="micro" />
                   {fact.value}
                 </span>
               ))}

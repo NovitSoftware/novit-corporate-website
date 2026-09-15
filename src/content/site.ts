@@ -55,37 +55,21 @@ export const metadataContent = {
     "Software a medida y agentes integrados que entienden el negocio.",
 } as const;
 
-/**
- * One entry per section that exists, in page order, labelled with the name the
- * section actually carries. The old list had "Tecnologías" and "Historia"
- * pointing at Servicios and Nosotros — two labels promising pages that were
- * never built — and "Redes" pointing at `#contacto`, which until now was not
- * an anchor on this page at all.
+/*
+ * There is no `navigation` list any more, and no menu to hold one.
+ *
+ * Two of its seven entries were the other two routes, and nothing links
+ * across routes now: each page is reached from novitsoftware.com and is the
+ * whole of what it is. The remaining five were in-page anchors on a page the
+ * reader is already scrolling, kept behind a panel they had to open to find
+ * out that is all it held. The footer lists the sections in the open, which is
+ * where an index of a single page belongs, and the header's one control takes
+ * you back to the top.
+ *
+ * Every link in this file is now either an anchor on its own page, a real
+ * channel (WhatsApp, mail, Instagram, LinkedIn) or novitsoftware.com. Keep it
+ * that way: a route link here has nowhere to land.
  */
-export const navigation = [
-  /*
-   * Root-relative, not bare fragments. The menu is mounted on every route, so
-   * `#servicios` from /academianovit pointed at an anchor that is not in the
-   * document and silently did nothing. `/#servicios` is a fragment
-   * navigation on the home page and a real navigation from anywhere else.
-   *
-   * The Academia is the exception: it has a page of its own, so the menu goes
-   * there rather than to the teaser band that introduces it.
-   *
-   * `id` is the section id on the home page and is what drives the menu's
-   * active state — read it from here rather than slicing the href, which
-   * stopped being the id the moment these gained a leading slash.
-   */
-  { id: "academia", label: "Academia Novit", href: "/academianovit" },
-  { id: "servicios", label: "Servicios", href: "/inteligencia-artificial" },
-  { id: "casos", label: "Casos de éxito", href: "/#casos" },
-  { id: "seguridad", label: "Seguridad", href: "/#seguridad" },
-  { id: "nosotros", label: "Nosotros", href: "/#nosotros" },
-  { id: "equipo", label: "Equipo", href: "/#equipo" },
-  { id: "contacto", label: "Contacto", href: "/#contacto" },
-] as const;
-
-export type NavItem = (typeof navigation)[number];
 
 export const heroContent = {
   eyebrow: "Inteligencia artificial",
@@ -94,8 +78,10 @@ export const heroContent = {
     "Te acompañamos a definir la estrategia, montar la infraestructura y construir los agentes de inteligencia artificial de tu empresa, y a sostenerlos en el tiempo.",
   supporting:
     "El mercado se mueve. Las organizaciones que siguen operando con planillas y sistemas desconectados se quedan atrás. Hacemos software a medida y agentes integrados que entienden tu proceso, se construyen con vos y quedan siendo tuyos.",
-  primaryCta: { label: "Ver la Academia", href: "/academianovit" },
-  secondaryCta: { label: "Ver servicios", href: "/inteligencia-artificial" },
+  /* Both of these used to be routes — the Academia and the AI page. They are
+     anchors on this page now: the ask, and the proof. */
+  primaryCta: { label: "Solicitar cotización", href: "#contacto" },
+  secondaryCta: { label: "Ver casos en producción", href: "#casos" },
   /** The brochure's three pillars, each with the mark that labels it. */
   pillars: [
     { label: "Estrategia tecnológica", icon: "strategy" },
@@ -120,7 +106,7 @@ export const heroContent = {
     kicker: "Academia Novit",
     detail: "Diseño y construcción de software agéntico",
     meta: "32 h · online",
-    href: "/academianovit",
+    href: "#academia",
   },
 } as const;
 
@@ -202,10 +188,11 @@ export const servicesIntro = {
   title: "Capacidades que quedan instaladas",
   description:
     "La inteligencia artificial abre la conversación. Lo que la sostiene es un proceso de negocio resuelto, con software que la empresa puede operar y evolucionar.",
-  /* The band is the compressed argument; the page is the argument. It used
-     to send the reader to the enquiry four bands below, which the header
-     reaches in one click anyway. */
-  cta: { label: "Ver los servicios en detalle", href: "/inteligencia-artificial" },
+  /* This pointed at /inteligencia-artificial, which nothing links to now.
+     Back to the enquiry, and that is no longer a shortcut for a link the
+     header offers: the header's menu is gone, so this band is the reader's
+     way there. */
+  cta: { label: "Solicitar cotización", href: "#contacto" },
 } as const;
 
 /**
@@ -607,8 +594,15 @@ export const servicesPageContent = {
       },
     ],
     method: {
-      title: "Parte del método, no una línea de servicio",
-      lead: "No se promocionan y no se cobran como entregable aparte. Si un lead los pide, se toman.",
+      /* This read "Parte del método, no una línea de servicio" over "No se
+         promocionan y no se cobran como entregable aparte. Si un lead los
+         pide, se toman." — a note from the inside of the sales conversation.
+         A reader does not know what a line of service is here, and "si un
+         lead los pide, se toman" tells them about our process rather than
+         about what they get. Same fact, said to the person reading: these
+         four come with the project. */
+      title: "Lo que viene con todo proyecto",
+      lead: "Experiencia de usuario, testing, IA en el desarrollo y la propiedad del código. No se cotizan aparte porque no son opcionales: son cómo construimos.",
       items: [
         {
           icon: "check",
@@ -658,7 +652,10 @@ export const safetyContent = {
     "Construir un agente se está volviendo commodity. Lo que no se commoditiza es el criterio que evita seis stacks que no se hablan y ningún activo propio.",
   description:
     "Tratamos la inteligencia artificial como infraestructura de la empresa: datos en red privada, identidad corporativa, trazabilidad de cada consulta y cumplimiento normativo. La solución queda documentada y es tuya desde el día uno.",
-  cta: { label: "Leer el enfoque de gobierno", href: "/inteligencia-artificial" },
+  /* No `cta`. It read "Leer el enfoque de gobierno" and went to
+     /inteligencia-artificial; with no route to send anyone to, a second
+     "Solicitar cotización" two bands under the first one is chrome. The four
+     pillars are the whole argument this band has to make. */
   pillars: [
     {
       icon: "lock",
@@ -693,7 +690,7 @@ export const teamContent = {
   title: "Personas que se quedan en el proyecto",
   description:
     "Somos cerca de treinta profesionales. El cliente habla con las mismas personas a lo largo del tiempo: los fundadores participan de las cuentas críticas y los líderes actúan como mentores, no solo como asignadores de tareas.",
-  careersCta: { label: "Ver la Academia", href: "/academianovit" },
+  careersCta: { label: "Conocer la Academia", href: "#academia" },
   founders: [
     {
       name: "Leandro A. Vazquez",
@@ -737,7 +734,11 @@ export const academyContent = {
   title: "Se enseña a construir software agéntico",
   description:
     "Formamos al equipo —y a quienes se suman— en las tecnologías que el mercado demanda, hoy incluida la IA aplicada al desarrollo. Varias ediciones son abiertas y gratuitas.",
-  cta: { label: "Ver la Academia", href: "/academianovit" },
+  /* No `cta`, on purpose. This band had one pointing at `#contacto` — a
+     sales form for a question about teaching — and then one pointing at
+     `/academianovit`. The band introduces the Academia and does not ask for
+     anything, so there is nothing here for a button to do. See the docblock
+     on `AcademySection` for what that costs the route. */
 } as const;
 
 /**
@@ -864,9 +865,9 @@ export const academyPageContent = {
   eyebrow: "Academia Novit",
   title: "Diseño y construcción de software agéntico",
   lead: "Una cursada de 32 horas sobre cómo se diseña, se construye y se sostiene un sistema agéntico: arquitectura, orquestación, contexto, costos, seguridad y observabilidad.",
-  /* Not "Inscribirse": the band it points at has no form in it until the
-     22nd, and a button that says one thing and lands on another is the one
-     kind of dishonesty a page like this cannot afford. */
+  /* Not "Inscribirse": the band it points at has no form in it, and a
+     button that says one thing and lands on another is the one kind of
+     dishonesty a page like this cannot afford. */
   cta: { label: "Cuándo abre la inscripción", href: "#inscripcion" },
   /** One heading per band, in reading order. No indices — see `AcademyPage`. */
   sections: {
@@ -902,14 +903,19 @@ export const academyPageContent = {
       title: "Un trabajo integrador, corregido con tres preguntas",
     },
     /**
-     * No form.
+     * No form, and nothing here promises one.
      *
      * There was one — four fields and a submit button — and it had no
      * endpoint, so a postulación went nowhere and the page said so in small
-     * print under the button. For a course with a fixed opening date that is
-     * the wrong trade: the thing a reader needs is the date and where the
-     * announcement will appear, and both of those are one sentence. The
-     * channels below are the ones that actually work today.
+     * print under the button. It came out, and then the copy that replaced it
+     * still said "el formulario aparece acá el 22 de septiembre", which is
+     * the same promise one layer down: whether registration is taken by form
+     * at all is not decided.
+     *
+     * So both channels describe an announcement and neither describes a
+     * mechanism. The date is a commitment Novit has made; the way to sign up
+     * is not, and the page says only the first. If a form is confirmed later,
+     * it is added then — not pre-announced now.
      */
     registration: {
       id: "inscripcion",
@@ -921,7 +927,7 @@ export const academyPageContent = {
         {
           id: "pagina",
           label: "Esta página",
-          detail: "El formulario aparece acá el 22 de septiembre.",
+          detail: "Acá se publica el anuncio el 22 de septiembre.",
           icon: "document",
         },
         {
@@ -1116,8 +1122,11 @@ export const footerContent = {
     {
       title: "Enfoque",
       links: [
-        { label: "Academia Novit", href: "/academianovit" },
-        { label: "Transformación IA", href: "/inteligencia-artificial" },
+        /* These two were /academianovit and /inteligencia-artificial. Both
+           are bands on the home page as well, and a band that exists is a
+           better destination than a route nothing else links to. */
+        { label: "Academia Novit", href: "/#academia" },
+        { label: "Transformación IA", href: "/#servicios" },
         { label: "Casos en producción", href: "/#casos" },
         { label: "Seguridad y gobierno", href: "/#seguridad" },
       ],
