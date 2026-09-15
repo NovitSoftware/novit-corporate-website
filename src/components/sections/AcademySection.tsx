@@ -1,4 +1,3 @@
-import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
 import { IconLine } from "@/components/ui/Icon";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
@@ -20,10 +19,26 @@ import { academyContent, academyProgram } from "@/content/site";
  * verbatim is one of them repeating the other, and the one with room for it
  * should win.
  *
- * What a teaser owes a reader is why to click and one reason not to. So:
- * the description, the single line that stops the wrong person going
- * further, and the link. The load and modality are in the hero's
- * announcement strip a screen above; everything else is on the page.
+ * ## There is no button, and there were two
+ *
+ * First "Consultar por la Academia", pointing at `#contacto` — which made
+ * "tell us about your course" and "tell us about your project" the same
+ * inbox for two different questions. The Academia was never asked to
+ * collect anything, so a band about teaching has no business handing a
+ * reader a sales form. Then "Ver el programa completo", pointing at
+ * `/academianovit`, which was honest about its destination but still a
+ * button the band does not need: this is a teaser, and what a teaser owes a
+ * reader is what the thing is and one reason not to pursue it, not a
+ * demand for a click.
+ *
+ * So the band states its case and stops. Note the consequence, because it
+ * is a decision and not an oversight: nothing on the home page links to
+ * `/academianovit` any more, which by `SiteHeader`'s own rule — with the
+ * menu gone, a route nothing points at is dead weight — puts that route's
+ * future in question rather than merely unlinking it.
+ *
+ * The load and modality are in the hero's announcement strip a screen
+ * above; everything else is on the page.
  *
  * The violet runs through it, because this is Novit talking about its own
  * teaching, and violet is what that means in this system.
@@ -46,42 +61,38 @@ export function AcademySection() {
               </p>
             }
             below={
-              /* The disqualifier and the way through, paired across the
-                 measure.
+              /* The disqualifier, and now the whole of the panel.
 
-                 They were stacked: a panel capped at 68ch with the button on
-                 the gradient below it, which left about 535x330px of bare
-                 gradient to the right of both — a band uses its whole width
-                 or it does not claim it. Side by side in one wide voice
-                 panel they fill the row and the band loses about 150px of
-                 height. Same shape as the featured ServiceCard, and the
-                 button turns dark because it sits on the light surface now
-                 rather than on the ground. */
+                 The label takes a rail of its own beside the statement
+                 rather than sitting on top of it. With the button gone the
+                 stacked version left the right half of a full-width panel
+                 empty, and a band uses its whole width or it does not claim
+                 it; across the measure the label reads as what it is — a
+                 margin note on one sentence — and the sentence gets the size
+                 a lone statement in a panel deserves. */
               <ReadingPanel as="section" className="mt-16 lg:mt-20">
-                <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-14">
-                  <div>
-                    <h3 className="flex items-start gap-2.5 eyebrow text-violeta-medio">
-                      {/* `alert`, not `academy`: what this panel does is turn
-                          the wrong reader away, and the mark should say so
-                          before the sentence does.
+                <div className="lg:grid lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)] lg:gap-14">
+                  {/* `lg:leading-8` is the statement's own leading, borrowed
+                      so the two columns' first lines share a line box and
+                      their caps land within a couple of pixels of each other.
+                      A padding nudge would be fitted to one type size; this
+                      is the same token the sentence beside it uses. */}
+                  <h3 className="flex items-start gap-2.5 eyebrow text-violeta-medio lg:leading-8">
+                    {/* `alert`, not `academy`: what this panel does is turn
+                        the wrong reader away, and the mark should say so
+                        before the sentence does.
 
-                          A `micro` glyph, not the 40px `IconBadge` that was
-                          here: a plate is the identity mark of a card's head
-                          zone, and beside 11px uppercase it ran nearly four
-                          times the height of the words it marked. `micro` is
-                          the size this scale of label takes everywhere else. */}
-                      <IconLine name="alert" size="micro" />
-                      Para quién es
-                    </h3>
-                    <p className="mt-5 max-w-[62ch] text-[0.9375rem] font-bold leading-relaxed text-violeta-medio">
-                      {academyProgram.entryLevel}
-                    </p>
-                  </div>
-                  <div data-anim="rise" className="mt-8 shrink-0 lg:mt-0">
-                    <ChipButton href={academyContent.cta.href} variant="dark">
-                      {academyContent.cta.label}
-                    </ChipButton>
-                  </div>
+                        A `micro` glyph, not the 40px `IconBadge` that was
+                        here: a plate is the identity mark of a card's head
+                        zone, and beside 11px uppercase it ran nearly four
+                        times the height of the words it marked. `micro` is
+                        the size this scale of label takes everywhere else. */}
+                    <IconLine name="alert" size="micro" />
+                    Para quién es
+                  </h3>
+                  <p className="mt-5 max-w-[62ch] text-base font-bold leading-7 text-violeta-medio sm:text-lg sm:leading-8 lg:mt-0">
+                    {academyProgram.entryLevel}
+                  </p>
                 </div>
               </ReadingPanel>
             }

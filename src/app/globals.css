@@ -1032,6 +1032,12 @@
   .card {
     --card-accent: var(--cyan);
     --card-pad: 1.5rem;
+    /* Named once, because hover and focus both raise the card and only hover
+       also moves it. Two layers: a tight one that draws the edge and a wide,
+       offset one that carries the distance. */
+    --card-shadow-lifted:
+      0 3px 6px -3px color-mix(in srgb, var(--ink) 40%, transparent),
+      0 22px 44px -16px color-mix(in srgb, var(--ink) 62%, transparent);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1047,7 +1053,15 @@
        see the note above the class. */
     border-top: 3px solid var(--card-accent);
     color: var(--texto);
-    transition: border-color var(--dur-base) var(--ease-in-out-quad);
+    /* The same two layers the hover state fills in, declared here at zero
+       alpha so there is geometry to interpolate from. */
+    box-shadow:
+      0 3px 6px -3px transparent,
+      0 22px 44px -16px transparent;
+    transition:
+      border-color var(--dur-base) var(--ease-in-out-quad),
+      box-shadow var(--dur-base) var(--ease-in-out-quad),
+      translate var(--dur-base) var(--ease-in-out-quad);
   }
 
   /* Long-form. A panel holding four paragraphs wants more room than a card
@@ -1067,18 +1081,68 @@
     }
   }
 
-  /* There is no hover state, and there was one — the card came forward to
-     white and its border took the accent.
+  /* --- The card's two states ------------------------------------------------
+   *
+   * ## Hover lifts the card, and it only lifts it
+   *
+   * There was no hover state for a while, for a good reason: nothing on this
+   * site is a clickable card, and the old treatment — ground to white, border
+   * to the accent — was a pointer response that promised a destination the
+   * card does not have. The answer to that is not "no response at all",
+   * though. A page of panels that never acknowledges the cursor reads as a
+   * screenshot, so the card answers the pointer in the one language that says
+   * *object* rather than *link*: it comes off the page.
+   *
+   * Shadow and 2px of travel, nothing else. No colour moves, because colour
+   * on this card is meaning — cyan files it, violet is Novit talking — and a
+   * hover that recolours anything is claiming something changed. Depth claims
+   * nothing.
+   *
+   * ## The shadow is `ink`, not black
+   *
+   * `--ink` #040038 is the palette's own darkest azul, so the shadow reads as
+   * the card occluding the gradient it floats on rather than as a grey haze
+   * laid over it. Two layers: a tight one that draws the edge and a wide,
+   * offset one that carries the distance. The rest state declares the same two
+   * layers at `transparent`, which is what lets `box-shadow` interpolate —
+   * from `none` there is no geometry to animate and the shadow would appear at
+   * full size instantly.
+   *
+   * ## `translate`, not `transform`
+   *
+   * GSAP writes reveals into `transform`, and several of these panels are
+   * themselves reveal targets. `translate` is its own property, so the lift
+   * composes with whatever the timeline is doing instead of being overwritten
+   * by an inline style the moment a card enters.
+   *
+   * ## Focus gets the depth, not the lift
+   *
+   * `:focus-within` fires when a focusable child takes focus — the contact
+   * form, a link in a channel list — and tells a keyboard user which container
+   * they are inside, so it earns the same shadow. It does not get the travel:
+   * tabbing between two fields is not a gesture at the card, and a panel that
+   * hops every time focus moves inside it is noise. What focus adds instead is
+   * the accent on the edges, below.
+   */
+  /* `hover: hover` because a touch screen has no hover to give: `:hover`
+     there latches on tap and stays on, which would leave one card raised for
+     as long as the reader stays on the page — a state they cannot clear
+     because the card was never theirs to press. */
+  @media (hover: hover) {
+    .card:hover {
+      translate: 0 -2px;
+      box-shadow: var(--card-shadow-lifted);
+    }
 
-     Nothing on this site is a clickable card. `.card-link` was deleted when
-     the eight card variants collapsed into one, so that treatment had become a
-     pointer response on an element that does nothing when pointed at, which
-     promises a destination the card does not have. Cards here are read, not
-     operated.
+    /* The lift is the one part that is motion for its own sake, so it goes.
+       The shadow stays: it is the state itself, not an animation of it. */
+    @media (prefers-reduced-motion: reduce) {
+      .card:hover {
+        translate: none;
+      }
+    }
+  }
 
-     `:focus-within` stays, because it is not decoration: it fires when a
-     focusable child takes focus — the contact form, a link in a channel list —
-     and tells a keyboard user which container they are inside. */
   /* Three sides, not four: the top border *is* the accent rule, and
      `border-color` would take it to the same 50% as the rest — so focusing a
      field inside a card faded the one line the card is recognised by. The
@@ -1093,6 +1157,7 @@
       var(--card-accent) 50%,
       transparent
     );
+    box-shadow: var(--card-shadow-lifted);
   }
 
   /* The head zone: mark, category and title, closed by one rule.

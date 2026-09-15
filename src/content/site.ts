@@ -734,10 +734,11 @@ export const academyContent = {
   title: "Se enseña a construir software agéntico",
   description:
     "Formamos al equipo —y a quienes se suman— en las tecnologías que el mercado demanda, hoy incluida la IA aplicada al desarrollo. Varias ediciones son abiertas y gratuitas.",
-  /* This was the way through to /academianovit. Nothing links to that route
-     now, so the band is the whole of the Academia on this page and the reader
-     who wants in writes to us. */
-  cta: { label: "Consultar por la Academia", href: "#contacto" },
+  /* No `cta`, on purpose. This band had one pointing at `#contacto` — a
+     sales form for a question about teaching — and then one pointing at
+     `/academianovit`. The band introduces the Academia and does not ask for
+     anything, so there is nothing here for a button to do. See the docblock
+     on `AcademySection` for what that costs the route. */
 } as const;
 
 /**
