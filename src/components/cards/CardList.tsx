@@ -57,19 +57,12 @@ type CardListProps = {
  * A list inside a card or a reading panel: a marked row, one line or three,
  * at the body size.
  *
- * ## Why this exists
- *
- * Two bands wrote this shape and the two disagreed about all of it — the
- * marker, the gap, the row rhythm, and whether the text was a `<span>` at
- * 15px `leading-relaxed` or the same thing spelled out again. They are the
- * same object: `ServicesCapabilities` lists what is inside a service line,
- * `AcademyAudience` lists what the course takes for granted.
- *
  * The split is the one `PanelRow` already draws: this owns the marker, the row
  * typography and the rhythm between rows; the caller owns where the list sits
- * and how wide it runs, because that is the part that genuinely differs — the
- * featured service line runs its list beside its description in two columns,
- * and the Academia's runs the full width of a panel.
+ * and how wide it runs.
+ *
+ * No caller at the moment — the "La oferta" band was its last one. Kept as the
+ * single definition of the marked row.
  */
 export function CardList({
   items,

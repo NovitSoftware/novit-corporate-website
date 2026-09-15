@@ -1,4 +1,4 @@
-/* The four cases, with the client each one belongs to. */
+/* The cases, with the client each one belongs to. */
 
 export const casesContent = {
   index: "03",
@@ -25,23 +25,6 @@ export const casesContent = {
       },
     },
     {
-      id: "comex",
-      icon: "document",
-      area: "Documentación",
-      title: "Lectura automática de documentación de comex",
-      description:
-        "Interpreta BL, facturas y certificados, incluso escaneados, y sólo señala lo que necesita criterio humano.",
-      result: "Cerca de 40 importaciones por mes sin digitación",
-      logo: {
-        name: "Ascend Laboratories",
-        src: "/logos/ascend-laboratories.png",
-        width: 1397,
-        height: 520,
-        displayHeight: 44,
-        invertOnLight: false,
-      },
-    },
-    {
       id: "sap",
       icon: "coin",
       area: "Administración",
@@ -58,34 +41,13 @@ export const casesContent = {
         invertOnLight: false,
       },
     },
-    {
-      id: "ventas",
-      icon: "chat",
-      area: "Comercial",
-      title: "Chats de venta gestionados con IA",
-      description:
-        "Centraliza las conversaciones de los vendedores y permite delegarlas a un asistente que no deja lead sin responder.",
-      result: "Ninguna oportunidad sin atender",
-      logo: {
-        name: "twistic",
-        src: "/logos/twistic.png",
-        width: 402,
-        height: 94,
-        displayHeight: 30,
-        invertOnLight: true,
-      },
-    },
   ],
 } as const;
 
 export type CaseStudy = (typeof casesContent.cases)[number];
 
 /*
- * `clientsContent` and the "Confían en Novit" strip under the case grid are
- * gone. A separate row of logos was the right shape while the cases had to
- * stay anonymous — it said who the clients are without saying which system
- * belonged to whom. Now that every case names its own client the strip only
- * repeated the same four marks a screen apart, so the logos moved onto the
- * cards and the strip was deleted. The logo data lives on each case in
- * `casesContent` above.
+ * There is no `clientsContent` and no "Confían en Novit" strip: each case
+ * names its own client, so the logo data lives on the case above and the
+ * separate row of marks was removed.
  */

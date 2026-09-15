@@ -7,27 +7,12 @@ import { SectionIntro } from "@/components/ui/SectionIntro";
 import { casesContent, servicesPageContent } from "@/content/site";
 
 /**
- * The four agents in production, and what each one left behind.
+ * The agents in production, from `casesContent` — the same cards the home
+ * page shows, under this page's own heading and lead. `CaseCard` rather than
+ * a layout of its own: one card, two callers.
  *
- * ## Why this is `CaseCard` and not a layout of its own
- *
- * It was four full-measure rows inside one panel — logo, then the copy, then
- * the result set large in a third column — on the argument that the home page
- * asks *who trusts Novit* and this page asks *what came out of it*, so the
- * same four clients should be arranged for the opposite emphasis. The
- * brochure does not agree: slide 04 is a 2×2 of cards, logo at the head of
- * each, the result behind a rule at the foot. That is `CaseCard`, exactly, and
- * it was already built.
- *
- * So the two bands share the card and differ where they should — in the
- * heading and the lead above it. The rows were a second layout maintained for
- * the same four objects, and the emphasis they bought was not worth it: at
- * full measure the result ended up in a column so far right of the client's
- * name that the two stopped reading as one claim.
- *
- * The band sits directly above Evolución, which opens "ninguna de estas
- * empresas…". That is the order the brochure uses and the reason for it: the
- * pronoun needs these four to have been shown already.
+ * The band sits directly above Evolución, whose lead opens "ninguna de estas
+ * empresas…" and needs these cards to have been shown already.
  */
 export function ServicesCases() {
   const { cases } = servicesPageContent;

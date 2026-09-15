@@ -7,14 +7,12 @@ import { SectionIntro } from "@/components/ui/SectionIntro";
 import { casesContent } from "@/content/site";
 
 /**
- * The proof, placed straight after the services so the offer is answered by
- * four things that already run. Four cards on one row at desktop, because the
- * argument is that this is a set of four comparable first agents and not a
- * ranked list.
+ * The cases band, straight after the services. One row at desktop — the cards
+ * are peers, not a ranked list — from `casesContent`, which
+ * `/inteligencia-artificial` renders too, under its own heading.
  *
  * Each card carries its own client's logo, so the separate "Confían en Novit"
- * strip that used to sit below the grid is gone — with the cases named it was
- * showing the same four marks twice.
+ * strip that used to sit below the grid is gone.
  */
 export function CasesSection() {
   return (
@@ -34,7 +32,7 @@ export function CasesSection() {
               </p>
             }
             below={
-              <CardGrid columns={4}>
+              <CardGrid columns={2}>
                 {casesContent.cases.map((study) => (
                   <li key={study.id} data-anim="card">
                     <CaseCard study={study} />
