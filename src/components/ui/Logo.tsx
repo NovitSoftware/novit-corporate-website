@@ -15,7 +15,6 @@ type LogoProps = {
   tone?: BrandLogoTone;
   /** Set on the one logo that is above the fold on first paint. */
   priority?: boolean;
-  onClick?: () => void;
 };
 
 /**
@@ -36,23 +35,28 @@ type LogoProps = {
  * `sizes` is worth setting even though this renders small: without it
  * `next/image` assumes the image could be viewport-wide and picks a source far
  * larger than the ~150px this is ever drawn at.
+ *
+ * ## The lockup leaves the site
+ *
+ * It used to point at `/`. These pages are landings reached from
+ * novitsoftware.com and they no longer link across each other, so "home" is
+ * not one of them — the mark goes where the reader expects a logo to go, which
+ * is the company's own site. Same tab: it is a navigation, not an aside.
  */
 export function Logo({
-  href = "/",
+  href = site.url,
   showWordmark = true,
   className,
   tone = "white",
   priority = false,
-  onClick,
 }: LogoProps) {
   const art = showWordmark ? BRAND_LOGO.lockup : BRAND_LOGO.isotipo;
 
   return (
     <a
       href={href}
-      onClick={onClick}
       className={cn("logo inline-flex items-center", className)}
-      aria-label={`${site.name}, ir al inicio`}
+      aria-label={`${site.name}, ir al sitio principal`}
     >
       <Image
         src={art[tone]}

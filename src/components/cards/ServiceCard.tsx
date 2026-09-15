@@ -30,11 +30,15 @@ type ServiceCardProps = {
  * opened with a bold title and a paragraph were indistinguishable until read.
  *
  * The featured card is Novit's own positioning rather than one more service,
- * so it takes the violet voice — in this system that is not styling, it is the
- * mark for where Novit speaks — and it runs at the full width of the grid with
- * the larger title. It used to set the title against the description in two
- * columns, which no other card on the site did; the size does that work now,
- * and the row reads as one family.
+ * and it says so by running the full width of the grid at the larger title
+ * size. It used to say so in violet as well, on the argument that violet is
+ * the mark for where Novit speaks. That is the right rule read one level too
+ * high: cap. 01 puts violet on *the comment inside a ficha*, not on the ficha,
+ * and a violet card claims the fact itself is Novit's. Scale is the difference
+ * now, which is also the difference a reader can see from the side of the
+ * page. It used to set the title against the description in two columns, which
+ * no other card on the site did; the size does that work now, and the row
+ * reads as one family.
  */
 export function ServiceCard({ service, className }: ServiceCardProps) {
   const featured = service.variant === "featured";
@@ -44,7 +48,6 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
       icon={service.icon}
       label={service.meta}
       title={service.title}
-      accent={featured ? "voice" : "celeste"}
       size={featured ? "xl" : "lg"}
       className={className}
     >

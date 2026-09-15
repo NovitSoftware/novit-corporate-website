@@ -1,3 +1,4 @@
+import { CardGrid } from "@/components/cards/CardGrid";
 import { Card, CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
 import { Scene } from "@/components/motion/Scene";
@@ -30,7 +31,7 @@ export function ServicesEvolution() {
   const { evolution } = servicesPageContent;
   /* 28 → 52 → 76 → 100. Even steps, and the first one wide enough to still
      read as a rule rather than as a dash. */
-  const RULE_WIDTH = ["w-[28%]", "w-[52%]", "w-[76%]", "w-full"];
+  const RULE_WIDTH = ["28%", "52%", "76%", "100%"];
 
   return (
     <Section id={evolution.id}>
@@ -48,10 +49,7 @@ export function ServicesEvolution() {
               </p>
             }
             below={
-              <ol
-                data-anim-batch
-                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
-              >
+              <CardGrid as="ol" columns={4}>
                 {evolution.steps.map((step, index) => (
                   <li key={step.title} data-anim="card">
                     <Card
@@ -62,14 +60,19 @@ export function ServicesEvolution() {
                       footer={{
                         label: "Deja instalado",
                         text: step.leaves,
-                        rule: RULE_WIDTH[index],
+                        ruleWidth: RULE_WIDTH[index],
+                        /* The one band that asks for the reserved second
+                           line. The four rules only draw the argument if
+                           they sit at the same height across the row, and
+                           two of the four takeaways wrap. */
+                        minLines: 2,
                       }}
                     >
                       <CardText>{step.description}</CardText>
                     </Card>
                   </li>
                 ))}
-              </ol>
+              </CardGrid>
             }
           />
         </Container>

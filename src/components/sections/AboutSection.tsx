@@ -88,7 +88,7 @@ function Relationships() {
         />
         <p
           data-anim="chip"
-          className="mt-4 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-on-eyebrow"
+          className="mt-4 eyebrow text-on-eyebrow"
         >
           {partnersContent.eyebrow}
         </p>
@@ -110,7 +110,7 @@ function Relationships() {
       </div>
 
       <div data-anim-block>
-        <p className="text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-on-eyebrow">
+        <p className="eyebrow text-on-eyebrow">
           Donde trabajamos hoy
         </p>
         <ul data-anim="rise" className="mt-6 flex flex-wrap gap-x-8 gap-y-3">

@@ -1,54 +1,48 @@
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { cn } from "@/lib/cn";
-import { variantClass } from "@/lib/variants";
-
-/**
- * Cyan is the world, violet is Novit speaking — the same rule `PillarCard` and
- * `ReadingPanel` apply to an edge, applied to a tint.
- *
- * The glyph is azul, never cyan, and that is a contrast decision rather than a
- * stylistic one. `novit-design-system.md` cap. 01 measures cyan `#3398DC` at
- * 2.9:1 on the surface grey, and a graphical object needs 3:1 — so cyan does
- * the tint, where contrast carries no meaning, and azul (14.1:1) draws the
- * icon. On dark grounds the halo inverts to white-on-white-tint, where celeste
- * would be the failure case instead.
- */
-const badgeTone = {
-  cyan: "bg-cyan/12 text-azul",
-  voice: "bg-violeta-medio/10 text-violeta-medio",
-  dark: "bg-blanco/10 text-blanco",
-} as const;
-
-export type IconBadgeTone = keyof typeof badgeTone;
 
 type IconBadgeProps = {
   name: IconName;
-  tone?: IconBadgeTone;
   className?: string;
 };
 
 /**
- * An icon on its own tinted plate — the visual anchor at the top of a card.
+ * An icon on a tinted plate — the mark at the top of a card.
  *
  * Every card on this site used to open with a text label, which is why a grid
- * of them read as one undifferentiated wall: at a glance nothing told the
- * risk card apart from the infrastructure card, so the reader had to start
- * reading to find out which was which. The badge is what gives each card
- * something to be recognised by before a word of it is read.
+ * of them read as one undifferentiated wall: at a glance nothing told the risk
+ * card apart from the infrastructure card, so the reader had to start reading
+ * to find out which was which. The badge is what gives each card something to
+ * be recognised by before a word of it is read.
  *
- * It is one component rather than a span repeated in six card files because
- * the size, the radius, the tint and the glyph colour are one decision each.
+ * ## Cyan plate, azul glyph
+ *
+ * Cyan `#3398DC` is the accent `novit-design-system.md` cap. 01 assigns to
+ * light grounds, and this plate only ever sits on one. The glyph inside is
+ * azul, and that is a contrast decision rather than a stylistic one: the same
+ * chapter measures cyan at 2,9:1 on the surface grey where a graphical object
+ * needs 3:1, so cyan does the tint — where contrast carries no meaning — and
+ * azul (14,1:1) draws the icon.
+ *
+ * 12% is as far as the tint goes: the plate has to read as an object sitting
+ * on the card, and the card's surface is the only ground it sits on.
+ *
+ * ## One treatment, no `tone` prop
+ *
+ * There were three: `cyan`, `voice` and a `dark` that never had a consumer.
+ * `voice` existed for the violet card, and there is no violet card any more —
+ * violet marks Novit's comment in the footer, not the whole object. See
+ * `Card`. One plate, one tint, nothing to choose.
  */
-export function IconBadge({ name, tone = "cyan", className }: IconBadgeProps) {
+export function IconBadge({ name, className }: IconBadgeProps) {
   return (
     <span
       className={cn(
-        "grid size-10 shrink-0 place-items-center rounded-card",
-        variantClass(badgeTone, tone),
+        "grid size-10 shrink-0 place-items-center rounded-card bg-cyan/12 text-azul",
         className,
       )}
     >
-      <Icon name={name} className="size-5" />
+      <Icon name={name} size="badge" />
     </span>
   );
 }

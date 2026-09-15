@@ -5,6 +5,7 @@ import type Lenis from "lenis";
 import { ReactLenis, useLenis } from "lenis/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { easeOutExpo } from "@/lib/motion";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
@@ -405,10 +406,10 @@ function useAnchorNavigation(lenis: Lenis | undefined, reduced: boolean) {
       window.history.pushState(null, "", hash);
 
       /**
-       * A link inside the open menu closes it in this same click, and the menu
-       * holds the scroll while it is open. Moving on the next frame lets React
-       * release that hold first; `force` covers the frame where it has not yet
-       * been released.
+       * Two frames before moving, and `force` on the tween. Both are here
+       * because a click can land in the same frame as a React state change
+       * that holds or re-lays-out the scroller — the intro releasing, a
+       * section mounting — and Lenis reads its limits once per tween.
        */
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -520,5 +521,3 @@ function handOverFocus(section: HTMLElement) {
   section.focus({ preventScroll: true });
 }
 
-const easeOutExpo = (time: number) =>
-  time === 1 ? 1 : 1 - Math.pow(2, -10 * time);

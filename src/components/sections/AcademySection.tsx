@@ -1,6 +1,6 @@
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { IconBadge } from "@/components/ui/IconBadge";
+import { IconLine } from "@/components/ui/Icon";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
@@ -57,18 +57,20 @@ export function AcademySection() {
                  height. Same shape as the featured ServiceCard, and the
                  button turns dark because it sits on the light surface now
                  rather than on the ground. */
-              <ReadingPanel
-                voice
-                as="section"
-                className="mt-16 p-7 sm:p-10 lg:mt-20"
-              >
+              <ReadingPanel as="section" className="mt-16 lg:mt-20">
                 <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-14">
                   <div>
-                    <h3 className="flex items-center gap-3 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-violeta-medio">
+                    <h3 className="flex items-start gap-2.5 eyebrow text-violeta-medio">
                       {/* `alert`, not `academy`: what this panel does is turn
                           the wrong reader away, and the mark should say so
-                          before the sentence does. */}
-                      <IconBadge name="alert" tone="voice" />
+                          before the sentence does.
+
+                          A `micro` glyph, not the 40px `IconBadge` that was
+                          here: a plate is the identity mark of a card's head
+                          zone, and beside 11px uppercase it ran nearly four
+                          times the height of the words it marked. `micro` is
+                          the size this scale of label takes everywhere else. */}
+                      <IconLine name="alert" size="micro" />
                       Para quién es
                     </h3>
                     <p className="mt-5 max-w-[62ch] text-[0.9375rem] font-bold leading-relaxed text-violeta-medio">
