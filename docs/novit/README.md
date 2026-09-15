@@ -77,7 +77,7 @@ Technical reference: exact colors, gradients and the SVG arrow vector with swatc
 ## brochures/transformacion-ia-brochure.md
 
 Structured transcript of the 2026 AI presentation *Partners de transformación IA*
-(ingested from `source/transformacion-ia-brochure.raw.md`): risks of buying loose
+(transcribed from `source/transformacion-ia-brochure.pdf`): risks of buying loose
 agents, the
 partner role (stack / measurement / security / vendor scrutiny), the shared
 infrastructure (corporate RAG, identity & SSO, integration layer, swappable models),
@@ -88,8 +88,8 @@ services and safety sections.
 
 ## source/
 
-The client's own files: the *Transformación IA* deck (PDF and its raw text
-extraction), the Academia temario as supplied, and the icon PNG. Provenance
+The client's own files: the *Transformación IA* deck (PDF), the Academia temario
+as supplied, and the icon PNG. Provenance
 only — every one of them has a readable write-up above. See
 [`source/README.md`](source/README.md), which also records how to render the PDF
 on this machine.

@@ -23,7 +23,7 @@ each other by that exact name.
 | `novit/academia-novit.md` | Academia Novit syllabus: 2026 course on building AI agents and agentic software |
 | `novit/novit-marca-tokens.html` | Exact colors and gradients, with swatches — the technical reference |
 | `novit/brochures/` | Brochure collateral (brochure transcripts used as copy sources) |
-| `novit/source/` | The originals everything above was written from: the client's PDF, the raw extractions, the supplied icon |
+| `novit/source/` | The originals everything above was written from: the client's PDF, the temario as supplied, the supplied icon |
 
 Read `novit-brand-core.md` and `novit-design-system.md` together: the first defines
 what Novit says, the second how it looks.

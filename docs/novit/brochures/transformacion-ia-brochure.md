@@ -1,8 +1,7 @@
 # Partners de transformación IA
 
-Transcript estructurado de la presentación **Novit IA 2026** (ingesta de
-[`../source/transformacion-ia-brochure.raw.md`](../source/transformacion-ia-brochure.raw.md);
-el PDF original está en [`../source/`](../source/README.md)). Es la fuente del bloque de IA del
+Transcript estructurado de la presentación **Novit IA 2026** (transcripción del
+PDF original en [`../source/`](../source/README.md)). Es la fuente del bloque de IA del
 capítulo 05 de [`../novit-brand-core.md`](../novit-brand-core.md) y copy de
 referencia para las secciones de servicios y seguridad de este sitio.
 
