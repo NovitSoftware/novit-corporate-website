@@ -1,0 +1,154 @@
+/* Chrome and interactions — the header, the rule that draws under a link, the scroll cue, the skip link and the split-word mask. */
+
+@layer components {
+  /* --- Interactions ------------------------------------------------------- */
+
+  /* Header steps aside on the way down and returns on the way up. The
+     attribute is written by the scroll subscription in SiteHeader. */
+  .site-header {
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .site-header[data-hidden="true"] {
+    transform: translateY(-100%);
+  }
+
+  /*
+   * The scrim behind the two controls, once the page has moved at all.
+   *
+   * This is what replaced the header's tone switching. The logo and the button
+   * beside it used to invert to azul whenever a `[data-tone="light"]` box passed
+   * under them, and because the white reading panels are interior cards, crossing one
+   * band could repaint them two or three times — the controls read as broken
+   * rather than adaptive. They stay white now, and this gradient is what keeps
+   * white legible when a white panel goes under it.
+   *
+   * A gradient, not a bar: no edge, no rule, nothing that reads as a toolbar,
+   * so the page still runs under the controls the way it always did. No blur —
+   * a backdrop-filter on a fixed layer over a transform-driven scroller
+   * repaints the whole strip every frame.
+   */
+  .site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 8.5rem;
+    opacity: 0;
+    background: linear-gradient(180deg,
+        rgb(4 0 56 / 0.85) 0%,
+        rgb(4 0 56 / 0.58) 42%,
+        rgb(4 0 56 / 0) 100%);
+    transition: opacity var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .site-header[data-scrolled="true"]::before {
+    opacity: 1;
+  }
+
+  /*
+   * And it leaves with the header. The scrim is taller than the header box it
+   * hangs off — 8.5rem of gradient against a 4.5rem rail — so `translateY(-100%)`
+   * on the way down only lifts it by its own 4.5rem and left the bottom 64px of
+   * gradient sitting at the top of the viewport, a grey band over whatever white
+   * panel was passing under it.
+   */
+  .site-header[data-hidden="true"]::before {
+    opacity: 0;
+  }
+
+  /*
+   * The logo's hover is gone with the vector it was built on.
+   *
+   * It walked a highlight down the five rows of the isotipo — bars stretching,
+   * squares scaling as it passed — which needed one addressable DOM node per
+   * shape and a `--i` row index set inline. The logo is a single PNG now (see
+   * `lib/brand-logo.ts`), and a raster has no rows to address. Reproducing the
+   * effect would mean slicing the artwork or putting a filter over it, and the
+   * brandbook does not allow effects on the logo, so there is no hover here.
+   */
+
+  /* Underline that grows from the origin rather than fading in. */
+  .link-rule {
+    position: relative;
+    transition: color var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .link-rule::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .link-rule:hover::after,
+  .link-rule:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .scroll-cue-track {
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-cue-track::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      height: 45%;
+      background: linear-gradient(180deg,
+          transparent,
+          var(--celeste),
+          transparent);
+      animation: cue-travel 2.4s var(--ease-in-out-quint) infinite;
+    }
+  }
+
+  /* --- Type --------------------------------------------------------------- */
+
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-4);
+    top: 0;
+    z-index: 100;
+    transform: translateY(-120%);
+    background: var(--blanco);
+    color: var(--azul);
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .skip-link:focus {
+    transform: translateY(var(--space-4));
+  }
+
+  /* Word-level mask behind every headline reveal. Rendered on the server, so
+     the copy ships in the HTML and reads normally without JS. */
+  .split-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    /* Headroom for descenders so the mask never clips a g or a p. */
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+    clip-path: inset(0 -0.14em 0 -0.04em);
+    /* Both of these are inline-blocks, which makes each of them a block
+       container that inherits the heading first-line indent and applies it
+       again to its one word. Left alone, an indented headline pushes every
+       word right by the indent twice over. */
+    text-indent: 0;
+  }
+
+  .split-item {
+    display: inline-block;
+    text-indent: 0;
+  }
+}

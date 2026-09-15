@@ -9,9 +9,11 @@ import { ServiceCard } from "@/components/cards/ServiceCard";
 import { highlights, services, servicesIntro } from "@/content/site";
 
 /**
- * The argument, then the offer. Three cards state what the market gets wrong,
- * and the services answer it — which is why the featured card, Novit's own
- * role, is the one carrying the violet.
+ * The three dimensions of AI, then the offer. The cards used to state what the
+ * market gets wrong and the services answered it; they describe the AI line
+ * now — how we work, what we build, how it is sustained — and the services
+ * are the same three branches at service granularity. The featured card is
+ * Novit's own role, which is why it carries the violet.
  *
  * Neither grid tracks the pointer or dims its siblings any more: none of
  * these cards is a link, and answering a hover on something that cannot be
@@ -64,8 +66,8 @@ export function ServicesSection() {
                 </CardGrid>
 
                 {/* One route out of the grid rather than five, and it goes to
-                    the page that argues the case rather than to the enquiry:
-                    a reader who has just met three framings and five services
+                    `/inteligencia-artificial` rather than to the enquiry: a
+                    reader who has just met three framings and five services
                     wants the next level of detail, not a form. */}
                 <div data-anim="rise" className="mt-12">
                   <ChipButton href={servicesIntro.cta.href} variant="light">

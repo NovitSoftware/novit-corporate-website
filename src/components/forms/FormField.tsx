@@ -24,9 +24,8 @@ type FormFieldProps = {
  * unconditionally — an id that resolves to empty text is read as nothing,
  * whereas an id that appears and disappears is not always picked up.
  *
- * Styling is `.field` / `.field-label` in globals.css. Both forms sit on the
- * light reading surface, which is the only ground those classes are built
- * for.
+ * Styling is `.field` / `.field-label` in globals.css, built for the one
+ * ground these sit on: the glass reading panel.
  */
 export function FormField({
   prefix,
@@ -62,7 +61,7 @@ export function FormField({
       )}
       <p
         id={`${id}-error`}
-        className="mt-2 min-h-[1.25rem] text-[0.8125rem] font-bold text-violeta"
+        className="card-ink-voice mt-2 min-h-[1.25rem] text-[0.8125rem] font-bold"
       >
         {error ?? ""}
       </p>
@@ -82,7 +81,7 @@ export function FormStatus({ children }: { children?: ReactNode }) {
   return (
     <p
       aria-live="polite"
-      className="text-[0.875rem] leading-relaxed text-azul"
+      className="card-ink-body text-[0.875rem] leading-relaxed"
     >
       {children}
     </p>

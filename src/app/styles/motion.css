@@ -1,0 +1,84 @@
+/* Motion entry states — applied only once the pre-paint script confirms JS and no reduced-motion preference. */
+
+/* ==========================================================================
+   Motion entry states
+
+   Applied only once the pre-paint script confirms JS is running and the
+   visitor has not asked for reduced motion. Without that flag the page is
+   fully visible — crawlers, no-JS visitors and reduced-motion visitors all
+   get the finished layout, never a blank one.
+   ========================================================================== */
+
+@layer components {
+  [data-motion="on"] [data-anim="rise"] {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+
+  [data-motion="on"] [data-anim="fade"] {
+    opacity: 0;
+  }
+
+  [data-motion="on"] [data-anim="wipe"] {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  [data-motion="on"] [data-anim="bar"] {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  [data-motion="on"] [data-anim="card"] {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0);
+  }
+
+  [data-motion="on"] [data-anim="chip"] {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.96);
+  }
+
+  [data-motion="on"] [data-anim="media"] {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  [data-motion="on"] [data-anim-inner] {
+    transform: scale(1.16);
+  }
+
+  [data-motion="on"] [data-anim="words"] .split-item {
+    transform: translate3d(0, 115%, 0);
+  }
+
+  /* Scrubbed statements start dim and are brought up word by word as the
+     section passes. Driven by ScrollWords, not by Scene — hence its own
+     attribute. */
+  [data-motion="on"] [data-scrub] .split-item {
+    opacity: 0.18;
+  }
+}
+
+/* The curtain is rendered on the server so it can cover the first paint, so
+   it has to be taken away by CSS for anyone the timeline will never run for:
+   no scripts, or reduced motion. Until then it is a full-screen fixed layer,
+   and a fixed layer swallows the wheel — the page underneath would not
+   scroll.
+
+   The other case it used to cover — "already played" — is now a module
+   variable read in a layout effect, which re-renders before the browser
+   paints, so there is nothing left here for CSS to do. See `lib/intro.ts`. */
+html:not([data-motion="on"]) .intro-overlay {
+  display: none !important;
+}
+
+/* Four full-viewport fixed layers would each land on page one in some engines,
+   and the brandbook is explicit that in print the two gradients never touch —
+   the page goes white between them. On paper the atmosphere has no job. */
+@media print {
+
+  .scene-sweep,
+  .scene-blooms,
+  .scene-cells {
+    display: none;
+  }
+}

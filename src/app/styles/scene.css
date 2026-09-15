@@ -1,0 +1,423 @@
+/* Scene — the scroll shell, the atmosphere over the body gradient, grounds and textures. */
+
+@layer components {
+  /* --- Scroll shell ------------------------------------------------------- */
+
+  /**
+   * The page does not scroll: this does.
+   *
+   * The document is pinned to the viewport and the whole site lives inside one
+   * scroll container that Lenis drives, so scroll position is a value the site
+   * owns rather than one the browser hands us. It is what the reference does,
+   * and it is what makes the header rail the only reading indicator on screen.
+   *
+   * It stays a real scroll container — `auto`, not `hidden` — so the wheel,
+   * the keyboard, find-in-page and a visitor with no JavaScript all still move
+   * the page; only the scrollbar itself is taken away.
+   */
+  .scroll-shell {
+    position: relative;
+    height: 100dvh;
+    overflow-x: clip;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+    scrollbar-width: none;
+  }
+
+  .scroll-shell::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  /**
+   * Lenis' own stylesheet is not loaded: in wrapper mode its only rules are
+   * these three, and its `lenis-stopped` rule parks the scroller at
+   * `overflow: clip`, which stops reporting a scrollHeight — and
+   * ScrollTrigger measures this element. `hidden` holds the scroll still and
+   * keeps the measurement.
+   */
+  .scroll-shell.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .scroll-shell [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .scroll-shell.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  /* --- Atmosphere -----------------------------------------------------------
+     Everything in this block is a fixed, decorative layer sitting between
+     `body`'s gradient and the page's content. Together they are what makes the
+     background read as alive while the visitor is sitting still reading.
+
+     None of them may have a z-index. `.scroll-shell` is `position: relative`
+     with no z-index, so it paints with positioned descendants in tree order;
+     these are `position: fixed` with no z-index, so they land in that same
+     step and are ordered purely by where they sit in layout.tsx. Give any one
+     of them a z-index and you have to give all of them — plus the shell — an
+     explicit value, and a negative one paints the layer behind `body`'s own
+     propagated canvas background, where it is invisible.
+
+     They also all stay outside `.scroll-shell`. Inside it, a negatively-inset
+     child changes `scrollHeight`, which every ScrollTrigger measures against.
+
+     Sized in percentages, never `dvh`: fixed elements resolve against the
+     large viewport, so an iOS URL bar collapsing cannot expose an edge. */
+
+  /* The whole ground drifting diagonally. A gradient on a transform, rather
+     than an animated `background-position` on `body`: background-position is
+     not a compositable property, so animating it would re-raster a
+     full-viewport gradient every frame forever, even at rest. This is one
+     cached quad that the compositor moves for free. */
+  .scene-sweep {
+    position: fixed;
+    /* Overhang exceeds the travel plus the rotation's corner sweep. */
+    inset: -18%;
+    pointer-events: none;
+    background-image: linear-gradient(100deg,
+        rgb(var(--rgb-azul-500) / 0.34) 0%,
+        rgb(var(--rgb-azul-500) / 0) 34%,
+        rgb(var(--rgb-celeste) / 0.15) 58%,
+        rgb(var(--rgb-violeta) / 0.24) 100%);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  /* The drifting colour blooms, and the one thing on this page holding the
+     type legible. */
+  .scene-blooms {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /*
+   * The contrast floor, and the reason the ground is allowed to get bright at
+   * all. #1B4BB9 is the brightest colour in the brand set that can sit behind
+   * body copy and still clear AA, and stops 2 and 3 of the ramp are well past
+   * it. So this veil darkens in step with the gradient's own stop positions
+   * (0 / 34 / 74 / 100): it barely touches the deep end and pulls the bright
+   * end back under the copy.
+   *
+   * It never animates and never repaints. If it is ever weakened, the first
+   * thing to fail is #4F8ED5 at the middle stage — see SmoothScroll.tsx.
+   * `::after` is last in tree order, so it paints over the blooms below.
+   */
+  .scene-blooms::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(100deg,
+        rgb(var(--rgb-ink) / 0.14) 0%,
+        rgb(var(--rgb-ink) / 0.32) 34%,
+        rgb(var(--rgb-ink) / 0.5) 74%,
+        rgb(var(--rgb-ink) / 0.56) 100%);
+  }
+
+  /*
+   * Soft blooms drawn as radial-gradients rather than blurred circles. A
+   * gradient falloff is folded into the layer's one-time raster, while
+   * `filter: blur()` needs a second surface and — because these animate
+   * `scale` — can re-run the blur whenever the raster scale changes. Same
+   * look, a fraction of the cost, and it survives on a low-end phone.
+   *
+   * `farthest-side` inscribes the ellipse in the box on all four sides, which
+   * is what `border-radius: 50%` plus a blur used to give.
+   */
+  /* Promoted up front, so the gradient is rastered once rather than on the
+     frame the drift starts. Only `transform` is ever animated on these now —
+     see the keyframes above for why that matters. */
+  .scene-bloom {
+    position: absolute;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .scene-bloom-azul {
+    left: -30%;
+    top: -26%;
+    width: 122%;
+    height: 106%;
+    background-image: radial-gradient(ellipse farthest-side at 50% 50%,
+        rgb(var(--rgb-azul-500) / 0.52) 0%,
+        rgb(var(--rgb-azul-500) / 0.32) 38%,
+        rgb(var(--rgb-azul-500) / 0.1) 68%,
+        transparent 90%);
+  }
+
+  /* The only lightener on the layer, so it carries the lowest alpha — and it
+     fades back as the page turns violet. */
+  .scene-bloom-celeste {
+    left: -20%;
+    top: -16%;
+    width: 84%;
+    height: 76%;
+    background-image: radial-gradient(ellipse farthest-side at 50% 50%,
+        rgb(var(--rgb-celeste) / 0.3) 0%,
+        rgb(var(--rgb-celeste) / 0.17) 40%,
+        rgb(var(--rgb-celeste) / 0.05) 70%,
+        transparent 90%);
+    opacity: clamp(0.18, 1 - 1.15 * var(--scene-mix, 0), 1);
+  }
+
+  /* Arrives with the footer. Its opacity clamps to exactly 0 for the first
+     quarter of the page, where the compositor skips it entirely. */
+  .scene-bloom-violeta {
+    left: 30%;
+    top: 36%;
+    width: 94%;
+    height: 88%;
+    background-image: radial-gradient(ellipse farthest-side at 50% 50%,
+        rgb(var(--rgb-violeta) / 0.42) 0%,
+        rgb(var(--rgb-violeta) / 0.24) 40%,
+        rgb(var(--rgb-violeta) / 0.08) 70%,
+        transparent 90%);
+    opacity: clamp(0, 1.5 * var(--scene-mix, 0) - 0.42, 1);
+  }
+
+  /* The isotipo's own grid — bandas horizontales y rectángulos — drawn once
+     for the whole page instead of once per section, so it doesn't restart at
+     every section boundary. Last of the atmosphere layers in layout.tsx, so
+     its celeste hairlines stay crisp on top of the veil instead of being
+     muted by it. */
+  .scene-cells {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 130% 110% at 50% 38%,
+        var(--negro) 55%,
+        transparent 96%);
+  }
+
+  /* The pattern is a separate child so the drift can be a transform while the
+     vignette above stays pinned. One tile of overhang on every side, and the
+     travel is exactly one tile, so the loop is seamless. */
+  .scene-cells_pattern {
+    position: absolute;
+    inset: -56px;
+    background-image:
+      repeating-linear-gradient(to right,
+        rgb(var(--rgb-celeste) / 0.26) 0,
+        rgb(var(--rgb-celeste) / 0.26) 1.5px,
+        transparent 1.5px,
+        transparent 56px),
+      repeating-linear-gradient(to bottom,
+        rgb(var(--rgb-celeste) / 0.18) 0,
+        rgb(var(--rgb-celeste) / 0.18) 1.5px,
+        transparent 1.5px,
+        transparent 56px);
+    transform: translate3d(0, 0, 0);
+  }
+
+  /*
+   * The idle loops. All transform-only, all gated: this is the motion nobody
+   * asked for, so `reduce` stops it dead, and every keyframe rests at its
+   * authored position when it does.
+   *
+   * Durations are near-coprime and the delays negative, so the layers start
+   * mid-cycle, never together, and never visibly re-sync. Easing is sine-ish
+   * in-out; --ease-in-out-quint would park each layer at its extremes for
+   * several seconds a side, which reads as stopped.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    .scene-sweep {
+      animation: scene-sweep-drift 21s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+    }
+
+    .scene-bloom-azul {
+      animation: scene-bloom-azul 19s cubic-bezier(0.37, 0, 0.63, 1) -8s infinite;
+    }
+
+    .scene-bloom-celeste {
+      animation: scene-bloom-celeste 14s cubic-bezier(0.37, 0, 0.63, 1) -3s infinite;
+    }
+
+    .scene-bloom-violeta {
+      animation: scene-bloom-violeta 17s cubic-bezier(0.37, 0, 0.63, 1) -11s infinite;
+    }
+
+    /*
+     * The grid does not drift any more.
+     *
+     * Its own animation was the cheap kind — one tile of translate, nothing
+     * else — but `.scene-cells` above masks it with a radial vignette, and a
+     * mask has to be re-composited against whatever moves underneath it. So
+     * the tile slid for free and the mask re-ran every frame: 19ms of a 46ms
+     * frame, for the least visible motion on the page. Static, the mask
+     * composites once and the grid reads exactly the same — it is a texture,
+     * not a movement. The vignette is worth more than the drift was.
+     */
+
+    /*
+     * The intro curtain is opaque and covers the whole viewport for up to four
+     * seconds, over hydration and font loading. Nothing behind it is worth a
+     * frame, so hold the atmosphere until it unmounts — React takes the
+     * overlay out of the DOM and the loops start on their own. A negative
+     * animation-delay survives the pause: it shifts the timeline origin, and
+     * unpausing resumes from the shifted position.
+     *
+     * `[data-motion="on"]` is load-bearing. With JavaScript off the overlay is
+     * still in the markup — only hidden further down this file — and a bare
+     * `:has()` would pause the atmosphere for good. That attribute is only
+     * ever set by a script, so this cannot match without one.
+     */
+    html[data-motion="on"]:has(.intro-overlay) .scene-sweep,
+    html[data-motion="on"]:has(.intro-overlay) .scene-bloom {
+      animation-play-state: paused;
+    }
+  }
+
+  /*
+   * Phones: the sweep is the largest texture on the page and the least
+   * visible on a small screen, and the blooms already read as a sweep at this
+   * size. Dropping it keeps layer memory in range on low-RAM devices, where
+   * eviction shows up as re-raster jank on scroll.
+   */
+  @media (max-width: 767px) {
+    .scene-sweep {
+      display: none;
+    }
+
+    .scene-bloom-azul {
+      left: -14%;
+      top: -10%;
+      width: 96%;
+      height: 62%;
+    }
+
+    .scene-bloom-celeste {
+      left: -18%;
+      top: -12%;
+      width: 92%;
+      height: 52%;
+    }
+
+    .scene-bloom-violeta {
+      left: 18%;
+      top: 44%;
+      width: 96%;
+      height: 60%;
+    }
+  }
+
+  /* --- Grounds --------------------------------------------------------------
+     Sections — and every card and panel inside them — carry no background of
+     their own any more; `body`'s scene gradient (see above) is the site's
+     one background, and everything sits on it transparent, cards included, so
+     the animated ground shows through everywhere rather than being blocked by
+     flat panels repeating its own colour family. This one remains, for the
+     two things that genuinely need to hide what is behind them rather than
+     sit on the atmosphere: the intro curtain. */
+
+  .ground-deep {
+    background:
+      radial-gradient(ellipse 70% 55% at 14% 10%,
+        rgb(var(--rgb-celeste) / 0.2),
+        transparent 60%),
+      radial-gradient(ellipse 62% 52% at 88% 80%,
+        rgb(var(--rgb-azul) / 0.6),
+        transparent 62%),
+      linear-gradient(180deg,
+        var(--ink) 0%,
+        var(--azul-deep) 30%,
+        var(--azul-700) 64%,
+        var(--azul-deep) 100%);
+  }
+
+  /* --- Textures ----------------------------------------------------------- */
+
+  .bar-grid {
+    background-image:
+      linear-gradient(to right,
+        rgb(var(--rgb-celeste) / 0.14) 1px,
+        transparent 1px),
+      linear-gradient(to bottom,
+        rgb(var(--rgb-celeste) / 0.09) 1px,
+        transparent 1px);
+    background-size: 40px 40px;
+    /* Fade the tile at the edges so it reads as depth, not wallpaper. */
+    mask-image: radial-gradient(ellipse 88% 78% at 38% 22%,
+        var(--negro) 18%,
+        transparent 76%);
+  }
+
+  .bar-grid-dark {
+    background-image:
+      linear-gradient(to right,
+        rgb(var(--rgb-azul) / 0.1) 1px,
+        transparent 1px),
+      linear-gradient(to bottom,
+        rgb(var(--rgb-azul) / 0.07) 1px,
+        transparent 1px);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bar-grid-drift {
+      animation: grid-drift 34s linear infinite;
+    }
+  }
+
+  .bar-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .bar-field-row {
+    position: absolute;
+    left: var(--bar-left, 0);
+    top: var(--bar-top);
+    height: var(--bar-height, 2px);
+    width: var(--bar-width);
+    transform-origin: left center;
+    opacity: 0.45;
+    background: linear-gradient(90deg,
+        rgb(var(--rgb-celeste) / 0.7) 0%,
+        rgb(var(--rgb-celeste) / 0.22) 55%,
+        rgb(var(--rgb-celeste) / 0) 100%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bar-field-row {
+      animation: bar-breathe var(--bar-duration) var(--ease-in-out-quint) infinite;
+      animation-delay: var(--bar-delay);
+    }
+  }
+
+  .bloom {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    filter: blur(70px);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bloom-drift {
+      animation: bloom-drift 26s var(--ease-in-out-quint) infinite;
+    }
+  }
+
+  .hairline {
+    height: 1px;
+    transform-origin: left center;
+    background: linear-gradient(90deg,
+        rgb(var(--rgb-celeste) / 0) 0%,
+        rgb(var(--rgb-celeste) / 0.85) 10%,
+        rgb(var(--rgb-celeste) / 0.25) 55%,
+        rgb(var(--rgb-celeste) / 0) 100%);
+  }
+
+  .hairline-azul {
+    background: linear-gradient(90deg,
+        rgb(var(--rgb-azul) / 0) 0%,
+        rgb(var(--rgb-azul) / 0.6) 10%,
+        rgb(var(--rgb-azul) / 0.18) 55%,
+        rgb(var(--rgb-azul) / 0) 100%);
+  }
+
+}

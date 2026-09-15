@@ -1,0 +1,68 @@
+/* Form fields — the well, its label and its states. Only ever used inside a reading panel. */
+
+@layer components {
+  /* --- Form fields ---------------------------------------------------------
+   *
+   * Only ever used inside a reading panel, so the well is cut into the glass
+   * rather than laid on it: a white box there would be a hole in the pane. It
+   * is a darker step of the same material — no fill, a touch of ink, and the
+   * rim one weight up from the card's own. The focus ring is the border
+   * brightening rather than an outline, which at this radius would read as a
+   * second border.
+   */
+  .field {
+    width: 100%;
+    border-radius: var(--card-radius);
+    border: 1px solid rgb(255 255 255 / 0.22);
+    background-color: rgb(var(--rgb-ink) / 0.22);
+    color: var(--blanco);
+    padding: 0.8rem 0.9rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition:
+      border-color var(--dur-base) var(--ease-in-out-quad),
+      box-shadow var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .field::placeholder {
+    /* A hint beside a real label, so it stays clearly not-yet-filled. */
+    color: var(--on-label);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--celeste);
+    box-shadow: 0 0 0 1px var(--celeste);
+  }
+
+  /* Set by the form only after a failed submit attempt, never on first paint:
+     a field that is red before anyone has typed in it is scolding the visitor
+     for not having started. */
+  .field[aria-invalid="true"] {
+    border-color: var(--voz-suave);
+    box-shadow: 0 0 0 1px var(--voz-suave);
+  }
+
+  /* `.field-row` carries no styling of its own — it is the wrapper the label
+     and the field share, and it exists so `:has` below can reach back up to
+     it from the field. Label and field are siblings in that order, and there
+     is no combinator that walks backwards. */
+  .field-label {
+    /* The 11px uppercase type is shared with `.eyebrow` — a field's name and a
+       card's category are the same label. */
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--on-eyebrow);
+    transition: color var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  /* The label brightens with its own field, on the field's clock, so focusing
+     an input reads as one thing lighting up. To full white, not to celeste:
+     no text on the card surface carries an accent any more — see the ink note
+     in `card.css`. The focus ring below is still celeste, because that is a
+     state indicator rather than something being read. */
+  .field-row:has(.field:focus) .field-label {
+    color: var(--blanco);
+  }
+
+}

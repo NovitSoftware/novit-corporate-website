@@ -4,7 +4,7 @@ import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
-import { academyContent, academyProgram } from "@/content/site";
+import { academyContent } from "@/content/site";
 
 /**
  * The Academia, on the home page: what it is, who backs it, who it is not
@@ -31,14 +31,12 @@ import { academyContent, academyProgram } from "@/content/site";
  * reader is what the thing is and one reason not to pursue it, not a
  * demand for a click.
  *
- * So the band states its case and stops. Note the consequence, because it
- * is a decision and not an oversight: nothing on the home page links to
- * `/academianovit` any more, which by `SiteHeader`'s own rule — with the
- * menu gone, a route nothing points at is dead weight — puts that route's
- * future in question rather than merely unlinking it.
+ * So the band states its case and stops. Nothing on the home page links to
+ * `/academianovit`; the footer does, which is what keeps that route from
+ * being dead weight under `SiteHeader`'s own rule.
  *
- * The load and modality are in the hero's announcement strip a screen
- * above; everything else is on the page.
+ * The programme — the five blocks, the marking criteria, the edition and the
+ * address to write to — is on that page.
  *
  * The violet runs through it, because this is Novit talking about its own
  * teaching, and violet is what that means in this system.
@@ -61,7 +59,13 @@ export function AcademySection() {
               </p>
             }
             below={
-              /* The disqualifier, and now the whole of the panel.
+              /* The load, and now the whole of the panel.
+
+                 It used to be the disqualifier — "No es una academia de nivel
+                 inicial", marked with the `alert` glyph — and that sentence
+                 left the site when `/academianovit` dropped its "A quién está
+                 dirigida" band: a filter here with no page to explain it turns
+                 readers away and has nowhere to send the ones who stay.
 
                  The label takes a rail of its own beside the statement
                  rather than sitting on top of it. With the button gone the
@@ -77,21 +81,21 @@ export function AcademySection() {
                       their caps land within a couple of pixels of each other.
                       A padding nudge would be fitted to one type size; this
                       is the same token the sentence beside it uses. */}
-                  <h3 className="flex items-start gap-2.5 eyebrow text-violeta-medio lg:leading-8">
-                    {/* `alert`, not `academy`: what this panel does is turn
-                        the wrong reader away, and the mark should say so
-                        before the sentence does.
+                  <h3 className="card-ink-voice flex items-start gap-2.5 eyebrow lg:leading-8">
+                    {/* `academy`, where this was `alert` — the mark said the
+                        panel was a warning, and what it holds now is the
+                        shape of the cursada.
 
                         A `micro` glyph, not the 40px `IconBadge` that was
                         here: a plate is the identity mark of a card's head
                         zone, and beside 11px uppercase it ran nearly four
                         times the height of the words it marked. `micro` is
                         the size this scale of label takes everywhere else. */}
-                    <IconLine name="alert" size="micro" />
-                    Para quién es
+                    <IconLine name={academyContent.note.icon} size="micro" />
+                    {academyContent.note.label}
                   </h3>
-                  <p className="mt-5 max-w-[62ch] text-base font-bold leading-7 text-violeta-medio sm:text-lg sm:leading-8 lg:mt-0">
-                    {academyProgram.entryLevel}
+                  <p className="card-ink-voice mt-5 max-w-[62ch] text-base font-bold leading-7 sm:text-lg sm:leading-8 lg:mt-0">
+                    {academyContent.note.text}
                   </p>
                 </div>
               </ReadingPanel>

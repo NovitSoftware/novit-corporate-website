@@ -98,6 +98,9 @@ const ICONS = {
       <path d="M14 3v5h5" />
     </>
   ),
+  /* No `mail` here. The inbox is only ever listed beside Instagram and
+     LinkedIn, so it takes `ContactIcons`' `MailIcon` with them rather than a
+     stroked lookalike from this registry. */
   /** A conversation handled by an assistant. */
   chat: (
     <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H9l-4 3v-4.4A7.5 7.5 0 0 1 12.5 4 7.5 7.5 0 0 1 20 11.5Z" />
@@ -291,13 +294,10 @@ export function Icon({ name, size = "inline", className, ...props }: IconProps) 
  *
  * ## Why this exists
  *
- * Three call sites used to correct this by hand, with three different
- * mechanisms — `mt-1`, `mt-0.5` and `translate-y-0.5` — against three
- * different parent alignments (`items-start`, `items-start`,
- * `items-baseline`). Every one of those numbers was fitted to one type size
- * and one leading, so any change to either broke all three silently and
- * independently. Two of them already disagreed by 2px for no reason anyone
- * could state.
+ * Correcting the alignment by hand at the call site — `mt-1`, `translate-y-0.5`
+ * and the like — fits the number to one type size and one leading, so any
+ * change to either breaks it silently. Several call sites doing that
+ * independently drift apart by a pixel or two that nobody can account for.
  *
  * The fix is to stop guessing. `h-[1lh]` is *the adjacent text's own line
  * height*, so an icon centred in that box is centred on the first line by

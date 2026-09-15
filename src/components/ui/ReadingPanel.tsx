@@ -21,31 +21,20 @@ type ReadingPanelProps = {
  * ground from having to be dimmed until it is grey just to hold body copy at
  * a legible contrast.
  *
- * ## It is the same ground as a card, and now it says so
+ * ## The same ground as a card
  *
- * This used to render `.surface`, a class that declared the same background,
- * border and text colour as `.card` under a different name. Two names for one
- * ground is how `ServicesArchitecture` came to hand-build a violet card by
- * pasting classes together — the two were interchangeable, so nothing flagged
- * that the div was missing the states a real card has. Both components now sit
- * on `.card`, take their accent from the same `--card-accent` knob, and differ
- * in exactly one thing: `Card` fixes its composition and this does not.
+ * It renders `.card`: one glass ground, one ink set, one set of states, shared
+ * with `Card`. The two differ in exactly one thing — `Card` fixes its
+ * composition and this does not. There is no second surface class to drift
+ * from it, and no call site may assemble one by pasting the parts together.
  *
- * ## It has no accent prop, and neither has `Card`
+ * Anything set inside a panel therefore takes its colour from the card's inks
+ * (`.card-ink*`), never from a light-ground token. A panel where Novit is doing
+ * the talking says so with `.card-ink-voice`.
  *
- * The 3px rule was opt-in here and mandatory on `Card`, so eight panels stood
- * beside cards that had one and read as a different object. Then the prop
- * chose between a celeste and a violet rule, which inverted the system's own
- * rule about what violet means. Both are gone: the rule belongs to `.card`,
- * it is cyan because this is a light ground, and a panel where Novit is doing
- * the talking says so in its copy — `ServicesStart`'s commitment and
- * `AcademyRegistration`'s channels are already set in `violeta-medio`. See
- * `cards/Card.tsx` for the chapter and verse.
- *
- * `.card-roomy` is the one deliberate difference in the ground itself. A panel
- * holding four paragraphs wants more padding than a card holding a title and
- * three lines, so it takes one step more — replacing the three different
- * paddings that had accumulated across these call sites.
+ * `.card-roomy` is the one deliberate difference in the ground: a panel holding
+ * four paragraphs takes one padding step more than a card holding a title and
+ * three lines.
  */
 export function ReadingPanel({
   as: Tag = "div",
@@ -54,11 +43,7 @@ export function ReadingPanel({
   ...props
 }: ReadingPanelProps) {
   return (
-    <Tag
-      data-tone="light"
-      className={cn("card card-roomy", className)}
-      {...props}
-    >
+    <Tag className={cn("card card-roomy", className)} {...props}>
       {children}
     </Tag>
   );

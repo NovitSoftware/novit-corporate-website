@@ -1,0 +1,245 @@
+/* Tokens — the palette, the scene gradient, layout and motion constants, and the Tailwind theme they feed. */
+
+/* ==========================================================================
+   Novit — tokens
+
+   The brand palette comes from `novit-design-system.md` (brandbook ene-2024 +
+   paleta 2015). The derived steps below are same-hue, same-saturation shades
+   of those brand colors — hsl(244.5 100% L) for the azul family and
+   hsl(198.7 75% L) for the celeste family. They exist only to build depth
+   (grounds, gradients, hover states) and never add a new brand hue.
+   ========================================================================== */
+
+:root {
+  /* Brand */
+  --azul: #0a0089;
+  --azul-deep: #07005c;
+  --celeste: #3db0e4;
+  /* Accent for light grounds, and only for those. It is `--scene-3` itself, so
+     on the glass card it reads 1.93:1 — that surface takes `--celeste-pale`.
+     See the ink note in `card.css`. */
+  --cyan: #3398dc;
+  --negro: #000000;
+  --blanco: #ffffff;
+  /* Body copy on a light ground. The palette declared #000; the radar uses
+     this, 11.6:1 on the card surface and easier on screen than pure black. */
+  --texto: #333333;
+
+  /* Novit's own voice. In the radar azul is the world — the news, the fact,
+     what happened — and violet is Novit talking, so the colour says whose
+     voice it is. `--violeta` is the ramp's end, `--violeta-medio` its middle
+     and the one that carries text (12.1:1 on the card surface). This replaces
+     the 2024 magenta, which leaves commercial material entirely. */
+  --violeta: #85067b;
+  --violeta-medio: #510371;
+  /* Novit's voice on a dark ground.
+   *
+   * `--violeta-medio` is the ramp's middle and it was picked for one surface:
+   * 12,1:1 on the card grey. The card is glass over the scene gradient now, so
+   * that step reads at about 1,4:1 there — the voice would be a colour nobody
+   * can see. This is the same ramp's soft end, `#F1EBFB`, which
+   * `novit-marca-tokens.html` registers as the opening stop of
+   * `--surface-voz-suave`, the gradient the radar sets Novit's own asides on.
+   * A violet-tinted white: the hue still says whose voice it is, at a contrast
+   * the ground can carry. Same semantic, the step this surface calls for —
+   * exactly the cyan/celeste split one paragraph down. */
+  --voz-suave: #f1ebfb;
+  /* Instagram and the rest of social, where the 2024 identity still lives in
+     full. Never on this site's own surfaces. */
+  --magenta: #ba08a8;
+
+  /*
+   * There is no alert red, and there was one for about an hour.
+   *
+   * The risk band on `/inteligencia-artificial` needs its six headings to read
+   * as damage rather than as features, and the brochure it comes from does
+   * that in red — so a `--rojo-alerta` went in. On screen, next to a page
+   * built entirely out of blues and violets, a brick red reads as orange: a
+   * colour from no system at all. The palette is closed, and the band gets its
+   * emphasis from `--violeta-medio` instead, which is the mark for Novit
+   * speaking — and the six risks are Novit's reading of what happens, not a
+   * neutral fact about the market. Do not reintroduce a warning hue.
+   */
+
+  /* Derived — azul family */
+  --ink: #040038;
+  --azul-700: #080070;
+  --azul-500: #0d00ad;
+
+  /* Derived — celeste family */
+  --celeste-deep: #187caa;
+  --celeste-pale: #d2edf9;
+
+  /* Greys, from the AI Radar. The 2015 pair (#EAEBEC, #58585B) is superseded —
+     keeping two sets in parallel is what let every past piece invent its own.
+     Three of the seven steps are carried over, and the cut is by job rather
+     than by taste. `gris-1` through `gris-4` (#8A94A0 and lighter) are the
+     ramp's *text* steps and they sit under 3:1 on this surface; nothing on
+     this page is written to not be read, so anything quieter is set smaller
+     in `--texto`, never paler.
+
+     `gris-borde-suave` is the exception, because it is not a text colour —
+     the system labels it "separadores internos" and a 1px rule answers to no
+     contrast minimum. With it the greys read as three weights of division,
+     which is the whole point: `gris-borde` is where a card ends,
+     `gris-borde-suave` is where a zone ends inside it, and the accent is
+     where the card's voice speaks. A separator at the same weight as the
+     outer edge reads as another box instead of a division. */
+  --gris-superficie: #f3f6f8;
+  --gris-borde: #e4e9ed;
+  --gris-borde-suave: #edf0f3;
+
+  /* Channel triplets, for alpha composition */
+  --rgb-azul: 10 0 137;
+  --rgb-azul-deep: 7 0 92;
+  --rgb-celeste: 61 176 228;
+  --rgb-magenta: 186 8 168;
+  --rgb-azul-500: 13 0 173;
+  --rgb-ink: 4 0 56;
+  /* `cierre`'s own endpoint (#85067B), for the atmosphere layers below — the
+     brandbook has no gradient past this violet, so the page-wide ground
+     settles here instead of inventing a magenta stage. Magenta itself stays
+     reserved for the one deliberate accent in `AcademyBlock`. */
+  --rgb-violeta: 133 6 123;
+  /* Cyan and celeste sat here as triplets too, so they could be taken at
+     alpha, and `--rgb-violeta-medio` beside them. All three are gone: the
+     card's rule is a registered `<color>` now and `color-mix` takes its
+     alpha, and the violet triplet never had a consumer.
+
+     The reasoning they carried is worth keeping. Cap. 01 assigns each accent a
+     ground and measures why: on the card grey celeste falls to 2,3:1 and cyan
+     holds 2,9:1, and over the violet it inverts — cyan drops to 4,2:1 while
+     celeste rises to 5,3:1. So cyan is the light-ground accent ("etiquetas,
+     categorías, líneas") and celeste the dark-ground one, which is why the
+     hero's strip — the one card-like thing standing on the gradient — carries
+     the only celeste rule on the site. */
+
+  /* On-color text hierarchy — the brand manual's opacity ramp for white copy
+     over the scene gradient, headline down to label. Consumed via the
+     `.text-on-*` utilities near the other type utilities below. */
+  --on-link: rgba(255, 255, 255, 0.95);
+  --on-heading: rgba(255, 255, 255, 0.9);
+  --on-eyebrow: rgba(255, 255, 255, 0.85);
+  --on-detail: rgba(255, 255, 255, 0.82);
+  --on-label: rgba(255, 255, 255, 0.62);
+  --on-box-fill: rgba(255, 255, 255, 0.09);
+  --on-box-border: rgba(255, 255, 255, 0.2);
+
+  /* Scene gradient — the site's one background, read by `body` below. It
+     lives on the one element in this layout that never scrolls, so it reads
+     as a fixed atmosphere behind the whole page: every section is
+     transparent on top of it, nothing repaints it band by band. Starts on
+     the brandbook's "cabecera" ramp; `useSceneGradient` in SmoothScroll.tsx
+     walks it through a brighter blue and into the "cierre" ramp, holding
+     there for the last stretch — so azul settles into violet, Novit's own
+     voice, by the foot of the page, without going past what the brandbook
+     actually specifies. These four are the resting, JS-off values: the
+     cabecera ramp, unanimated. Keep them equal to stage 0 in SmoothScroll. */
+  --scene-0: 13 11 146;
+  /* #0D0B92 */
+  --scene-1: 27 75 185;
+  /* #1B4BB9 */
+  --scene-2: 79 142 213;
+  /* #4F8ED5 */
+  --scene-3: 51 152 220;
+  /* #3398DC */
+  /* Scroll progress, 0 to 1, written alongside the stops above. The only
+     thing it drives is `opacity` on the atmosphere blooms: opacity on an
+     already-composited layer is a re-composite, while folding progress into
+     a gradient's own colour stops would re-raster the layer every frame. */
+  --scene-mix: 0;
+
+  /* Layout */
+  --space-1: 0.25rem;
+  --space-4: 1rem;
+  --space-9: 2.25rem;
+  --header-height: 4.5rem;
+  --measure: 68ch;
+  /* Panels are rounded; chips and CTA buttons are full pills.
+   *
+   * This was `0`, and the reasoning was sound for the surface it was written
+   * for: an opaque plate on a flat grid, where "the system is rules and right
+   * angles" and a 2px corner is one lit pixel that reads as a printing error.
+   *
+   * A sheet of glass is not that object. The corner is where a pane shows its
+   * thickness — it is the single strongest cue that the thing is a physical
+   * layer above the page rather than a hole cut in it — and a square-cornered
+   * translucent panel reads as a dimmed rectangle of background, which is the
+   * one thing this surface must not read as. So the token is a real radius
+   * now, and it stays a token: the card, the badge plate, the form well and
+   * the logo plate all take it, so they still read as cut from one sheet, and
+   * going back to a system of right angles is this one line. */
+  --card-radius: 0.875rem;
+  --chip-radius: 999px;
+  /* The CTA arrow block, and the room it stands in: the block plus the 2px
+     of trim on either side of it. The two are one number because the chip
+     trades that room between its start and end edges as the block crosses,
+     and the button must not change width while it does. */
+  --chip-arrow: 2.4rem;
+  --chip-slot: calc(var(--chip-arrow) + 4px);
+
+  /* Motion
+   *
+   * Two families, and which one a rule belongs to depends on whether the thing
+   * was already moving.
+   *
+   * `--ease-out-*` are for motion that arrives: a reveal, the header stepping
+   * aside, the intro. They start at full speed and decelerate, which is what
+   * something entering from elsewhere does — `expo` puts about 80% of the
+   * travel in the first quarter of the time.
+   *
+   * `--ease-in-out-quad` is for a control answering a pointer. Those start
+   * from rest and come back to rest, so they need to accelerate as well as
+   * decelerate; an out-curve on them snaps and then crawls, which is exactly
+   * how the hover states read before this token existed. Everything
+   * interactive — the CTA, fields, labels, cards, links — now runs on it at
+   * `--dur-base`, so the whole site answers a pointer at one speed.
+   */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-in-out-quad: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 620ms;
+
+  /* One thing casts, and only while the pointer is on it.
+
+     The rule used to be that nothing did: a drop shadow on a saturated
+     gradient reads as dirt rather than as height. That holds for an opaque
+     plate, which occludes the ground and needs no help saying so. Glass does
+     not occlude it — the ground runs straight through — so without a shadow
+     under it the pane has nothing to float above and settles back into the
+     page. The card's hover shadow is the exception and it is written in
+     `--card-shadow-lifted`, in `ink` rather than black, so it reads as the
+     gradient's own depth. Nothing else on the page casts. */
+}
+
+@theme inline {
+  --color-azul: var(--azul);
+  --color-azul-deep: var(--azul-deep);
+  --color-azul-700: var(--azul-700);
+  --color-azul-500: var(--azul-500);
+  --color-ink: var(--ink);
+  --color-celeste: var(--celeste);
+  --color-celeste-deep: var(--celeste-deep);
+  --color-celeste-pale: var(--celeste-pale);
+  --color-cyan: var(--cyan);
+  --color-violeta: var(--violeta);
+  --color-violeta-medio: var(--violeta-medio);
+  --color-voz-suave: var(--voz-suave);
+  --color-texto: var(--texto);
+  --color-gris-superficie: var(--gris-superficie);
+  --color-gris-borde: var(--gris-borde);
+  --color-gris-borde-suave: var(--gris-borde-suave);
+  --color-negro: var(--negro);
+  --color-blanco: var(--blanco);
+  --font-sans: var(--font-lato);
+  --spacing-header: var(--header-height);
+  /* Where an in-page link should stop: clear of the header, plus air. */
+  --spacing-anchor: calc(var(--header-height) + 1rem);
+  --radius-card: var(--card-radius);
+  --radius-chip: var(--chip-radius);
+  --ease-expo: var(--ease-out-expo);
+}
+

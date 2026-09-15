@@ -1,0 +1,287 @@
+/* Chips and the CTA — the pill label, and the two-block button whose arrow crosses it. */
+
+@layer components {
+  /* --- CTA chip ----------------------------------------------------------- */
+
+  /*
+   * Label block plus a separate arrow block, as one unit. On hover the arrow
+   * block crosses to the other side of the label and the label slides over to
+   * where the block was.
+   *
+   * ## `width: fit-content`, or the button is as wide as whatever holds it
+   *
+   * `inline-flex` sizes to its content only while the element is not itself a
+   * flex or grid item. Every CTA on the site sits inside `.card` or a
+   * `flex-col` block, whose default `align-items: stretch` overrides that and
+   * pulls the chip to the full width of the column — reported as a stretched
+   * bar with the label marooned at its left end. `fit-content` is the width
+   * the chip would have had, stated in a form `stretch` cannot override, and
+   * `max-width` lets it shrink on a narrow screen instead of overflowing.
+   *
+   * ## The arrow's slot is padding, so the two sides can trade it
+   *
+   * The blocks are absolutely positioned and the room they stand in is a
+   * padding on whichever side is theirs. Both are lengths, so the swap is two
+   * interpolations rather than a reflow, and because the two paddings always
+   * sum to the same total the button never changes width while it animates.
+   *
+   * `overflow: hidden` is the other half of the effect: it is what lets the
+   * trailing block leave past the end edge and the leading one arrive from the
+   * start edge, each clipped by the pill's own curve.
+   */
+  .chip-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: var(--chip-radius);
+    /* 2px of trim on three sides; the fourth side is the arrow's slot. */
+    padding: 2px;
+    padding-inline-start: 2px;
+    padding-inline-end: var(--chip-slot);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    /* The ground, the slot the arrow stands in and the lift were on three
+       different curves and two clocks, so the four moving parts of one button
+       arrived at four different times. One curve, and the only thing still on
+       its own clock is the press, which has to feel immediate. */
+    transition:
+      background-color var(--dur-base) var(--ease-in-out-quad),
+      padding var(--dur-base) var(--ease-in-out-quad),
+      transform var(--dur-fast) var(--ease-in-out-quad);
+  }
+
+  .chip-cta:hover,
+  .chip-cta:focus-visible {
+    padding-inline-start: var(--chip-slot);
+    padding-inline-end: 2px;
+  }
+
+  /*
+   * The press, and it did nothing for months.
+   *
+   * `.chip-cta:active` and `.chip-cta-light:hover` are both one class and one
+   * pseudo-class, so they carry identical specificity and the later rule in
+   * the file wins — which was the hover lift, 120 lines below. A pointer that
+   * is pressing a button is also hovering it, so the press was always losing
+   * to the state it happens inside. `:where()` on the lifts drops them to zero
+   * specificity (see `.chip-cta-light:hover` below) so this wins on its own
+   * merits rather than on line order.
+   */
+  .chip-cta:active {
+    transform: translateY(1px);
+  }
+
+  .chip-cta_label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: calc(var(--chip-radius) - 2px);
+    padding: 0.7rem 1.1rem;
+  }
+
+  .chip-cta_label>span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .chip-cta_label::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    /* Same clock and curve as the arrow, so the fill and the hand-over are
+       one gesture rather than two effects that happen to overlap. */
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .chip-cta:hover .chip-cta_label::before,
+  .chip-cta:focus-visible .chip-cta_label::before {
+    transform: scaleX(1);
+  }
+
+  /*
+   * The arrow block: two of them, one parked at each end, and only ever one of
+   * them inside the button.
+   *
+   * ## Why not one block that crosses
+   *
+   * A single block sliding from one end to the other was tried first and it is
+   * wrong: it has to travel the whole length of the label — 181px on the
+   * widest CTA — while the label only steps aside by the 42px it gives up, so
+   * for about a third of the transition the block is sitting on top of the
+   * words. Measured, it covered all 38px of its width in letters.
+   *
+   * ## So the block leaves the button instead
+   *
+   * The trailing one slides out past the end edge as the leading one slides in
+   * from the start edge, both clipped by the chip's `overflow: hidden`. That is
+   * the gesture as the client described it — "slide to right and appear in the
+   * left side" — and the arithmetic says the two can never touch the text:
+   * each block travels its own width plus the 2px trim, exactly the distance
+   * the label's padding gives up on the other side, so the 1.1rem of padding
+   * inside the label stays between the glyph and the block for the whole
+   * transition.
+   *
+   * `transform`, not `left`: the distance is now the block's own width, which
+   * a percentage translate states directly, and it stays off the layout.
+   *
+   * An explicit width, not `aspect-ratio`: the block's height comes from the
+   * label beside it, so it is only definite after layout, and a ratio with
+   * nothing but a 10px glyph to size from collapses the block to a sliver.
+   */
+  .chip-cta_arrow {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    display: grid;
+    place-items: center;
+    width: var(--chip-arrow);
+    border-radius: calc(var(--chip-radius) - 2px);
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .chip-cta_arrow-trail {
+    right: 2px;
+  }
+
+  /* Parked just outside the start edge, where the pill's curve hides it. */
+  .chip-cta_arrow-lead {
+    left: 2px;
+    transform: translateX(calc(-100% - 2px));
+  }
+
+  .chip-cta:hover .chip-cta_arrow-trail,
+  .chip-cta:focus-visible .chip-cta_arrow-trail {
+    transform: translateX(calc(100% + 2px));
+  }
+
+  .chip-cta:hover .chip-cta_arrow-lead,
+  .chip-cta:focus-visible .chip-cta_arrow-lead {
+    transform: translateX(0);
+  }
+
+  /*
+   * The glyph does not move on its own any more. There used to be two of them
+   * in here, one leaving right as the other arrived from the left, both
+   * travelling 14px inside a 38px block — an attempt to suggest the movement
+   * without any, which at that scale reads as a twitch, and whose first
+   * version overshot the block and showed a half arrow sliced by the corner.
+   * The block carries it now.
+   *
+   * It points the same way on both sides: onward is what the button does
+   * whichever end its block is standing at.
+   */
+  .chip-cta_glyph {
+    display: inline-flex;
+  }
+
+  /* One block, parked at the trailing end, for anyone who does not want the
+     movement. The leading one is not rendered at all rather than held off the
+     edge, so nothing is waiting behind the curve. */
+  @media (prefers-reduced-motion: reduce) {
+
+    .chip-cta,
+    .chip-cta_arrow {
+      transition: none;
+    }
+
+    .chip-cta:hover,
+    .chip-cta:focus-visible {
+      padding-inline-start: 2px;
+      padding-inline-end: var(--chip-slot);
+    }
+
+    .chip-cta_arrow-lead {
+      display: none;
+    }
+
+    .chip-cta:hover .chip-cta_arrow-trail,
+    .chip-cta:focus-visible .chip-cta_arrow-trail {
+      transform: none;
+    }
+  }
+
+  /* On dark grounds the unit is celeste with an azul arrow, and inverts. */
+  .chip-cta-light {
+    background: var(--celeste);
+    color: var(--azul-deep);
+  }
+
+  .chip-cta-light .chip-cta_label::before {
+    background: var(--blanco);
+  }
+
+  .chip-cta-light .chip-cta_arrow {
+    background: var(--azul-deep);
+    color: var(--celeste);
+  }
+
+  /*
+   * The pill's own ground goes wherever the label's fill goes, so hover and
+   * focus change one continuous field instead of only the middle of it.
+   *
+   * ## Why the field and not the block
+   *
+   * The label's fill was the only thing that moved, which left the arrow block
+   * looking like the half of the button that had not noticed — reported as the
+   * focus background "not fitting well with the arrow button". Recolouring the
+   * block to match was tried first and is worse: the chip keeps 2px of its own
+   * ground as trim around both halves, so a white label beside a white block
+   * still had a celeste crescent between the two curves, and the block stopped
+   * reading as a plate at all. Moving the ground instead settles both — the
+   * trim matches the fill, so there is no seam to see, and the plate keeps the
+   * contrast that makes it a plate.
+   *
+   * Not `:where()`: one class plus a pseudo-class outranks the variant's own
+   * one-class rule, so this does not depend on sitting further down the file
+   * the way the old hover lift silently did.
+   */
+  .chip-cta-light:hover,
+  .chip-cta-light:focus-visible {
+    background: var(--blanco);
+  }
+
+  /* A lift, not a glow: nothing on this page casts onto the ground.
+
+     `:where()` so the whole selector weighs nothing and `.chip-cta:active`
+     above beats it. Without that the press lost to the hover it happens
+     inside, on nothing but line order. */
+  .chip-cta-light:where(:hover, :focus-visible) {
+    transform: translateY(-1px);
+  }
+
+  /* On light grounds it is azul with a white arrow. */
+  .chip-cta-dark {
+    background: var(--azul);
+    color: var(--blanco);
+  }
+
+  .chip-cta-dark .chip-cta_label::before {
+    background: var(--azul-500);
+  }
+
+  .chip-cta-dark .chip-cta_arrow {
+    background: var(--blanco);
+    color: var(--azul);
+  }
+
+  /* Same idea as the light variant above: the whole field follows the fill. */
+  .chip-cta-dark:hover,
+  .chip-cta-dark:focus-visible {
+    background: var(--azul-500);
+  }
+
+  /* `:where()` for the same reason as the light variant above. */
+  .chip-cta-dark:where(:hover, :focus-visible) {
+    transform: translateY(-1px);
+  }
+
+}

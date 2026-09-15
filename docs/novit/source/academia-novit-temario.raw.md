@@ -23,10 +23,10 @@ cuando hace falta un agente
 - Diseñar tools con contratos claros e integrar servidores MCP
 Construir el contexto que recibe el modelo con criterio (context engineering) e
 implementar RAG sobre PostgreSQL
-Consumir proveedores de LLM en la nube y administrar limites de costo y de uso
-Comprender cuando y para que tiene sentido ejecutar un modelo de lenguaje en forma
-local o en el borde
-Seleccionar el modelo adecuado para cada tarea segun proposito, costo y latencia
+- Consumir proveedores de LLM en la nube y administrar limites de costo y de uso
+- Comprender cuando y para que tiene sentido ejecutar un modelo de lenguaje en forma
+local o en la nube
+- Seleccionar el modelo adecuado para cada tarea segun proposito, costo y latencia
 Evaluar la eficiencia de un agente en terminos de costo y tiempo de respuesta
 - Aplicar defensas de seguridad sobre entradas de usuario y definir permisos minimos e
 identidad del agente

@@ -1,3 +1,4 @@
+import { cardCopy } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
 import { PanelRow, panelRowRule } from "@/components/ui/PanelRow";
 import { PinnedIntro } from "@/components/ui/PinnedIntro";
@@ -15,20 +16,19 @@ import { cn } from "@/lib/cn";
  * headings are not a continuation of the home page's argument — but the
  * blocks genuinely run one after another.
  *
- * ## What came out of it
+ * ## A sentence per block, and no hours
  *
- * Four or five topics under each block, and a class count beside each. Both
- * are gone. The topics were the full syllabus — "RAG: embeddings, chunking,
- * similitud, e implementación sobre PostgreSQL con pgvector" and twenty more
- * like it — which reads as a contract to teach exactly that list, an edition
- * ahead of time, and which turned a page about a course into the course
- * document. The class counts are the same problem one size down: "3 clases de
- * 2 horas" per block commits a timetable that has not been drawn yet, and the
- * totals a reader needs are already in the opener's stat row.
+ * Each row carries one compressed sentence from
+ * `docs/novit/academia-novit.md`, because a two-word title describes nothing —
+ * "Contexto y conocimiento" is unreadable without the temario open. One
+ * sentence, not the full syllabus: the twenty-odd topic bullets stay in the
+ * temario, where they belong.
  *
- * What is left is the shape of the programme, which is what a page can
- * promise. Five rows on one panel rather than five cards, and set quietly:
- * this is reference, not persuasion.
+ * No per-block hours. They make the panel read as a timetable, and the totals a
+ * reader needs are in the opener's stat row.
+ *
+ * Five rows on one panel rather than five cards, and set quietly: this is
+ * reference, not persuasion.
  *
  * Beside the statement rather than under it. Five two-word titles across the
  * full measure is a panel two thirds empty — the band claimed a width it had
@@ -58,7 +58,9 @@ export function AcademySchedule() {
                         index={String(index + 1).padStart(2, "0")}
                         icon={module.icon}
                         title={module.title}
-                      />
+                      >
+                        <p className={cardCopy}>{module.detail}</p>
+                      </PanelRow>
                     </li>
                   ))}
                 </ol>

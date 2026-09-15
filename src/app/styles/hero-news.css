@@ -1,0 +1,72 @@
+/* The hero's Academia strip — the one card-like thing that sits directly on the gradient. */
+
+@layer components {
+  /* --- The hero's news row -------------------------------------------------
+   *
+   * The one card-like thing on the page that sits on the gradient rather than
+   * on the reading surface, because the hero is one of the two bands where the
+   * gradient *is* the surface. So the states are built out of white alpha
+   * instead of the light-surface tokens: the well brightens, the rule between
+   * label and arrow draws across, and the arrow leans the way every other
+   * arrow on the site leans.
+   *
+   * ## It carries the card's rule, in its own ground's accent
+   *
+   * It had a plain 1px border all round and nothing on top, which made it the
+   * last box on the site that read as a card with its rule missing. It carried
+   * a 3px celeste top border for that, and both halves of the reasoning have
+   * since gone: the card has no accent rule any more, and a 3px edge on one
+   * side of a rounded box wraps into the curve. The accent is where the card
+   * puts it now — in the type, on the dot and the label the strip already has.
+   *
+   * ## The ground lives here, not in the class list
+   *
+   * Border, radius and fill were Tailwind utilities on the element, and a
+   * utility outranks this layer — so the rule above was declared, shipped, and
+   * silently beaten by `border-blanco/20` for as long as it took to screenshot
+   * it. The element keeps its layout classes and nothing else.
+   */
+  .hero-news {
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: var(--card-radius);
+    background-color: rgb(255 255 255 / 0.05);
+    box-shadow: var(--card-highlight, inset 0 1px 0 rgb(255 255 255 / 0.22));
+    transition: background-color var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  /* `--dur-base`, not `--dur-slow`: 620ms is the clock a section reveal runs
+     on, and on a hover it reads as the strip still settling long after the
+     pointer arrived. */
+  .hero-news_rule {
+    transform: scaleX(0.35);
+    transform-origin: left center;
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .hero-news_arrow {
+    transition: transform var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  @media (hover: hover) {
+    .hero-news:hover {
+      background-color: rgb(255 255 255 / 0.07);
+    }
+
+    .hero-news:hover .hero-news_rule {
+      transform: scaleX(1);
+    }
+
+    .hero-news:hover .hero-news_arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  .hero-news:focus-visible {
+    background-color: rgb(255 255 255 / 0.07);
+  }
+
+  .hero-news:focus-visible .hero-news_rule {
+    transform: scaleX(1);
+  }
+
+}

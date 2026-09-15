@@ -45,7 +45,7 @@ export function SafetySection() {
                       `safetyContent`. The four cards beside this are where
                       the reader goes next. */}
                   <ReadingPanel className="mt-9 max-w-[62ch]">
-                    <p className="text-base leading-7 text-texto">
+                    <p className="card-ink-body text-base leading-7">
                       {safetyContent.description}
                     </p>
                   </ReadingPanel>

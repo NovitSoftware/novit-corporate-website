@@ -5,22 +5,24 @@ import { cn } from "@/lib/cn";
 /**
  * What stands at the head of each row, and the gap it takes.
  *
- * `check` is a 16px tick in azul — what is included, what the line covers.
- * `rule` is a 2px violet dash, for a list nobody ticks off: the four things
- * the Academia takes as given are conditions on a decision, and a tick beside
- * one implies the reader has met it.
+ * `check` is a 16px tick — what is included, what the line covers. `rule` is a
+ * 2px dash in the voice ink, for a list nobody ticks off: a tick beside one of
+ * the Academia's conditions implies the reader has met it.
  *
- * The gap is part of the marker and not one value for both, because the dash
- * is 16px of solid ink where the tick is a 16px box of mostly white. Set to
- * the same 10px the tick takes, the dash crowds the text it marks.
+ * The gap is part of the marker and not one value for both: the dash is 16px
+ * of solid ink where the tick is a 16px box of mostly air, so at the tick's
+ * 10px the dash crowds the text it marks.
  */
 const marker = {
-  check: { gap: "gap-2.5", glyph: <IconLine name="check" size="inline" className="text-azul" /> },
+  check: {
+    gap: "gap-2.5",
+    glyph: <IconLine name="check" size="inline" className="card-ink-label" />,
+  },
   rule: {
     gap: "gap-4",
     glyph: (
       <span aria-hidden="true" className="flex h-[1lh] shrink-0 items-center">
-        <span className="block h-0.5 w-4 bg-violeta-medio" />
+        <span className="block h-0.5 w-4 bg-voz-suave" />
       </span>
     ),
   },
@@ -93,8 +95,7 @@ export function CardList({
             cardCopy,
             /* A shared hairline between rows rather than a border on each:
                four bordered rows read as four fields in a form. */
-            divided &&
-              "border-t border-t-gris-borde-suave py-4 first:border-t-0 first:pt-0",
+            divided && "card-divide py-4 first:border-t-0 first:pt-0",
           )}
         >
           {glyph}

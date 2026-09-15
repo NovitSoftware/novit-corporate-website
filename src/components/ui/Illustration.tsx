@@ -39,9 +39,9 @@ export function Illustration({
     <div
       aria-hidden="true"
       className={cn(
-        /* White, not the surface grey: `.card` is already `--gris-superficie`,
-           so a grey plate inside a card would be invisible. White is the
-           system's other page surface, and it reads on the card and directly
+        /* White, the system's other page surface: `.card` is a translucent
+           glass ground, so a grey plate inside it would vanish into the
+           milk. White reads on the glass and directly
            on the gradient alike. */
         /* Flex, not grid. A grid's implicit row is `auto`, so the image's
            `height: 100%` is cyclic there and falls back to intrinsic height —

@@ -6,7 +6,7 @@ import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
 import { StatRow } from "@/components/ui/StatRow";
-import { aboutContent, heroContent, partnersContent } from "@/content/site";
+import { aboutContent, partnersContent } from "@/content/site";
 import { cn } from "@/lib/cn";
 
 /**
@@ -32,7 +32,7 @@ export function AboutSection() {
           >
             <div data-anim-block>
               <p data-anim="rise" className="display-m max-w-[44ch] text-blanco">
-                {heroContent.supporting}
+                {aboutContent.statement}
               </p>
 
               <ReadingPanel className="mt-10 max-w-[72ch]">
@@ -40,7 +40,7 @@ export function AboutSection() {
                   <p
                     key={paragraph.slice(0, 24)}
                     className={cn(
-                      "max-w-[68ch] text-base leading-7 text-texto",
+                      "card-ink-body max-w-[68ch] text-base leading-7",
                       index > 0 && "mt-5",
                     )}
                   >

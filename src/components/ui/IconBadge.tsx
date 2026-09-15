@@ -9,36 +9,29 @@ type IconBadgeProps = {
 /**
  * An icon on a tinted plate — the mark at the top of a card.
  *
- * Every card on this site used to open with a text label, which is why a grid
- * of them read as one undifferentiated wall: at a glance nothing told the risk
- * card apart from the infrastructure card, so the reader had to start reading
- * to find out which was which. The badge is what gives each card something to
- * be recognised by before a word of it is read.
+ * It gives each card something to be recognised by before a word of it is read.
+ * A grid of cards opening on text labels alone reads as an undifferentiated
+ * wall: nothing tells one from another at a glance, so the reader has to start
+ * reading to find out which is which.
  *
- * ## Cyan plate, azul glyph
+ * ## A thinner pane on the pane
  *
- * Cyan `#3398DC` is the accent `novit-design-system.md` cap. 01 assigns to
- * light grounds, and this plate only ever sits on one. The glyph inside is
- * azul, and that is a contrast decision rather than a stylistic one: the same
- * chapter measures cyan at 2,9:1 on the surface grey where a graphical object
- * needs 3:1, so cyan does the tint — where contrast carries no meaning — and
- * azul (14,1:1) draws the icon.
+ * The plate is the same material as the card — a white film at 7% behind a 12%
+ * edge — so it reads as a chip of the same glass sitting on it rather than as a
+ * colour field. A solid accent plate would be invisible on glass.
  *
- * 12% is as far as the tint goes: the plate has to read as an object sitting
- * on the card, and the card's surface is the only ground it sits on.
+ * The glyph takes `--card-ink`, the title's ink rather than the label's: the
+ * mark and the heading it stands beside are one object, so they move together
+ * and neither is named at this call site.
  *
- * ## One treatment, no `tone` prop
- *
- * There were three: `cyan`, `voice` and a `dark` that never had a consumer.
- * `voice` existed for the violet card, and there is no violet card any more —
- * violet marks Novit's comment in the footer, not the whole object. See
- * `Card`. One plate, one tint, nothing to choose.
+ * One treatment and no `tone` prop. There is nothing here for a caller to
+ * choose.
  */
 export function IconBadge({ name, className }: IconBadgeProps) {
   return (
     <span
       className={cn(
-        "grid size-10 shrink-0 place-items-center rounded-card bg-cyan/12 text-azul",
+        "card-ink grid size-10 shrink-0 place-items-center rounded-card border border-blanco/12 bg-blanco/[0.07]",
         className,
       )}
     >

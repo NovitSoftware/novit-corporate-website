@@ -18,7 +18,7 @@ export function TeamSection() {
             title={teamContent.title}
             aside={
               <ReadingPanel>
-                <p className="text-base leading-7 text-texto">
+                <p className="card-ink-body text-base leading-7">
                   {teamContent.description}
                 </p>
                 <div className="mt-7">

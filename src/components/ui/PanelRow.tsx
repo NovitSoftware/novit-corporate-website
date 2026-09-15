@@ -5,6 +5,14 @@ type PanelRowProps = {
   /** The mark. Optional, but every row in a given list should agree. */
   icon?: IconName;
   /**
+   * A mark the shared set does not have — a brand logo. `ContactIcons` holds
+   * those, because Instagram and LinkedIn are marks rather than concepts and a
+   * generic icon set cannot carry them. Takes the same first-line box as
+   * `icon`, so a list may mix the two without the glyphs sitting at different
+   * heights.
+   */
+  mark?: ReactNode;
+  /**
    * A step number, for a list that genuinely is a sequence — the course blocks
    * in order, the four stages of an evolution. Not for a list of peers, where
    * numbering invents a progression the content does not have.
@@ -63,6 +71,7 @@ type PanelRowProps = {
  */
 export function PanelRow({
   icon,
+  mark,
   index,
   title,
   titleAside,
@@ -70,19 +79,26 @@ export function PanelRow({
 }: PanelRowProps) {
   return (
     <>
-      <h3 className="flex items-start gap-2.5 text-[1.0625rem] font-bold leading-snug text-azul">
+      {/* `card-ink-body`, not the heading ink: this is 17px, and the card's
+          cyan holds 3,4:1 — enough for a large title and short of the 4,5:1
+          type this size needs. White carries it. */}
+      <h3 className="card-ink-body flex items-start gap-2.5 text-[1.0625rem] font-bold leading-snug">
         {index ? (
           <span className="flex h-[1lh] shrink-0 items-center tabular-nums tracking-[0.12em]">
             {index}
           </span>
         ) : null}
-        {icon ? <IconLine name={icon} /> : null}
+        {mark ? (
+          <span className="flex h-[1lh] shrink-0 items-center">{mark}</span>
+        ) : icon ? (
+          <IconLine name={icon} />
+        ) : null}
         <span>
           {title}
           {titleAside ? (
             <>
               {" "}
-              <span className="text-violeta-medio">{titleAside}</span>
+              <span className="card-ink-voice">{titleAside}</span>
             </>
           ) : null}
         </span>
@@ -96,9 +112,8 @@ export function PanelRow({
  * The hairline that divides one row from the next, as a class rather than an
  * element — it goes on the `<li>` so the first row does not get one.
  *
- * `gris-borde-suave` and not `gris-borde`: this separates two rows *inside* a
- * panel, and a rule at the same weight as the panel's own edge reads as the
- * start of another panel. Same reasoning as the card's head separator.
+ * `.card-divide` and not the card's own head rule: this separates two rows
+ * *inside* a panel, and a rule at the same weight as the panel's edge reads as
+ * the start of another panel.
  */
-export const panelRowRule =
-  "border-t border-t-gris-borde-suave pt-5 first:border-t-0 first:pt-0";
+export const panelRowRule = "card-divide pt-5 first:border-t-0 first:pt-0";

@@ -109,7 +109,7 @@ export function ServicesArchitecture() {
                     `cards/Card.tsx`); the violet label inside it still says
                     whose platform it is. */}
                 <ReadingPanel data-anim="card" className="mt-6">
-                  <p className="text-[0.625rem] font-bold uppercase tracking-[0.18em] text-violeta-medio">
+                  <p className="card-ink-voice text-[0.625rem] font-bold uppercase tracking-[0.18em]">
                     {architecture.platformLabel}
                   </p>
                   <ul className="mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">

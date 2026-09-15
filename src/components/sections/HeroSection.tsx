@@ -43,10 +43,14 @@ export function HeroSection() {
             >
               {heroContent.eyebrow}
             </span>
+            {/* `20ch`, where this was `16ch`. The measure is fitted to the
+                headline: at 16ch the title — five words longer than the one
+                this band opened with — broke to four lines and the last one
+                held a single word. Same cap `AcademyOpener` uses. */}
             <h1
               data-anim="words"
               data-hero="title"
-              className="display-hero max-w-[16ch]"
+              className="display-hero max-w-[20ch]"
             >
               <SplitWords text={heroContent.title} />
             </h1>
@@ -106,8 +110,14 @@ export function HeroSection() {
 }
 
 /**
- * The Academia, announced above the headline — the very first thing on the
- * page, because it is the first priority.
+ * The Academia, above the headline — the very first thing on the page,
+ * because it is the first priority.
+ *
+ * It is a pointer, not a bulletin. The strip carries the course name, the load
+ * and the modality, all from the temario, and it links to the section below.
+ * Nothing about an edition — an opening date, a cupo, a closing — is published
+ * on this site; those go out on Novit's own accounts. See
+ * `academyPageContent.sections.registration`.
  *
  * It started life as a two-row block below the CTAs: one row for the Academia
  * and one for the AI practice. The services row repeated the H1 and the lead

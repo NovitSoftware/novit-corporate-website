@@ -1,0 +1,60 @@
+/* Type on the gradient — the white opacity ramp and the section label. */
+
+@layer components {
+  /* --- On-color text hierarchy --------------------------------------------- */
+
+  /* The brand manual's deliberate opacity ramp for white copy sitting on the
+     scene gradient — headline near-opaque down to the most de-emphasized
+     label. Tokens live in `:root` above, next to `--rgb-violeta`. Not every
+     existing ad hoc opacity in the codebase maps onto this scale (some sit
+     intentionally below `--on-label` as a quieter meta tier); only swap in a
+     class where it's a genuine match. */
+
+  .text-on-link {
+    color: var(--on-link);
+  }
+
+  .text-on-heading {
+    color: var(--on-heading);
+  }
+
+  .text-on-eyebrow {
+    color: var(--on-eyebrow);
+  }
+
+  .text-on-detail {
+    color: var(--on-detail);
+  }
+
+  .text-on-label {
+    color: var(--on-label);
+  }
+
+  /* --- Section labels ----------------------------------------------------- */
+
+  /* The small stacked labels that open every section: an outlined index over
+     a filled name. Lato bold with wide tracking stands in for the reference's
+     monospace, since the design system names Lato as the only family. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--chip-radius);
+    /* A pill needs the horizontal room its own curve takes away: at this
+       radius the old 0.5rem left the first and last letter sitting on the
+       arc. */
+    padding: 0.34rem 0.8rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .chip-outline {
+    border: 1px solid currentColor;
+  }
+
+}

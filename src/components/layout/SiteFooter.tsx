@@ -8,7 +8,12 @@ import {
 import { Divider } from "@/components/ui/Divider";
 import { Logo } from "@/components/ui/Logo";
 import { Scene } from "@/components/motion/Scene";
-import { footerContent, site, siteContact } from "@/content/site";
+import {
+  footerContent,
+  site,
+  siteContact,
+  type FooterContent,
+} from "@/content/site";
 import { cn } from "@/lib/cn";
 
 const footerLink =
@@ -20,8 +25,17 @@ const footerLink =
  * page. `ContactSection` owns it now, and two elements answering to one id is
  * invalid markup — the browser jumps to whichever comes first, which was this
  * one, past the form entirely.
+ *
+ * `content` is how a route gives the footer its own index. The default is the
+ * home page's; `/academianovit` passes `academyFooterContent`, because a footer
+ * listing Nosotros, Casos and the AI page under a course is a way out of the
+ * page rather than a map of it.
  */
-export function SiteFooter() {
+export function SiteFooter({
+  content = footerContent,
+}: {
+  content?: FooterContent;
+}) {
   return (
     <footer
       id="pie"
@@ -46,11 +60,11 @@ export function SiteFooter() {
                 data-anim="rise"
                 className="mt-5 max-w-[var(--measure)] text-sm leading-7 text-on-detail"
               >
-                {footerContent.mission}
+                {content.mission}
               </p>
               <div data-anim="rise" className="mt-7">
-                <ChipButton href={footerContent.contact.href} variant="light">
-                  {footerContent.contact.value}
+                <ChipButton href={content.contact.href} variant="light">
+                  {content.contact.value}
                 </ChipButton>
               </div>
               {/* Direct channels, under the CTA rather than replacing it: the
@@ -75,7 +89,7 @@ export function SiteFooter() {
                 </a>
               </div>
             </div>
-            {footerContent.columns.map((column) => (
+            {content.columns.map((column) => (
               <nav key={column.title} aria-label={column.title} data-anim-block>
                 <p
                   data-anim="wipe"
@@ -86,9 +100,21 @@ export function SiteFooter() {
                 <ul data-anim="rise" className="mt-4 space-y-2">
                   {column.links.map((link) => (
                     <li key={link.label}>
-                      <a href={link.href} className={cn(footerLink, "text-sm")}>
-                        {link.label}
-                      </a>
+                      {/* No `href` means it is a fact, not a destination —
+                          the edition's dates on `/academianovit`. An anchor
+                          with nowhere to go is a link that lies. */}
+                      {link.href ? (
+                        <a
+                          href={link.href}
+                          className={cn(footerLink, "text-sm")}
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <span className="text-sm text-on-detail">
+                          {link.label}
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -102,17 +128,17 @@ export function SiteFooter() {
               section rather than at policies that exist, and none are
               written yet. `social` is not: Instagram and LinkedIn are both
               live and linked from novitsoftware.com's own header. */}
-          {footerContent.legal.length + footerContent.social.length > 0 ? (
+          {content.legal.length + content.social.length > 0 ? (
             <div
               data-anim="rise"
               className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-on-detail"
             >
-              {footerContent.legal.map((item) => (
+              {content.legal.map((item) => (
                 <a key={item.label} href={item.href} className={footerLink}>
                   {item.label}
                 </a>
               ))}
-              {footerContent.social.map((item) => {
+              {content.social.map((item) => {
                 const Icon = SOCIAL_ICONS[item.id];
                 return (
                   <a

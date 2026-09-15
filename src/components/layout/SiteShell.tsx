@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { SectionHandoff } from "@/components/motion/SectionHandoff";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import type { FooterContent } from "@/content/site";
 
 /**
  * The chrome every route carries: the header, the band hand-off, the one
@@ -17,13 +18,20 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
  * once, on arrival at the site, and `HeroScene` waits on its completion
  * signal. Mounting it on every route would replay it on every navigation.
  */
-export function SiteShell({ children }: { children: ReactNode }) {
+export function SiteShell({
+  children,
+  footer,
+}: {
+  children: ReactNode;
+  /** A route's own footer index. Omitted, the footer maps the home page. */
+  footer?: FooterContent;
+}) {
   return (
     <>
       <SiteHeader />
       <SectionHandoff />
       <main id="contenido">{children}</main>
-      <SiteFooter />
+      <SiteFooter content={footer} />
     </>
   );
 }

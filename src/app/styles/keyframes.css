@@ -1,0 +1,116 @@
+/* Keyframes — the atmosphere's drift and the few looping marks. */
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 40px 40px;
+  }
+}
+
+/*
+ * The atmosphere's idle drift — translate and nothing else.
+ *
+ * Every one of these used to carry a `scale()`, and the sweep a `rotate()`.
+ * Both are the reason the layers were expensive: a promoted layer is rastered
+ * once at one scale, and changing its raster scale (or rotating it) throws
+ * that raster away and redraws the gradient, every frame, forever. Measured on
+ * /inteligencia-artificial, the five loops together cost 30ms of a 46ms
+ * frame — pausing them alone took the median to 18.7ms. Translate is the one
+ * transform the compositor really does move for free, so that is all they do
+ * now. Travel is up a little to carry the drift that the scale used to.
+ *
+ * Travel stays capped near 18%: past that the soft edge crosses a line of text
+ * fast enough for the eye to pursue it, and it pulls focus off the copy.
+ */
+@keyframes scene-sweep-drift {
+
+  0%,
+  100% {
+    transform: translate3d(-13%, -6.5%, 0);
+  }
+
+  50% {
+    transform: translate3d(13%, 6.5%, 0);
+  }
+}
+
+@keyframes scene-bloom-azul {
+
+  0%,
+  100% {
+    transform: translate3d(-7%, -5%, 0);
+  }
+
+  50% {
+    transform: translate3d(9%, 5%, 0);
+  }
+}
+
+@keyframes scene-bloom-celeste {
+
+  0%,
+  100% {
+    transform: translate3d(-2%, 2%, 0);
+  }
+
+  50% {
+    transform: translate3d(18%, -13%, 0);
+  }
+}
+
+@keyframes scene-bloom-violeta {
+
+  0%,
+  100% {
+    transform: translate3d(2%, -2%, 0);
+  }
+
+  50% {
+    transform: translate3d(-16%, 12%, 0);
+  }
+}
+
+/* Echoes the isotipo: bars of unequal length settling into place. */
+@keyframes bar-breathe {
+
+  0%,
+  100% {
+    transform: scaleX(0.7);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: scaleX(1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes bloom-drift {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.09);
+  }
+}
+
+@keyframes cue-travel {
+  0% {
+    transform: translateY(-110%);
+  }
+
+  100% {
+    transform: translateY(110%);
+  }
+}
+

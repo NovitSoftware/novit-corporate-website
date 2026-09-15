@@ -74,7 +74,7 @@ Copy source for the site's Academia section.
 
 Technical reference: exact colors, gradients and the SVG arrow vector with swatches.
 
-## marketing/transformacion-ia-brochure.md
+## brochures/transformacion-ia-brochure.md
 
 Structured transcript of the 2026 AI presentation *Partners de transformación IA*
 (ingested from `source/transformacion-ia-brochure.raw.md`): risks of buying loose

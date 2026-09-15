@@ -1,0 +1,312 @@
+/* The card — the one reading surface on the site: its ground, its inks, its states, its parts and its grid. */
+
+@layer components {
+
+  /* --- The card ground -----------------------------------------------------
+   *
+   * The reading plane, and one class for it: `Card` and `ReadingPanel` both
+   * render this, so every paragraph on the site sits on the same surface.
+   *
+   * ## The glass
+   *
+   * The pane reads *lighter* than what it sits on, the way a sheet of glass
+   * catches light off the room rather than shading it. Two plain layers do it:
+   * a wash of `--scene-2`, the ground's own current colour, and a white sheen
+   * over it. Both alphas come off `--card-glass`, so there is one number to
+   * turn.
+   *
+   * The wash is what keeps the lift proportional. A white film alone is
+   * hue-less and additive, and over the cabecera — `--scene-0` #0D0B92, the
+   * darkest ground on the journey — a quarter of white drains the blue and
+   * leaves a pale grey slab pasted over the page, while the same film on a
+   * brighter ground further down reads as a tint. Lightening the ground's own
+   * colour holds the hue at the top and at the cierre alike, and `--scene-2` is
+   * rewritten as the page turns, so the glass turns with it.
+   *
+   * Composite plainly, never with `backdrop-filter`. The filter samples the
+   * nearest *backdrop root*, and any ancestor with `opacity < 1` or a transform
+   * creates one — which is every reveal on this site, since the section wrapper
+   * tweens both. Mid-reveal the backdrop is the wrapper's own empty content, so
+   * the filter returns nothing and the card paints as a flat slab with the
+   * scene showing through it. Frost is available only if the reveals stop
+   * animating opacity on an ancestor of a card.
+   *
+   * `--card-glass` is set by the type, not by taste: every point it rises
+   * lightens the pane and costs the white body contrast, and the lightest the
+   * ground gets — `--scene-2` at #4F8ED5 — is where that is measured. Around
+   * 0,22 the body drops under 4,5:1.
+   *
+   * Depth is one translucent border, one inner highlight and one soft shadow.
+   * This surface holds every paragraph on the site, so it stays the quietest
+   * thing on the page: no gradient rim, no blended sheen, no displacement.
+   *
+   * ## The inks
+   *
+   * Declared here and read through the `.card-ink*` utilities, so a component
+   * asks for the job and never names a colour. White for the type,
+   * `--voz-suave` for Novit's voice, and that is the whole set.
+   *
+   * There is no accent ink, and the reason is measurable. `--cyan` #3398DC *is*
+   * `--scene-3`, so it sets a heading in the background's own colour at 1,57:1,
+   * and `--celeste` #3DB0E4 reaches about 2:1 over the blue bands against the
+   * 3:1 large text needs — clearing it at the cierre and nowhere else. A pane
+   * light enough to read as glass over this gradient has no room left for a
+   * light blue on top of it, so hierarchy comes from size and weight, which do
+   * not depend on what the ground is doing that scroll. The one step that does
+   * hold 3:1 across the whole journey is the same hue two lighter,
+   * hsl(198.7 75% 76%) #94D3F0; an accent goes here, once.
+   *
+   * `--card-pad` is the second knob, so `.card-zone` can cancel the padding
+   * exactly instead of tracking it at two breakpoints.
+   */
+  .card {
+    --card-pad: 1.5rem;
+    /* How solid the glass is: the one knob. The two layers below split it. */
+    --card-glass: 0.25;
+    /* The ink set. Read by the components through the `.card-*` utilities
+       below, never by naming a light-ground token at the call site. */
+    --card-ink: var(--blanco);
+    --card-ink-body: var(--blanco);
+    --card-ink-label: var(--blanco);
+    --card-ink-voice: var(--voz-suave);
+    /* Two weights of division, the same pair the light surface had: the head
+       separator, and the hairline between rows inside a panel. */
+    --card-rule: rgb(255 255 255 / 0.16);
+    --card-rule-soft: rgb(255 255 255 / 0.09);
+    /* The inner highlight: one line of light on the inside of the top edge.
+       It is the whole of the card's thickness, and at this alpha it is felt
+       rather than seen — which is the brief. */
+    --card-highlight: inset 0 1px 0 rgb(255 255 255 / 0.22);
+    /* Hover and focus both take this. The rest state declares the same two
+       outer layers at `transparent` so `box-shadow` has geometry to
+       interpolate — from `none` the shadow appears at full size instantly. */
+    --card-shadow-lifted:
+      var(--card-highlight),
+      0 4px 10px -4px color-mix(in srgb, var(--ink) 34%, transparent),
+      0 24px 48px -18px color-mix(in srgb, var(--ink) 58%, transparent);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--card-pad);
+    border-radius: var(--card-radius);
+    /* The ground: a wash of the scene's own colour, and a white sheen over it.
+       Two plain layers rather than one mixed colour — a `color-mix` reads
+       better but the minifier cannot down-level its alpha and emits an opaque
+       white card for engines that lack it, which is white text on white. Both
+       alphas come off `--card-glass`, so there is still one number to turn. */
+    background-color: rgb(var(--scene-2) / calc(var(--card-glass) * 0.45));
+    background-image: linear-gradient(
+        rgb(255 255 255 / calc(var(--card-glass) * 0.62)),
+        rgb(255 255 255 / calc(var(--card-glass) * 0.62)));
+    border: 1px solid rgb(255 255 255 / 0.16);
+    color: var(--card-ink-body);
+    box-shadow:
+      var(--card-highlight),
+      0 2px 6px -3px color-mix(in srgb, var(--ink) 22%, transparent),
+      0 14px 32px -20px color-mix(in srgb, var(--ink) 40%, transparent);
+    transition:
+      border-color var(--dur-base) var(--ease-in-out-quad),
+      box-shadow var(--dur-base) var(--ease-in-out-quad),
+      translate var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  /* Long-form. A panel holding four paragraphs wants more room than a card
+     holding a title and three lines. One extra step, replacing the three
+     different paddings that had accumulated across the panels. */
+  .card-roomy {
+    --card-pad: 1.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .card {
+      --card-pad: 1.75rem;
+    }
+
+    .card-roomy {
+      --card-pad: 2rem;
+    }
+  }
+
+  /* --- The card's two states ------------------------------------------------
+   *
+   * ## Hover lifts the card, and it only lifts it
+   *
+   * Nothing on this site is a clickable card, so the old treatment — ground to
+   * white, border to the accent — promised a destination the card does not
+   * have. A page of panels that never acknowledges the cursor reads as a
+   * screenshot, though, so the card answers in the one language that says
+   * *object* rather than *link*: it comes off the page. Shadow and 2px of
+   * travel. No colour moves; depth claims nothing.
+   *
+   * ## The shadow is `ink`, not black
+   *
+   * `--ink` #040038 is the palette's own darkest azul, so the shadow reads as
+   * the card occluding the gradient it floats on rather than as a grey haze
+   * laid over it. The card carries a soft one at rest — glass does not occlude
+   * the ground, so without it the pane has nothing to float above — and hover
+   * deepens the same two layers.
+   *
+   * ## `translate`, not `transform`
+   *
+   * GSAP writes reveals into `transform`, and several of these panels are
+   * themselves reveal targets. `translate` is its own property, so the lift
+   * composes with the timeline instead of being overwritten by it.
+   *
+   * ## Focus gets the depth, not the lift
+   *
+   * `:focus-within` tells a keyboard user which container they are inside, so
+   * it earns the shadow. Not the travel: a panel that hops every time focus
+   * moves between two of its fields is noise.
+   */
+  /* `hover: hover` because a touch screen has no hover to give: `:hover`
+     there latches on tap and stays on, which would leave one card raised for
+     as long as the reader stays on the page — a state they cannot clear
+     because the card was never theirs to press. */
+  @media (hover: hover) {
+    .card:hover {
+      translate: 0 -2px;
+      box-shadow: var(--card-shadow-lifted);
+    }
+
+    /* The lift is the one part that is motion for its own sake, so it goes.
+       The shadow stays: it is the state itself, not an animation of it. */
+    @media (prefers-reduced-motion: reduce) {
+      .card:hover {
+        translate: none;
+      }
+    }
+  }
+
+  /* Hover lifts, focus lights: the border comes up and the card takes the same
+     shadow, without the travel. */
+  .card:focus-within {
+    border-color: rgb(255 255 255 / 0.38);
+    box-shadow: var(--card-shadow-lifted);
+  }
+
+  /* The head zone: mark, category and title, closed by one rule.
+
+     It bleeds the card's padding on three sides and re-applies its own, so the
+     rule meets both edges — a separator that stops short reads as a stray
+     line. That is what `--card-pad` is for.
+
+     One 12px gap for the whole zone: a label and the title it files are one
+     unit, and a picture above them takes a nudge more. */
+  .card-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: calc(-1 * var(--card-pad));
+    margin-bottom: var(--card-pad);
+    padding: var(--card-pad);
+    border-bottom: 1px solid var(--card-rule);
+  }
+
+  .card-media {
+    margin-bottom: 0.5rem;
+  }
+
+  /* The four inks, as utilities. A component asks for the job — heading, body,
+     label, voice — and the ground decides the colour. `.card-ink` is cyan and
+     therefore only for large type; anything under ~19px takes `.card-ink-body`.
+     See the note above `.card`. */
+  .card-ink {
+    color: var(--card-ink);
+  }
+
+  .card-ink-body {
+    color: var(--card-ink-body);
+  }
+
+  .card-ink-label {
+    color: var(--card-ink-label);
+  }
+
+  .card-ink-voice {
+    color: var(--card-ink-voice);
+  }
+
+  /* The hairline between rows inside a panel, one weight below the head
+     separator — close enough together that a whisper is audible. */
+  .card-divide {
+    border-top: 1px solid var(--card-rule-soft);
+  }
+
+  /* Everything after the zone. `flex: 1` so the footer can pin itself to the
+     foot of the card however short the body runs. */
+  .card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  /* Novit's read on what the card said, behind its own rule. The air above is
+     the card's own padding, so the footer stands off the body by the measure
+     the card stands off its edges. `--card-foot-rule` narrows the rule —
+     `ServicesEvolution` grows four of them across a row, which is that band's
+     whole argument. */
+  .card-foot {
+    margin-top: auto;
+    padding-top: var(--card-pad);
+  }
+
+  .card-foot::before {
+    content: "";
+    display: block;
+    width: var(--card-foot-rule, 100%);
+    height: 1px;
+    margin-bottom: 1rem;
+    /* The voice's own ramp, fading right like every other rule here. */
+    background: linear-gradient(90deg, var(--card-ink-voice), transparent);
+  }
+
+  /* --- The card grid -------------------------------------------------------
+   *
+   * One gap for every grid of cards on the site, and — where the browser has
+   * subgrid — one shared row structure, so the cards in a row divide at the
+   * same height instead of each dividing wherever its own title happens to
+   * end.
+   *
+   * ## Why this is not cosmetic
+   *
+   * The four case cards carry titles of two and three lines. With each card
+   * laying itself out alone, that put the head separator at four different
+   * heights across one row and started four bodies at four different heights,
+   * which is exactly the "similar cards looking different" the card work was
+   * meant to end. Nothing about the cards differed; only the copy did.
+   *
+   * ## How
+   *
+   * Every card has two rows — `.card-zone` and `.card-body` — so each grid
+   * item spans two rows of the grid and passes that structure down twice:
+   * once through the animation wrapper, once through the card itself. Row 1
+   * sizes to the tallest head in the row; row 2 takes the rest.
+   *
+   * The grid's own `row-gap` then lands between those two rows as well, i.e.
+   * inside every card, so `.card-body` cancels exactly that much. It reads as
+   * a correction because it is one — but it is written in the same variable
+   * that created it, so the two cannot drift.
+   *
+   * `@supports` rather than a polyfill: without subgrid every card lays itself
+   * out as it did before, which is untidy, not broken. */
+  .card-grid {
+    --card-grid-gap: var(--space-4);
+    display: grid;
+    gap: var(--card-grid-gap);
+  }
+
+  @supports (grid-template-rows: subgrid) {
+
+    .card-grid>*,
+    .card-grid>*>.card {
+      display: grid;
+      grid-row: span 2;
+      grid-template-rows: subgrid;
+    }
+
+    .card-grid>*>.card>.card-body {
+      margin-top: calc(-1 * var(--card-grid-gap));
+    }
+  }
+
+}

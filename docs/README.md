@@ -4,7 +4,7 @@ Three buckets, one rule: a file lives where its content applies, not where it wa
 
 ```
 docs/
-├── novit/       Company-level: brand, visual system, marketing collateral
+├── novit/       Company-level: brand, visual system, brochure collateral
 ├── app/         This repository: architecture, conventions, content decisions
 └── external/    Everything else: third-party references, client material
 ```
@@ -22,7 +22,7 @@ each other by that exact name.
 | `novit/novit-design-system.md` | Visual system: tokens, typography, grid, templates |
 | `novit/academia-novit.md` | Academia Novit syllabus: 2026 course on building AI agents and agentic software |
 | `novit/novit-marca-tokens.html` | Exact colors and gradients, with swatches — the technical reference |
-| `novit/marketing/` | Marketing collateral (brochure transcripts used as copy sources) |
+| `novit/brochures/` | Brochure collateral (brochure transcripts used as copy sources) |
 | `novit/source/` | The originals everything above was written from: the client's PDF, the raw extractions, the supplied icon |
 
 Read `novit-brand-core.md` and `novit-design-system.md` together: the first defines
