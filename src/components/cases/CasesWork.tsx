@@ -1,18 +1,27 @@
+import { Card } from "@/components/cards/Card";
+import { CardGrid } from "@/components/cards/CardGrid";
+import { CaseLogo } from "@/components/cards/CaseLogo";
 import { Container } from "@/components/ui/Container";
-import { IconLine, type IconName } from "@/components/ui/Icon";
+import { IconLine } from "@/components/ui/Icon";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
 import { casesPageContent } from "@/content/site";
 
+type WorkGroup = (typeof casesPageContent.work.groups)[number];
+
 /**
- * The recorrido: what the work was, in three groups.
+ * The recorrido: nineteen projects, in three groups by what the work was.
  *
- * On the gradient rather than in cards. A card is a claim with a heading, a
- * paragraph and a takeaway; these are inventories — ten lines, then four, then
- * five — and putting them in three boxes of wildly different heights would
- * make the longest group look like the most important one rather than the
- * broadest.
+ * Three groups rather than one wall: a list of nineteen is scanned, not read,
+ * and the grouping is the only thing that tells a reader whether their own
+ * problem is in it. Each group takes the full measure and stacks under the
+ * last, so the ten-card group is not a taller column beside a four-card one.
+ *
+ * The card is the one the whole site uses, with the client's mark in `media`
+ * — a credential above the hairline, which is exactly what the slot is for —
+ * the country as the label and the work as the title. No body and no footer:
+ * the line *is* the card, and a paragraph repeating it would be filler.
  *
  * The closing line under them is the invitation the standing site ends this
  * page with, and it is deliberately not a button: the way in is the menu's
@@ -39,14 +48,9 @@ export function CasesWork() {
             }
             below={
               <>
-                <div className="grid gap-12 lg:grid-cols-3 lg:gap-10">
+                <div className="grid gap-16 lg:gap-20">
                   {work.groups.map((group) => (
-                    <WorkGroup
-                      key={group.id}
-                      icon={group.icon}
-                      title={group.title}
-                      items={group.items}
-                    />
+                    <WorkGroup key={group.id} group={group} />
                   ))}
                 </div>
 
@@ -73,16 +77,10 @@ export function CasesWork() {
   );
 }
 
-type WorkGroupProps = {
-  icon: IconName;
-  title: string;
-  items: readonly string[];
-};
-
-/** A rule, a marked heading and the list under it — the shape the Equipo
- *  band's values already use, which is what a set of short statements on the
- *  gradient looks like here. */
-function WorkGroup({ icon, title, items }: WorkGroupProps) {
+/** A rule, a marked heading and the projects under it. The heading is the
+ *  shape the Equipo band's values already use; what changed is what hangs off
+ *  it, which is now cards rather than dashes. */
+function WorkGroup({ group }: { group: WorkGroup }) {
   return (
     <div data-anim-block>
       <span
@@ -90,22 +88,22 @@ function WorkGroup({ icon, title, items }: WorkGroupProps) {
         aria-hidden="true"
         className="block h-0.5 w-full bg-celeste"
       />
-      <div data-anim="rise">
-        <h3 className="mt-5 flex items-start gap-2.5 text-lg font-bold text-blanco">
-          <IconLine name={icon} size="heading" className="text-celeste" />
-          {title}
-        </h3>
-        <ul className="mt-5 grid gap-4">
-          {items.map((item) => (
-            <li
-              key={item}
-              className="text-sm leading-7 text-on-detail before:mr-3 before:inline-block before:h-px before:w-3 before:translate-y-[-0.3em] before:bg-celeste/60 before:align-middle"
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <h3 className="mt-5 flex items-start gap-2.5 text-lg font-bold text-blanco">
+        <IconLine name={group.icon} size="heading" className="text-celeste" />
+        {group.title}
+      </h3>
+      <CardGrid columns={3} className="mt-6">
+        {group.items.map((item) => (
+          <li key={item.logo.name} data-anim="card">
+            <Card
+              media={<CaseLogo logo={item.logo} />}
+              label={item.country}
+              title={item.description}
+              size="base"
+            />
+          </li>
+        ))}
+      </CardGrid>
     </div>
   );
 }

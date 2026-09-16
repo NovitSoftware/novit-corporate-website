@@ -129,9 +129,15 @@ export function Card({
   /* With no eyebrow to stand against, the mark belongs on the title's line —
      on a line of its own it is a 40px object alone in open space. */
   const markBesideTitle = icon !== undefined && label === undefined;
+  /* A card whose whole content is its head — the recorrido's, where the logo,
+     the country and the line of work are all there is. The zone's rule closes
+     the identity zone against the body, so with no body there is no rule and
+     no second row. Every card in one grid has to agree: the grid lines the
+     heads up by sizing a single row for all of them. */
+  const headOnly = children === undefined && footer === undefined;
 
   return (
-    <article className={cn("card h-full", className)}>
+    <article className={cn("card h-full", headOnly && "card-head-only", className)}>
       {/* Identity: what this card is. The zone carries its own rhythm — see
           `.card-zone` — so there are no margins to set from here. */}
       <div className="card-zone">
@@ -172,44 +178,46 @@ export function Card({
       </div>
 
       {/* Argument: what it says, and what Novit makes of it. */}
-      <div className="card-body">
-        {children}
+      {headOnly ? null : (
+        <div className="card-body">
+          {children}
 
-        {footer ? (
-          <div
-            className="card-foot"
-            style={
-              footer.ruleWidth
-                ? ({ "--card-foot-rule": footer.ruleWidth } as CSSProperties)
-                : undefined
-            }
-          >
-            {footer.label ? (
-              <span className="eyebrow card-ink-voice block">
-                {footer.label}
-              </span>
-            ) : null}
-            <p
-              className={cn(
-                "card-ink-voice text-base font-bold leading-snug",
-                footer.label && "mt-1.5",
-                /* The footer pins itself to the foot of the card, so in a row
-                   of equal-height cards a one-line takeaway beside a two-line
-                   one puts their rules at different heights. Where every
-                   takeaway in the row runs to one line that never happens and
-                   reserving space would only add dead air, so this is opt-in —
-                   `ServicesEvolution` asks for it because its four rules of
-                   growing width *are* the argument and must line up. `lh`
-                   rather than a pixel guess, so it survives a change of size
-                   or leading. */
-                footer.minLines === 2 && "min-h-[2lh]",
-              )}
+          {footer ? (
+            <div
+              className="card-foot"
+              style={
+                footer.ruleWidth
+                  ? ({ "--card-foot-rule": footer.ruleWidth } as CSSProperties)
+                  : undefined
+              }
             >
-              {footer.text}
-            </p>
-          </div>
-        ) : null}
-      </div>
+              {footer.label ? (
+                <span className="eyebrow card-ink-voice block">
+                  {footer.label}
+                </span>
+              ) : null}
+              <p
+                className={cn(
+                  "card-ink-voice text-base font-bold leading-snug",
+                  footer.label && "mt-1.5",
+                  /* The footer pins itself to the foot of the card, so in a row
+                     of equal-height cards a one-line takeaway beside a two-line
+                     one puts their rules at different heights. Where every
+                     takeaway in the row runs to one line that never happens and
+                     reserving space would only add dead air, so this is opt-in —
+                     `ServicesEvolution` asks for it because its four rules of
+                     growing width *are* the argument and must line up. `lh`
+                     rather than a pixel guess, so it survives a change of size
+                     or leading. */
+                  footer.minLines === 2 && "min-h-[2lh]",
+                )}
+              >
+                {footer.text}
+              </p>
+            </div>
+          ) : null}
+        </div>
+      )}
     </article>
   );
 }

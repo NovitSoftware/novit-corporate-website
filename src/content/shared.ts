@@ -107,6 +107,30 @@ export const metadataContent = {
   ogSupporting: "Ingeniería de software para procesos críticos. Desde 2015.",
 } as const;
 
+/**
+ * A client's mark, as the file actually is.
+ *
+ * The numbers are the PNG's own, which `next/image` needs, and
+ * `displayHeight` is what it is set to on screen — chosen per file so that a
+ * wide wordmark and a square badge come out looking the same size, which
+ * matching heights would not do.
+ *
+ * `plate` is the ground the mark needs, and it is a per-file fact: `"light"`
+ * for artwork that is dark on transparency and would sink into the page,
+ * `"none"` for artwork that is already white and only needs to be left alone.
+ * `invertOnLight` is the third case — white artwork forced onto a white plate
+ * — and it only works on marks with no colour in them.
+ */
+export type ClientLogo = {
+  readonly name: string;
+  readonly src: string;
+  readonly width: number;
+  readonly height: number;
+  readonly displayHeight: number;
+  readonly invertOnLight?: boolean;
+  readonly plate?: "light" | "none";
+};
+
 /* The cases, with the client each one belongs to. Rendered on the home page
    and again on `/inteligencia-artificial`, each under its own heading. */
 

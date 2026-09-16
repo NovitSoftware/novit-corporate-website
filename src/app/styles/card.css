@@ -206,6 +206,13 @@
     margin-bottom: 0.5rem;
   }
 
+  /* A card that is only its head. Nothing stands under the rule, so there is
+     no rule, and the zone's padding becomes the card's own. */
+  .card-head-only .card-zone {
+    margin-bottom: calc(-1 * var(--card-pad));
+    border-bottom: 0;
+  }
+
   /* The four inks, as utilities. A component asks for the job — heading, body,
      label, voice — and the ground decides the colour. `.card-ink` is cyan and
      therefore only for large type; anything under ~19px takes `.card-ink-body`.
@@ -306,6 +313,13 @@
 
     .card-grid>*>.card>.card-body {
       margin-top: calc(-1 * var(--card-grid-gap));
+    }
+
+    /* One row, not two: a head-only card has nothing to put in the second,
+       and the grid's row-gap would sit inside the card as dead air. */
+    .card-grid>*:has(>.card-head-only),
+    .card-grid>*>.card-head-only {
+      grid-row: span 1;
     }
   }
 
