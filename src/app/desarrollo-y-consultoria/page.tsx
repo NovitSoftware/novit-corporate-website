@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { DevelopmentPage } from "@/components/layout/DevelopmentPage";
-import { developmentPageContent, site } from "@/content/site";
+import { DevelopmentPage } from "./_components/DevelopmentPage";
+import { developmentPageContent } from "./_content/desarrollo-y-consultoria";
+import { site } from "@/shared/content/site";
 
 /** Its own description and link-card title; the tab title is the root
  *  layout's, which pins it to `site.name` on every route. */

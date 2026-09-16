@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { CasesPage } from "@/components/layout/CasesPage";
-import { casesPageContent, site } from "@/content/site";
+import { CasesPage } from "./_components/CasesPage";
+import { casesPageContent } from "./_content/casos-de-exito";
+import { site } from "@/shared/content/site";
 
 /** Its own description and link-card title; the tab title is the root
  *  layout's, which pins it to `site.name` on every route. */

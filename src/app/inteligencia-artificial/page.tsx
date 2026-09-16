@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ServicesPage } from "@/components/layout/ServicesPage";
-import { servicesPageContent, site } from "@/content/site";
+import { ServicesPage } from "./_components/ServicesPage";
+import { servicesPageContent } from "./_content/inteligencia-artificial";
+import { site } from "@/shared/content/site";
 
 /**
  * Its own description and link-card title, not the site's — but not its own

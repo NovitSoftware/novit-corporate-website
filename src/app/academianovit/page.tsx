@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { AcademyPage } from "@/components/layout/AcademyPage";
-import { academyPageContent, site } from "@/content/site";
+import { AcademyPage } from "./_components/AcademyPage";
+import { academyPageContent } from "./_content/academianovit";
+import { site } from "@/shared/content/site";
 
 /**
  * Its own description and link-card title, not the site's — but not its own
