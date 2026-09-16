@@ -1,45 +1,16 @@
-/* The Academia: the home page band, the programme itself, and everything on `/academianovit`. */
+/* ==========================================================================
+   `/academianovit` — the programme, the page around it and its own footer.
 
-import { academyContact } from "./identity";
+   The home page's Academia band is not here: it states the load in its own
+   words and lives in `home.ts`, so this file has one reader.
+   ========================================================================== */
 
-export const academyContent = {
-  id: "academia",
-  index: "01",
-  eyebrow: "Academia Novit",
-  title: "Se enseña a construir software agéntico",
-  description:
-    "Formamos al equipo —y a quienes se suman— en las tecnologías que el mercado demanda, hoy incluida la IA aplicada al desarrollo. Varias ediciones son abiertas y gratuitas.",
-  /**
-   * The panel under the description, and it states the load.
-   *
-   * It used to state the entry level — "No es una academia de nivel inicial",
-   * in the violet voice, marked with the `alert` glyph — which is the content
-   * of the "A quién está dirigida" band that `/academianovit` no longer
-   * carries. Keeping the filter here while the page that explains it dropped
-   * it would leave the site turning readers away with no page to send the
-   * remaining ones to. The shape of the panel is the same; what it holds is
-   * the course as the temario describes it.
-   */
-  note: {
-    label: "Cursada",
-    icon: "academy",
-    text: "32 horas: 14 clases y 2 talleres de consulta, 100% online.",
-  },
-  /* No `cta`, on purpose. This band had one pointing at `#contacto` — a
-     sales form for a question about teaching — and then one pointing at
-     `/academianovit`. The band introduces the Academia and does not ask for
-     anything, so there is nothing here for a button to do. The footer is
-     what links to the route. */
-} as const;
+import { academyContact, type FooterContent } from "./shared";
 
 /**
  * The programme, in full, and the single source for it.
  *
- * Everything here comes from `docs/novit/academia-novit.md`, the temario, and
- * nothing reads all of it twice: `AcademySection` on the home page takes the
- * load, `/academianovit` takes the modules, the marking criteria and the
- * edition. That split is the reason this is one object rather than two copies
- * that drift.
+ * Everything here comes from `docs/novit/academia-novit.md`, the temario.
  *
  * ## What came out, and why it is not recoverable from a comment
  *
@@ -224,3 +195,51 @@ export const academyPageContent = {
     },
   },
 } as const;
+
+/**
+ * The footer on `/academianovit`, and it is about the Academia only.
+ *
+ * The site-wide footer indexes the home page: Nosotros, Equipo, Contacto,
+ * Casos, Seguridad, plus `/inteligencia-artificial`. Rendered under the
+ * Academia it turned the bottom of a page about a course into a way out of it,
+ * which is the opposite of what the page is for — a reader who got to the end
+ * of the temario is deciding whether to write, not shopping the rest of the
+ * site.
+ *
+ * So the one column here is the edition this page is announcing, no link
+ * leaves the route, and the inbox is the chip: on this page it is the only
+ * thing to do. Novit's own accounts stay in the row below, because that is the
+ * site's identity rather than navigation.
+ *
+ * No mission line under the logo and no index of the page's own bands: this
+ * footer sits three screens below an opener that says the same thing, under a
+ * page short enough to scroll back up.
+ */
+export const academyFooterContent: FooterContent = {
+  columns: [
+    {
+      /* Facts, not links — there is nowhere on this page for a date to go. */
+      title: academyProgram.edition.label,
+      links: academyProgram.edition.facts.map((fact) => ({
+        label: `${fact.label}: ${fact.value}`,
+      })),
+    },
+  ],
+  legal: [],
+  social: academyContact.social,
+  /* The Academia's inbox alone. The WhatsApp number is the company's
+     commercial line and answers for sales, not for a question about the
+     cursada. */
+  channels: [
+    {
+      id: "email",
+      label: academyContact.email.label,
+      href: academyContact.email.href,
+    },
+  ],
+  contact: {
+    label: "Consultas",
+    value: "Consultanos",
+    href: academyContact.email.href,
+  },
+};

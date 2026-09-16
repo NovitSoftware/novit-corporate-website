@@ -1,7 +1,8 @@
 /**
- * Everything on `/inteligencia-artificial`: four blocks, in render order —
- * `partner`, `architecture`, `cases`, `evolution`. The opener's `title`,
- * `lead` and `cta` sit at the top level.
+ * `/inteligencia-artificial` — four blocks, in render order: `partner`,
+ * `architecture`, `cases`, `evolution`. The opener's `title`, `lead` and `cta`
+ * sit at the top level, and the cards under `cases` come from `casesContent`
+ * in `shared.ts`, which the home page renders too.
  *
  * Source is the brochure at
  * `docs/novit/brochures/transformacion-ia-brochure.md`, without its risk band
@@ -72,13 +73,13 @@ export const servicesPageContent = {
           "Razonamiento, embeddings y OCR intercambiables sin rehacer nada.",
       },
     ],
-    platformLabel: "Arquitectura compartida · Red privada del cliente",
+    platformLabel: "Arquitectura compartida · Red privada de tu empresa",
   },
   partner: {
     id: "nuestro-rol",
     eyebrow: "Nuestro rol",
     title: "Qué aporta un partner de transformación IA",
-    lead: "Acompañamos a la dirección en las cuatro decisiones que sobreviven a cualquier agente puntual, con un equipo disponible de forma continua.",
+    lead: "Acompañamos a la dirección en cuatro decisiones que ningún proyecto aislado resuelve, con el mismo equipo disponible a lo largo del tiempo.",
     /**
      * Four decisions held at once, not four steps — so nothing is numbered.
      *
@@ -146,7 +147,7 @@ export const servicesPageContent = {
         title: "La infraestructura queda instalada",
         leaves: "RAG, identidad y capa de integración",
         description:
-          "El segundo agente arranca con la mitad del camino hecho, y el tercero sobre lo mismo.",
+          "El segundo agente arranca con la mitad del camino hecho, y el tercero sobre lo que dejó el segundo.",
       },
       {
         icon: "shield",
@@ -172,6 +173,6 @@ export const servicesPageContent = {
     id: "casos-en-produccion",
     eyebrow: "Casos de éxito",
     title: "Agentes que ya están trabajando",
-    lead: "Dos agentes en producción, cada uno sobre un proceso concreto de una empresa distinta: qué hace, sobre qué sistema corre y qué cambió al ponerlo a andar.",
+    lead: "Dos agentes en producción, cada uno sobre un proceso concreto de una empresa distinta: qué resuelve y qué cambió al ponerlo a andar.",
   },
 } as const;
