@@ -86,8 +86,14 @@ export const casesContent = {
   index: "03",
   eyebrow: "Casos de éxito",
   title: "Agentes que ya están trabajando",
+  /* Textual del brochure §04. Estuvo reescrito acá como "En las dos empresas
+     fue el primer agente que entró en producción…", que es copy nueva sobre
+     una fuente que ya existe. La banda dice lo que dice la presentación. */
   description:
-    "En las dos empresas fue el primer agente que entró en producción: un proceso puntual, con dueño y con una métrica, y la base sobre la que se construyó lo que vino después.",
+    "Cada uno fue el primer agente de su empresa: un proceso concreto que hoy funciona y que abrió la puerta a todo lo que sigue.",
+  /* La columna que el brochure pone sobre esta cifra en su tabla de casos.
+     Estaba escrita como literal en `CaseCard`. */
+  resultLabel: "Resultado",
   cases: [
     {
       id: "arancelaria",
@@ -164,13 +170,16 @@ export type FooterContent = {
     label: string;
     href: string;
   }>;
-  contact: { label: string; value: string; href: string };
+  /* `value` is the chip's label. There was a `label` beside it that no footer
+     ever rendered. */
+  contact: { value: string; href: string };
 };
 
-/** The footer on `/` and on `/inteligencia-artificial`. `/academianovit` has
- *  its own — see `academyFooterContent`. */
+/** The footer on `/`. The other two routes have their own — see
+ *  `servicesFooterContent` and `academyFooterContent`. */
 export const footerContent = {
-  tagline: "Hacemos simple lo complejo.",
+  /* Sin `tagline`. Era "Hacemos simple lo complejo." y no lo renderizaba
+     nadie; la misma frase está viva como título de la banda Nosotros. */
   mission:
     "Optimizamos procesos de negocio desarrollando software de calidad con tecnologías de vanguardia.",
   /**
@@ -194,12 +203,10 @@ export const footerContent = {
     {
       title: "Enfoque",
       links: [
-        /* Both of these point at their own route again. They were anchors on
-           the home page, on the reasoning that a band that exists beats a
-           route nothing links to — but each route carries a subject the home
-           page only introduces, and the footer is where a corporate site
-           lists what it has. `servicesIntro.cta` is the other way into the AI
-           page; this is the only way into the Academia's. */
+        /* The only way into either route. The home page names the Academia
+           and the AI line and does not link to them: it is about the company,
+           and those two are subjects it mentions. The footer is where a
+           corporate site lists what it has. */
         { label: "Academia Novit", href: "/academianovit" },
         { label: "Inteligencia artificial", href: "/inteligencia-artificial" },
         { label: "Casos", href: "/#casos" },
@@ -237,7 +244,6 @@ export const footerContent = {
    * contact section opens with.
    */
   contact: {
-    label: "Contacto",
     value: "Escribinos",
     href: "/#contacto",
   },

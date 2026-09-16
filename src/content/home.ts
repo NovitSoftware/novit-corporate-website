@@ -19,11 +19,11 @@
  * where an index of a single page belongs, and the header's one control takes
  * you back to the top.
  *
- * Every link in this file is an anchor on its own page, one of the three
- * routes, or a real channel (WhatsApp, mail, Instagram, LinkedIn). The two
- * inner routes are reachable again — `/inteligencia-artificial` from
- * `servicesIntro.cta` and the footer, `/academianovit` from the footer — which
- * is the condition for keeping them: a route nothing points at is dead weight.
+ * Every link in this file is an anchor on its own page or a real channel
+ * (WhatsApp, mail, Instagram, LinkedIn). Nothing here points at
+ * `/inteligencia-artificial` or `/academianovit`: this page is about the
+ * company, and those two are subjects it names rather than doors it opens.
+ * The footer lists both routes, which is what keeps them reachable.
  */
 
 /*
@@ -33,9 +33,10 @@
  * visitor back up to Servicios and Nosotros from directly above a form. The
  * contact section is the close now. See `layout/HomePage.tsx`.
  */
+/* Sin `markAlt`: el `<Image>` del telón va con `alt=""` porque el nombre ya
+   está en el `aria-label` del contenedor, así que ese campo no lo leía nadie. */
 export const introContent = {
   label: "Novit Software",
-  markAlt: "Isotipo Novit: barras horizontales y puntos del logotipo",
 } as const;
 
 /**
@@ -67,7 +68,8 @@ export const heroContent = {
   statement:
     "Desarrollamos software a medida para organizaciones que necesitan digitalizar procesos críticos de negocio, y agentes de IA integrados a esos procesos. Entendemos el proceso, lo construimos con vos y la solución queda siendo tuya.",
   primaryCta: { label: "Contacto", href: "#contacto" },
-  secondaryCta: { label: "Ver los casos", href: "#casos" },
+  /* Sin `secondaryCta`. Decía "Ver los casos" y bajaba a #casos, una banda por
+     la que el lector pasa scrolleando de todos modos. El footer la lista. */
   /** The offer tree of brand-core cap. 08, each branch with its mark. */
   pillars: [
     { label: "Software a medida", icon: "code" },
@@ -87,7 +89,7 @@ export const heroContent = {
   announcement: {
     kicker: "Academia Novit",
     detail: "Desarrollo de Agentes IA y Software Agéntico",
-    meta: "32 h · online",
+    meta: "32 h · 14 clases",
     href: "#academia",
   },
 } as const;
@@ -126,16 +128,19 @@ export const heroContent = {
  * character-led drawings, which are all wide, are not in this row for the same
  * reason — plus a face pulls the eye off the heading it is meant to support.
  */
+/* En el orden que fija el cap. 05: 3 → 2, y la 1 "casi no se menciona". La
+   fila abría con la dimensión 1, que el mismo capítulo define como "una
+   ventaja de eficiencia, no un argumento de venta". */
 export const highlights = [
   {
-    id: "ia-proceso",
-    kicker: "Nuestro proceso",
-    icon: "code",
-    illustration: "answers",
-    title: "IA en cómo trabajamos",
-    takeaway: "Una herramienta más del desarrollo",
+    id: "ia-criterio",
+    kicker: "El criterio",
+    icon: "layers",
+    illustration: "extraction",
+    title: "IA en cómo se sostiene",
+    takeaway: "La infraestructura queda instalada",
     description:
-      "Baja el costo de escribir código y se acortan los plazos. Parte de esa ganancia se reinvierte en revisión, pruebas y arquitectura: el criterio de ingeniería no se delega.",
+      "Conocimiento indexado una sola vez, identidad única y una capa de integración: cada agente nuevo se apoya en lo ya construido.",
   },
   {
     id: "ia-solucion",
@@ -148,33 +153,41 @@ export const highlights = [
       "Automatización conversacional, automatización de procesos internos e IA sobre datos propios. Empieza por un caso medible y con dueño dentro de la empresa.",
   },
   {
-    id: "ia-criterio",
-    kicker: "El criterio",
-    icon: "layers",
-    illustration: "extraction",
-    title: "IA en cómo se sostiene",
-    takeaway: "La infraestructura queda instalada",
+    id: "ia-proceso",
+    kicker: "Nuestro proceso",
+    icon: "code",
+    illustration: "answers",
+    title: "IA en cómo trabajamos",
+    takeaway: "Una herramienta más del desarrollo",
     description:
-      "Conocimiento indexado una sola vez, identidad única y una capa de integración: cada agente nuevo se apoya en lo ya construido.",
+      "Baja el costo de escribir código y se acortan los plazos. Parte de esa ganancia se reinvierte en revisión, pruebas y arquitectura: el criterio de ingeniería no se delega.",
   },
 ] as const;
 
 export type Highlight = (typeof highlights)[number];
 
 /**
- * 01 · The Academia band.
+ * 01 · The Academia band, which is here as a fact about the company: Novit
+ * teaches, where the industry default is to retain the know-how (cap. 04).
  *
- * The programme it points at lives in `academianovit.ts`, which this page does
- * not read: the band states the load in its own words and the footer is what
- * links to the route.
+ * Not a course page. The programme is on `/academianovit` and this file does
+ * not read it; the band names the Academia, states its load and stops.
  */
 export const academyContent = {
   id: "academia",
   index: "01",
-  eyebrow: "Academia Novit",
-  title: "Se enseña a construir software agéntico",
+  /* La fila del cap. 01 tal cual: "Programa de formación | Academia Novit".
+     La banda nombra la Academia y describe la cursada; los títulos anteriores
+     —"Acá se enseña", "Enseñamos a construir agentes de IA"— hablaban de
+     Novit como si enseñar fuera su actividad. */
+  eyebrow: "Programa de formación",
+  title: "Academia Novit",
+  /* El curso en dos líneas, con los módulos del temario. El detalle —objetivos,
+     requisitos, contenidos, docentes— está en /academianovit. La frase "el
+     conocimiento se comparte" salió de acá: es textual del cap. 04 y ya es una
+     de las cuatro tarjetas de valores en la banda Equipo. */
   description:
-    "Formamos al equipo —y a quienes se suman— en las tecnologías que el mercado demanda, hoy incluida la IA aplicada al desarrollo. Varias ediciones son abiertas y gratuitas.",
+    "Diseño y construcción de sistemas agénticos: la arquitectura interna de un agente, los patrones de orquestación y lo que hace falta para llevarlo a producción. Varias ediciones son abiertas y gratuitas.",
   /**
    * The panel under the description, and it states the load.
    *
@@ -189,7 +202,9 @@ export const academyContent = {
   note: {
     label: "Cursada",
     icon: "academy",
-    text: "32 horas: 14 clases y 2 talleres de consulta, 100% online.",
+    /* Sin "100% online": la modalidad no está en el temario ni en ninguna
+       otra fuente. Esto es lo que §Duración y modalidad dice. */
+    text: "32 horas: 14 clases teórico-prácticas y 2 talleres de consulta.",
   },
   /* No `cta`, on purpose. This band had one pointing at `#contacto` — a
      sales form for a question about teaching — and then one pointing at
@@ -203,13 +218,23 @@ export const academyContent = {
 export const servicesIntro = {
   index: "02",
   eyebrow: "Qué hacemos",
-  title: "Tres líneas de trabajo",
+  /* La misión del cap. 03, textual, que es la respuesta del brand-core a "qué
+     hacemos". Decía "Tres líneas de servicio": el término es del cap. 08, pero
+     contar las líneas no le dice nada a quien todavía no las leyó. Las tres
+     están enumeradas abajo. */
+  title: "Optimizamos procesos de negocio",
+  /* Cap. 02, §Qué hacemos, textual. Lo que decía antes era el índice de la
+     banda: enumeraba las tres líneas y después las cinco tarjetas las volvían
+     a nombrar una por una, y de paso contaba dos cosas distintas con el mismo
+     número —tres líneas de servicio, tres dimensiones de IA— que abajo se ven
+     como dos grillas seguidas. Acá va cómo se trabaja; qué se ofrece lo dicen
+     las tarjetas. */
   description:
-    "Desarrollo de software a medida, células ágiles e inteligencia artificial. Trabajamos el ciclo completo —discovery, experiencia, arquitectura, desarrollo, calidad y soporte— o nos integramos a los equipos que ya existen. La línea de IA se abre en tres: el acompañamiento a la dirección, los agentes en producción y el workshop por donde suele empezar.",
-  /* Back to `/inteligencia-artificial`, and it is the only thing that links
-     there. The band states the offer; the reader who wants the AI line at
-     full length has one place to go, and it is not a form. */
-  cta: { label: "Ver la línea de IA", href: "/inteligencia-artificial" },
+    "Trabajamos el ciclo completo —discovery, UX/UI, arquitectura, desarrollo, QA, soporte— o nos integramos a los equipos existentes del cliente.",
+  /* No `cta`. It read "Ver la línea de IA" and went to
+     `/inteligencia-artificial` — the one thing on this page that handed the
+     reader off to a route. The band states what the company does; the AI line
+     is one of the three, not the exit. The footer lists the route. */
 } as const;
 
 /**
@@ -247,8 +272,10 @@ export const services = [
     icon: "search",
     title: "Workshop de IA aplicada",
     meta: "Una sesión con los líderes del negocio",
+    /* Sin cómo se ordenan los procesos en la sesión: el cap. 09 deja la
+       metodología del workshop fuera del material externo. */
     description:
-      "Los procesos que duelen, ordenados por impacto y esfuerzo. Sale un plan de acción con un primer caso, su métrica y quién lo va a usar.",
+      "Sale un plan de acción con un primer caso concreto, medible y con dueño dentro de la empresa.",
   },
   {
     id: "custom-software",
@@ -274,46 +301,62 @@ export const services = [
 
 export const safetyContent = {
   index: "04",
-  eyebrow: "Confianza",
-  title: "Criterio, seguridad y gobierno",
+  /* "Confianza" es el nombre de un valor del cap. 04, y ese valor ya es una de
+     las cuatro tarjetas de Equipo. El footer llama a esta banda "Seguridad y
+     gobierno" y el ancla es #seguridad: tres nombres para una sección. */
+  eyebrow: "Seguridad y gobierno",
+  /* Las dos cosas de las que hablan las cuatro tarjetas, nombradas: el código
+     (cap. 05, diferencial 4) y los datos (brochure §02 y §03, procesamiento en
+     la red privada del cliente). Decía "El cliente es dueño de su solución"
+     —cap. 04— y el lector no tenía cómo saber de qué solución se hablaba. */
+  title: "El código y los datos quedan en tu empresa",
   /* This read "Construir un agente se está volviendo commodity. Lo que no se
      commoditiza es el criterio que evita seis stacks que no se hablan y ningún
      activo propio." — the sales argument of the brochure, stated in a band
-     whose subject is how client data is handled. The same four pillars below
-     are what the band actually has to say, so the statement names the
-     principle they come from instead of arguing against a competitor. */
+     whose subject is how client data is handled.
+
+     Then it opened on "Tratamos la inteligencia artificial como
+     infraestructura de la empresa", which made the whole band about agents on
+     a page about the company. What it describes holds for every project; an
+     agent is the case where it gets hardest. */
+  /* Cap. 05, diferencial 4, dicho sobre algo concreto: de qué proyecto, y qué
+     cosas son. "La propiedad intelectual es del cliente" a secas no le dice
+     nada a quien todavía no contrató nada. La segunda frase es la
+     infraestructura del brochure §03, que es lo que queda instalado cuando hay
+     agentes de por medio. */
   statement:
-    "Tratamos la inteligencia artificial como infraestructura de la empresa, y una infraestructura se diseña con su gobierno adentro.",
-  description:
-    "Son las cuatro preguntas que aparecen apenas un agente toca datos reales: dónde se procesa la información, quién preguntó qué, contra qué norma se responde y de quién es lo que queda construido.",
+    "De cada proyecto, el código, los componentes y la documentación quedan como activo de la empresa. Con agentes de IA de por medio, también el conocimiento indexado y la capa de integración sobre la que corren.",
   /* No `cta`. It read "Leer el enfoque de gobierno" and went to
      /inteligencia-artificial; with no route to send anyone to, a second
      "Solicitar cotización" two bands under the first one is chrome. The four
      pillars are the whole argument this band has to make. */
+  /* Propiedad del cliente va primero. Es el único de los cuatro que un
+     competidor no puede repetir sin cambiar su modelo de negocio (cap. 05), y
+     el orden de las tarjetas sigue al de la bajada. */
   pillars: [
     {
-      icon: "lock",
-      title: "Datos bajo control",
+      icon: "check",
+      title: "Propiedad del cliente",
       description:
-        "Procesamiento en la red privada del cliente. Sabemos qué información sale, dónde se procesa y con qué se entrena.",
+        "La propiedad intelectual es del cliente desde el momento cero, y el know-how se transfiere. Documentamos y entregamos para que la empresa pueda sostener el software con su propio equipo.",
+    },
+    {
+      icon: "lock",
+      title: "Datos en la red privada",
+      description:
+        "El procesamiento sucede en la red privada del cliente, y el conocimiento de la empresa se indexa una sola vez sobre su propia infraestructura. Sabemos qué información sale, dónde se procesa y con qué se entrena.",
     },
     {
       icon: "key",
       title: "Identidad y trazabilidad",
       description:
-        "Permisos por usuario en cada consulta. Una auditoría tiene qué mirar: quién preguntó, qué se respondió y quién lo autorizó.",
+        "Identidad corporativa única, con permisos y trazabilidad por usuario en cada consulta. Queda registrado quién preguntó, qué se respondió y quién lo autorizó.",
     },
     {
       icon: "shield",
       title: "Cumplimiento",
       description:
-        "Diseñamos para GDPR y para las reglas internas de cada organización. Las restricciones normativas entran en el alcance junto con los requerimientos funcionales.",
-    },
-    {
-      icon: "check",
-      title: "Propiedad del cliente",
-      description:
-        "Código, conocimiento y componentes quedan como activo de la empresa. Si se va un proveedor, no se va la capacidad.",
+        "Diseñamos para GDPR y para las reglas de la organización. Novit está encuadrada en la Ley de Economía del Conocimiento, y el mismo criterio se aplica al software de terceros que se integra: propiedad del dato y condiciones contractuales.",
     },
   ],
 } as const;
@@ -334,13 +377,20 @@ export const aboutContent = {
    * it lives here now, and it says the purpose and the mission of cap. 03 plus
    * the two differentials of cap. 05 that a corporate page can state as fact.
    */
+  /* Sin la misión adelante: "Optimizamos procesos de negocio" es ahora el
+     título de la banda 02, y el pie la enuncia completa. Quedan los dos
+     diferenciales del cap. 05 que esta banda puede afirmar como hecho. */
   statement:
-    "Optimizamos procesos de negocio desarrollando software de calidad. Entendemos el proceso antes de escribir código, y la propiedad intelectual es del cliente desde el momento cero.",
+    "Entendemos el proceso antes de escribir código, y la propiedad intelectual es del cliente desde el momento cero.",
+  /* El relato de origen del cap. 02, textual —"proyectos activos en cinco
+     países", no la lista, que está dos bloques más abajo—. Había un segundo
+     párrafo con el §Qué hacemos del mismo capítulo: lo dicen la cabecera y la
+     banda 02, así que acá era la tercera vez. */
   paragraphs: [
-    "Novit nació en 2015 como un emprendimiento entre hermanos con una idea simple: aportar desde la ingeniería de software para que las organizaciones trabajen mejor. Hoy somos un equipo de unos treinta profesionales con proyectos activos en Argentina, Chile, España, México y Estados Unidos, y conservamos la agilidad de aquella estructura inicial: los socios siguen involucrados en las decisiones que importan.",
-    "Desarrollamos software a medida para organizaciones que necesitan digitalizar procesos críticos de negocio. Trabajamos el ciclo completo —discovery, experiencia, arquitectura, desarrollo, calidad y soporte— o nos integramos a los equipos existentes. La propiedad intelectual es del cliente desde el momento cero, y el conocimiento se transfiere.",
+    "Novit nació en 2015 como un emprendimiento entre hermanos con una idea simple: aportar desde la ingeniería de software para que las organizaciones trabajen mejor. Hoy somos un equipo de unos treinta profesionales con proyectos activos en cinco países, y conservamos la agilidad de aquella estructura inicial: los socios siguen involucrados en las decisiones que importan.",
   ],
-  cta: { label: "Conocer al equipo", href: "#equipo" },
+  /* Sin `cta`. Decía "Conocer al equipo" y llevaba a #equipo, que es la banda
+     inmediatamente siguiente. */
   /** Every figure here is from cap. 01 of brand-core, which is the only place
    *  a number may come from. No client count: that chapter rules it out. */
   facts: [
@@ -359,12 +409,14 @@ export const aboutContent = {
  */
 export const partnersContent = {
   eyebrow: "Relaciones",
-  title: "La credibilidad está en quedarse",
-  // The country list lived here too, so the section named the same eight
-  // markets three times over: once in prose, once in `activeMarkets`, once
-  // in the note. The paragraph makes the argument; the set does the naming.
+  /* Cap. 05, diferencial 5, textual. */
+  title: "Partner de largo plazo",
+  /* Cap. 05, diferencial 5, textual. Abría con "No publicamos un recuento de
+     clientes", que es una decisión interna del cap. 01 anunciada al lector, y
+     empezar por lo que no se dice es justo lo que el cap. 07 descarta: se
+     enuncia por lo que se ofrece. */
   description:
-    "No publicamos un recuento de clientes. Lo que importa es la duración de las relaciones: entrar por un discovery o una prueba acotada y crecer con resultados.",
+    "Entramos por un discovery o una prueba acotada y crecemos con resultados demostrados. La permanencia se gana con resultados.",
   activeMarkets: [
     "Argentina",
     "Chile",
@@ -380,10 +432,15 @@ export const partnersContent = {
 export const teamContent = {
   index: "06",
   eyebrow: "Equipo",
-  title: "Personas que se quedan en el proyecto",
+  /* Cap. 04, evidencia del valor Confianza: "Equipo estable, así que el
+     cliente habla siempre con las mismas personas." */
+  title: "Equipo estable",
   description:
     "Somos cerca de treinta profesionales y la rotación está por debajo de la media de la industria, así que el cliente habla con las mismas personas a lo largo del tiempo: los fundadores participan de las cuentas críticas y los líderes actúan como mentores, no solo como asignadores de tareas.",
-  careersCta: { label: "Conocer la Academia", href: "#academia" },
+  /* Sin `careersCta`. Decía "Conocer la Academia" y volvía hacia arriba, a la
+     banda 01, desde una banda que habla del equipo. La Academia es evidencia
+     del valor Compañerismo y aprendizaje, que ya está entre los cuatro de
+     abajo; eso no la convierte en un botón. */
   founders: [
     {
       name: "Leandro A. Vazquez",
@@ -433,9 +490,10 @@ export const teamContent = {
 export const contactContent = {
   index: "07",
   eyebrow: "Contacto",
-  title: "Contanos qué proceso querés resolver",
+  /* Cap. 07, columna "Así sí", textual. */
+  title: "Empezamos por lo que ya te duele hoy",
   description:
-    "Entramos por un discovery o una prueba acotada: una conversación corta para entender cómo trabajás hoy, y una propuesta con alcance, plazo y dueño.",
+    "Entramos por un discovery o una prueba acotada: una conversación corta para entender cómo trabajás hoy, y una propuesta con alcance, plazo y presupuesto.",
   fields: {
     name: { label: "Nombre", placeholder: "Cómo te llamás" },
     email: { label: "Email", placeholder: "nombre@empresa.com" },

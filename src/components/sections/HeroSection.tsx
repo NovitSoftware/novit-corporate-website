@@ -66,15 +66,12 @@ export function HeroSection() {
               data-hero="cta"
               className="mt-9 flex flex-wrap items-center gap-3"
             >
+              {/* One control. "Ver los casos" stood beside this and bounced
+                  the reader to a band three screens down that they reach by
+                  scrolling anyway. */}
               <ChipButton href={heroContent.primaryCta.href} variant="light">
                 {heroContent.primaryCta.label}
               </ChipButton>
-              <a
-                href={heroContent.secondaryCta.href}
-                className="link-rule px-2 eyebrow text-celeste hover:text-blanco"
-              >
-                {heroContent.secondaryCta.label}
-              </a>
             </div>
           </div>
 

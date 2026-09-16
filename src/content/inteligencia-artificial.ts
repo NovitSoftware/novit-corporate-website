@@ -1,3 +1,5 @@
+import { footerContent, siteContact, type FooterContent } from "./shared";
+
 /**
  * `/inteligencia-artificial` — four blocks, in render order: `partner`,
  * `architecture`, `cases`, `evolution`. The opener's `title`, `lead` and `cta`
@@ -21,7 +23,11 @@ export const servicesPageContent = {
   eyebrow: "Servicios",
   title: "Inteligencia Artificial y Software Agéntico",
   lead: "Te acompañamos a definir la estrategia, montar la infraestructura, construir los agentes de inteligencia artificial y a sostenerlos en el tiempo. Sobre una arquitectura reutilizable en la red privada de tu empresa.",
-  cta: { label: "Contacto", href: "/#contacto" },
+  /* WhatsApp, como `/academianovit` va al inbox de la Academia: cada página
+     tiene el canal que corresponde a lo que se pregunta ahí. Decía "Contacto"
+     y llevaba a `/#contacto`, el formulario del home: la única salida de esta
+     página era hacia otra ruta. */
+  cta: { label: "Consultanos", href: siteContact.phone.href },
   /**
    * Slide 03 of the brochure, rebuilt as a band of its own.
    *
@@ -176,3 +182,54 @@ export const servicesPageContent = {
     lead: "Dos agentes en producción, cada uno sobre un proceso concreto de una empresa distinta: qué resuelve y qué cambió al ponerlo a andar.",
   },
 } as const;
+
+/**
+ * The footer on `/inteligencia-artificial`, and it is about this page only.
+ *
+ * The site-wide footer indexes the home page — Nosotros, Equipo, Contacto,
+ * Casos, Seguridad — and links out to `/academianovit`. Rendered here it made
+ * the bottom of a services page a way out of it, and it sent anyone who wanted
+ * to write to a form on another route. The one column is this page's own four
+ * bands, and the chip is the WhatsApp line: the same shape `/academianovit`
+ * has with its inbox.
+ */
+export const servicesFooterContent: FooterContent = {
+  mission: footerContent.mission,
+  columns: [
+    {
+      title: "En esta página",
+      links: [
+        { label: servicesPageContent.partner.eyebrow, href: "#nuestro-rol" },
+        {
+          label: servicesPageContent.architecture.eyebrow,
+          href: "#infraestructura",
+        },
+        {
+          label: servicesPageContent.cases.eyebrow,
+          href: "#casos-en-produccion",
+        },
+        { label: servicesPageContent.evolution.eyebrow, href: "#evolucion" },
+      ],
+    },
+  ],
+  legal: [],
+  social: siteContact.social,
+  /* WhatsApp primero, que es adonde va el chip, y el inbox comercial abajo
+     como alternativa. */
+  channels: [
+    {
+      id: "whatsapp",
+      label: siteContact.phone.label,
+      href: siteContact.phone.href,
+    },
+    {
+      id: "email",
+      label: siteContact.email.label,
+      href: siteContact.email.href,
+    },
+  ],
+  contact: {
+    value: "Consultanos",
+    href: siteContact.phone.href,
+  },
+};

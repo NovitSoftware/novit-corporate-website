@@ -1,4 +1,3 @@
-import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
 import { IconLine, type IconName } from "@/components/ui/Icon";
 import { ReadingPanel } from "@/components/ui/ReadingPanel";
@@ -21,11 +20,6 @@ export function TeamSection() {
                 <p className="card-ink-body text-base leading-7">
                   {teamContent.description}
                 </p>
-                <div className="mt-7">
-                  <ChipButton href={teamContent.careersCta.href} variant="dark">
-                    {teamContent.careersCta.label}
-                  </ChipButton>
-                </div>
               </ReadingPanel>
             }
             below={

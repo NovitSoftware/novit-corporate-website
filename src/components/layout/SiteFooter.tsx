@@ -76,7 +76,22 @@ export function SiteFooter({
                 </p>
               ) : null}
               <div data-anim="rise" className="mt-7">
-                <ChipButton href={content.contact.href} variant="light">
+                {/* A route whose way in is WhatsApp points off-site, so the
+                    chip opens like the channels under it do. */}
+                <ChipButton
+                  href={content.contact.href}
+                  variant="light"
+                  target={
+                    content.contact.href.startsWith("http")
+                      ? "_blank"
+                      : undefined
+                  }
+                  rel={
+                    content.contact.href.startsWith("http")
+                      ? "noreferrer"
+                      : undefined
+                  }
+                >
                   {content.contact.value}
                 </ChipButton>
               </div>

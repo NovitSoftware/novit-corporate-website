@@ -58,7 +58,13 @@ export function ServicesOpener() {
               {lead}
             </p>
             <div data-anim="rise" className="mt-9">
-              <ChipButton href={cta.href} variant="light">
+              {/* The WhatsApp line, so it opens away from the page. */}
+              <ChipButton
+                href={cta.href}
+                variant="light"
+                target="_blank"
+                rel="noreferrer"
+              >
                 {cta.label}
               </ChipButton>
             </div>

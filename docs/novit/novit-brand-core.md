@@ -46,12 +46,20 @@ Workshop de IA aplicada.
 | Proyectos activos | Argentina, Chile, España, México, USA (5 países) | ✅ |
 | Países — histórico | Los 5 anteriores + Colombia, Perú, Brasil (8) | ✅ Usar solo con la etiqueta "hemos trabajado en" |
 | Fundadores | Leandro A. Vazquez (Co-founder & CEO) · Rodrigo H. Vazquez (Co-founder, CTO & COO) | ✅ |
-| Programa de formación | Academia Novit, con aval de UTN-FRBA para certificación conjunta | ✅ |
+| Programa de formación | Academia Novit | ✅ |
+| Aval UTN-FRBA para certificación conjunta | Sin confirmar | ⚠️ **No se publica hasta confirmarlo.** Ver nota abajo |
 | Marco regulatorio | Ley de Economía del Conocimiento | ✅ |
 | Sitio | www.novitsoftware.com | ✅ |
 
 **Regla:** ninguna pieza comercial puede publicar una cifra que no esté en esta tabla.
 Si hace falta una nueva, se agrega acá primero.
+
+**Nota sobre el aval de UTN-FRBA.** Venía como ✅ en este documento y no lo está: el
+convenio para la certificación conjunta no está confirmado. Hasta que lo esté no se
+nombra en ninguna pieza — sitio, propuestas, material de la Academia ni marca
+empleadora—, porque un aval institucional es exactamente el tipo de afirmación que
+alguien puede ir a verificar. La Academia se cuenta por lo que es: el programa, la
+carga y que varias ediciones son abiertas y gratuitas.
 
 **Nota sobre cantidad de clientes.** No se comunica un número. El "+ de 40" del
 brochure v3.1 es acumulado histórico y, leído junto a la realidad actual (~10 clientes
@@ -240,8 +248,9 @@ lo transferimos.**
 - Formamos al equipo en las tecnologías que el mercado demanda, hoy incluida la IA
   aplicada al desarrollo.
 
-*Evidencia:* Academia Novit con aval de UTN-FRBA. Más de 100 inscriptos por edición,
-30 seleccionados, ~20% de aprobación. Rotación por debajo de la media de la industria.
+*Evidencia:* Academia Novit: más de 100 inscriptos por edición, 30 seleccionados, ~20%
+de aprobación. Rotación por debajo de la media de la industria. (El aval de UTN-FRBA
+está sin confirmar y no se usa como evidencia — ver cap. 01.)
 
 > 💡 **El hilo más fuerte del documento.** La Academia hacia adentro y el Workshop de
 > IA hacia afuera son el mismo valor: Novit enseña. Eso explica la oferta de IA como
@@ -474,7 +483,8 @@ que todavía requiere criterio humano.
 |---|---|---|
 | Consultatio (Nordelta/Puertos) — 8 años, 1,5M m² gestionados con sistemas de Novit | Casos de largo plazo, real estate | 🔴 Confirmar si es nombrable en material público |
 | Cityparking / SIPPA (Bogotá) — 160 estacionamientos, web + app | Casos regionales, movilidad | 🔴 Confirmar |
-| Academia Novit + convenio UTN-FRBA | Talento, marca empleadora, credibilidad institucional | ✅ Público |
+| Academia Novit | Talento, marca empleadora | ✅ Público |
+| Convenio UTN-FRBA | Credibilidad institucional | ⚠️ Sin confirmar — no se publica (cap. 01) |
 | Rotación por debajo de la media | Continuidad de equipo en propuestas | ✅ Público |
 | Ley de Economía del Conocimiento | Solidez formal | ✅ Público |
 | Casos anonimizados de workshops de IA | Material del Workshop | ✅ Solo anonimizados |
@@ -514,7 +524,7 @@ credibilidad, porque la profundidad de evidencia se demuestra igual contando el 
 | **Gerente comercial** | Perder oportunidades por falta de información | "Ves el pipeline completo y detectás patrones que hoy no ves." |
 | **Gerente de finanzas / administración** | Mora, conciliaciones manuales, falta de trazabilidad | "Menos trabajo manual y trazabilidad de punta a punta en cobranzas." |
 | **CTO / Gerente de IT** | Deuda técnica, integraciones, dependencia del proveedor | "La propiedad intelectual es tuya desde el día uno, con estándares de ingeniería serios y documentación que te deja libre." |
-| **Talento (marca empleadora)** | Aprender, crecer, buen clima | "Acá se enseña. Academia con aval de UTN y líderes que mentorean." |
+| **Talento (marca empleadora)** | Aprender, crecer, buen clima | "Acá se enseña. Academia propia y líderes que mentorean." |
 
 ### Objeciones frecuentes
 
@@ -688,6 +698,7 @@ anonimizados como "iniciativas típicas".
 | 2 | Clientes nombrables (cap. 05, cap. 09) | Medio | Casos de éxito, portfolio |
 | 3 | Objeciones frecuentes (cap. 06) | Medio | Argumentario comercial |
 | 4 | Gobernanza: responsables y repositorio (cap. 09) | Medio | Operación del brandbook |
+| 5 | Confirmar el aval de UTN-FRBA (cap. 01) | Medio | Nombrarlo en sitio, propuestas y marca empleadora |
 
 **Cerradas (13/08/2026):**
 

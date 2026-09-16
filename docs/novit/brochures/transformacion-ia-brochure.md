@@ -63,9 +63,7 @@ que abrió la puerta a todo lo que sigue.
 | Cliente | Agente | Resultado |
 |---|---|---|
 | **United Logistic Company** | Clasificación arancelaria asistida — años de antecedentes y criterio experto convertidos en un agente que encuentra el código arancelario para la declaración aduanera. | De horas de búsqueda a segundos |
-| **Ascend Laboratories** | Lectura automática de documentación de comex — interpreta BL, facturas y certificados, incluso escaneados, y sólo señala lo que necesita criterio humano. | Cerca de 40 importaciones por mes sin digitación |
 | **GAMMA** | Facturación automatizada contra SAP — interpreta las facturas de proveedores, arma la documentación en el ERP y captura datos de compra que antes se perdían. | Dos personas liberadas de la carga manual |
-| **Twistic** | Chats de venta gestionados con IA — centraliza las conversaciones de los vendedores y permite delegarlas a un asistente que no deja lead sin responder. | Ninguna oportunidad sin atender |
 
 ---
 

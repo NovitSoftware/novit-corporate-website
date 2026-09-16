@@ -1,5 +1,4 @@
 import { CardGrid } from "@/components/cards/CardGrid";
-import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
 import { HighlightCard } from "@/components/cards/HighlightCard";
 import { Scene } from "@/components/motion/Scene";
@@ -18,6 +17,10 @@ import { highlights, services, servicesIntro } from "@/content/site";
  * Neither grid tracks the pointer or dims its siblings any more: none of
  * these cards is a link, and answering a hover on something that cannot be
  * clicked promises a destination that isn't there.
+ *
+ * Nothing leaves the band either. A chip under the grids used to go to
+ * `/inteligencia-artificial`; this page describes the company and names its
+ * three lines of work, and the footer is what links to the route.
  */
 export function ServicesSection() {
   const [featured, ...rest] = services;
@@ -64,16 +67,6 @@ export function ServicesSection() {
                     </li>
                   ))}
                 </CardGrid>
-
-                {/* One route out of the grid rather than five, and it goes to
-                    `/inteligencia-artificial` rather than to the enquiry: a
-                    reader who has just met three framings and five services
-                    wants the next level of detail, not a form. */}
-                <div data-anim="rise" className="mt-12">
-                  <ChipButton href={servicesIntro.cta.href} variant="light">
-                    {servicesIntro.cta.label}
-                  </ChipButton>
-                </div>
               </>
             }
           />

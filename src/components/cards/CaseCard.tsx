@@ -1,4 +1,4 @@
-import type { CaseStudy } from "@/content/site";
+import { casesContent, type CaseStudy } from "@/content/site";
 import { Card, CardText } from "@/components/cards/Card";
 import { CaseLogo } from "@/components/cards/CaseLogo";
 
@@ -29,7 +29,7 @@ export function CaseCard({ study, className }: CaseCardProps) {
       icon={study.icon}
       label={study.area}
       title={study.title}
-      footer={{ label: "Resultado", text: study.result }}
+      footer={{ label: casesContent.resultLabel, text: study.result }}
       className={className}
     >
       <CardText>{study.description}</CardText>

@@ -1,7 +1,6 @@
 import { CardGrid } from "@/components/cards/CardGrid";
 import { Card, CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
-import { ReadingPanel } from "@/components/ui/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/ui/Section";
 import { SectionIntro } from "@/components/ui/SectionIntro";
@@ -31,6 +30,11 @@ export function SafetySection() {
                 <div data-anim-block>
                   {/* The one pull-quote on the page, so it gets the word
                       reveal the section titles use rather than a plain lift. */}
+                  {/* Nothing under this. There was a `description` panel that
+                      listed the four pillars in prose and then the four cards
+                      beside it said the same thing; and before that a button
+                      to /inteligencia-artificial, which nothing links to now.
+                      The cards are what the reader goes to next. */}
                   <p
                     data-anim="words"
                     data-anim-stagger="0.022"
@@ -38,17 +42,6 @@ export function SafetySection() {
                   >
                     <SplitWords text={safetyContent.statement} />
                   </p>
-
-                  {/* No button under this. It read "Leer el enfoque de
-                      gobierno" and went to /inteligencia-artificial, and
-                      nothing links to that route now — see the note in
-                      `safetyContent`. The four cards beside this are where
-                      the reader goes next. */}
-                  <ReadingPanel className="mt-9 max-w-[62ch]">
-                    <p className="card-ink-body text-base leading-7">
-                      {safetyContent.description}
-                    </p>
-                  </ReadingPanel>
                 </div>
               </SectionIntro>
             </div>

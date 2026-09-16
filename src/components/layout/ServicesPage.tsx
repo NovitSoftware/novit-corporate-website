@@ -4,6 +4,7 @@ import { ServicesEvolution } from "@/components/services/ServicesEvolution";
 import { ServicesOpener } from "@/components/services/ServicesOpener";
 import { ServicesRole } from "@/components/services/ServicesRole";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { servicesFooterContent } from "@/content/site";
 
 /**
  * `/inteligencia-artificial`: opener, then Nuestro rol → Infraestructura →
@@ -13,13 +14,16 @@ import { SiteShell } from "@/components/layout/SiteShell";
  * empresas…" and refers to the cards in the band above it.
  *
  * `ServicesArchitecture` is the one band with a figure in it; the rest are
- * heading, lead and cards. No contact form here (the site's one is on the
- * home page), no "La oferta" band, and no section numbers — the home page's
- * 01–07 belongs to that page.
+ * heading, lead and cards. No contact form here, no "La oferta" band, and no
+ * section numbers — the home page's 01–07 belongs to that page.
+ *
+ * Nothing on this page leaves the route: the way in is the WhatsApp line, in
+ * the opener and again in the footer, and `servicesFooterContent` indexes
+ * these four bands instead of the home page's.
  */
 export function ServicesPage() {
   return (
-    <SiteShell>
+    <SiteShell footer={servicesFooterContent}>
       <ServicesOpener />
       <ServicesRole />
       <ServicesArchitecture />

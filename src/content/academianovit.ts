@@ -238,7 +238,6 @@ export const academyFooterContent: FooterContent = {
     },
   ],
   contact: {
-    label: "Consultas",
     value: "Consultanos",
     href: academyContact.email.href,
   },
