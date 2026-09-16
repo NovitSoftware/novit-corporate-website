@@ -16,6 +16,34 @@ export const site = {
 } as const;
 
 /**
+ * The menu, and the whole of it: one entry per section the site has.
+ *
+ * Every destination is a route. The home page is not in the list because the
+ * logo is how a reader gets to it, and in-page anchors are not either — the
+ * footer of each page indexes that page, which is where an index of bands
+ * belongs.
+ *
+ * `id` is what the header compares against the current pathname for the active
+ * state; it is the route's own slug so the two cannot drift.
+ */
+export const navigation = [
+  {
+    id: "inteligencia-artificial",
+    label: "Inteligencia Artificial",
+    href: "/inteligencia-artificial",
+  },
+  {
+    id: "desarrollo-y-consultoria",
+    label: "Desarrollo y Consultoría",
+    href: "/desarrollo-y-consultoria",
+  },
+  { id: "academianovit", label: "Academia Novit", href: "/academianovit" },
+  { id: "casos-de-exito", label: "Casos de éxito", href: "/casos-de-exito" },
+] as const;
+
+export type NavEntry = (typeof navigation)[number];
+
+/**
  * The channels that actually exist, pulled from the standing corporate site
  * at novitsoftware.com — the phone number, the inbox, and the two social
  * accounts it links from its header. Nothing here is invented: the contact
@@ -193,25 +221,25 @@ export const footerContent = {
    */
   columns: [
     {
-      title: "Compañía",
+      /* This page's own bands, which is what every route's footer indexes. */
+      title: "En esta página",
       links: [
         { label: "Nosotros", href: "/#nosotros" },
         { label: "Equipo", href: "/#equipo" },
+        { label: "Seguridad y gobierno", href: "/#seguridad" },
         { label: "Contacto", href: "/#contacto" },
       ],
     },
     {
-      title: "Enfoque",
-      links: [
-        /* The only way into either route. The home page names the Academia
-           and the AI line and does not link to them: it is about the company,
-           and those two are subjects it mentions. The footer is where a
-           corporate site lists what it has. */
-        { label: "Academia Novit", href: "/academianovit" },
-        { label: "Inteligencia artificial", href: "/inteligencia-artificial" },
-        { label: "Casos", href: "/#casos" },
-        { label: "Seguridad y gobierno", href: "/#seguridad" },
-      ],
+      /* The menu, again. The home page names the Academia and the AI line in
+         its own copy and does not link to them from the body — it is about
+         the company, and those are subjects it mentions — but a reader at the
+         bottom of it should not have to go back up to the menu to leave. */
+      title: "Secciones",
+      links: navigation.map((item) => ({
+        label: item.label,
+        href: item.href,
+      })),
     },
   ],
   /**

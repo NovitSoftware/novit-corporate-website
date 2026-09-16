@@ -12,4 +12,6 @@
 export * from "./shared";
 export * from "./home";
 export * from "./inteligencia-artificial";
+export * from "./desarrollo-y-consultoria";
 export * from "./academianovit";
+export * from "./casos-de-exito";

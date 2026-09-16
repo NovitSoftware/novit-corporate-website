@@ -8,6 +8,8 @@ type LogoProps = {
   /** Full lockup by default; `false` for the isotipo on its own. */
   showWordmark?: boolean;
   className?: string;
+  /** The header closes its menu on the way out. */
+  onClick?: () => void;
   /**
    * Which colourway. White by default: every ground this site puts a logo on
    * is the brand gradient. `colour` is for a white or light-grey plate.
@@ -38,15 +40,15 @@ type LogoProps = {
  *
  * ## The lockup leaves the site
  *
- * It used to point at `/`. These pages are landings reached from
- * novitsoftware.com and they no longer link across each other, so "home" is
- * not one of them — the mark goes where the reader expects a logo to go, which
- * is the company's own site. Same tab: it is a navigation, not an aside.
+ * It points at `/`. It went to novitsoftware.com while these pages were
+ * landings that did not link across each other; with the menu back the site
+ * navigates itself, so the mark goes where a logo is expected to go.
  */
 export function Logo({
-  href = site.url,
+  href = "/",
   showWordmark = true,
   className,
+  onClick,
   tone = "white",
   priority = false,
 }: LogoProps) {
@@ -55,8 +57,9 @@ export function Logo({
   return (
     <a
       href={href}
+      onClick={onClick}
       className={cn("logo inline-flex items-center", className)}
-      aria-label={`${site.name}, ir al sitio principal`}
+      aria-label={`${site.name}, ir al inicio`}
     >
       <Image
         src={art[tone]}
