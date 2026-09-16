@@ -9,21 +9,14 @@
    ========================================================================== */
 
 /*
- * There is no `navigation` list any more, and no menu to hold one.
- *
- * Two of its seven entries were the other two routes, and nothing links
- * across routes now: each page is reached from novitsoftware.com and is the
- * whole of what it is. The remaining five were in-page anchors on a page the
- * reader is already scrolling, kept behind a panel they had to open to find
- * out that is all it held. The footer lists the sections in the open, which is
- * where an index of a single page belongs, and the header's one control takes
- * you back to the top.
- *
  * Every link in this file is an anchor on its own page or a real channel
- * (WhatsApp, mail, Instagram, LinkedIn). Nothing here points at
- * `/inteligencia-artificial` or `/academianovit`: this page is about the
- * company, and those two are subjects it names rather than doors it opens.
- * The footer lists both routes, which is what keeps them reachable.
+ * (WhatsApp, mail, Instagram, LinkedIn). Nothing in the body points at
+ * another route: this page is about the company, and the Academia and the AI
+ * line are subjects it names rather than doors it opens.
+ *
+ * Getting to them is the menu's job — `navigation` in `shared.ts`, one entry
+ * per section — and the footer lists the same four under "Secciones" so a
+ * reader at the bottom does not have to go back up for them.
  */
 
 /*

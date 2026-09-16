@@ -23,6 +23,10 @@ type NavItemProps = {
  * Menu entry. On hover the label rolls up and a celeste copy takes its place —
  * the duplicate is hidden from assistive tech, so the link is still announced
  * once.
+ *
+ * The entry you are on is celeste already, label and index both: the same
+ * colour the hover rolls in, saying you are there rather than heading there.
+ * A tinted numeral at 0.65rem was the whole mark and nobody saw it.
  */
 export function NavItem({
   href,
@@ -41,7 +45,8 @@ export function NavItem({
       data-active={active || undefined}
       aria-current={active ? "true" : undefined}
       className={cn(
-        "group flex items-baseline gap-5 py-2 text-blanco",
+        "group flex items-baseline gap-5 py-2",
+        "text-blanco data-[active]:text-celeste",
         "focus-visible:outline-offset-4",
         className,
       )}
@@ -51,7 +56,9 @@ export function NavItem({
         <span
           className={cn(
             "section-index w-8 shrink-0 text-[0.65rem] transition-colors duration-300",
-            "group-data-[active]:text-celeste",
+            /* Muted until it is the entry you are on, where it takes the
+               anchor colour with the label. */
+            "text-blanco/45 group-data-[active]:text-current",
           )}
         >
           {index}

@@ -23,8 +23,10 @@ export const site = {
  * footer of each page indexes that page, which is where an index of bands
  * belongs.
  *
- * `id` is what the header compares against the current pathname for the active
- * state; it is the route's own slug so the two cannot drift.
+ * `href` is what the header compares against the current pathname for the
+ * active state, and the order here is the order of the menu: the 01–04 beside
+ * each entry is its position in this list, not a number the entry carries.
+ * `id` is only the React key.
  */
 export const navigation = [
   {
@@ -40,8 +42,6 @@ export const navigation = [
   { id: "academianovit", label: "Academia Novit", href: "/academianovit" },
   { id: "casos-de-exito", label: "Casos de éxito", href: "/casos-de-exito" },
 ] as const;
-
-export type NavEntry = (typeof navigation)[number];
 
 /**
  * The channels that actually exist, pulled from the standing corporate site
