@@ -21,9 +21,11 @@ type CardProps = {
   title: string;
   /**
    * The small uppercase eyebrow beside the mark: the area, the step number,
-   * the category. It files the card; the title is what the card says.
+   * the category. It files the card; the title is what the card says. A
+   * string on every card but the recorrido's, which sets a flag in front of
+   * its country.
    */
-  label?: string;
+  label?: ReactNode;
   /** The mark. Optional, but every card in a given grid should agree. */
   icon?: IconName;
   /**

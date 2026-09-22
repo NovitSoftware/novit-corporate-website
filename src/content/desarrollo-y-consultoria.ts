@@ -44,7 +44,7 @@ export const developmentPageContent = {
     id: "desarrollo",
     eyebrow: "Desarrollo de software",
     title: "Creamos software único para los procesos de tu empresa",
-    lead: "La inteligencia artificial incrementó nuestra productividad en niveles increíbles, lo que redujo muchísimo los costos de construir software a medida. Comercializamos el servicio por etapas, con entregables tangibles que se compran por separado y alimentan a la siguiente.",
+    lead: "La inteligencia artificial incrementó la productividad de la industria del software en general y la nuestra en particular en un orden de magnitud. Hoy ofrecemos servicios de calidad a una fracción del costo de años atrás. Vendemos el desarrollo a medida por etapas que se compran individualmente, con entregables tangibles que alimentan a la siguiente.",
     stages: [
       {
         id: "discovery",

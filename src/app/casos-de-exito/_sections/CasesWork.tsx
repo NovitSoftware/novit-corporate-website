@@ -2,6 +2,7 @@ import { Card } from "@/components/cards/Card";
 import { CardGrid } from "@/components/cards/CardGrid";
 import { CaseLogo } from "@/components/cards/CaseLogo";
 import { Container } from "@/components/ui/Container";
+import { Flag } from "@/components/ui/Flag";
 import { IconLine } from "@/components/ui/Icon";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/section/Section";
@@ -22,8 +23,9 @@ type WorkGroup = (typeof casesPageContent.work.groups)[number];
  *
  * The card is the one the whole site uses, with the client's mark in `media`
  * — a credential above the hairline, which is exactly what the slot is for —
- * the country as the label and the work as the title. No body and no footer:
- * the line *is* the card, and a paragraph repeating it would be filler.
+ * the flag and the country as the label and the work as the title. No body
+ * and no footer: the line *is* the card, and a paragraph repeating it would
+ * be filler.
  *
  * The closing line under them is the invitation the standing site ends this
  * page with, and it is deliberately not a button: the way in is the menu's
@@ -99,7 +101,12 @@ function WorkGroup({ group }: { group: WorkGroup }) {
           <li key={item.logo.name} data-anim="card">
             <Card
               media={<CaseLogo logo={item.logo} />}
-              label={item.country}
+              label={
+                <span className="inline-flex items-center gap-1.5">
+                  <Flag country={item.country} />
+                  {item.country}
+                </span>
+              }
               title={item.description}
               size="base"
             />

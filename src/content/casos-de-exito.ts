@@ -24,8 +24,9 @@ import { siteContact } from "@/content/site";
  *
  * Cap. 01 also fixes what may be said about the countries: Argentina, Chile,
  * España, México and USA have projects running, while Colombia, Perú and
- * Brasil may only appear under "hemos trabajado en". The cards name a country
- * each, so `work.lead` carries that label once for all of them.
+ * Brasil may only appear under "hemos trabajado en". Each card names its own
+ * country now, flag and all — see `flagFor` in `CasesWork` — so the claim
+ * lives on the card that earns it instead of in one sentence for all of them.
  */
 export const casesPageContent = {
   meta: {
@@ -34,8 +35,8 @@ export const casesPageContent = {
       "Agentes de IA en producción y una década de proyectos: sistemas de gestión, plataformas web y mobile, consultoría de procesos y equipos integrados.",
   },
   eyebrow: "Casos de éxito",
-  title: "Clientes que confían en Novit",
-  lead: "Desde 2015, con proyectos activos en cinco países y trabajo hecho en otros tres. Este es el recorrido: de los agentes de IA que hoy están en producción a una década de software a medida.",
+  title: "Empresas que confían en Novit",
+  lead: "Desde 2015, con clientes activos en cinco países. Más de una década siendo partners de empresas en el mundo.",
   cta: { label: "Consultanos", href: siteContact.phone.href },
   /**
    * The recorrido, grouped by what the work was. Four groups rather than one
@@ -48,9 +49,11 @@ export const casesPageContent = {
     id: "recorrido",
     eyebrow: "Recorrido",
     title: "Una década de proyectos",
-    /* La segunda oración es la etiqueta que pide el cap. 01: los cinco países
-       con proyectos activos se nombran sueltos, Colombia y Brasil no. */
-    lead: "Agentes de inteligencia artificial, software a medida, consultoría sobre el proceso de desarrollo y equipos integrados a los del cliente, en industrias que van del real estate al retail, la salud y la educación. Cada proyecto lleva el país donde se hizo: Argentina, Chile, España y Estados Unidos tienen proyectos activos, y en Colombia y Brasil hemos trabajado.",
+    /* El cap. 01 sigue fijando qué se dice de cada país, pero ahora es la
+       bandera de cada card la que lo dice, no esta oración: Colombia y
+       Brasil llevan su marca igual que los cinco con proyectos activos, sin
+       reclamar más que "hemos trabajado en". */
+    lead: "Agentes de inteligencia artificial, software a medida, consultoría sobre el proceso de desarrollo y equipos integrados a los del cliente. En industrias como Oil & Gas, Real Estate, Retail, Salud y Educación.",
     groups: [
       {
         id: "inteligencia-artificial",
@@ -132,6 +135,9 @@ export const casesPageContent = {
               width: 579,
               height: 177,
               displayHeight: 40,
+              /* Solid blue badge, not ink on transparency — force-white
+                 leaves one flat rectangle with nothing left to read. */
+              mono: false,
             },
           },
           {
@@ -274,6 +280,9 @@ export const casesPageContent = {
               width: 496,
               height: 143,
               displayHeight: 40,
+              /* A colour emblem edge-to-edge, no transparent margin left for
+                 a silhouette — see City Parking above. */
+              mono: false,
             },
           },
           {
