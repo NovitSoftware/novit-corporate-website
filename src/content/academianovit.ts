@@ -17,7 +17,10 @@ import { siteContact } from "@/content/site";
  * and the Academia has none of its own.
  */
 export const academyContact = {
-  email: { label: "academia@novit.com.ar", href: "mailto:academia@novit.com.ar" },
+  email: {
+    label: "academia@novit.com.ar",
+    href: "mailto:academia@novit.com.ar",
+  },
   social: siteContact.social,
 } as const;
 
@@ -120,7 +123,7 @@ export const academyProgram = {
    */
   evaluation: {
     description:
-      "Trabajo práctico integrador con entregas parciales obligatorias, corrección por aprobado o desaprobado y devolución personalizada. Se corrige el sistema entregado, no el examen: las tres preguntas de abajo se aplican juntas a la misma entrega.",
+      "Trabajo práctico integrador con entregas parciales obligatorias, corrección por aprobado o desaprobado y devolución personalizada.",
     criteria: [
       {
         title: "Que funcione",
