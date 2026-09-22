@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { gsap, scroller, useGSAP } from "@/shared/lib/gsap";
+import { gsap, scroller, useGSAP } from "@/lib/gsap";
 import { onIntroComplete } from "../_lib/intro";
-import { ease } from "@/shared/lib/motion";
-import { cn } from "@/shared/lib/cn";
+import { ease } from "@/lib/motion";
+import { cn } from "@/lib/cn";
 
 type HeroSceneProps = {
   children: ReactNode;
@@ -72,7 +72,7 @@ function buildEntrance() {
     .fromTo(
       `${target("title")} .split-item`,
       // `y: 0` clears the pixel offset GSAP reads out of the CSS resting
-      // state; see the `words` recipe in @/shared/lib/motion.
+      // state; see the `words` recipe in @/lib/motion.
       { yPercent: 115, y: 0 },
       { yPercent: 0, y: 0, duration: 1.05, ease: ease.outLong, stagger: 0.07 },
       "-=0.34",

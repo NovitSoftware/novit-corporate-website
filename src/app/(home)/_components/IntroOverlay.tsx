@@ -3,13 +3,13 @@
 import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLenis } from "lenis/react";
-import { BarField } from "@/shared/decor/BarField";
-import { introContent } from "../_content/home";
-import { gsap, useGSAP } from "@/shared/lib/gsap";
-import { BRAND_LOGO } from "@/shared/lib/brand-logo";
+import { BarField } from "@/components/ui/BarField";
+import { introContent } from "@/content/home";
+import { gsap, useGSAP } from "@/lib/gsap";
+import { BRAND_LOGO } from "@/lib/brand-logo";
 import { markIntroComplete } from "../_lib/intro";
-import { usePrefersReducedMotion } from "@/shared/hooks/usePrefersReducedMotion";
-import { ease } from "@/shared/lib/motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { ease } from "@/lib/motion";
 
 /** Backstop: if the timeline never reports back, the curtain still leaves. */
 const MAX_INTRO_MS = 2400;
@@ -29,7 +29,7 @@ const MAX_INTRO_MS = 2400;
  * That is not an arbitrary choice of direction. The isotipo *is* four
  * horizontal bars of unequal length extending to the right, and a left-to-right
  * clip is the gesture the whole site is built on — `wipe` in
- * `@/shared/lib/motion`,
+ * `@/lib/motion`,
  * every `bar` rule, the growing rules on `/inteligencia-artificial`. So the
  * curtain draws the bars, the wordmark lands with them, the rule closes it, and
  * the whole thing lifts.
