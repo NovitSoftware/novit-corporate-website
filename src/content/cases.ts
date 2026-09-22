@@ -8,16 +8,11 @@
 /**
  * A client's mark, as the file actually is.
  *
- * The numbers are the PNG's own, which `next/image` needs, and
- * `displayHeight` is what it is set to on screen — chosen per file so that a
- * wide wordmark and a square badge come out looking the same size, which
- * matching heights would not do.
- *
- * `plate` is the ground the mark needs, and it is a per-file fact: `"light"`
- * for artwork that is dark on transparency and would sink into the page,
- * `"none"` for artwork that is already white and only needs to be left alone.
- * `invertOnLight` is the third case — white artwork forced onto a white plate
- * — and it only works on marks with no colour in them.
+ * Every file is white ink on transparency or carries its own colour block, so
+ * a mark needs no ground of its own — see `CaseLogo`. The numbers are the
+ * PNG's, which `next/image` needs; `displayHeight` is what it is set to on
+ * screen, per file, so a wide wordmark and a square badge come out looking the
+ * same size, which matching heights would not do.
  */
 export type ClientLogo = {
   readonly name: string;
@@ -25,8 +20,6 @@ export type ClientLogo = {
   readonly width: number;
   readonly height: number;
   readonly displayHeight: number;
-  readonly invertOnLight?: boolean;
-  readonly plate?: "light" | "none";
 };
 
 /* The cases, with the client each one belongs to. Rendered on the home page
@@ -55,11 +48,10 @@ export const casesContent = {
       result: "De horas de búsqueda a segundos",
       logo: {
         name: "United Logistic Company",
-        src: "/logos/united-logistic-company.jpg",
-        width: 557,
+        src: "/logos/united-logistic-company.png",
+        width: 556,
         height: 395,
         displayHeight: 56,
-        invertOnLight: false,
       },
     },
     {
@@ -76,7 +68,6 @@ export const casesContent = {
         width: 300,
         height: 54,
         displayHeight: 26,
-        invertOnLight: false,
       },
     },
   ],
