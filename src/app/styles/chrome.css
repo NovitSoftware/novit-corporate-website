@@ -140,6 +140,90 @@
     transform: translateY(var(--space-4));
   }
 
+  /* --- The menu's rows -----------------------------------------------------
+   *
+   * Four peers, so nothing numbers them; the rule over each row is what tells
+   * them apart. It is the isotipo's own bar: a hairline at rest, drawn celeste
+   * from the left when the row answers a pointer, and standing celeste on the
+   * route being read — so with nothing hovered exactly one bar is lit, and it
+   * says where you are.
+   *
+   * The list carries the closing rule, since a border-top per row leaves the
+   * set open at the bottom. */
+  /* One grid for the whole list rather than one per row. Each row laying
+     itself out alone leaves the clauses hanging at four different depths,
+     which is the same ragged edge the names have — so the list owns the
+     tracks and subgrid passes them down through the item and the reveal
+     wrapper to the link that draws the row. The name track is `max-content`,
+     so the column line sits just past the longest name and re-fits itself if
+     the menu gains an entry.
+
+     Column gaps come from the list: a subgridded axis takes its parent's
+     gutters and ignores its own. Without subgrid each row lays itself out as
+     it does on a phone — untidy, not broken. */
+  .menu-list {
+    display: grid;
+  }
+
+  @media (width >= 64rem) {
+    .menu-list {
+      grid-template-columns: max-content minmax(0, 1fr);
+      column-gap: 3rem;
+    }
+
+    @supports (grid-template-columns: subgrid) {
+
+      .menu-list>li,
+      .menu-list>li>*,
+      .menu-list .menu-row {
+        display: grid;
+        grid-column: span 2;
+        grid-template-columns: subgrid;
+      }
+    }
+  }
+
+  .menu-row {
+    position: relative;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .menu-row::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: -1px;
+    height: 2px;
+    background: var(--celeste);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .menu-row:hover::before,
+  .menu-row:focus-visible::before,
+  .menu-row[data-current]::before {
+    transform: scaleX(1);
+  }
+
+  .menu-row_name {
+    color: var(--blanco);
+    transition: color var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .menu-row:hover .menu-row_name,
+  .menu-row:focus-visible .menu-row_name,
+  .menu-row[data-current] .menu-row_name {
+    color: var(--celeste);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-row::before,
+    .menu-row_name {
+      transition: none;
+    }
+  }
+
   /* Word-level mask behind every headline reveal. Rendered on the server, so
      the copy ships in the HTML and reads normally without JS. */
   .split-mask {

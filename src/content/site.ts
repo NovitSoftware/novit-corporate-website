@@ -45,19 +45,17 @@ export const siteContact = {
 
 /**
  * The root layout's metadata and the link-preview card. It is the home page's
- * own title and description, and the default the other two routes override.
+ * own Meta block from `novt-home-texto-final.md`, and the default the other
+ * routes override.
  */
 export const metadataContent = {
-  title: "Novit Software — Software a medida y agentes de IA integrados",
+  title: "Novit Software — Desarrollo y Transformación IA",
   description:
-    "Desarrollamos software a medida para organizaciones que necesitan digitalizar procesos críticos de negocio, y agentes de IA integrados a esos procesos. Desde 2015.",
-  /**
-   * The link-preview card's own two lines. They were written into
-   * `opengraph-image.tsx` as literals, which meant the card and the metadata
-   * could drift — and did: the card still promised a headline the page had
-   * stopped using. The headline is short because it is set at 64px over the
-   * logo; `description` above is a sentence, which is the wrong shape there.
-   */
-  ogHeadline: "Software a medida y agentes de IA integrados",
-  ogSupporting: "Ingeniería de software para procesos críticos. Desde 2015.",
+    "Desarrollamos software a medida y agentes de IA integrados al proceso real de tu empresa, con foco en la reducción de costos y el mantenimiento a largo plazo.",
+  /** The card's own two lines: the headline is set at 64px over the logo, so
+   *  it takes the title without the company name, and the sentence below is
+   *  the cierre's volanta rather than the description, which is the wrong
+   *  shape there. */
+  ogHeadline: "Desarrollo y Transformación IA",
+  ogSupporting: "Más de 11 años haciendo simple lo complejo.",
 } as const;

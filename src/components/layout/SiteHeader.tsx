@@ -2,44 +2,27 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type Lenis from "lenis";
-import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useLenis } from "lenis/react";
-import { BarField } from "@/shared/decor/BarField";
-import { Container } from "@/shared/ui/Container";
-import {
-  MailIcon,
-  SOCIAL_ICONS,
-  WhatsAppIcon,
-} from "@/shared/ui/ContactIcons";
-import { Logo } from "@/shared/ui/Logo";
-import { NavItem } from "@/shared/ui/NavItem";
-import { navigation } from "@/shared/content/navigation";
-import { siteContact } from "@/shared/content/site";
-import { usePrefersReducedMotion } from "@/shared/hooks/usePrefersReducedMotion";
-import { cn } from "@/shared/lib/cn";
+import { Container } from "@/components/ui/Container";
+import { Logo } from "@/components/ui/Logo";
+import { MenuPanel } from "@/components/layout/MenuPanel";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { cn } from "@/lib/cn";
 
 /** Below this the header always shows; there is nothing to get out of the way of. */
 const HIDE_AFTER_PX = 340;
-
-const PANEL_EASE = [0.16, 1, 0.3, 1] as const;
 
 /** The reading ring around the menu button: radius and circumference, in px. */
 const RING_RADIUS = 21;
 const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
 
 /**
- * The logo, and the way into the other sections.
+ * The logo, the menu button, and the curtain the button opens.
  *
- * The menu is a full-screen curtain coming down — the same gesture as the
- * intro, which lifts one away. It carries one entry per section the site has
- * and nothing else: every destination is a page, so a list of in-page anchors
- * here would be a second index competing with the one the reader is already
- * scrolling. `SiteFooter` is where a page indexes itself.
- *
- * The active entry is the route being read, so the menu says where you are and
- * not only where you can go. That is `usePathname` rather than the scroll-spy
- * this had when every entry was a band of the home page.
+ * The rows themselves are `MenuPanel`; what is left here is the header's own
+ * chrome and the modal behaviour around the panel. The active row is the route
+ * being read, so the menu says where you are and not only where you can go.
  */
 export function SiteHeader() {
   const reduced = usePrefersReducedMotion();
@@ -69,8 +52,8 @@ export function SiteHeader() {
    * renders.
    *
    * Both controls stay white at every scroll position; `data-scrolled` fades a
-   * scrim in behind them (see `.site-header` in globals.css) so white holds
-   * over a white card without either control changing colour.
+   * scrim in behind them (see `.site-header` in chrome.css) so white holds over
+   * a white card without either control changing colour.
    */
   const lenis = useLenis((instance) => {
     const header = headerRef.current;
@@ -95,11 +78,6 @@ export function SiteHeader() {
 
   useMenuAccessibility({ open, close, headerRef, triggerRef, lenis });
 
-  const panelTransition = {
-    duration: reduced ? 0 : 0.75,
-    ease: PANEL_EASE,
-  };
-
   return (
     <header
       ref={headerRef}
@@ -108,115 +86,13 @@ export function SiteHeader() {
       data-hidden="false"
       className="site-header group/header pointer-events-none fixed inset-x-0 top-0 z-50"
     >
-      {/* The menu arrives as a curtain coming down — the same gesture as the
-          intro, which lifts one away. */}
-      <motion.div
+      <MenuPanel
         id={panelId}
-        role="dialog"
-        aria-modal={open}
-        aria-label="Menú de navegación"
-        data-tone="dark"
-        inert={!open}
-        initial={false}
-        animate={{ clipPath: open ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)" }}
-        transition={panelTransition}
-        className={cn(
-          "ground-deep fixed inset-0 z-0 flex h-dvh flex-col justify-center overflow-hidden",
-          open ? "pointer-events-auto" : "pointer-events-none",
-        )}
-      >
-        <div
-          className="pointer-events-none absolute inset-0"
-          aria-hidden="true"
-        >
-          <div className="bloom -left-[8%] top-[-10%] h-[70%] w-[52%] bg-celeste/14" />
-          <BarField className="opacity-20" spread={0.8} />
-          <div className="bar-grid bar-grid-drift absolute inset-0 opacity-35" />
-        </div>
-
-        <Container className="relative grid gap-12 pb-12 pt-header lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.65fr)] lg:items-end lg:gap-16">
-          <nav aria-label="Principal">
-            <ul className="flex flex-col">
-              {navigation.map((item, index) => (
-                <li key={item.id}>
-                  <motion.div
-                    initial={false}
-                    animate={{ y: open ? 0 : 28, opacity: open ? 1 : 0 }}
-                    transition={{
-                      duration: reduced ? 0 : 0.6,
-                      delay: reduced || !open ? 0 : 0.16 + index * 0.05,
-                      ease: PANEL_EASE,
-                    }}
-                  >
-                    <NavItem
-                      href={item.href}
-                      label={item.label}
-                      index={String(index + 1).padStart(2, "0")}
-                      size="display"
-                      active={pathname === item.href}
-                      onClick={close}
-                    />
-                  </motion.div>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <motion.div
-            initial={false}
-            animate={{ y: open ? 0 : 24, opacity: open ? 1 : 0 }}
-            transition={{
-              duration: reduced ? 0 : 0.6,
-              delay: reduced || !open ? 0 : 0.16 + navigation.length * 0.05,
-              ease: PANEL_EASE,
-            }}
-            className="flex flex-col gap-6 border-t border-blanco/12 pt-8 lg:border-l lg:border-t-0 lg:pl-14 lg:pt-0"
-          >
-            <p className="max-w-sm text-sm leading-7 text-on-detail">
-              Software a medida y agentes de IA integrados. Entendemos el
-              proceso, lo construimos con vos y la solución queda siendo tuya.
-            </p>
-            {/* The direct channels, and no call to action over them: the menu
-                is the way around the site, and every page carries its own way
-                in. */}
-            <div className="flex flex-col gap-2 text-sm">
-              <a
-                href={siteContact.phone.href}
-                target="_blank"
-                rel="noreferrer"
-                className="link-rule inline-flex w-fit items-center gap-2 text-on-link hover:text-celeste"
-              >
-                <WhatsAppIcon className="size-4 shrink-0" />
-                {siteContact.phone.label}
-              </a>
-              <a
-                href={siteContact.email.href}
-                className="link-rule inline-flex w-fit items-center gap-2 text-on-link hover:text-celeste"
-              >
-                <MailIcon className="size-4 shrink-0" />
-                {siteContact.email.label}
-              </a>
-            </div>
-            <div className="flex gap-5">
-              {siteContact.social.map((item) => {
-                const Icon = SOCIAL_ICONS[item.id];
-                return (
-                  <a
-                    key={item.id}
-                    href={item.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="link-rule inline-flex w-fit items-center gap-1.5 text-xs font-bold uppercase tracking-[0.16em] text-on-detail hover:text-celeste"
-                  >
-                    <Icon className="size-4 shrink-0" />
-                    {item.label}
-                  </a>
-                );
-              })}
-            </div>
-          </motion.div>
-        </Container>
-      </motion.div>
+        open={open}
+        reduced={reduced}
+        pathname={pathname}
+        onNavigate={close}
+      />
 
       {/* No bar, no fill, no rule: the page runs under the two controls, which
           are all there is. Pointer events come back on for those alone, so the
@@ -247,9 +123,9 @@ type MenuTriggerProps = {
 };
 
 /**
- * The word and the mark together, as the reference has it: a tracked label
- * that names the action, and a round glyph that fills with celeste on hover.
- * The label is the accessible name, so nothing is announced twice.
+ * The word and the mark together: a tracked label that names the action, and a
+ * round glyph that fills with celeste on hover. The label is the accessible
+ * name, so nothing is announced twice.
  *
  * The ring around the glyph is how far down the page the visitor is. With no
  * ground under the header and no scrollbar on the page, it is the only reading

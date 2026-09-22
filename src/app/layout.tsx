@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lato } from "next/font/google";
-import { SmoothScroll } from "@/shared/providers/SmoothScroll";
-import { metadataContent, site } from "@/shared/content/site";
+import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { metadataContent, site } from "@/content/site";
 import "./globals.css";
 
 /**
