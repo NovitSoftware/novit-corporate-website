@@ -1,5 +1,5 @@
-import { PageOpener } from "@/shared/layout/PageOpener";
-import { servicesPageContent } from "../_content/inteligencia-artificial";
+import { PageOpener } from "@/components/layout/PageOpener";
+import { servicesPageContent } from "@/content/inteligencia-artificial";
 
 /**
  * The opener: the claim, and the door.

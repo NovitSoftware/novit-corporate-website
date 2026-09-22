@@ -1,11 +1,11 @@
-import { ChipButton } from "@/shared/ui/ChipButton";
-import { Container } from "@/shared/ui/Container";
-import { Icon } from "@/shared/ui/Icon";
-import { Scene } from "@/shared/motion/Scene";
-import { SectionLabel } from "@/shared/ui/SectionLabel";
-import { SplitWords } from "@/shared/motion/SplitWords";
-import { StatRow } from "@/shared/ui/StatRow";
-import { academyPageContent, academyProgram } from "../_content/academianovit";
+import { ChipButton } from "@/components/ui/ChipButton";
+import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
+import { Scene } from "@/components/motion/Scene";
+import { SectionLabel } from "@/components/section/SectionLabel";
+import { SplitWords } from "@/components/motion/SplitWords";
+import { StatRow } from "@/components/section/StatRow";
+import { academyPageContent, academyProgram } from "@/content/academianovit";
 
 /**
  * The page's opener, and the one place on it that raises its voice.

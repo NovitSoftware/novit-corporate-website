@@ -2,12 +2,11 @@
    `/academianovit` — the programme, the page around it and its own footer.
 
    The home page's Academia band is not here: it states the load in its own
-   words and lives in the home module's own `_content/home.ts`, so this file
-   has one reader.
+   words and lives in `@/content/home`, so this file has one reader.
    ========================================================================== */
 
-import { type FooterContent } from "@/shared/content/footer";
-import { siteContact } from "@/shared/content/site";
+import { type FooterContent } from "@/content/footer";
+import { siteContact } from "@/content/site";
 
 /**
  * The Academia's own inbox. Everything about the cursada — requisitos,
@@ -195,7 +194,7 @@ export const academyPageContent = {
      a mechanism that is not decided, the second a date this site does not
      publish. A consulta is what the inbox actually takes. */
   cta: { label: "Consultanos", href: academyContact.email.href },
-  /** One heading per band, in reading order. No indices — see `AcademyPage`. */
+  /** One heading per band, in reading order. No indices — see the page. */
   sections: {
     schedule: {
       id: "cursada",

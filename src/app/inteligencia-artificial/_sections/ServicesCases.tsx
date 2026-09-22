@@ -1,11 +1,11 @@
-import { CardGrid } from "@/shared/cards/CardGrid";
-import { CaseCard } from "@/shared/cards/CaseCard";
-import { Container } from "@/shared/ui/Container";
-import { Scene } from "@/shared/motion/Scene";
-import { Section } from "@/shared/ui/Section";
-import { SectionIntro } from "@/shared/ui/SectionIntro";
-import { casesContent } from "@/shared/content/cases";
-import { servicesPageContent } from "../_content/inteligencia-artificial";
+import { CardGrid } from "@/components/cards/CardGrid";
+import { CaseCard } from "@/components/cards/CaseCard";
+import { Container } from "@/components/ui/Container";
+import { Scene } from "@/components/motion/Scene";
+import { Section } from "@/components/section/Section";
+import { SectionIntro } from "@/components/section/SectionIntro";
+import { casesContent } from "@/content/cases";
+import { servicesPageContent } from "@/content/inteligencia-artificial";
 
 /**
  * The agents in production, from `casesContent` — the same cards the home

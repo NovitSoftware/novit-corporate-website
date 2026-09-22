@@ -1,12 +1,12 @@
-import { cardCopy } from "@/shared/cards/Card";
-import { Container } from "@/shared/ui/Container";
-import { PanelRow, panelRowRule } from "@/shared/ui/PanelRow";
-import { PinnedIntro } from "@/shared/ui/PinnedIntro";
-import { ReadingPanel } from "@/shared/ui/ReadingPanel";
-import { Scene } from "@/shared/motion/Scene";
-import { Section } from "@/shared/ui/Section";
-import { academyPageContent, academyProgram } from "../_content/academianovit";
-import { cn } from "@/shared/lib/cn";
+import { cardCopy } from "@/components/cards/Card";
+import { Container } from "@/components/ui/Container";
+import { PanelRow, panelRowRule } from "@/components/section/PanelRow";
+import { PinnedIntro } from "@/components/section/PinnedIntro";
+import { ReadingPanel } from "@/components/section/ReadingPanel";
+import { Scene } from "@/components/motion/Scene";
+import { Section } from "@/components/section/Section";
+import { academyPageContent, academyProgram } from "@/content/academianovit";
+import { cn } from "@/lib/cn";
 
 /**
  * The five blocks, in the order they are taught, and nothing else.

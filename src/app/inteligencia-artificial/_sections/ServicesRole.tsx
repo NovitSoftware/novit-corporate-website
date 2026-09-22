@@ -1,10 +1,10 @@
-import { CardGrid } from "@/shared/cards/CardGrid";
-import { Card, CardText } from "@/shared/cards/Card";
-import { Container } from "@/shared/ui/Container";
-import { PinnedIntro } from "@/shared/ui/PinnedIntro";
-import { Scene } from "@/shared/motion/Scene";
-import { Section } from "@/shared/ui/Section";
-import { servicesPageContent } from "../_content/inteligencia-artificial";
+import { CardGrid } from "@/components/cards/CardGrid";
+import { Card, CardText } from "@/components/cards/Card";
+import { Container } from "@/components/ui/Container";
+import { PinnedIntro } from "@/components/section/PinnedIntro";
+import { Scene } from "@/components/motion/Scene";
+import { Section } from "@/components/section/Section";
+import { servicesPageContent } from "@/content/inteligencia-artificial";
 
 /**
  * The four decisions a partner is hired for: stack, measurement, security,

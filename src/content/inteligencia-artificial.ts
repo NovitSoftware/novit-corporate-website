@@ -1,11 +1,11 @@
-import { footerMission, type FooterContent } from "@/shared/content/footer";
-import { siteContact } from "@/shared/content/site";
+import { footerMission, type FooterContent } from "@/content/footer";
+import { siteContact } from "@/content/site";
 
 /**
  * `/inteligencia-artificial` — four blocks, in render order: `partner`,
  * `architecture`, `cases`, `evolution`. The opener's `title`, `lead` and `cta`
  * sit at the top level, and the cards under `cases` come from `casesContent`
- * in `@/shared/content/cases`, which two other routes render too.
+ * in `@/content/cases`, which two other routes render too.
  *
  * Source is the brochure at
  * `docs/novit/brochures/transformacion-ia-brochure.md`, without its risk band

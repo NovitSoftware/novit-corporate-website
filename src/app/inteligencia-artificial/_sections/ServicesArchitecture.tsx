@@ -1,11 +1,11 @@
-import { CardText } from "@/shared/cards/Card";
-import { Container } from "@/shared/ui/Container";
-import { PanelRow } from "@/shared/ui/PanelRow";
-import { ReadingPanel } from "@/shared/ui/ReadingPanel";
-import { Scene } from "@/shared/motion/Scene";
-import { Section } from "@/shared/ui/Section";
-import { SectionIntro } from "@/shared/ui/SectionIntro";
-import { servicesPageContent } from "../_content/inteligencia-artificial";
+import { CardText } from "@/components/cards/Card";
+import { Container } from "@/components/ui/Container";
+import { PanelRow } from "@/components/section/PanelRow";
+import { ReadingPanel } from "@/components/section/ReadingPanel";
+import { Scene } from "@/components/motion/Scene";
+import { Section } from "@/components/section/Section";
+import { SectionIntro } from "@/components/section/SectionIntro";
+import { servicesPageContent } from "@/content/inteligencia-artificial";
 
 /**
  * The diagram: four agents, one platform under all of them.
