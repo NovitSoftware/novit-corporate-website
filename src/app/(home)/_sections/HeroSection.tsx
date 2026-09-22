@@ -1,4 +1,5 @@
 import { ChipButton } from "@/components/ui/ChipButton";
+import { CustomerMap } from "../_components/CustomerMap";
 import { Container } from "@/components/ui/Container";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";
@@ -23,40 +24,53 @@ export function HeroSection() {
         className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco sm:pb-14"
       >
         <Container className="relative">
-          <div data-hero="copy" className="max-w-[52rem]">
-            <AcademyAnnouncement />
+          <div className="xl:grid xl:grid-cols-[minmax(0,52rem)_minmax(0,1fr)] xl:items-center xl:gap-8">
+            <div data-hero="copy" className="max-w-[52rem]">
+              <AcademyAnnouncement />
 
-            <span
-              data-anim="chip"
-              data-hero="badge"
-              className="chip chip-outline mb-7 inline-flex text-celeste"
-            >
-              {heroContent.eyebrow}
-            </span>
-            {/* `20ch` is the measure the headline is fitted to, and the same
-                cap `AcademyOpener` uses. */}
-            <h1
-              data-anim="words"
-              data-hero="title"
-              className="display-hero max-w-[20ch]"
-            >
-              <SplitWords text={heroContent.title} />
-            </h1>
-            <p
-              data-anim="rise"
-              data-hero="lead"
-              className="mt-7 max-w-[46ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
-            >
-              {heroContent.statement}
-            </p>
+              <span
+                data-anim="chip"
+                data-hero="badge"
+                className="chip chip-outline mb-7 inline-flex text-celeste"
+              >
+                {heroContent.eyebrow}
+              </span>
+              {/* `20ch` is the measure the headline is fitted to, and the same
+                  cap `AcademyOpener` uses. */}
+              <h1
+                data-anim="words"
+                data-hero="title"
+                className="display-hero max-w-[20ch]"
+              >
+                <SplitWords text={heroContent.title} />
+              </h1>
+              <p
+                data-anim="rise"
+                data-hero="lead"
+                className="mt-7 max-w-[46ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
+              >
+                {heroContent.statement}
+              </p>
+              <div
+                data-anim="rise"
+                data-hero="cta"
+                className="mt-9 flex flex-wrap items-center gap-3"
+              >
+                <ChipButton href={heroContent.primaryCta.href} variant="light">
+                  {heroContent.primaryCta.label}
+                </ChipButton>
+              </div>
+            </div>
+
+            {/* Two wrappers: the scroll fade must not start from the entrance's hidden resting state.
+                Below xl the copy leaves it no room; past the 1440px container it bleeds to the window edge. */}
             <div
-              data-anim="rise"
-              data-hero="cta"
-              className="mt-9 flex flex-wrap items-center gap-3"
+              data-hero="map"
+              className="hidden xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))] xl:block"
             >
-              <ChipButton href={heroContent.primaryCta.href} variant="light">
-                {heroContent.primaryCta.label}
-              </ChipButton>
+              <div data-anim="fade" data-hero="map-art">
+                <CustomerMap />
+              </div>
             </div>
           </div>
 

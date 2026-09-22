@@ -78,6 +78,7 @@ function buildEntrance() {
       "-=0.34",
     )
     .to(target("lead"), { opacity: 1, y: 0, duration: 0.9 }, "-=0.7")
+    .addLabel("lead", "<")
     .to(target("cta"), { opacity: 1, y: 0, duration: 0.75 }, "-=0.7")
     // The two news rows, staggered, arriving just behind the CTA — they are
     // the second thing offered, so they land after the button rather than
@@ -95,7 +96,9 @@ function buildEntrance() {
       target("pillar"),
       { opacity: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.06 },
       "-=0.9",
-    );
+    )
+    // Last so its long fade does not push back the steps after the lead.
+    .to(target("map-art"), { opacity: 1, duration: 1.4 }, "lead");
 
   return timeline;
 }
@@ -104,8 +107,10 @@ function buildEntrance() {
  * The opening copy settling back and fading as the hero leaves the frame.
  */
 function buildScrollLayers(root: HTMLElement) {
-  const copy = root.querySelector<HTMLElement>('[data-hero="copy"]');
-  if (copy) {
+  const copy = root.querySelectorAll<HTMLElement>(
+    '[data-hero="copy"], [data-hero="map"]',
+  );
+  if (copy.length) {
     gsap.to(copy, {
       y: -60,
       opacity: 0.35,

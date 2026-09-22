@@ -1,0 +1,39 @@
+/* The hero's customer map — white outlines on the gradient, a celeste dot per country. */
+
+@layer components {
+  /* The crop runs through land on every side, so the edges fade instead of cutting. */
+  .customer-map {
+    mask-image:
+      linear-gradient(to right, transparent, var(--negro) 10%, var(--negro) 90%, transparent),
+      linear-gradient(to bottom, transparent, var(--negro) 8%, var(--negro) 94%, transparent);
+    mask-composite: intersect;
+  }
+
+  .customer-map_land {
+    opacity: 0.3;
+  }
+
+  .customer-map_dot {
+    fill: var(--celeste);
+  }
+
+  .customer-map_pulse {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 3;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Transform and opacity only, so the rings composite without repainting the map. */
+  @media (prefers-reduced-motion: no-preference) {
+    .customer-map_pulse {
+      animation: customer-map-pulse 3.6s var(--ease-out-quart) var(--pulse-delay, 0s) infinite;
+    }
+
+    html[data-motion="on"]:has(.intro-overlay) .customer-map_pulse {
+      animation-play-state: paused;
+    }
+  }
+}
