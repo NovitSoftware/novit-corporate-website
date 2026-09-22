@@ -1,5 +1,5 @@
-import { footerMission, type FooterContent } from "@/shared/content/footer";
-import { siteContact } from "@/shared/content/site";
+import { footerMission, type FooterContent } from "@/content/footer";
+import { siteContact } from "@/content/site";
 
 /**
  * `/desarrollo-y-consultoria` — two blocks: how a project is built, and what
@@ -10,7 +10,8 @@ import { siteContact } from "@/shared/content/site";
  * /consultoria-it. Both pages are Novit's own published copy, so the stages,
  * the deliverables, the seven outcomes and the four steps are theirs; what
  * changed is the spelling of the headings and the order of a couple of
- * clauses.
+ * clauses. The opener and the build block's own lead are newer copy the
+ * client supplied directly, not on the standing site.
  *
  * It is one page and not two because the menu carries one entry for both, and
  * because the second is what the first turns into once a client has a team of
@@ -18,13 +19,16 @@ import { siteContact } from "@/shared/content/site";
  */
 export const developmentPageContent = {
   meta: {
-    title: "Desarrollo y Consultoría — Novit Software",
+    title: "Desarrollo y Consultoría IT — Novit Software",
     description:
       "Software a medida por etapas, con entregables propios en cada una, y consultoría sobre el proceso de desarrollo: métricas, KPI y optimización.",
   },
   eyebrow: "Servicios",
-  title: "Desarrollo y Consultoría",
-  lead: "Creamos software a medida para tu empresa, por etapas que se contratan de a una, y trabajamos sobre el proceso de desarrollo cuando el equipo ya existe: métricas, KPI y optimización.",
+  /* NBSP between "Consultoría" y "IT": el h1 envuelve a 22ch, y con espacio
+     normal "IT" quedaba huérfano en una tercera línea. Con el NBSP el corte
+     cae después de "y", y "Consultoría IT" baja junto a la segunda línea. */
+  title: "Desarrollo y Consultoría IT",
+  lead: "Construimos software a medida para tu empresa y te garantizamos calidad y seguridad a costos ultra competitivos.",
   cta: { label: "Consultanos", href: siteContact.phone.href },
   /**
    * The three stages, as the standing site draws them: independent, each
@@ -39,8 +43,8 @@ export const developmentPageContent = {
   build: {
     id: "desarrollo",
     eyebrow: "Desarrollo de software",
-    title: "Creamos software único para tu empresa",
-    lead: "Dividimos nuestros proyectos en etapas independientes que pueden ser contratadas individualmente. Cada etapa cuenta con entregables tangibles que alimentan a la siguiente.",
+    title: "Creamos software único para los procesos de tu empresa",
+    lead: "La inteligencia artificial incrementó nuestra productividad en niveles increíbles, lo que redujo muchísimo los costos de construir software a medida. Comercializamos el servicio por etapas, con entregables tangibles que se compran por separado y alimentan a la siguiente.",
     stages: [
       {
         id: "discovery",

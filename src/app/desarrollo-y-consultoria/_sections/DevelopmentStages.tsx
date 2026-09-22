@@ -1,12 +1,12 @@
-import { Card, CardText } from "@/shared/cards/Card";
-import { CardGrid } from "@/shared/cards/CardGrid";
-import { CardList } from "@/shared/cards/CardList";
-import { Container } from "@/shared/ui/Container";
-import { ReadingPanel } from "@/shared/ui/ReadingPanel";
-import { Scene } from "@/shared/motion/Scene";
-import { Section } from "@/shared/ui/Section";
-import { SectionIntro } from "@/shared/ui/SectionIntro";
-import { developmentPageContent } from "../_content/desarrollo-y-consultoria";
+import { Card, CardText } from "@/components/cards/Card";
+import { CardGrid } from "@/components/cards/CardGrid";
+import { CardList } from "@/components/cards/CardList";
+import { Container } from "@/components/ui/Container";
+import { ReadingPanel } from "@/components/section/ReadingPanel";
+import { Scene } from "@/components/motion/Scene";
+import { Section } from "@/components/section/Section";
+import { SectionIntro } from "@/components/section/SectionIntro";
+import { developmentPageContent } from "@/content/desarrollo-y-consultoria";
 
 /**
  * The three stages of a project, each one contractable on its own.
