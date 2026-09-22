@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import { SectionHandoff } from "@/shared/motion/SectionHandoff";
-import { SiteFooter } from "@/shared/layout/SiteFooter";
-import { SiteHeader } from "@/shared/layout/SiteHeader";
-import type { FooterContent } from "@/shared/content/footer";
+import { SectionHandoff } from "@/components/motion/SectionHandoff";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import type { FooterContent } from "@/content/footer";
 
 /**
  * The chrome every route carries: the header, the band hand-off, the one

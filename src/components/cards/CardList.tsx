@@ -1,6 +1,6 @@
-import { cardCopy } from "@/shared/cards/Card";
-import { IconLine } from "@/shared/ui/Icon";
-import { cn } from "@/shared/lib/cn";
+import { cardCopy } from "@/components/cards/Card";
+import { IconLine } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
 
 /**
  * What stands at the head of each row, and the gap it takes.

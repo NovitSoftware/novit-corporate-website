@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import { ChipButton } from "@/shared/ui/ChipButton";
-import { Container } from "@/shared/ui/Container";
-import { Scene } from "@/shared/motion/Scene";
-import { SectionLabel } from "@/shared/ui/SectionLabel";
-import { SplitWords } from "@/shared/motion/SplitWords";
+import { ChipButton } from "@/components/ui/ChipButton";
+import { Container } from "@/components/ui/Container";
+import { Scene } from "@/components/motion/Scene";
+import { SectionLabel } from "@/components/section/SectionLabel";
+import { SplitWords } from "@/components/motion/SplitWords";
 
 type PageOpenerProps = {
   eyebrow: string;

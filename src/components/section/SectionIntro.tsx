@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { ScrollWords } from "@/shared/motion/ScrollWords";
-import { SectionLabel } from "@/shared/ui/SectionLabel";
-import { cn } from "@/shared/lib/cn";
+import { ScrollWords } from "@/components/motion/ScrollWords";
+import { SectionLabel } from "@/components/section/SectionLabel";
+import { cn } from "@/lib/cn";
 
 type SectionIntroProps = {
   index?: string;

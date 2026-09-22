@@ -1,5 +1,5 @@
-import { Icon, type IconName } from "@/shared/ui/Icon";
-import { cn } from "@/shared/lib/cn";
+import { Icon, type IconName } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
 
 type IconBadgeProps = {
   name: IconName;

@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, type ElementType } from "react";
-import { SplitWords } from "@/shared/motion/SplitWords";
-import { gsap, scroller, useGSAP } from "@/shared/lib/gsap";
-import { cn } from "@/shared/lib/cn";
+import { SplitWords } from "@/components/motion/SplitWords";
+import { gsap, scroller, useGSAP } from "@/lib/gsap";
+import { cn } from "@/lib/cn";
 
 type ScrollWordsProps = {
   text: string;

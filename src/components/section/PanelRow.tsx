@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { IconLine, type IconName } from "@/shared/ui/Icon";
+import { IconLine, type IconName } from "@/components/ui/Icon";
 
 type PanelRowProps = {
   /** The mark. Optional, but every row in a given list should agree. */

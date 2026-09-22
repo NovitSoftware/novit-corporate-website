@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { IconName } from "@/shared/ui/Icon";
-import { IconBadge } from "@/shared/ui/IconBadge";
-import { cn } from "@/shared/lib/cn";
-import { variantClass } from "@/shared/lib/variants";
+import type { IconName } from "@/components/ui/Icon";
+import { IconBadge } from "@/components/ui/IconBadge";
+import { cn } from "@/lib/cn";
+import { variantClass } from "@/lib/variants";
 
 /**
  * The three steps the heading comes in. The sizes themselves are fluid and

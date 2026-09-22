@@ -1,6 +1,6 @@
-import { CountUp } from "@/shared/motion/CountUp";
-import { IconLine, type IconName } from "@/shared/ui/Icon";
-import { cn } from "@/shared/lib/cn";
+import { CountUp } from "@/components/motion/CountUp";
+import { IconLine, type IconName } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
 
 type Stat = {
   label: string;

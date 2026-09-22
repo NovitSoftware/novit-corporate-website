@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { metadataContent, site } from "@/shared/content/site";
+import { metadataContent, site } from "@/content/site";
 
 export const size = {
   width: 1200,

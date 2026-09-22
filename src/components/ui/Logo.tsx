@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { cn } from "@/shared/lib/cn";
-import { site } from "@/shared/content/site";
-import { BRAND_LOGO, type BrandLogoTone } from "@/shared/lib/brand-logo";
+import { cn } from "@/lib/cn";
+import { site } from "@/content/site";
+import { BRAND_LOGO, type BrandLogoTone } from "@/lib/brand-logo";
 
 type LogoProps = {
   href?: string;

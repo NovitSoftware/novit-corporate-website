@@ -1,6 +1,6 @@
 "use client";
 
-import { gsap, scroller, useGSAP } from "@/shared/lib/gsap";
+import { gsap, scroller, useGSAP } from "@/lib/gsap";
 
 /**
  * Hands one band over to the next, so a boundary is a change of section

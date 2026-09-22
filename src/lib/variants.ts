@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/cn";
+import { cn } from "@/lib/cn";
 
 /**
  * Look one variant up in its class map.

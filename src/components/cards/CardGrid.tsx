@@ -1,6 +1,6 @@
 import type { ElementType, ReactNode } from "react";
-import { cn } from "@/shared/lib/cn";
-import { variantClass } from "@/shared/lib/variants";
+import { cn } from "@/lib/cn";
+import { variantClass } from "@/lib/variants";
 
 /**
  * How many cards stand side by side at full width. Everything narrower steps

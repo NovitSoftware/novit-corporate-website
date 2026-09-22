@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type Lenis from "lenis";
-import { easeOutExpo } from "@/shared/lib/motion";
+import { easeOutExpo } from "@/lib/motion";
 
 /**
  * A link into the middle of the page — someone else's `#seguridad`, or a

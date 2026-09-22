@@ -1,5 +1,5 @@
-import { cn } from "@/shared/lib/cn";
-import { MARK_ROWS, MARK_WIDTH } from "@/shared/lib/brand-mark";
+import { cn } from "@/lib/cn";
+import { MARK_ROWS, MARK_WIDTH } from "@/lib/brand-mark";
 
 /**
  * The isotipo taken apart and used as texture: horizontal bars of unequal

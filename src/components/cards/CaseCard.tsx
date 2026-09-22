@@ -1,6 +1,6 @@
-import { casesContent, type CaseStudy } from "@/shared/content/cases";
-import { Card, CardText } from "@/shared/cards/Card";
-import { CaseLogo } from "@/shared/cards/CaseLogo";
+import { casesContent, type CaseStudy } from "@/content/cases";
+import { Card, CardText } from "@/components/cards/Card";
+import { CaseLogo } from "@/components/cards/CaseLogo";
 
 type CaseCardProps = {
   study: CaseStudy;

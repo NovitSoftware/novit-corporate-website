@@ -3,14 +3,14 @@
 import { useEffect, type ReactNode } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
 import type Lenis from "lenis";
-import { gsap, ScrollTrigger } from "@/shared/lib/gsap";
-import { usePrefersReducedMotion } from "@/shared/hooks/usePrefersReducedMotion";
-import { useKeyboardScroll } from "@/shared/providers/useKeyboardScroll";
-import { useSceneGradient } from "@/shared/providers/useSceneGradient";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useKeyboardScroll } from "@/hooks/useKeyboardScroll";
+import { useSceneGradient } from "@/hooks/useSceneGradient";
 import {
   useAnchorNavigation,
   useInitialHash,
-} from "@/shared/providers/useScrollNavigation";
+} from "@/hooks/useScrollNavigation";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 

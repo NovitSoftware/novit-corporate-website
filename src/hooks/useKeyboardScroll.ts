@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import type Lenis from "lenis";
-import { easeOutExpo } from "@/shared/lib/motion";
+import { easeOutExpo } from "@/lib/motion";
 
 /** One arrow-key press, in pixels. Matches a browser's own line step. */
 const ARROW_STEP = 110;

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { SectionIntro } from "@/shared/ui/SectionIntro";
-import { cn } from "@/shared/lib/cn";
+import { SectionIntro } from "@/components/section/SectionIntro";
+import { cn } from "@/lib/cn";
 
 type PinnedIntroProps = {
   index?: string;

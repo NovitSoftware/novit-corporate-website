@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import type Lenis from "lenis";
-import { gsap } from "@/shared/lib/gsap";
+import { gsap } from "@/lib/gsap";
 
 /**
  * The scroll journey, as brandbook ramps pinned to points on the page. Four

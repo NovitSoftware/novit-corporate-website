@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import { cn } from "@/shared/lib/cn";
-import { variantClass } from "@/shared/lib/variants";
+import { cn } from "@/lib/cn";
+import { variantClass } from "@/lib/variants";
 
 const chipButtonVariants = {
   /** For dark grounds: celeste body, azul arrow block. */

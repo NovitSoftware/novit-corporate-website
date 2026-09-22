@@ -3,7 +3,7 @@ import type {
   ElementType,
   ReactNode,
 } from "react";
-import { cn } from "@/shared/lib/cn";
+import { cn } from "@/lib/cn";
 
 type ReadingPanelProps = {
   as?: ElementType;

@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { gsap, scroller, useGSAP } from "@/shared/lib/gsap";
-import { cn } from "@/shared/lib/cn";
+import { gsap, scroller, useGSAP } from "@/lib/gsap";
+import { cn } from "@/lib/cn";
 
 type ParallaxProps = {
   children: ReactNode;

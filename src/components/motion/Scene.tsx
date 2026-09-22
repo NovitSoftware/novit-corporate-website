@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, type ElementType, type ReactNode } from "react";
-import { animRecipes, isAnimName, type AnimRecipe } from "@/shared/lib/motion";
-import { gsap, ScrollTrigger, scroller, useGSAP } from "@/shared/lib/gsap";
-import { cn } from "@/shared/lib/cn";
+import { animRecipes, isAnimName, type AnimRecipe } from "@/lib/motion";
+import { gsap, ScrollTrigger, scroller, useGSAP } from "@/lib/gsap";
+import { cn } from "@/lib/cn";
 
 /**
  * Choreographs the entrance of a section.

@@ -1,16 +1,16 @@
-import { ChipButton } from "@/shared/ui/ChipButton";
-import { Container } from "@/shared/ui/Container";
+import { ChipButton } from "@/components/ui/ChipButton";
+import { Container } from "@/components/ui/Container";
 import {
   MailIcon,
   SOCIAL_ICONS,
   WhatsAppIcon,
-} from "@/shared/ui/ContactIcons";
-import { Divider } from "@/shared/ui/Divider";
-import { Logo } from "@/shared/ui/Logo";
-import { Scene } from "@/shared/motion/Scene";
-import { site } from "@/shared/content/site";
-import { type FooterContent } from "@/shared/content/footer";
-import { cn } from "@/shared/lib/cn";
+} from "@/components/ui/ContactIcons";
+import { Divider } from "@/components/ui/Divider";
+import { Logo } from "@/components/ui/Logo";
+import { Scene } from "@/components/motion/Scene";
+import { site } from "@/content/site";
+import { type FooterContent } from "@/content/footer";
+import { cn } from "@/lib/cn";
 
 const footerLink =
   "link-rule inline-flex w-fit items-center gap-2 text-on-link hover:text-celeste";

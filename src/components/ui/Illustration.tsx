@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { cn } from "@/shared/lib/cn";
-import { ILLUSTRATIONS, type IllustrationName } from "@/shared/lib/illustrations";
+import { cn } from "@/lib/cn";
+import { ILLUSTRATIONS, type IllustrationName } from "@/lib/illustrations";
 
 type IllustrationProps = {
   name: IllustrationName;
