@@ -15,8 +15,7 @@ type CaseLogoProps = {
  * sticker stuck to the page. Not every file ships white ink, though, so
  * `brightness(0) invert(1)` collapses whatever colour the artwork carries
  * into a solid white silhouette on the same alpha; a mark that is already
- * white passes through it unchanged. `logo.mono === false` skips the filter
- * — see `ClientLogo`.
+ * white passes through it unchanged.
  *
  * The box is one height for every mark in a row, so the card heads line up
  * whatever the artwork's proportions are; `displayHeight` is the per-file
@@ -33,10 +32,7 @@ export function CaseLogo({ logo, className }: CaseLogoProps) {
         width={logo.width}
         height={logo.height}
         style={{ height: logo.displayHeight }}
-        className={cn(
-          "w-auto max-w-full object-contain",
-          logo.mono !== false && "[filter:brightness(0)_invert(1)]",
-        )}
+        className="w-auto max-w-full object-contain [filter:brightness(0)_invert(1)]"
       />
     </div>
   );

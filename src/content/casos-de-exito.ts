@@ -132,12 +132,9 @@ export const casesPageContent = {
             logo: {
               name: "City Parking",
               src: "/logos/city-parking.png",
-              width: 579,
-              height: 177,
+              width: 531,
+              height: 174,
               displayHeight: 40,
-              /* Solid blue badge, not ink on transparency — force-white
-                 leaves one flat rectangle with nothing left to read. */
-              mono: false,
             },
           },
           {
@@ -277,12 +274,9 @@ export const casesPageContent = {
             logo: {
               name: "NovoPath",
               src: "/logos/novopath.png",
-              width: 496,
-              height: 143,
-              displayHeight: 40,
-              /* A colour emblem edge-to-edge, no transparent margin left for
-                 a silhouette — see City Parking above. */
-              mono: false,
+              width: 428,
+              height: 69,
+              displayHeight: 22,
             },
           },
           {

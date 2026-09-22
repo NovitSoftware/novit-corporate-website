@@ -14,10 +14,10 @@
  * is what it is set to on screen, per file, so a wide wordmark and a square
  * badge come out looking the same size, which matching heights would not do.
  *
- * `mono` opts a file out of the white-forcing filter. It exists for the rare
- * mark that is a full-bleed colour badge rather than ink on transparency —
- * force-white turns the whole badge into one flat rectangle, because there is
- * no negative space left for a silhouette to read against.
+ * A mark that ships as a full-bleed colour badge — NovoPath and City Parking
+ * both did — is cut back to its wordmark on transparency before it lands
+ * here. Force-white over the badge leaves one flat rectangle, because there
+ * is no negative space for a silhouette to read against.
  */
 export type ClientLogo = {
   readonly name: string;
@@ -25,7 +25,6 @@ export type ClientLogo = {
   readonly width: number;
   readonly height: number;
   readonly displayHeight: number;
-  readonly mono?: false;
 };
 
 /* The cases, with the client each one belongs to. Rendered on the home page
