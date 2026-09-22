@@ -179,11 +179,10 @@
     opacity: clamp(0, 1.5 * var(--scene-mix, 0) - 0.42, 1);
   }
 
-  /* The isotipo's own grid — bandas horizontales y rectángulos — drawn once
-     for the whole page instead of once per section, so it doesn't restart at
-     every section boundary. Last of the atmosphere layers in layout.tsx, so
-     its celeste hairlines stay crisp on top of the veil instead of being
-     muted by it. */
+  /* The dot field (DotField.tsx), drawn once for the whole page. Last of the
+     atmosphere layers in layout.tsx, so its dots stay crisp on top of the
+     veil. The canvas only redraws while the cursor disturbs it, so the
+     vignette composites once at rest. */
   .scene-cells {
     position: fixed;
     inset: 0;
@@ -192,26 +191,6 @@
     mask-image: radial-gradient(ellipse 130% 110% at 50% 38%,
         var(--negro) 55%,
         transparent 96%);
-  }
-
-  /* The pattern is a separate child so the drift can be a transform while the
-     vignette above stays pinned. One tile of overhang on every side, and the
-     travel is exactly one tile, so the loop is seamless. */
-  .scene-cells_pattern {
-    position: absolute;
-    inset: -56px;
-    background-image:
-      repeating-linear-gradient(to right,
-        rgb(var(--rgb-celeste) / 0.26) 0,
-        rgb(var(--rgb-celeste) / 0.26) 1.5px,
-        transparent 1.5px,
-        transparent 56px),
-      repeating-linear-gradient(to bottom,
-        rgb(var(--rgb-celeste) / 0.18) 0,
-        rgb(var(--rgb-celeste) / 0.18) 1.5px,
-        transparent 1.5px,
-        transparent 56px);
-    transform: translate3d(0, 0, 0);
   }
 
   /*
@@ -240,18 +219,6 @@
     .scene-bloom-violeta {
       animation: scene-bloom-violeta 17s cubic-bezier(0.37, 0, 0.63, 1) -11s infinite;
     }
-
-    /*
-     * The grid does not drift any more.
-     *
-     * Its own animation was the cheap kind — one tile of translate, nothing
-     * else — but `.scene-cells` above masks it with a radial vignette, and a
-     * mask has to be re-composited against whatever moves underneath it. So
-     * the tile slid for free and the mask re-ran every frame: 19ms of a 46ms
-     * frame, for the least visible motion on the page. Static, the mask
-     * composites once and the grid reads exactly the same — it is a texture,
-     * not a movement. The vignette is worth more than the drift was.
-     */
 
     /*
      * The intro curtain is opaque and covers the whole viewport for up to four
@@ -313,6 +280,13 @@
      flat panels repeating its own colour family. This one remains, for the
      two things that genuinely need to hide what is behind them rather than
      sit on the atmosphere: the intro curtain. */
+
+  /* The page's own ground, for a layer that has to cover the page with it:
+     the menu curtain, which draws SceneAtmosphere over this. */
+  .scene-ground {
+    background-color: var(--azul-700);
+    background-image: var(--scene-gradient);
+  }
 
   .ground-deep {
     background:

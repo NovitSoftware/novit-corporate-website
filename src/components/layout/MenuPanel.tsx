@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { BarField } from "@/components/ui/BarField";
+import { SceneAtmosphere } from "@/components/layout/SceneAtmosphere";
 import { Container } from "@/components/ui/Container";
 import {
   MailIcon,
@@ -53,15 +53,12 @@ export function MenuPanel({
       animate={{ clipPath: open ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)" }}
       transition={{ duration: reduced ? 0 : 0.75, ease: PANEL_EASE }}
       className={cn(
-        "ground-deep fixed inset-0 z-0 flex h-dvh flex-col justify-center overflow-hidden",
+        "scene-ground fixed inset-0 z-0 flex h-dvh flex-col justify-center overflow-hidden",
         open ? "pointer-events-auto" : "pointer-events-none",
       )}
     >
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="bloom -left-[8%] top-[-10%] h-[70%] w-[52%] bg-celeste/14" />
-        <BarField className="opacity-20" spread={0.8} />
-        <div className="bar-grid bar-grid-drift absolute inset-0 opacity-35" />
-      </div>
+      {/* The page's own background, so opening the menu does not change it. */}
+      <SceneAtmosphere />
 
       <Container className="relative pb-10 pt-header">
         <nav aria-label="Principal">

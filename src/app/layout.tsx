@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lato } from "next/font/google";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { SceneAtmosphere } from "@/components/layout/SceneAtmosphere";
 import { metadataContent, site } from "@/content/site";
 import "./globals.css";
 
@@ -100,15 +101,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           z-index forces explicit stacking on all of them, and a negative one
           drops it behind the canvas background entirely. See globals.css.
         */}
-        <div className="scene-sweep" aria-hidden="true" />
-        <div className="scene-blooms" aria-hidden="true">
-          <span className="scene-bloom scene-bloom-azul" />
-          <span className="scene-bloom scene-bloom-celeste" />
-          <span className="scene-bloom scene-bloom-violeta" />
-        </div>
-        <div className="scene-cells" aria-hidden="true">
-          <div className="scene-cells_pattern" />
-        </div>
+        <SceneAtmosphere />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
