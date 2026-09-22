@@ -36,7 +36,7 @@ true if the repo changes belongs here.
 
 | File | What it is |
 |---|---|
-| `app/estructura.md` | Where code goes: one module per route, `src/shared/` for what two routes read |
+| `app/estructura.md` | Where code goes: `app/` routes only, `components/` `content/` `hooks/` `lib/` for the rest |
 
 ## external/
 

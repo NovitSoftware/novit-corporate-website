@@ -1,65 +1,75 @@
 # Estructura del repo
 
-Una ruta es un módulo. Sus secciones, su contenido y sus componentes viven al
-lado de su `page.tsx`, y en `src/shared/` queda lo que lee más de una.
+`src/app/` es solo ruteo. Todo lo demás vive fuera, ordenado por lo que es:
+componentes en `components/`, textos en `content/`, hooks en `hooks/`,
+funciones sueltas en `lib/`.
 
 ```
 src/
   app/
     layout.tsx  globals.css  styles/  opengraph-image.tsx  icon.png
     (home)/
-      page.tsx
-      _components/  HomePage · IntroOverlay · HeroScene · HighlightCard ·
-                    ServiceCard · FormField
-      _sections/    Hero · Academy · Services · Cases · Safety · About ·
-                    Team · Contact
-      _content/     home.ts · footer.ts
+      page.tsx      metadata y el orden de las bandas
+      _sections/    Hero · Stats · Services · Contact
+      _components/  IntroOverlay · HeroScene · ServiceCard · FormField
       _lib/         intro.ts · form.ts · useUnsentForm.ts
-    inteligencia-artificial/  page.tsx · _components/ · _sections/ · _content/
-    desarrollo-y-consultoria/ page.tsx · _components/ · _sections/ · _content/
-    academianovit/            page.tsx · _components/ · _sections/ · _content/
-    casos-de-exito/           page.tsx · _components/ · _sections/ · _content/
-  shared/
-    layout/     SiteShell · SiteHeader · SiteFooter · PageOpener
-    ui/         los primitivos: Container, Section, SectionIntro, Icon, …
+    inteligencia-artificial/  page.tsx · _sections/
+    desarrollo-y-consultoria/ page.tsx · _sections/
+    academianovit/            page.tsx · _sections/
+    casos-de-exito/           page.tsx · _sections/
+  components/
+    layout/     SiteShell · SiteHeader · MenuPanel · SiteFooter · PageOpener
+    section/    Section · SectionIntro · SectionLabel · PinnedIntro ·
+                ReadingPanel · PanelRow · StatRow
     cards/      Card · CardGrid · CardList · CaseCard · CaseLogo
-    motion/     Scene · SplitWords · ScrollWords · SectionHandoff · CountUp ·
-                Parallax
-    decor/      BarField
-    providers/  SmoothScroll y sus tres hooks
-    hooks/      usePrefersReducedMotion
-    lib/        cn · gsap · motion · variants · illustrations · brand-logo ·
-                brand-mark
-    content/    site.ts · navigation.ts · cases.ts · footer.ts
+    motion/     Scene · SplitWords · ScrollWords · SectionHandoff ·
+                CountUp · Parallax
+    ui/         Container · Divider · ChipButton · Icon · IconBadge ·
+                Logo · Image · Illustration · ContactIcons · BarField
+    providers/  SmoothScroll
+  content/    site · navigation · cases · footer · home ·
+              inteligencia-artificial · desarrollo-y-consultoria ·
+              academianovit · casos-de-exito
+  hooks/      usePrefersReducedMotion · useKeyboardScroll ·
+              useSceneGradient · useScrollNavigation
+  lib/        cn · gsap · motion · variants · illustrations ·
+              brand-logo · brand-mark
 ```
 
 ## Las reglas
 
-**Una ruta nueva es una carpeta en `src/app`** con su `page.tsx`, su
-`_content/`, sus `_sections/` y su `_components/`. El guión bajo las marca
-privadas: Next no rutea carpetas que empiezan con `_`, así que conviven con la
-ruta sin generar URLs. El home va en el route group `(home)`, que no cambia su
-path y le da carpeta propia.
+**`page.tsx` es la página.** Ahí van su `metadata` y el orden de sus bandas,
+nada más. No hay un `HomePage`/`CasesPage` intermedio que la `page` renderice
+sin props: era un archivo y un salto de más por ruta.
 
-**Algo baja a `shared/` recién cuando lo lee una segunda ruta**, y sube de
-vuelta cuando queda con un solo lector. Por eso `HighlightCard`, `HeroScene`,
-`IntroOverlay` y `FormField` están adentro del home, y `academyContact` adentro
-de `/academianovit`.
+**El guión bajo no es estilo, es la regla de Next.** Una carpeta que empieza
+con `_` queda fuera del ruteo, ella y todo lo que cuelga. Por eso `_sections/`
+y `_components/` conviven con `page.tsx` sin generar URLs. Adentro va lo que
+renderiza una sola ruta; el home es el único con `_components/` y `_lib/`
+porque es el único con piezas propias que no son bandas.
 
-**No hay barril de contenido.** Cada sección importa el contenido de su módulo
-por path relativo (`../_content/casos-de-exito`) y lo compartido por alias
-(`@/shared/content/site`). El import dice a qué página pertenece cada texto,
-que es el punto de tener módulos.
+**Cada carpeta de `components/` contesta una pregunta distinta**, que es lo
+que `shared/` no hacía:
 
-**Un módulo no importa de otro.** Si dos rutas necesitan lo mismo, eso es
-`shared/`. El único caso que hubo —`SiteFooter` con el pie del home como
-default— se resolvió haciendo que cada ruta le pase el suyo.
+| | |
+|---|---|
+| `layout/` | envuelve una ruta entera — header, footer, el shell, el opener |
+| `section/` | arma una banda: la `<section>`, su encabezado, sus paneles y filas |
+| `cards/` | la familia de tarjetas |
+| `motion/` | las primitivas de animación; todas son client components |
+| `ui/` | lo chico y agnóstico: contenedores, controles, marcas, íconos |
+| `providers/` | contexto de toda la app, montado en el layout raíz |
 
-**El contenido es del módulo, la marca es de `shared/content`.** Ahí están los
-datos que no son de ninguna página: la empresa y sus canales (`site.ts`), el
-menú (`navigation.ts`), los dos agentes en producción que rinden tres rutas
-(`cases.ts`) y la forma de un pie con la línea que los cuatro comparten
-(`footer.ts`).
+**Todo el texto está en `content/`**, un archivo por ruta más los que no son
+de ninguna: la empresa y sus canales (`site.ts`), el menú (`navigation.ts`),
+los dos agentes en producción que rinden tres rutas (`cases.ts`) y la forma de
+un pie con la línea que los cinco comparten (`footer.ts`). El pie de cada ruta
+va en el archivo de esa ruta, al lado de la página que indexa.
+
+**No hay barril.** Todo se importa por alias y por path completo
+(`@/content/home`, `@/components/section/SectionIntro`). El import dice de
+dónde sale cada cosa, que es el punto de tener carpetas con nombre.
 
 **El CSS no se modulariza.** `globals.css` y `styles/` son un sistema —tokens,
 escala, la tarjeta, las escenas— y ninguna de sus piezas pertenece a una ruta.
+Se quedan en `app/` porque es donde Next espera el global.
