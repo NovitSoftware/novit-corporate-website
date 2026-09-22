@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { CasesPage } from "./_components/CasesPage";
-import { casesPageContent } from "./_content/casos-de-exito";
-import { site } from "@/shared/content/site";
+import { CasesWork } from "./_sections/CasesWork";
+import { PageOpener } from "@/components/layout/PageOpener";
+import { SiteShell } from "@/components/layout/SiteShell";
+import { casesFooterContent, casesPageContent } from "@/content/casos-de-exito";
+import { site } from "@/content/site";
 
 /** Its own description and link-card title; the tab title is the root
  *  layout's, which pins it to `site.name` on every route. */
@@ -18,6 +20,20 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Opener, then the recorrido: one decade of projects, IA first.
+ *
+ * The two agents that used to lead as their own section are now the first
+ * group of the recorrido, not a claim standing apart from the evidence
+ * behind it.
+ */
 export default function CasosDeExito() {
-  return <CasesPage />;
+  const { eyebrow, title, lead, cta } = casesPageContent;
+
+  return (
+    <SiteShell footer={casesFooterContent}>
+      <PageOpener eyebrow={eyebrow} title={title} lead={lead} cta={cta} />
+      <CasesWork />
+    </SiteShell>
+  );
 }

@@ -1,14 +1,15 @@
-import { footerMission, type FooterContent } from "@/shared/content/footer";
-import { siteContact } from "@/shared/content/site";
+import { footerMission, type FooterContent } from "@/content/footer";
+import { siteContact } from "@/content/site";
 
 /**
- * `/casos-de-exito` — two blocks: the agents that are running, and the
- * recorrido behind them.
+ * `/casos-de-exito` — one block, the recorrido: a decade of projects grouped
+ * by what the work was, IA first.
  *
- * The agents come from `casesContent` in `@/shared/content/cases`, the two
- * cases the brochure documents with a client name and a result. Everything
- * under `work`
- * is the project list the standing site publishes at
+ * The two agents that used to lead the page under their own heading — from
+ * `casesContent` in `@/content/cases`, the cases the brochure documents with
+ * a client name and a result — are now the first group of the recorrido
+ * itself, not a separate section above it. Everything else under `work` is
+ * the project list the standing site publishes at
  * novitsoftware.com/experiencia-novit: a client's mark, the country and one
  * line of what the work was.
  *
@@ -34,19 +35,14 @@ export const casesPageContent = {
   },
   eyebrow: "Casos de éxito",
   title: "Clientes que confían en Novit",
-  lead: "Desde 2015, con proyectos activos en cinco países y trabajo hecho en otros tres. Estos son los agentes que hoy están en producción y el recorrido que hay detrás.",
+  lead: "Desde 2015, con proyectos activos en cinco países y trabajo hecho en otros tres. Este es el recorrido: de los agentes de IA que hoy están en producción a una década de software a medida.",
   cta: { label: "Consultanos", href: siteContact.phone.href },
-  agents: {
-    id: "agentes-en-produccion",
-    eyebrow: "En producción",
-    title: "Agentes que ya están trabajando",
-    lead: "Cada uno fue el primer agente de su empresa: un proceso concreto que hoy funciona y que abrió la puerta a todo lo que sigue.",
-  },
   /**
-   * The recorrido, grouped by what the work was. Three groups rather than one
-   * list of nineteen: a wall of one-liners is scanned, not read, and the
+   * The recorrido, grouped by what the work was. Four groups rather than one
+   * list of twenty-one: a wall of one-liners is scanned, not read, and the
    * grouping is the only thing that tells a reader whether their own problem
-   * is in it.
+   * is in it. IA leads because it's the newest and the most concrete — a
+   * client name and a result, same as the standing brochure gives it.
    */
   work: {
     id: "recorrido",
@@ -54,8 +50,39 @@ export const casesPageContent = {
     title: "Una década de proyectos",
     /* La segunda oración es la etiqueta que pide el cap. 01: los cinco países
        con proyectos activos se nombran sueltos, Colombia y Brasil no. */
-    lead: "Software a medida, consultoría sobre el proceso de desarrollo y equipos integrados a los del cliente, en industrias que van del real estate al retail, la salud y la educación. Cada proyecto lleva el país donde se hizo: Argentina, Chile, España y Estados Unidos tienen proyectos activos, y en Colombia y Brasil hemos trabajado.",
+    lead: "Agentes de inteligencia artificial, software a medida, consultoría sobre el proceso de desarrollo y equipos integrados a los del cliente, en industrias que van del real estate al retail, la salud y la educación. Cada proyecto lleva el país donde se hizo: Argentina, Chile, España y Estados Unidos tienen proyectos activos, y en Colombia y Brasil hemos trabajado.",
     groups: [
+      {
+        id: "inteligencia-artificial",
+        icon: "agent",
+        title: "Inteligencia Artificial",
+        items: [
+          {
+            country: "Argentina",
+            description:
+              "Años de antecedentes y criterio experto convertidos en un agente que encuentra el código arancelario para la declaración aduanera.",
+            logo: {
+              name: "United Logistic Company",
+              src: "/logos/united-logistic-company.png",
+              width: 556,
+              height: 395,
+              displayHeight: 56,
+            },
+          },
+          {
+            country: "España",
+            description:
+              "Interpreta las facturas de proveedores, arma la documentación en el ERP y captura datos de compra que antes se perdían.",
+            logo: {
+              name: "Gamma Group",
+              src: "/logos/gamma-group.png",
+              width: 300,
+              height: 54,
+              displayHeight: 26,
+            },
+          },
+        ],
+      },
       {
         id: "producto",
         icon: "code",
@@ -71,7 +98,6 @@ export const casesPageContent = {
               width: 603,
               height: 103,
               displayHeight: 26,
-              plate: "none",
             },
           },
           {
@@ -83,7 +109,6 @@ export const casesPageContent = {
               width: 300,
               height: 54,
               displayHeight: 27,
-              plate: "light",
             },
           },
           {
@@ -95,7 +120,6 @@ export const casesPageContent = {
               width: 381,
               height: 192,
               displayHeight: 40,
-              plate: "none",
             },
           },
           {
@@ -108,7 +132,6 @@ export const casesPageContent = {
               width: 579,
               height: 177,
               displayHeight: 40,
-              plate: "none",
             },
           },
           {
@@ -121,7 +144,6 @@ export const casesPageContent = {
               width: 383,
               height: 67,
               displayHeight: 27,
-              plate: "none",
             },
           },
           {
@@ -134,7 +156,6 @@ export const casesPageContent = {
               width: 649,
               height: 131,
               displayHeight: 32,
-              plate: "none",
             },
           },
           {
@@ -146,7 +167,6 @@ export const casesPageContent = {
               width: 360,
               height: 151,
               displayHeight: 40,
-              plate: "none",
             },
           },
           {
@@ -158,7 +178,6 @@ export const casesPageContent = {
               width: 535,
               height: 185,
               displayHeight: 40,
-              plate: "none",
             },
           },
           {
@@ -171,7 +190,6 @@ export const casesPageContent = {
               width: 433,
               height: 163,
               displayHeight: 40,
-              plate: "none",
             },
           },
           {
@@ -183,7 +201,6 @@ export const casesPageContent = {
               width: 344,
               height: 210,
               displayHeight: 52,
-              plate: "none",
             },
           },
         ],
@@ -203,7 +220,6 @@ export const casesPageContent = {
               width: 293,
               height: 125,
               displayHeight: 40,
-              plate: "light",
             },
           },
           {
@@ -216,7 +232,6 @@ export const casesPageContent = {
               width: 477,
               height: 158,
               displayHeight: 40,
-              plate: "none",
             },
           },
           {
@@ -229,7 +244,6 @@ export const casesPageContent = {
               width: 487,
               height: 68,
               displayHeight: 22,
-              plate: "none",
             },
           },
           {
@@ -241,7 +255,6 @@ export const casesPageContent = {
               width: 362,
               height: 186,
               displayHeight: 46,
-              plate: "none",
             },
           },
         ],
@@ -261,7 +274,6 @@ export const casesPageContent = {
               width: 496,
               height: 143,
               displayHeight: 40,
-              plate: "none",
             },
           },
           {
@@ -274,7 +286,6 @@ export const casesPageContent = {
               width: 481,
               height: 124,
               displayHeight: 38,
-              plate: "none",
             },
           },
           {
@@ -287,7 +298,6 @@ export const casesPageContent = {
               width: 304,
               height: 184,
               displayHeight: 52,
-              plate: "none",
             },
           },
           {
@@ -299,7 +309,6 @@ export const casesPageContent = {
               width: 740,
               height: 111,
               displayHeight: 24,
-              plate: "light",
             },
           },
           {
@@ -311,7 +320,6 @@ export const casesPageContent = {
               width: 862,
               height: 107,
               displayHeight: 20,
-              plate: "none",
             },
           },
         ],
@@ -332,13 +340,7 @@ export const casesFooterContent: FooterContent = {
   columns: [
     {
       title: "En esta página",
-      links: [
-        {
-          label: casesPageContent.agents.eyebrow,
-          href: "#agentes-en-produccion",
-        },
-        { label: casesPageContent.work.eyebrow, href: "#recorrido" },
-      ],
+      links: [{ label: casesPageContent.work.eyebrow, href: "#recorrido" }],
     },
   ],
   legal: [],

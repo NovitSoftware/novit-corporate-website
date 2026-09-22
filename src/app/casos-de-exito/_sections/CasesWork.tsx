@@ -1,22 +1,24 @@
-import { Card } from "@/shared/cards/Card";
-import { CardGrid } from "@/shared/cards/CardGrid";
-import { CaseLogo } from "@/shared/cards/CaseLogo";
-import { Container } from "@/shared/ui/Container";
-import { IconLine } from "@/shared/ui/Icon";
-import { Scene } from "@/shared/motion/Scene";
-import { Section } from "@/shared/ui/Section";
-import { SectionIntro } from "@/shared/ui/SectionIntro";
-import { casesPageContent } from "../_content/casos-de-exito";
+import { Card } from "@/components/cards/Card";
+import { CardGrid } from "@/components/cards/CardGrid";
+import { CaseLogo } from "@/components/cards/CaseLogo";
+import { Container } from "@/components/ui/Container";
+import { IconLine } from "@/components/ui/Icon";
+import { Scene } from "@/components/motion/Scene";
+import { Section } from "@/components/section/Section";
+import { SectionIntro } from "@/components/section/SectionIntro";
+import { casesPageContent } from "@/content/casos-de-exito";
 
 type WorkGroup = (typeof casesPageContent.work.groups)[number];
 
 /**
- * The recorrido: nineteen projects, in three groups by what the work was.
+ * The recorrido: twenty-one projects, in four groups by what the work was,
+ * IA first.
  *
- * Three groups rather than one wall: a list of nineteen is scanned, not read,
- * and the grouping is the only thing that tells a reader whether their own
- * problem is in it. Each group takes the full measure and stacks under the
- * last, so the ten-card group is not a taller column beside a four-card one.
+ * Four groups rather than one wall: a list of twenty-one is scanned, not
+ * read, and the grouping is the only thing that tells a reader whether their
+ * own problem is in it. Each group takes the full measure and stacks under
+ * the last, so the ten-card group is not a taller column beside a two-card
+ * one.
  *
  * The card is the one the whole site uses, with the client's mark in `media`
  * — a credential above the hairline, which is exactly what the slot is for —
