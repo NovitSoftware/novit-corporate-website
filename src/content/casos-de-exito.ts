@@ -120,9 +120,9 @@ export const casesPageContent = {
             logo: {
               name: "INDEC",
               src: "/logos/indec.png",
-              width: 381,
-              height: 192,
-              displayHeight: 40,
+              width: 276,
+              height: 79,
+              displayHeight: 26,
             },
           },
           {

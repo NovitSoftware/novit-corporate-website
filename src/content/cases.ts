@@ -14,10 +14,11 @@
  * is what it is set to on screen, per file, so a wide wordmark and a square
  * badge come out looking the same size, which matching heights would not do.
  *
- * A mark that ships as a full-bleed colour badge — NovoPath and City Parking
- * both did — is cut back to its wordmark on transparency before it lands
- * here. Force-white over the badge leaves one flat rectangle, because there
- * is no negative space for a silhouette to read against.
+ * A mark that ships as a full-bleed plate — NovoPath and City Parking as
+ * colour badges, INDEC as a white one with the type knocked out — is cut back
+ * to its wordmark on transparency before it lands here. Force-white over a
+ * plate leaves one flat rectangle, because there is no negative space for a
+ * silhouette to read against.
  */
 export type ClientLogo = {
   readonly name: string;
