@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { Image } from "@/components/ui/Image";
 import { cn } from "@/lib/cn";
 
 type FlagProps = {
@@ -11,10 +11,12 @@ type FlagProps = {
 /**
  * The flag(s) beside a recorrido card's country.
  *
- * Windows renders the Unicode regional-indicator flag emoji as bare letter
- * codes rather than pictures — the reason these are drawn, not typed.
- * Simplified geometry, no charges or seals: at chip size the ratio and the
- * colours are what reads, not the coat of arms.
+ * The files are novitsoftware.com/experiencia-novit's own — the standing
+ * site's country badges, not the Unicode regional-indicator flag emoji,
+ * which Windows renders as bare letter codes rather than pictures. That page
+ * carries five of the six countries the recorrido names; España isn't one of
+ * its cases, so `espana.png` is drawn to match the other five's rounded-rect
+ * crop rather than scraped.
  */
 export function Flag({ country, className }: FlagProps) {
   const names = country.split(" y ");
@@ -29,61 +31,25 @@ export function Flag({ country, className }: FlagProps) {
 }
 
 function FlagChip({ name }: { name: string }) {
-  const Glyph = FLAGS[name];
-  if (!Glyph) return null;
+  const src = FLAGS[name];
+  if (!src) return null;
 
   return (
-    <span className="inline-block h-3 w-[1.1rem] shrink-0 overflow-hidden rounded-[2px] ring-1 ring-inset ring-blanco/25">
-      <Glyph />
-    </span>
+    <Image
+      src={src}
+      alt=""
+      width={18}
+      height={12}
+      className="h-3 w-[1.1rem] shrink-0 rounded-[2px] object-cover"
+    />
   );
 }
 
-const FLAGS: Record<string, () => ReactElement> = {
-  Argentina: () => (
-    <svg viewBox="0 0 20 14" className="h-full w-full">
-      <rect width="20" height="14" fill="#75aadb" />
-      <rect y="4.67" width="20" height="4.67" fill="#fff" />
-    </svg>
-  ),
-  Chile: () => (
-    <svg viewBox="0 0 20 14" className="h-full w-full">
-      <rect width="20" height="14" fill="#fff" />
-      <rect y="7" width="20" height="7" fill="#d52b1e" />
-      <rect width="7" height="7" fill="#0039a6" />
-      <polygon
-        fill="#fff"
-        points="3.5,2.3 4.1,3.9 5.8,3.9 4.4,4.9 4.9,6.5 3.5,5.5 2.1,6.5 2.6,4.9 1.2,3.9 2.9,3.9"
-      />
-    </svg>
-  ),
-  España: () => (
-    <svg viewBox="0 0 20 14" className="h-full w-full">
-      <rect width="20" height="14" fill="#aa151b" />
-      <rect y="3.5" width="20" height="7" fill="#f1bf00" />
-    </svg>
-  ),
-  "Estados Unidos": () => (
-    <svg viewBox="0 0 20 14" className="h-full w-full">
-      <rect width="20" height="14" fill="#fff" />
-      {[0, 2, 4, 6, 8, 10, 12].map((y) => (
-        <rect key={y} y={y} width="20" height="1.08" fill="#b22234" />
-      ))}
-      <rect width="9" height="7.5" fill="#3c3b6e" />
-    </svg>
-  ),
-  Colombia: () => (
-    <svg viewBox="0 0 20 14" className="h-full w-full">
-      <rect width="20" height="14" fill="#fcd116" />
-      <rect y="7" width="20" height="3.5" fill="#003893" />
-      <rect y="10.5" width="20" height="3.5" fill="#ce1126" />
-    </svg>
-  ),
-  Brasil: () => (
-    <svg viewBox="0 0 20 14" className="h-full w-full">
-      <rect width="20" height="14" fill="#009739" />
-      <polygon fill="#fedd00" points="10,1.5 18.5,7 10,12.5 1.5,7" />
-      <circle cx="10" cy="7" r="3" fill="#012169" />
-    </svg>
-  ),
+const FLAGS: Record<string, string> = {
+  Argentina: "/flags/argentina.png",
+  Chile: "/flags/chile.png",
+  España: "/flags/espana.png",
+  "Estados Unidos": "/flags/estados-unidos.png",
+  Colombia: "/flags/colombia.png",
+  Brasil: "/flags/brasil.png",
 };
