@@ -20,5 +20,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # `LayoutProps`/`PageProps` are generated, not hand-declared — typecheck
+      # needs them on disk before tsc runs.
+      - run: npx next typegen
       - run: npm run typecheck
       - run: npm run build
