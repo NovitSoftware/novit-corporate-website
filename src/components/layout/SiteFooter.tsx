@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/base-path";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
 import {
@@ -106,7 +107,7 @@ export function SiteFooter({ content }: { content: FooterContent }) {
                   return (
                     <a
                       key={channel.id}
-                      href={channel.href}
+                      href={withBasePath(channel.href)}
                       target={external ? "_blank" : undefined}
                       rel={external ? "noreferrer" : undefined}
                       className={footerLink}
@@ -134,7 +135,7 @@ export function SiteFooter({ content }: { content: FooterContent }) {
                           with nowhere to go is a link that lies. */}
                       {link.href ? (
                         <a
-                          href={link.href}
+                          href={withBasePath(link.href)}
                           className={cn(footerLink, "text-sm")}
                         >
                           {link.label}
@@ -163,7 +164,7 @@ export function SiteFooter({ content }: { content: FooterContent }) {
               className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-on-detail"
             >
               {content.legal.map((item) => (
-                <a key={item.label} href={item.href} className={footerLink}>
+                <a key={item.label} href={withBasePath(item.href)} className={footerLink}>
                   {item.label}
                 </a>
               ))}

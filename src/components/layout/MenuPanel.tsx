@@ -1,5 +1,6 @@
 "use client";
 
+import { withBasePath } from "@/lib/base-path";
 import { motion } from "motion/react";
 import { SceneAtmosphere } from "@/components/layout/SceneAtmosphere";
 import { Container } from "@/components/ui/Container";
@@ -67,7 +68,8 @@ export function MenuPanel({
               <li key={item.id}>
                 <MenuRow
                   item={item}
-                  current={pathname === item.href}
+                  /* `trailingSlash` makes the pathname `/ruta/`; the hrefs have none. */
+                  current={pathname.replace(/(.)\/$/, "$1") === item.href}
                   open={open}
                   reduced={reduced}
                   index={index}
@@ -125,7 +127,7 @@ function MenuRow({
       }}
     >
       <a
-        href={item.href}
+        href={withBasePath(item.href)}
         onClick={onClick}
         data-current={current || undefined}
         aria-current={current ? "page" : undefined}

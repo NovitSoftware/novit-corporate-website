@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/base-path";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { variantClass } from "@/lib/variants";
@@ -27,6 +28,7 @@ export function ChipButton({
   variant = "dark",
   className,
   children,
+  href,
   ...props
 }: ChipButtonProps) {
   return (
@@ -36,6 +38,7 @@ export function ChipButton({
         variantClass(chipButtonVariants, variant),
         className,
       )}
+      href={withBasePath(href)}
       {...props}
     >
       <span className="chip-cta_label">

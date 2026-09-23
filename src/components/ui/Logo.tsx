@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/base-path";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { site } from "@/content/site";
@@ -56,7 +57,7 @@ export function Logo({
 
   return (
     <a
-      href={href}
+      href={withBasePath(href)}
       onClick={onClick}
       className={cn("logo inline-flex items-center", className)}
       aria-label={`${site.name}, ir al inicio`}

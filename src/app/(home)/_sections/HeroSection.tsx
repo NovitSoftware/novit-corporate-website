@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/base-path";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { CustomerMap } from "../_components/CustomerMap";
 import { Container } from "@/components/ui/Container";
@@ -123,7 +124,7 @@ function AcademyAnnouncement() {
     <a
       data-anim="rise"
       data-hero="news"
-      href={announcement.href}
+      href={withBasePath(announcement.href)}
       /* No `max-w` of its own: it fills the copy column, which gives the hero
          its one full-measure element and leaves the rule the slack to absorb
          — that is what `flex-1` on it is for.

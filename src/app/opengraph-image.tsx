@@ -11,6 +11,9 @@ export const size = {
 export const contentType = "image/png";
 export const alt = metadataContent.title;
 
+// Rendered once at build time, which a static export requires.
+export const dynamic = "force-static";
+
 /**
  * The link-preview card.
  *

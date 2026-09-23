@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/base-path";
 import type { CSSProperties } from "react";
 import { customerCountries } from "@/content/home";
 import { cn } from "@/lib/cn";
@@ -33,7 +34,7 @@ export function CustomerMap({ className }: { className?: string }) {
         className="block aspect-[780/746] h-auto w-full"
       >
         <image
-          href="/maps/world.svg"
+          href={withBasePath("/maps/world.svg")}
           x={0.98}
           y={0.98}
           width={2000}
