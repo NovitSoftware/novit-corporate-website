@@ -16,6 +16,13 @@ import { cn } from "@/lib/cn";
 const footerLink =
   "link-rule inline-flex w-fit items-center gap-2 text-on-link hover:text-celeste";
 
+/** One track per column the route has, beside the brand block. */
+const GRID_COLUMNS = {
+  1: "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]",
+  2: "lg:grid-cols-[minmax(0,1.3fr)_repeat(2,minmax(0,1fr))]",
+  3: "lg:grid-cols-[minmax(0,1.3fr)_repeat(3,minmax(0,1fr))]",
+} as const;
+
 /** The glyph each direct channel gets, keyed off the `id` the content sets. */
 const CHANNEL_ICONS = {
   whatsapp: WhatsAppIcon,
@@ -29,10 +36,9 @@ const CHANNEL_ICONS = {
  * invalid markup — the browser jumps to whichever comes first, which was this
  * one, past the form entirely.
  *
- * `content` is how a route gives the footer its own index, and there is no
- * default: a footer listing Nosotros, Casos and the AI page under a course is
- * a way out of that page rather than a map of it, so each route names its own
- * beside its own content.
+ * `content` is how a route gives the footer its columns: its own index first,
+ * then `exploreColumn` for the rest of the site. There is no default, so each
+ * route names its own beside its own content.
  */
 export function SiteFooter({ content }: { content: FooterContent }) {
   return (
@@ -45,18 +51,13 @@ export function SiteFooter({ content }: { content: FooterContent }) {
           the footer reveals as it enters rather than at 82% of the viewport. */}
       <Scene className="relative" start="top bottom">
         <Container>
-          {/* One track per column the route actually has. The three-up
-              template leaves an empty third of the measure under a footer that
-              indexes a single thing. */}
           <div
             className={cn(
-              "grid gap-12",
-              content.columns.length > 1
-                ? "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]"
-                : "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]",
+              "grid gap-x-8 gap-y-12 sm:grid-cols-2",
+              GRID_COLUMNS[content.columns.length as keyof typeof GRID_COLUMNS],
             )}
           >
-            <div data-anim-block>
+            <div data-anim-block className="sm:col-span-2 lg:col-span-1">
               <div data-anim="rise">
                 <Logo />
               </div>
@@ -154,44 +155,42 @@ export function SiteFooter({ content }: { content: FooterContent }) {
 
           <Divider tone="dark" className="my-10" />
 
-          {/* `legal` is still empty — those links pointed at an in-page
-              section rather than at policies that exist, and none are
-              written yet. `social` is not: Instagram and LinkedIn are both
-              live and linked from novitsoftware.com's own header. */}
-          {content.legal.length + content.social.length > 0 ? (
-            <div
-              data-anim="rise"
-              className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-on-detail"
+          {/* `legal` stays empty until a policy exists to point at. */}
+          <div className="flex flex-col-reverse gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <p
+              data-anim="fade"
+              className="text-xs uppercase tracking-[0.16em] text-blanco/50"
             >
-              {content.legal.map((item) => (
-                <a key={item.label} href={withBasePath(item.href)} className={footerLink}>
-                  {item.label}
-                </a>
-              ))}
-              {content.social.map((item) => {
-                const Icon = SOCIAL_ICONS[item.id];
-                return (
-                  <a
-                    key={item.id}
-                    href={item.href}
-                    className={footerLink}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <Icon className="size-4 shrink-0" />
+              © {site.copyrightYear} {site.name}
+            </p>
+            {content.legal.length + content.social.length > 0 ? (
+              <div
+                data-anim="rise"
+                className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-on-detail"
+              >
+                {content.legal.map((item) => (
+                  <a key={item.label} href={withBasePath(item.href)} className={footerLink}>
                     {item.label}
                   </a>
-                );
-              })}
-            </div>
-          ) : null}
-
-          <p
-            data-anim="fade"
-            className="mt-8 text-xs uppercase tracking-[0.16em] text-blanco/50"
-          >
-            © {site.copyrightYear} {site.name}
-          </p>
+                ))}
+                {content.social.map((item) => {
+                  const Icon = SOCIAL_ICONS[item.id];
+                  return (
+                    <a
+                      key={item.id}
+                      href={item.href}
+                      className={footerLink}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <Icon className="size-4 shrink-0" />
+                      {item.label}
+                    </a>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </Container>
       </Scene>
     </footer>

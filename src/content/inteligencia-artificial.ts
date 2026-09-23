@@ -1,4 +1,4 @@
-import { footerMission, type FooterContent } from "@/content/footer";
+import { exploreColumn, footerMission, type FooterContent } from "@/content/footer";
 import { siteContact } from "@/content/site";
 
 /**
@@ -212,6 +212,7 @@ export const servicesFooterContent: FooterContent = {
         { label: servicesPageContent.evolution.eyebrow, href: "#evolucion" },
       ],
     },
+    exploreColumn("/inteligencia-artificial"),
   ],
   legal: [],
   social: siteContact.social,

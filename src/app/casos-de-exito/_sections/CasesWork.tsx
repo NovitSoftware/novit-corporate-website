@@ -86,7 +86,7 @@ export function CasesWork() {
  *  it, which is now cards rather than dashes. */
 function WorkGroup({ group }: { group: WorkGroup }) {
   return (
-    <div data-anim-block>
+    <div id={group.id} data-anim-block className="scroll-mt-anchor">
       <span
         data-anim="bar"
         aria-hidden="true"

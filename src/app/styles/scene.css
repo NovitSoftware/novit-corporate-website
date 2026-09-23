@@ -179,10 +179,9 @@
     opacity: clamp(0, 1.5 * var(--scene-mix, 0) - 0.42, 1);
   }
 
-  /* The dot field (DotField.tsx), drawn once for the whole page. Last of the
-     atmosphere layers in layout.tsx, so its dots stay crisp on top of the
-     veil. The canvas only redraws while the cursor disturbs it, so the
-     vignette composites once at rest. */
+  /* The square grid (SquareGrid.tsx), drawn once for
+     the whole page. Last of the atmosphere layers, so it stays crisp on top
+     of the veil. */
   .scene-cells {
     position: fixed;
     inset: 0;

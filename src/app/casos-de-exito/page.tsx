@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CasesWork } from "./_sections/CasesWork";
+import { CustomerMap } from "@/components/ui/CustomerMap";
 import { PageOpener } from "@/components/layout/PageOpener";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { casesFooterContent, casesPageContent } from "@/content/casos-de-exito";
@@ -32,7 +33,13 @@ export default function CasosDeExito() {
 
   return (
     <SiteShell footer={casesFooterContent}>
-      <PageOpener eyebrow={eyebrow} title={title} lead={lead} cta={cta} />
+      <PageOpener
+        eyebrow={eyebrow}
+        title={title}
+        lead={lead}
+        cta={cta}
+        aside={<CustomerMap />}
+      />
       <CasesWork />
     </SiteShell>
   );
