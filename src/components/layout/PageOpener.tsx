@@ -13,6 +13,8 @@ type PageOpenerProps = {
   cta: { label: string; href: string };
   /** Anything the page wants under the button. */
   children?: ReactNode;
+  /** Art beside the copy from `xl`, bled to the window edge like the home hero's map. */
+  aside?: ReactNode;
 };
 
 /**
@@ -34,6 +36,7 @@ export function PageOpener({
   lead,
   cta,
   children,
+  aside,
 }: PageOpenerProps) {
   const external = cta.href.startsWith("http");
 
@@ -46,7 +49,13 @@ export function PageOpener({
       className="relative scroll-mt-anchor overflow-x-clip pb-16 pt-[calc(var(--header-height)+3.5rem)] text-blanco sm:pb-20 lg:pt-[calc(var(--header-height)+5rem)]"
     >
       <Scene className="relative">
-        <Container>
+        <Container
+          className={
+            aside
+              ? "xl:grid xl:grid-cols-[minmax(0,54rem)_minmax(0,1fr)] xl:items-center xl:gap-8"
+              : undefined
+          }
+        >
           <div data-anim-block className="max-w-[54rem]">
             <SectionLabel name={eyebrow} />
             <h1
@@ -73,6 +82,11 @@ export function PageOpener({
             </div>
             {children}
           </div>
+          {aside && (
+            <div className="hidden xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))] xl:block">
+              <div data-anim="fade">{aside}</div>
+            </div>
+          )}
         </Container>
       </Scene>
     </section>

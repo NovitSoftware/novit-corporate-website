@@ -1,6 +1,6 @@
 import { withBasePath } from "@/lib/base-path";
 import { ChipButton } from "@/components/ui/ChipButton";
-import { CustomerMap } from "../_components/CustomerMap";
+import { CustomerMap } from "@/components/ui/CustomerMap";
 import { Container } from "@/components/ui/Container";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";

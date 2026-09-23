@@ -1,6 +1,5 @@
 import { casesPageContent } from "@/content/casos-de-exito";
-import { footerMission } from "@/content/footer";
-import { navigation } from "@/content/navigation";
+import { exploreColumn, footerMission } from "@/content/footer";
 import { siteContact } from "@/content/site";
 
 /* ==========================================================================
@@ -77,19 +76,6 @@ export const customerCountries = [
   if (!point) throw new Error(`No map point for "${name}"`);
   return { name, ...point };
 });
-
-/**
- * §2 · La franja de datos: three figures, no heading. The reference gives it
- * none, and a strip of figures is legible as itself.
- */
-export const statsContent = {
-  id: "datos",
-  items: [
-    { value: "2015", text: "Construyendo software desde entonces" },
-    { value: "30", text: "Profesionales en el equipo" },
-    { value: "5", text: "Países con proyectos activos" },
-  ],
-} as const;
 
 /**
  * §3 · Qué hacemos. The reference names the band and then goes straight to
@@ -208,15 +194,7 @@ export const homeFooterContent = {
         { label: "Contacto", href: "/#contacto" },
       ],
     },
-    {
-      /* The menu again, so a reader at the bottom does not have to go back up
-         to leave the page. */
-      title: "Secciones",
-      links: navigation.map((item) => ({
-        label: item.label,
-        href: item.href,
-      })),
-    },
+    exploreColumn("/"),
   ],
   /** Empty until a privacy policy exists to point at. */
   legal: [] as Array<{ label: string; href: string }>,

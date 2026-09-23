@@ -3,11 +3,10 @@ import { HeroSection } from "./_sections/HeroSection";
 import { IntroOverlay } from "./_components/IntroOverlay";
 import { ServicesSection } from "./_sections/ServicesSection";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { StatsSection } from "./_sections/StatsSection";
 import { homeFooterContent } from "@/content/home";
 
 /**
- * Hero · franja de datos · 01 Qué hacemos · 02 Contacto.
+ * Hero · 01 Qué hacemos · 02 Contacto.
  *
  * The page carries exactly what `novt-home-texto-final.md` writes and nothing
  * else: the Academia, the cases, the governance argument, Nosotros and Equipo
@@ -26,7 +25,6 @@ export default function Home() {
       <IntroOverlay />
       <SiteShell footer={homeFooterContent}>
         <HeroSection />
-        <StatsSection />
         <ServicesSection />
         <ContactSection />
       </SiteShell>

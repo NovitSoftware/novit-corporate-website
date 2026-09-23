@@ -1,4 +1,4 @@
-import { footerMission, type FooterContent } from "@/content/footer";
+import { exploreColumn, footerMission, type FooterContent } from "@/content/footer";
 import { siteContact } from "@/content/site";
 
 /**
@@ -343,8 +343,15 @@ export const casesFooterContent: FooterContent = {
   columns: [
     {
       title: "En esta página",
-      links: [{ label: casesPageContent.work.eyebrow, href: "#recorrido" }],
+      links: [
+        { label: casesPageContent.work.eyebrow, href: "#recorrido" },
+        ...casesPageContent.work.groups.map((group) => ({
+          label: group.title,
+          href: `#${group.id}`,
+        })),
+      ],
     },
+    exploreColumn("/casos-de-exito"),
   ],
   legal: [],
   social: siteContact.social,

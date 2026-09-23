@@ -5,7 +5,7 @@
    words and lives in `@/content/home`, so this file has one reader.
    ========================================================================== */
 
-import { type FooterContent } from "@/content/footer";
+import { exploreColumn, type FooterContent } from "@/content/footer";
 import { siteContact } from "@/content/site";
 
 /**
@@ -214,26 +214,25 @@ export const academyPageContent = {
 } as const;
 
 /**
- * The footer on `/academianovit`, and it is about the Academia only.
- *
- * The site-wide footer indexes the home page: Nosotros, Equipo, Contacto,
- * Casos, Seguridad, plus `/inteligencia-artificial`. Rendered under the
- * Academia it turned the bottom of a page about a course into a way out of it,
- * which is the opposite of what the page is for — a reader who got to the end
- * of the temario is deciding whether to write, not shopping the rest of the
- * site.
- *
- * So the one column here is the edition this page is announcing, no link
- * leaves the route, and the inbox is the chip: on this page it is the only
- * thing to do. Novit's own accounts stay in the row below, because that is the
- * site's identity rather than navigation.
- *
- * No mission line under the logo and no index of the page's own bands: this
- * footer sits three screens below an opener that says the same thing, under a
- * page short enough to scroll back up.
+ * The footer on `/academianovit`: this page's bands, the edition it
+ * announces, and the way on to the rest of the site. The inbox is the chip,
+ * because a consulta about the cursada goes to the Academia, not to sales.
  */
 export const academyFooterContent: FooterContent = {
   columns: [
+    {
+      title: "En esta página",
+      links: [
+        {
+          label: academyPageContent.sections.schedule.eyebrow,
+          href: `#${academyPageContent.sections.schedule.id}`,
+        },
+        {
+          label: academyPageContent.sections.evaluation.eyebrow,
+          href: `#${academyPageContent.sections.evaluation.id}`,
+        },
+      ],
+    },
     {
       /* Facts, not links — there is nowhere on this page for a date to go. */
       title: academyProgram.edition.label,
@@ -241,6 +240,7 @@ export const academyFooterContent: FooterContent = {
         label: `${fact.label}: ${fact.value}`,
       })),
     },
+    exploreColumn("/academianovit"),
   ],
   legal: [],
   social: academyContact.social,

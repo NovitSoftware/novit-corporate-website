@@ -1,7 +1,7 @@
-import { DotField } from "@/components/ui/DotField";
+import { SquareGrid } from "@/components/ui/SquareGrid";
 
 /**
- * The atmosphere over the scene gradient: sweep, blooms and veil, dot field.
+ * The atmosphere over the scene gradient: sweep, blooms and veil, square grid.
  * The layout draws it under the page, and the menu draws it again on its own
  * curtain so opening the menu keeps the same background.
  *
@@ -18,12 +18,14 @@ export function SceneAtmosphere() {
         <span className="scene-bloom scene-bloom-violeta" />
       </div>
       <div className="scene-cells" aria-hidden="true">
-        <DotField
-          dotRadius={2}
-          dotSpacing={16}
-          gradientFrom="rgba(61, 176, 228, 0.42)"
-          gradientTo="rgba(241, 235, 251, 0.3)"
-          glowColor="rgba(4, 0, 56, 0.45)"
+        {/* Canvas can't read CSS vars: --voz-suave and --rgb-celeste. */}
+        <SquareGrid
+          direction="diagonal"
+          speed={0.25}
+          squareSize={44}
+          lineColor="rgba(241, 235, 251, 0.15)"
+          hoverFillColor="rgba(61, 176, 228, 0.22)"
+          hoverTrailAmount={4}
         />
       </div>
     </>

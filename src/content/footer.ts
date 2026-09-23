@@ -3,6 +3,8 @@
    themselves live beside the page each one indexes.
    ========================================================================== */
 
+import { navigation } from "@/content/navigation";
+
 /**
  * What the footer needs, whichever route is rendering it.
  *
@@ -43,5 +45,18 @@ export type FooterContent = {
  * which is why it is here and the four `FooterContent` objects are not: each
  * of those indexes the page it belongs to and lives beside it.
  */
+/**
+ * Every route but the current one, home first: the way on from the bottom of
+ * any page without going back up to the menu.
+ */
+export function exploreColumn(current: string) {
+  return {
+    title: "Explorá",
+    links: [{ label: "Inicio", href: "/" }, ...navigation]
+      .filter((item) => item.href !== current)
+      .map((item) => ({ label: item.label, href: item.href })),
+  };
+}
+
 export const footerMission =
   "Optimizamos procesos de negocio desarrollando software de calidad con tecnologías de vanguardia.";

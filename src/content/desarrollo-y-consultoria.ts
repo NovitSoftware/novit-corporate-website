@@ -1,4 +1,4 @@
-import { footerMission, type FooterContent } from "@/content/footer";
+import { exploreColumn, footerMission, type FooterContent } from "@/content/footer";
 import { siteContact } from "@/content/site";
 
 /**
@@ -155,6 +155,7 @@ export const developmentFooterContent: FooterContent = {
         },
       ],
     },
+    exploreColumn("/desarrollo-y-consultoria"),
   ],
   legal: [],
   social: siteContact.social,
