@@ -159,6 +159,13 @@ const ICONS = {
       <rect x="4.5" y="16" width="10" height="5" rx="1.2" />
     </>
   ),
+  /** An arrow pointing right; rotated, a direction an agent can move in. */
+  arrow: (
+    <>
+      <path d="M4.5 12h15" />
+      <path d="m13.5 6 6 6-6 6" />
+    </>
+  ),
   /** A rosette. A track record: since 2015. */
   award: (
     <>
