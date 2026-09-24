@@ -82,6 +82,7 @@ export function ContactSection() {
                   type="text"
                   autoComplete="name"
                   label={closingContent.fields.name.label}
+                  icon={closingContent.fields.name.icon}
                   placeholder={closingContent.fields.name.placeholder}
                   error={errors.name}
                 />
@@ -91,6 +92,7 @@ export function ContactSection() {
                   type="email"
                   autoComplete="email"
                   label={closingContent.fields.email.label}
+                  icon={closingContent.fields.email.icon}
                   placeholder={closingContent.fields.email.placeholder}
                   error={errors.email}
                 />
@@ -99,6 +101,7 @@ export function ContactSection() {
                   name="message"
                   multiline
                   label={closingContent.fields.message.label}
+                  icon={closingContent.fields.message.icon}
                   placeholder={closingContent.fields.message.placeholder}
                   error={errors.message}
                 />

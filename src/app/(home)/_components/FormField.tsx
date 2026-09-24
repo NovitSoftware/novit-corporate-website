@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { fieldId } from "../_lib/form";
 
 type FormFieldProps = {
@@ -6,6 +7,8 @@ type FormFieldProps = {
   prefix: string;
   name: string;
   label: string;
+  /** The field's mark, in front of its label: who, where to answer, what. */
+  icon: IconName;
   placeholder: string;
   error?: string;
   multiline?: boolean;
@@ -31,6 +34,7 @@ export function FormField({
   prefix,
   name,
   label,
+  icon,
   placeholder,
   error,
   multiline = false,
@@ -52,6 +56,7 @@ export function FormField({
   return (
     <div className="field-row">
       <label className="field-label" htmlFor={id}>
+        <Icon name={icon} size="micro" className="field-label_icon" />
         {label}
       </label>
       {multiline ? (

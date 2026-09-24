@@ -50,10 +50,18 @@
   .field-label {
     /* The 11px uppercase type is shared with `.eyebrow` — a field's name and a
        card's category are the same label. */
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     margin-bottom: 0.5rem;
     color: var(--on-eyebrow);
     transition: color var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  /* The mark is a glyph, not text, so it may carry the accent the label
+     itself does not. */
+  .field-label_icon {
+    color: var(--celeste);
   }
 
   /* The label brightens with its own field, on the field's clock, so focusing
