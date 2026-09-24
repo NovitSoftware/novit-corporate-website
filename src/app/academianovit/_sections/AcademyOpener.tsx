@@ -6,14 +6,15 @@ import { SectionLabel } from "@/components/section/SectionLabel";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { StatRow } from "@/components/section/StatRow";
 import { academyPageContent, academyProgram } from "@/content/academianovit";
+import { AcademyBoard } from "../_components/AcademyBoard";
 
 /**
  * The page's opener, and the one place on it that raises its voice.
  *
- * Deliberately quiet: label, title, one paragraph, the load, one button. This
- * used to lead with a funnel — the admissions figures, at display scale — but
- * those are gone along with the rest of the Academia's selectivity stats, so
- * the load row is what the opener has to say after the claim.
+ * Label, title, one paragraph, the edition, the load, one button — and beside
+ * them the board, which draws the architecture the cursada builds. This used
+ * to lead with a funnel — the admissions figures, at display scale — but those
+ * are gone along with the rest of the Academia's selectivity stats.
  *
  * Not `HeroScene`, and not `Section`. `HeroScene` is choreographed for the
  * home hero's own parts. `Section` is right for every other band but carries
@@ -36,44 +37,68 @@ export function AcademyOpener() {
     >
       <Scene className="relative">
         <Container>
-          <div data-anim-block className="max-w-[54rem]">
-            <SectionLabel name={eyebrow} />
-            <h1
-              data-anim="words"
-              className="display-hero mt-7 max-w-[20ch] text-blanco"
-            >
-              <SplitWords text={title} />
-            </h1>
-            <p
-              data-anim="rise"
-              className="mt-7 max-w-[58ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
-            >
-              {lead}
-            </p>
+          {/* The copy and the board share the band, the way the home hero
+              shares it with the customer map — the headline included, so
+              the board stands beside the claim it illustrates rather than
+              under it. The board is the wider of the two: its labels are set
+              at reading size and it cannot go below about 640px without them
+              going below it. The headline steps down to fit its column there
+              and breaks into three even lines.
 
-            {/* When it runs. The page carried no dates at all — the reasoning
-                was that a calendar goes stale when a cohort closes, which is
-                true and was still the wrong call: someone deciding whether to
-                apply needs to know if they can make the timeslot, and "32
-                horas" answers neither that nor when it starts. One object in
-                `academyProgram.edition`, so retiring an edition is one edit. */}
-            <div data-anim="rise" className="mt-8 flex flex-wrap items-center gap-2">
-              <Badge icon={academyProgram.edition.icon}>
-                {academyProgram.edition.label}
-              </Badge>
-              {academyProgram.edition.facts.map((fact) => (
-                <Badge key={fact.label} icon={fact.icon}>
-                  {fact.value}
+              The board is the taller of the two, so the copy starts level
+              with its top edge and stays in view while the board scrolls
+              past, rather than floating at its middle.
+
+              Below `xl` the board follows the copy at full width, and on a
+              phone it is left out, as the map is: at that width it would be
+              a picture of labels too small to read. */}
+          <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] xl:items-start xl:gap-12">
+            <div
+              data-anim-block
+              className="xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
+            >
+              <SectionLabel name={eyebrow} />
+              <h1
+                data-anim="words"
+                className="display-hero mt-7 max-w-[20ch] text-balance text-blanco xl:text-[clamp(3.25rem,4.6vw,4.5rem)]"
+              >
+                <SplitWords text={title} />
+              </h1>
+              <p
+                data-anim="rise"
+                className="mt-7 max-w-[58ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
+              >
+                {lead}
+              </p>
+
+              {/* When it runs. The page carried no dates at all — the
+                  reasoning was that a calendar goes stale when a cohort
+                  closes, which is true and was still the wrong call: someone
+                  deciding whether to apply needs to know if they can make the
+                  timeslot, and "32 horas" answers neither that nor when it
+                  starts. One object in `academyProgram.edition`, so retiring
+                  an edition is one edit. */}
+              <div data-anim="rise" className="mt-8 flex flex-wrap items-center gap-2">
+                <Badge icon={academyProgram.edition.icon}>
+                  {academyProgram.edition.label}
                 </Badge>
-              ))}
+                {academyProgram.edition.facts.map((fact) => (
+                  <Badge key={fact.label} icon={fact.icon}>
+                    {fact.value}
+                  </Badge>
+                ))}
+              </div>
             </div>
+
+            <AcademyBoard className="mt-14 hidden md:flex xl:mt-0" />
           </div>
 
+          {/* The load, across the band under both, in the row the button
+              closes — as the home hero's pillars run under its copy and map.
+              The figures live in `academyProgram.format.facts`, which is also
+              what the hero's announcement strip reads: one source, no second
+              copy of the numbers. */}
           <div className="mt-16 grid gap-10 lg:mt-20 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
-            {/* The load, on the gradient, in the row the button closes. The
-                figures live in `academyProgram.format.facts`, which is also
-                what the hero's announcement strip reads — one source, no
-                second copy of the numbers. */}
             <StatRow items={academyProgram.format.facts} />
             <div data-anim="rise" className="shrink-0">
               <ChipButton href={cta.href} variant="light">
