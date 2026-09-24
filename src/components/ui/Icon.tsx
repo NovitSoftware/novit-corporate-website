@@ -98,9 +98,64 @@ const ICONS = {
       <path d="M14 3v5h5" />
     </>
   ),
-  /* No `mail` here. The inbox is only ever listed beside Instagram and
-     LinkedIn, so it takes `ContactIcons`' `MailIcon` with them rather than a
-     stroked lookalike from this registry. */
+  /** An envelope, for the form's email field. Where the inbox is listed as a
+   *  channel, beside Instagram and LinkedIn, it takes `ContactIcons`'
+   *  `MailIcon` with them instead. */
+  mail: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3.5 7 8.5 6 8.5-6" />
+    </>
+  ),
+  /** A person. Whoever is writing to us. */
+  user: (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4.5 21a7.5 7.5 0 0 1 15 0" />
+    </>
+  ),
+  /** A house. The home page. */
+  home: (
+    <>
+      <path d="M3.5 10.5 12 3.5l8.5 7" />
+      <path d="M5.5 9v11.5h13V9" />
+      <path d="M10 20.5v-6h4v6" />
+    </>
+  ),
+  /** A briefcase. The client work, the recorrido. */
+  briefcase: (
+    <>
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M8.5 7V5a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 15.5 5v2" />
+      <path d="M3 12.5h18" />
+    </>
+  ),
+  /** Blocks, and one more being added. Low-code: the business building its own. */
+  blocks: (
+    <>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+      <path d="M17 3.5v7" />
+      <path d="M13.5 7h7" />
+    </>
+  ),
+  /** A rosette. A track record: since 2015. */
+  award: (
+    <>
+      <circle cx="12" cy="9" r="6" />
+      <path d="M8.6 13.9 7 22l5-3 5 3-1.6-8.1" />
+    </>
+  ),
+  /** Two arrows round a loop. Something that recurs: the class days. */
+  repeat: (
+    <>
+      <path d="m17 2.5 3.5 3.5L17 9.5" />
+      <path d="M3.5 11V9.5A3.5 3.5 0 0 1 7 6h13.5" />
+      <path d="M7 21.5 3.5 18 7 14.5" />
+      <path d="M20.5 13v1.5A3.5 3.5 0 0 1 17 18H3.5" />
+    </>
+  ),
   /** A conversation handled by an assistant. */
   chat: (
     <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H9l-4 3v-4.4A7.5 7.5 0 0 1 12.5 4 7.5 7.5 0 0 1 20 11.5Z" />
@@ -242,7 +297,7 @@ export type IconName = keyof typeof ICONS;
  * as an arbitrary value at call sites.
  */
 const iconSize = {
-  /** 14px, beside a 10px uppercase micro-label. `StatRow`. */
+  /** 14px, beside a 10–11px uppercase micro-label. `StatRow`, `Badge`. */
   micro: { className: "size-3.5", strokeWidth: 2.143 },
   /** 16px, beside body copy. Checklists, list items. */
   inline: { className: "size-4", strokeWidth: 1.875 },
