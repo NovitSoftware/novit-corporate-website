@@ -5,7 +5,7 @@
    * The frame is the card's glass, so the object belongs to the page; the
    * slate is the gradient's darkest end, which is what lets a drawing on it
    * carry white, celeste and violet at full strength. The Academia's board
-   * is cut from this.
+   * and the agent on `/inteligencia-artificial` are both cut from this.
    */
   .slate-frame {
     position: relative;

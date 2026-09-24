@@ -102,3 +102,33 @@
     transform: scale(3);
   }
 }
+
+/* The agent's "Pensando": light passing across the word, the three points
+   after it taking turns, and the caret at the end of the streaming thought. */
+@keyframes snake-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes snake-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes snake-caret {
+  50% {
+    opacity: 0;
+  }
+}
