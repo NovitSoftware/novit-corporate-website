@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AcademyBoard } from "@/app/academianovit/_components/AcademyBoard";
 import { DevelopmentConsulting } from "./_sections/DevelopmentConsulting";
 import { DevelopmentStages } from "./_sections/DevelopmentStages";
 import { PageOpener } from "@/components/layout/PageOpener";
@@ -34,7 +35,15 @@ export default function DesarrolloYConsultoria() {
 
   return (
     <SiteShell footer={developmentFooterContent}>
-      <PageOpener eyebrow={eyebrow} title={title} lead={lead} cta={cta} />
+      {/* The Academia's board, beside the claim: the architecture Novit
+          builds, the same one the cursada teaches. */}
+      <PageOpener
+        eyebrow={eyebrow}
+        title={title}
+        lead={lead}
+        cta={cta}
+        figure={<AcademyBoard />}
+      />
       <DevelopmentStages />
       <DevelopmentConsulting />
     </SiteShell>
