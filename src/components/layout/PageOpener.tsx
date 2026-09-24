@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { Scene } from "@/components/motion/Scene";
 import { SectionLabel } from "@/components/section/SectionLabel";
 import { SplitWords } from "@/components/motion/SplitWords";
+import { cn } from "@/lib/cn";
 
 type PageOpenerProps = {
   eyebrow: string;
@@ -15,6 +16,14 @@ type PageOpenerProps = {
   children?: ReactNode;
   /** Art beside the copy from `xl`, bled to the window edge like the home hero's map. */
   aside?: ReactNode;
+  /**
+   * A figure that is read, not glanced at, laid out as the Academia's board
+   * is: the wider of the two columns from `xl`, with the headline stepped down
+   * to fit its own and the copy held beside it as it scrolls; under the copy
+   * at full width from `md`; left out on a phone, where its labels would be
+   * too small to read.
+   */
+  figure?: ReactNode;
 };
 
 /**
@@ -37,8 +46,14 @@ export function PageOpener({
   cta,
   children,
   aside,
+  figure,
 }: PageOpenerProps) {
   const external = cta.href.startsWith("http");
+  const layout = figure
+    ? "xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] xl:items-start xl:gap-12"
+    : aside
+      ? "xl:grid xl:grid-cols-[minmax(0,54rem)_minmax(0,1fr)] xl:items-center xl:gap-8"
+      : undefined;
 
   return (
     <section
@@ -49,18 +64,26 @@ export function PageOpener({
       className="relative scroll-mt-anchor overflow-x-clip pb-16 pt-[calc(var(--header-height)+3.5rem)] text-blanco sm:pb-20 lg:pt-[calc(var(--header-height)+5rem)]"
     >
       <Scene className="relative">
-        <Container
-          className={
-            aside
-              ? "xl:grid xl:grid-cols-[minmax(0,54rem)_minmax(0,1fr)] xl:items-center xl:gap-8"
-              : undefined
-          }
-        >
-          <div data-anim-block className="max-w-[54rem]">
+        <Container className={layout}>
+          {/* Beside a figure the copy starts level with its top and stays in
+              view while the taller figure scrolls past. */}
+          <div
+            data-anim-block
+            className={
+              figure
+                ? "xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
+                : "max-w-[54rem]"
+            }
+          >
             <SectionLabel name={eyebrow} />
             <h1
               data-anim="words"
-              className="display-hero mt-7 max-w-[22ch] text-blanco"
+              className={cn(
+                "display-hero mt-7 text-blanco",
+                figure
+                  ? "max-w-[20ch] text-balance xl:text-[clamp(3.25rem,4.6vw,4.5rem)]"
+                  : "max-w-[22ch]",
+              )}
             >
               <SplitWords text={title} />
             </h1>
@@ -87,6 +110,7 @@ export function PageOpener({
               <div data-anim="fade">{aside}</div>
             </div>
           )}
+          {figure && <div className="mt-14 hidden md:block xl:mt-0">{figure}</div>}
         </Container>
       </Scene>
     </section>
