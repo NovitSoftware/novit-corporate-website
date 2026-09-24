@@ -2,6 +2,7 @@ import { Card, CardText } from "@/components/cards/Card";
 import { CardGrid } from "@/components/cards/CardGrid";
 import { CardList } from "@/components/cards/CardList";
 import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
 import { ReadingPanel } from "@/components/section/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/section/Section";
@@ -37,7 +38,8 @@ export function DevelopmentConsulting() {
             below={
               <>
                 <ReadingPanel as="section" data-anim-block>
-                  <h3 className="card-ink-voice eyebrow">
+                  <h3 className="card-ink-voice eyebrow flex items-center gap-2">
+                    <Icon name="target" size="micro" />
                     {consulting.helpLabel}
                   </h3>
                   <CardList

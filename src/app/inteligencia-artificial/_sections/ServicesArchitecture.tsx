@@ -1,5 +1,7 @@
 import { CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
+import { IconBadge } from "@/components/ui/IconBadge";
 import { PanelRow } from "@/components/section/PanelRow";
 import { ReadingPanel } from "@/components/section/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
@@ -72,10 +74,11 @@ export function ServicesArchitecture() {
                 >
                   {architecture.agents.map((agent) => (
                     <li
-                      key={agent}
-                      className="rounded-card border border-blanco/25 bg-blanco/[0.06] px-4 py-3.5 text-sm font-bold leading-snug text-blanco"
+                      key={agent.label}
+                      className="flex items-center gap-3 rounded-card border border-blanco/25 bg-blanco/[0.06] px-3 py-3 text-sm font-bold leading-snug text-blanco"
                     >
-                      {agent}
+                      <IconBadge name={agent.icon} />
+                      {agent.label}
                     </li>
                   ))}
                 </ul>
@@ -109,7 +112,8 @@ export function ServicesArchitecture() {
                     `cards/Card.tsx`); the violet label inside it still says
                     whose platform it is. */}
                 <ReadingPanel data-anim="card" className="mt-6">
-                  <p className="card-ink-voice text-[0.625rem] font-bold uppercase tracking-[0.18em]">
+                  <p className="card-ink-voice flex items-center gap-2 text-[0.625rem] font-bold uppercase tracking-[0.18em]">
+                    <Icon name="lock" size="micro" />
                     {architecture.platformLabel}
                   </p>
                   <ul className="mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">

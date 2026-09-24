@@ -59,6 +59,7 @@ export function ServicesEvolution() {
                       size="base"
                       footer={{
                         label: "Deja instalado",
+                        icon: "check",
                         text: step.leaves,
                         ruleWidth: RULE_WIDTH[index],
                         /* The one band that asks for the reserved second
