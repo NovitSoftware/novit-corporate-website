@@ -7,6 +7,7 @@ import {
   WhatsAppIcon,
 } from "@/components/ui/ContactIcons";
 import { Divider } from "@/components/ui/Divider";
+import { IconLine } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Scene } from "@/components/motion/Scene";
 import { site } from "@/content/site";
@@ -139,10 +140,16 @@ export function SiteFooter({ content }: { content: FooterContent }) {
                           href={withBasePath(link.href)}
                           className={cn(footerLink, "text-sm")}
                         >
+                          {link.icon ? (
+                            <IconLine name={link.icon} size="inline" className="text-celeste" />
+                          ) : null}
                           {link.label}
                         </a>
                       ) : (
-                        <span className="text-sm text-on-detail">
+                        <span className="flex items-start gap-2 text-sm text-on-detail">
+                          {link.icon ? (
+                            <IconLine name={link.icon} size="inline" className="text-celeste" />
+                          ) : null}
                           {link.label}
                         </span>
                       )}
@@ -174,7 +181,7 @@ export function SiteFooter({ content }: { content: FooterContent }) {
                   </a>
                 ))}
                 {content.social.map((item) => {
-                  const Icon = SOCIAL_ICONS[item.id];
+                  const SocialIcon = SOCIAL_ICONS[item.id];
                   return (
                     <a
                       key={item.id}
@@ -183,7 +190,7 @@ export function SiteFooter({ content }: { content: FooterContent }) {
                       rel="noreferrer"
                       target="_blank"
                     >
-                      <Icon className="size-4 shrink-0" />
+                      <SocialIcon className="size-4 shrink-0" />
                       {item.label}
                     </a>
                   );
