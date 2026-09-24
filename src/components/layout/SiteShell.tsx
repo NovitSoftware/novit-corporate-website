@@ -14,9 +14,8 @@ import type { FooterContent } from "@/content/footer";
  * of `main` — and that is exactly the kind of requirement that gets lost when
  * a second page is assembled by copying the first.
  *
- * The intro curtain is *not* here. It belongs to the home page: it plays
- * once, on arrival at the site, and `HeroScene` waits on its completion
- * signal. Mounting it on every route would replay it on every navigation.
+ * The page curtain is *not* here: it has to outlive the page it covers, so it
+ * lives in the root layout. See `PageTransitions`.
  */
 export function SiteShell({
   children,

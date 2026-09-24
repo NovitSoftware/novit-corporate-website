@@ -15,11 +15,6 @@ import { siteContact } from "@/content/site";
    change both together.
    ========================================================================== */
 
-/** The intro curtain's `aria-label`; the mark itself renders with `alt=""`. */
-export const introContent = {
-  label: "Novit Software",
-} as const;
-
 /**
  * The cabecera. The reference has no §1, so the headline and the lead are its
  * Meta pair — the title without the company name the logo already carries,

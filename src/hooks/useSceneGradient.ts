@@ -163,7 +163,7 @@ export function useSceneGradient(lenis: Lenis | undefined, reduced: boolean) {
 
       if (!seeded) {
         // First frame, and any deep link `useInitialHash` jumps to behind the
-        // intro curtain: arrive, do not travel.
+        // page curtain: arrive, do not travel.
         seeded = true;
         current = target;
       } else {

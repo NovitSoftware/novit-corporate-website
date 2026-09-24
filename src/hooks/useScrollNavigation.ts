@@ -25,8 +25,8 @@ export function useInitialHash(lenis: Lenis | undefined) {
 
     jumped.current = true;
 
-    // After layout, and `force` because the intro holds the scroll while it
-    // plays — the visitor should be at the section when the curtain lifts.
+    // After layout, and `force` because the curtain holds the scroll while it
+    // plays — the visitor should be at the section when the page opens.
     requestAnimationFrame(() => {
       lenis.resize();
       lenis.scrollTo(section, { immediate: true, force: true });

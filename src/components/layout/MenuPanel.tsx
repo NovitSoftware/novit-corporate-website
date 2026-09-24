@@ -27,8 +27,8 @@ type MenuPanelProps = {
 };
 
 /**
- * The menu: a curtain coming down — the same gesture as the intro, which
- * lifts one away — carrying one row per route and the two direct channels.
+ * The menu: a curtain coming down, carrying one row per route and the two
+ * direct channels.
  *
  * The routes are peers, not a sequence, so nothing numbers them. Each takes a
  * full-measure row with its name and what the page holds, which is what gives

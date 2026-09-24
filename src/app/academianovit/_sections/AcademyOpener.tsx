@@ -15,13 +15,11 @@ import { academyPageContent, academyProgram } from "@/content/academianovit";
  * those are gone along with the rest of the Academia's selectivity stats, so
  * the load row is what the opener has to say after the claim.
  *
- * Not `HeroScene`, and not `Section`. `HeroScene`'s timeline is built paused
- * and released by the intro curtain's completion signal, which only
- * `IntroOverlay` sends and only the home page mounts — a hero waiting on it
- * here would sit at opacity 0 for good. `Section` is right for every other
- * band but carries the standard vertical rhythm, and an opener has to clear
- * the fixed header instead. `Scene` is scroll-driven and fires on creation
- * for anything already in view, so this arrives on load.
+ * Not `HeroScene`, and not `Section`. `HeroScene` is choreographed for the
+ * home hero's own parts. `Section` is right for every other band but carries
+ * the standard vertical rhythm, and an opener has to clear the fixed header
+ * instead. `Scene` plays anything already in view as one entrance when the
+ * page curtain opens, so this arrives with the page.
  */
 export function AcademyOpener() {
   const { eyebrow, title, lead, cta } = academyPageContent;
