@@ -185,6 +185,92 @@ export const servicesPageContent = {
 } as const;
 
 /**
+ * The figure beside the opener: an agent playing snake on its own, and the
+ * audit of every move it makes — the page's claims about traceability and
+ * governance, shown working rather than stated.
+ *
+ * The moves are named the way a policy names its actions, in English, as the
+ * Academia's board names its parts; everything that frames them is Spanish.
+ * `{n}` and `{move}` are filled in by `snake-motion.ts`.
+ */
+export const agentSnake = {
+  title: "Agente autónomo",
+  subtitle: "Simulación: juega solo, paso a paso.",
+  description:
+    "Simulación de un agente que juega a la víbora por su cuenta. En cada paso busca la ruta más corta al objetivo alrededor de su propio cuerpo y comprueba que, después de comer, todavía pueda llegar a su cola; si quedaría encerrado, sigue su cola hasta que se abra un camino seguro. En el tablero se dibuja la ruta que planea. Al lado, la auditoría de cada decisión: la confianza en cada movimiento, su razonamiento y un registro de eventos.",
+  board: { label: "Entorno", game: "Partida" },
+  /** How fast the game runs, against its normal pace. */
+  speed: {
+    label: "Velocidad",
+    initial: 1,
+    options: [
+      { value: 0.5, label: "0,5×" },
+      { value: 1, label: "1×" },
+      { value: 2, label: "2×" },
+    ],
+  },
+  audit: {
+    label: "Auditoría",
+    step: "Paso",
+    blocked: "bloqueado",
+    log: "Registro",
+    captures: "Capturas",
+    avoided: "Trampas evitadas",
+  },
+  moves: ["LEFT", "RIGHT", "UP", "DOWN"],
+  /**
+   * Its thinking: streamed before it moves, the way a model's reasoning
+   * arrives, and in the first person, because it is the agent working it out
+   * for itself. Every figure in it is one the planner found — `snake-sim.ts`
+   * — so it never says anything it did not work out.
+   *
+   * Put together in `snake-copy.ts`: `{a}` and `{b}` are directions, `{n}` a
+   * count of steps written out, `{m}` a bare number. Kept short enough that
+   * a thought fits the audit's column in five lines.
+   */
+  thinking: {
+    label: "Razonamiento",
+    live: "Pensando",
+    /* What it did, not how long it took: the planner answers in well under a
+       millisecond, so a thinking time would be one the page made up. */
+    done: { one: "Evaluó 1 opción", other: "Evaluó {n} opciones" },
+    start: "Partida nueva: mido {n} celdas.",
+    caught: ["Lo tengo.", "Uno más.", "Capturado."],
+    resumed: "Mi cola dejó lugar.",
+    steps: { one: "1 paso", other: "{n} pasos" },
+    one: "Por {a} llego en {n}.",
+    two: "Por {a} llego en {n}; por {b}, en {m}.",
+    tie: "Por {a} o por {b}, llego en {n}.",
+    exit: "Al comer, todavía tengo salida.",
+    but: "Pero al comer me quedaría sin salida.",
+    instead: "Por {b} son {m} y no me encierro: voy por ahí.",
+    trap: "Un momento: al comer me quedaría sin salida.",
+    /* The route it will follow, told as it will be walked: one or two legs
+       in so many words, and a route that winds round the body as that. */
+    legs: ["voy {n} a la izquierda", "voy {n} a la derecha", "subo {n}", "bajo {n}"],
+    course: "{a} y {b}.",
+    winding: "Salgo por {a} y rodeo mi cuerpo.",
+    tail: "Sigo mi cola hasta que se abra un camino.",
+    closed: "Mi cuerpo cierra todas las rutas.",
+    space: "No veo ruta ni cola: busco lugar.",
+    trapped: "No me queda salida.",
+    end: { one: "Fin de la partida: 1 captura.", other: "Fin de la partida: {n} capturas." },
+    directions: ["la izquierda", "la derecha", "arriba", "abajo"],
+  },
+  /** The log keeps what changed: a capture, a change of plan, a game. */
+  events: {
+    start: { label: "Partida {n}", detail: "empieza" },
+    capture: { label: "Captura", one: "en 1 paso", other: "en {n} pasos" },
+    avoid: { label: "Desvío", detail: "evita una trampa" },
+    noroute: { label: "Desvío", detail: "sin ruta libre" },
+    resume: { label: "Retoma", one: "ruta de 1 paso", other: "ruta de {n} pasos" },
+    end: { label: "Fin", one: "1 captura", other: "{n} capturas" },
+  },
+  /** Novit's one remark on it, in its own voice. */
+  note: "Cada decisión queda registrada: qué vio, qué eligió y por qué.",
+} as const;
+
+/**
  * The footer on `/inteligencia-artificial`, and it is about this page only.
  *
  * The site-wide footer indexes the home page — Nosotros, Equipo, Contacto,
