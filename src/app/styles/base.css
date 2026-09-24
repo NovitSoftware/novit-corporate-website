@@ -35,16 +35,12 @@
 
   /*
    * The document is a fixed frame; `.scroll-shell` inside it is what moves.
-   * Because `body` never scrolls, its background reads as a constant
-   * atmosphere sitting behind the whole site: it is the page's only
-   * background, sections carry none of their own, so it shows through
-   * everywhere rather than only between opaque bands. The 100deg angle is
-   * the brandbook's; the color stops are tweened by `useSceneGradient` in
-   * SmoothScroll.tsx.
+   * The site's one background, the scene gradient, is on `.page-stage` rather
+   * than here — see curtain.css — so `body` keeps a flat colour under it and
+   * the full-viewport gradient is only rastered once per change.
    */
   body {
     background-color: var(--azul-700);
-    background-image: var(--scene-gradient);
     color: var(--negro);
     font-family: var(--font-lato), "Lato", sans-serif;
     height: 100%;
