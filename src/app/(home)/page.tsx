@@ -1,6 +1,5 @@
 import { ContactSection } from "./_sections/ContactSection";
 import { HeroSection } from "./_sections/HeroSection";
-import { IntroOverlay } from "./_components/IntroOverlay";
 import { ServicesSection } from "./_sections/ServicesSection";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { homeFooterContent } from "@/content/home";
@@ -19,15 +18,10 @@ import { homeFooterContent } from "@/content/home";
  */
 export default function Home() {
   return (
-    <>
-      {/* Outside the shell, and only here: the curtain plays once on arrival
-          at the site, and `HeroScene` below waits on its completion signal. */}
-      <IntroOverlay />
-      <SiteShell footer={homeFooterContent}>
-        <HeroSection />
-        <ServicesSection />
-        <ContactSection />
-      </SiteShell>
-    </>
+    <SiteShell footer={homeFooterContent}>
+      <HeroSection />
+      <ServicesSection />
+      <ContactSection />
+    </SiteShell>
   );
 }

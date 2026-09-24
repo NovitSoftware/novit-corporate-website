@@ -4,16 +4,6 @@
    Keyframes
    ========================================================================== */
 
-@keyframes grid-drift {
-  from {
-    background-position: 0 0;
-  }
-
-  to {
-    background-position: 40px 40px;
-  }
-}
-
 /*
  * The atmosphere's idle drift — translate and nothing else.
  *
@@ -74,21 +64,6 @@
 
   50% {
     transform: translate3d(-16%, 12%, 0);
-  }
-}
-
-/* Echoes the isotipo: bars of unequal length settling into place. */
-@keyframes bar-breathe {
-
-  0%,
-  100% {
-    transform: scaleX(0.7);
-    opacity: 0.3;
-  }
-
-  50% {
-    transform: scaleX(1);
-    opacity: 0.85;
   }
 }
 

@@ -21,10 +21,10 @@ type PageOpenerProps = {
  * How every route that is not the home page opens: the label, the claim, the
  * lead, and the one door.
  *
- * Not `HeroScene` and not `Section`. `HeroScene`'s timeline waits on the intro
- * curtain's completion signal, which only the home page sends, so a hero built
- * on it here would sit at opacity 0 for good; `Section` carries the standard
- * vertical rhythm, where an opener has to clear the fixed header instead.
+ * Not `HeroScene` and not `Section`. `HeroScene` is choreographed for the home
+ * hero's own parts — badge, pillars, map — which no other opener has;
+ * `Section` carries the standard vertical rhythm, where an opener has to clear
+ * the fixed header instead.
  *
  * It was written out once per route — three times, with the padding scale and
  * the measures drifting a little on each. One shape, so a change to the way
