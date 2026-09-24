@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { gsap, scroller, useGSAP } from "@/lib/gsap";
-import { onIntroComplete } from "../_lib/intro";
+import { onPageReveal } from "@/lib/page-reveal";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 
@@ -16,8 +16,8 @@ const target = (name: string) => `[data-hero="${name}"]`;
 /**
  * The hero's own choreography, kept apart from `Scene` because it is the one
  * sequence on the page that is not driven by scroll: it is built paused and
- * released by the intro curtain, so the headline is already rising as the
- * curtain clears.
+ * released by the page curtain, so the headline is already rising as the
+ * page opens.
  *
  * It also owns the hero's scroll behaviour: the opening copy settling back
  * as the section leaves.
@@ -37,9 +37,9 @@ export function HeroScene({ children, className }: HeroSceneProps) {
       media.add("(prefers-reduced-motion: no-preference)", () => {
         const entrance = buildEntrance();
         buildScrollLayers(root);
-        // Fires straight away when the curtain has already gone, so the
+        // Fires straight away when the page is already open, so the
         // timeline has to exist first.
-        const release = onIntroComplete(() => entrance.play());
+        const release = onPageReveal(() => entrance.play());
 
         return () => release();
       });

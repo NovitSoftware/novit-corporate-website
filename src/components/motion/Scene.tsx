@@ -3,6 +3,7 @@
 import { useRef, type ElementType, type ReactNode } from "react";
 import { animRecipes, isAnimName, type AnimRecipe } from "@/lib/motion";
 import { gsap, ScrollTrigger, scroller, useGSAP } from "@/lib/gsap";
+import { onPageReveal } from "@/lib/page-reveal";
 import { cn } from "@/lib/cn";
 
 /**
@@ -83,7 +84,7 @@ export function Scene({
 
         for (const group of collectGroups(root)) {
           if (alreadyOnScreen(group, start)) {
-            entrance ??= gsap.timeline();
+            entrance ??= gsap.timeline({ paused: true });
             at = appendGroup(entrance, group, at);
           } else if (group.mode === "batch") {
             runBatch(group.elements, start);
@@ -91,6 +92,10 @@ export function Scene({
             runTimeline(group.container, group.elements, start);
           }
         }
+
+        // Held until the page curtain opens, so it plays in view.
+        const opening = entrance;
+        return opening ? onPageReveal(() => opening.play()) : undefined;
       });
 
       return () => media.revert();
