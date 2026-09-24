@@ -154,12 +154,17 @@ export const academyProgram = {
    * know when it runs and whether they can make the timeslot, and "32 horas"
    * does not answer either. It is one object, so retiring an edition is
    * editing one place.
+   *
+   * "al", not "→": Lato as served carries no arrow glyph, so the browser drew
+   * a missing-glyph box between the two dates (see cap. 02 of the design
+   * system).
    */
   edition: {
     label: "Edición 2026",
+    icon: "academy",
     facts: [
-      { label: "Cursada", value: "13/10/2026 → 04/12/2026", icon: "calendar" },
-      { label: "Días", value: "Martes y viernes", icon: "calendar" },
+      { label: "Cursada", value: "13/10/2026 al 04/12/2026", icon: "calendar" },
+      { label: "Días", value: "Martes y viernes", icon: "repeat" },
       { label: "Horario", value: "16 a 18 h (ART)", icon: "clock" },
     ],
   },
@@ -238,6 +243,7 @@ export const academyFooterContent: FooterContent = {
       title: academyProgram.edition.label,
       links: academyProgram.edition.facts.map((fact) => ({
         label: `${fact.label}: ${fact.value}`,
+        icon: fact.icon,
       })),
     },
     exploreColumn("/academianovit"),

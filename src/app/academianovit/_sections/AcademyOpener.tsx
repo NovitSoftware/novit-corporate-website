@@ -1,6 +1,6 @@
+import { Badge } from "@/components/ui/Badge";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { Icon } from "@/components/ui/Icon";
 import { Scene } from "@/components/motion/Scene";
 import { SectionLabel } from "@/components/section/SectionLabel";
 import { SplitWords } from "@/components/motion/SplitWords";
@@ -58,17 +58,13 @@ export function AcademyOpener() {
                 horas" answers neither that nor when it starts. One object in
                 `academyProgram.edition`, so retiring an edition is one edit. */}
             <div data-anim="rise" className="mt-8 flex flex-wrap items-center gap-2">
-              <span className="chip bg-celeste/15 text-celeste">
+              <Badge icon={academyProgram.edition.icon}>
                 {academyProgram.edition.label}
-              </span>
+              </Badge>
               {academyProgram.edition.facts.map((fact) => (
-                <span
-                  key={fact.label}
-                  className="chip chip-outline inline-flex items-center gap-2 text-celeste"
-                >
-                  <Icon name={fact.icon} size="micro" />
+                <Badge key={fact.label} icon={fact.icon}>
                   {fact.value}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>

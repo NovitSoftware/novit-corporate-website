@@ -1,4 +1,5 @@
 import { withBasePath } from "@/lib/base-path";
+import { Badge } from "@/components/ui/Badge";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { CustomerMap } from "@/components/ui/CustomerMap";
 import { Container } from "@/components/ui/Container";
@@ -29,13 +30,14 @@ export function HeroSection() {
             <div data-hero="copy" className="max-w-[52rem]">
               <AcademyAnnouncement />
 
-              <span
+              <Badge
+                icon="award"
                 data-anim="chip"
                 data-hero="badge"
-                className="chip chip-outline mb-7 inline-flex text-celeste"
+                className="mb-7"
               >
                 {heroContent.eyebrow}
-              </span>
+              </Badge>
               {/* `20ch` is the measure the headline is fitted to, and the same
                   cap `AcademyOpener` uses. */}
               <h1
@@ -134,12 +136,9 @@ function AcademyAnnouncement() {
          would quietly outrank the accent rule that class draws. */
       className="hero-news mb-8 flex w-full flex-col gap-2.5 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5"
     >
-      <span className="flex shrink-0 items-center gap-3">
-        <span
-          aria-hidden="true"
-          className="h-1.5 w-1.5 shrink-0 rounded-full bg-celeste"
-        />
-        <span className="eyebrow text-celeste">{announcement.kicker}</span>
+      <span className="flex shrink-0 items-center gap-2.5 text-celeste">
+        <Icon name="academy" size="inline" />
+        <span className="eyebrow">{announcement.kicker}</span>
       </span>
 
       <span
