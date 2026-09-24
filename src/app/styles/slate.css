@@ -1,0 +1,47 @@
+/* The slate — a dark pane in a glass frame, for the figures drawn on the page's own materials. */
+
+@layer components {
+  /*
+   * The frame is the card's glass, so the object belongs to the page; the
+   * slate is the gradient's darkest end, which is what lets a drawing on it
+   * carry white, celeste and violet at full strength. The Academia's board
+   * is cut from this.
+   */
+  .slate-frame {
+    position: relative;
+    z-index: 1;
+    padding: 0.625rem;
+    border-radius: calc(var(--card-radius) + 0.375rem);
+    background-color: rgb(var(--scene-2) / 0.12);
+    background-image: linear-gradient(rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.1));
+    border: 1px solid rgb(255 255 255 / 0.22);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.28),
+      0 4px 10px -4px color-mix(in srgb, var(--ink) 34%, transparent),
+      0 28px 56px -24px color-mix(in srgb, var(--ink) 62%, transparent);
+  }
+
+  .slate {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--card-radius);
+    background-color: #07003f;
+    background-image: linear-gradient(160deg, #0b0470 0%, #07003f 55%, #0a0030 100%);
+    box-shadow:
+      inset 0 2px 14px rgb(0 0 0 / 0.45),
+      inset 0 0 0 1px rgb(0 0 0 / 0.35);
+  }
+
+  /* A board to write on: a faint ruled grid, the site's own square cell at
+     board scale, and the ghost of whatever was erased before. */
+  .slate-ruled {
+    background-image:
+      radial-gradient(ellipse 38% 22% at 72% 30%, rgb(255 255 255 / 0.035), transparent 70%),
+      radial-gradient(ellipse 30% 18% at 22% 78%, rgb(255 255 255 / 0.03), transparent 70%),
+      linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      linear-gradient(160deg, #0b0470 0%, #07003f 55%, #0a0030 100%);
+    background-size: auto, auto, 28px 28px, 28px 28px, auto;
+    background-position: 0 0, 0 0, -1px -1px, -1px -1px, 0 0;
+  }
+}
