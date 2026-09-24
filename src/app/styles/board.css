@@ -1,0 +1,324 @@
+/* The Academia's board — the architecture diagram on a card, in the site's own strokes. */
+
+@layer components {
+  /*
+   * Everything is drawn in the icon set's idiom: round caps and joins, one
+   * flat colour, a stroke close to the set's 1.25px. White carries the
+   * structure, celeste the path a request takes, violet only Novit's notes —
+   * the same three jobs the colours have everywhere else.
+   *
+   * Sizes are in viewBox units; the opener renders the board at roughly one
+   * unit to the pixel, so these read as the site's own 10–13px labels.
+   */
+  /* --- The object ----------------------------------------------------------
+   * A whiteboard on a stand, built from the page's own materials: the frame
+   * and the ruled slate are `Slate` (slate.css), and the ledge, markers and
+   * stand are the same glass at the weight of a hairline.
+   */
+  .academy-board {
+    position: relative;
+    flex-direction: column;
+  }
+
+  /* The shelf sits in front of the frame's foot, as a tray does. */
+  .academy-board_ledge {
+    position: relative;
+    z-index: 2;
+    margin-top: -0.625rem;
+  }
+
+  .board-ledge_shelf {
+    fill: rgb(255 255 255 / 0.26);
+    stroke: rgb(255 255 255 / 0.4);
+    stroke-width: 1;
+  }
+
+  .board-stand {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.3);
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+
+  .board-castor {
+    fill: rgb(var(--rgb-ink) / 0.6);
+    stroke: rgb(255 255 255 / 0.3);
+    stroke-width: 1.5;
+  }
+
+  .board-marker_body {
+    fill: rgb(255 255 255 / 0.85);
+  }
+
+  .board-marker_cap {
+    fill: var(--board-ink);
+  }
+
+  .board-ink-white {
+    --board-ink: var(--blanco);
+  }
+
+  .board-ink-celeste {
+    --board-ink: var(--celeste);
+  }
+
+  .board-ink-violet {
+    --board-ink: var(--violeta);
+  }
+
+  .board-eraser_body {
+    fill: rgb(var(--rgb-ink) / 0.75);
+    stroke: rgb(255 255 255 / 0.25);
+    stroke-width: 1;
+  }
+
+  .board-eraser_felt {
+    fill: rgb(255 255 255 / 0.55);
+  }
+
+  /* --- The drawing --------------------------------------------------------- */
+
+  .academy-board_art {
+    overflow: visible;
+    font-family: var(--font-lato), "Lato", sans-serif;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* Lato's space is 0.19em, which at 10–11px in bold is two pixels and
+       reads as no space at all ("Vectorstore"). */
+    word-spacing: 0.05em;
+  }
+
+  .board-glyph {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 1.5;
+  }
+
+  /* The badge material, drawn: ink plate, celeste edge. */
+  /* On the slate the badge's ink plate would be ink on ink, so the plate is
+     drawn the way a marker would draw it: a celeste outline, barely filled. */
+  .board-plate {
+    fill: rgb(var(--rgb-celeste) / 0.08);
+    stroke: rgb(var(--rgb-celeste) / 0.8);
+    stroke-width: 1.2;
+  }
+
+  .board-hex {
+    fill: rgb(var(--rgb-celeste) / 0.1);
+    stroke: var(--celeste);
+    stroke-width: 1.4;
+  }
+
+  /* A panel inside the panel, the card's own edge at half weight. */
+  /* A region boxed in white marker. */
+  .board-tray {
+    fill: rgb(255 255 255 / 0.03);
+    stroke: rgb(255 255 255 / 0.4);
+    stroke-width: 1.25;
+  }
+
+  .board-link {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.7);
+    stroke-width: 1.4;
+  }
+
+  .board-link-accent {
+    stroke: var(--celeste);
+  }
+
+  .board-rule {
+    stroke: rgb(255 255 255 / 0.28);
+    stroke-width: 1;
+  }
+
+  .board-title {
+    fill: var(--blanco);
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+  }
+
+  .board-subtitle {
+    fill: rgb(255 255 255 / 0.72);
+    font-size: 11.5px;
+    font-weight: 400;
+  }
+
+  .board-underline {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 3;
+  }
+
+  /* The four inks of the card, by job. */
+  .board-heading {
+    fill: rgb(255 255 255 / 0.62);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+
+  .board-label {
+    fill: var(--blanco);
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+
+  .board-caption {
+    fill: var(--blanco);
+    font-size: 10.5px;
+    font-weight: 700;
+  }
+
+  .board-detail {
+    fill: rgb(255 255 255 / 0.72);
+    font-size: 10.5px;
+    font-weight: 400;
+  }
+
+  .board-hex-title {
+    fill: var(--celeste);
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+
+  .board-tray-title {
+    fill: var(--blanco);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+  }
+
+  .board-flow-label {
+    fill: var(--celeste);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  /* The ingest runs in white like the indexing it feeds, not celeste: it is
+     not part of any one request. */
+  .board-flow-label-quiet {
+    fill: rgb(255 255 255 / 0.6);
+  }
+
+  /* The agents' group, in the same white marker as the RAG's box. */
+  .board-group {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.28);
+    stroke-width: 1.1;
+  }
+
+  /* Novit's remark: a violet bar, voz-suave words, an arrow in the same ink. */
+  .board-note_bar {
+    fill: url(#board-voice-bar);
+  }
+
+  .board-note_text {
+    fill: var(--voz-suave);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .board-note_arrow {
+    fill: none;
+    stroke: rgb(241 235 251 / 0.75);
+    stroke-width: 1.4;
+  }
+
+  /* Paths a request travels but nobody draws, and the areas that answer the
+     pointer round each part. */
+  .board-route {
+    fill: none;
+    stroke: none;
+  }
+
+  .board-hit {
+    fill: transparent;
+  }
+
+  /* Only the parts answer the pointer — never a line, a dot or a label
+     between them. A route thickens its lines when it lights, and a line that
+     caught the pointer then took the hover off the part under it, dropped
+     the route, thinned again and handed it back: the route restarted in a
+     loop for as long as the pointer sat near a line. */
+  .academy-board_art * {
+    pointer-events: none;
+  }
+
+  .academy-board_art [data-node],
+  .academy-board_art [data-node] * {
+    pointer-events: auto;
+  }
+
+  /* --- The route ----------------------------------------------------------
+   * Pointing at a part dims everything its route does not touch and brings
+   * the route up; `is-glow` is the moment a request reaches a part. Both are
+   * colour and opacity only, on transitions, so a part lights and fades
+   * rather than blinking.
+   */
+  .academy-board_art [data-part] {
+    transition: opacity var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .academy-board_art[data-focus] [data-part]:not(.is-lit) {
+    opacity: 0.18;
+  }
+
+  .board-plate,
+  .board-hex,
+  .board-tray,
+  .board-group,
+  .board-link {
+    transition:
+      stroke var(--dur-base) var(--ease-in-out-quad),
+      fill var(--dur-base) var(--ease-in-out-quad),
+      stroke-width var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  .is-lit .board-link,
+  .board-link.is-lit {
+    stroke: var(--celeste);
+    stroke-width: 1.8;
+  }
+
+  .is-lit .board-plate {
+    stroke: var(--blanco);
+  }
+
+  .is-glow .board-plate {
+    stroke: var(--blanco);
+    fill: rgb(var(--rgb-celeste) / 0.32);
+  }
+
+  .is-glow .board-hex {
+    fill: rgb(var(--rgb-celeste) / 0.3);
+    stroke: var(--blanco);
+  }
+
+  .board-group.is-lit,
+  .board-group.is-glow,
+  .is-lit .board-tray,
+  .is-glow .board-tray {
+    stroke: rgb(var(--rgb-celeste) / 0.85);
+  }
+
+  /* Only ever shown by the flow, which reduced motion never builds. */
+  .board-pulse {
+    fill: var(--blanco);
+    stroke: var(--celeste);
+    stroke-width: 2;
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0 5px rgb(var(--rgb-celeste) / 0.95));
+  }
+
+  .board-ring {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 1.5;
+    opacity: 0;
+    pointer-events: none;
+  }
+}

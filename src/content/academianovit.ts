@@ -171,6 +171,108 @@ export const academyProgram = {
 } as const;
 
 /**
+ * The board beside the opener: the architecture the cursada builds, drawn the
+ * way it is drawn in class.
+ *
+ * Its source is the Academia's own whiteboard drawing: the same parts and the
+ * same two notes, redrawn in the site's material — glass, Lato, the icon set —
+ * instead of marker on a stand. The two `notes` are the
+ * only violet on it, because they are the only lines on it that are Novit's
+ * opinion rather than a part of the system.
+ */
+export const academyBoard = {
+  title: "Arquitectura de agentes",
+  subtitle: "Orquestación · recuperación sobre datos propios · gobierno",
+  description:
+    "Diagrama de una arquitectura de agentes. Los pedidos llegan por canales a un orquestador que divide el trabajo, lo reparte entre agentes y reúne los resultados. Cada agente razona con un LLM: consulta un RAG con el conocimiento del cliente —documentos de sus sistemas, divididos en fragmentos, convertidos en embeddings y guardados en un vector store— y actúa sobre los sistemas del cliente mediante tools. La respuesta vuelve por el mismo canal. Todo bajo guardrails, permisos mínimos, trazabilidad, evaluación y costo por tarea.",
+  /*
+   * The parts of the diagram are labelled in English, the way the field
+   * names them and the way they are taught in the cursada — nobody says
+   * "recuperador" for a retriever. What frames the diagram is Spanish: the
+   * title, the subtitle and Novit's two notes, which are Novit talking to
+   * the reader rather than naming a component.
+   */
+  channels: {
+    label: "Channels",
+    items: [
+      { label: "WhatsApp", icon: "chat" },
+      { label: "Web", icon: "globe" },
+      { label: "Email", icon: "mail" },
+      /* Events the ERP raises — a new invoice, an order — that start a task.
+         Not the ERP itself, which is one of the systems the agents act on. */
+      { label: "ERP events", icon: "layers" },
+    ],
+  },
+  /*
+   * Orchestrator-workers, as *Building Effective Agents* describes it: the
+   * orchestrator splits the task, hands the pieces to the workers and merges
+   * what they return. Which tool to call is each agent's own decision, taken
+   * in its LLM loop — the board said "which tool" here and that was wrong.
+   */
+  orchestrator: {
+    label: "Orchestrator",
+    title: "Decides & routes",
+    detail: ["splits the work,", "merges the results"],
+  },
+  agents: {
+    label: "Agents",
+    items: [
+      { label: "Classifier", icon: "agent" },
+      { label: "Extractor", icon: "agent" },
+      { label: "Writer", icon: "agent" },
+    ],
+    /** What the agents reason with: it writes the query, reads the context
+     *  that comes back and decides what to do with it. */
+    model: { label: "LLM", detail: "reasoning" },
+  },
+  systems: {
+    label: "Systems",
+    /** How agents reach them: the model chooses a tool call and the agent
+     *  runtime executes it, with the agent's identity and scoped
+     *  permissions — the model never touches a system itself. */
+    via: "tools · MCP",
+    items: [
+      { label: "Database", icon: "database" },
+      { label: "SAP · ERP", icon: "blocks" },
+      { label: "Customs API", icon: "link" },
+      { label: "Outbound email", icon: "mail" },
+    ],
+  },
+  rag: {
+    label: "RAG",
+    detail: "the client's knowledge",
+    ask: "query",
+    answer: "context",
+    /** The client's systems feeding the knowledge base. */
+    ingest: "ingest",
+    steps: [
+      { label: "Documents", icon: "document" },
+      { label: "Chunking", icon: "chunks" },
+      { label: "Embeddings", icon: "scatter" },
+      { label: "Vector store", icon: "database" },
+      { label: "Retriever", icon: "search" },
+      { label: "Context", icon: "clipboardCheck" },
+    ],
+  },
+  notes: {
+    orchestrator: ["Sin esto son", "agentes sueltos,", "cada uno con", "su abono."],
+    /* "Una vez" is per document, not forever: the index follows the sources. */
+    rag: ["Se indexa una vez", "—y se mantiene al día—", "y lo usan todos los agentes."],
+  },
+  governance: [
+    /* Prompt injection and input filtering: first on the OWASP LLM list and
+       the first thing module 05 of the cursada covers. */
+    { label: "Guardrails", icon: "shield" },
+    /* "Permisos acotados al mínimo necesario": each agent and each tool with
+       only the access its task needs, under the agent's own identity. */
+    { label: "Least privilege", icon: "key" },
+    { label: "Traceability", icon: "eye" },
+    { label: "Evaluation", icon: "check" },
+    { label: "Cost per task", icon: "coin" },
+  ],
+} as const;
+
+/**
  * Everything on `/academianovit` that is not the programme itself.
  *
  * The programme lives in `academyProgram`; this is the page's own
