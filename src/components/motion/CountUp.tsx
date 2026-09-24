@@ -2,6 +2,7 @@
 
 import { useMemo, useRef } from "react";
 import { gsap, scroller, useGSAP } from "@/lib/gsap";
+import { onPageReveal } from "@/lib/page-reveal";
 import { cn } from "@/lib/cn";
 
 type CountUpProps = {
@@ -30,35 +31,42 @@ export function CountUp({ value, className }: CountUpProps) {
 
       const media = gsap.matchMedia();
 
-      media.add("(prefers-reduced-motion: no-preference)", () => {
+      media.add("(prefers-reduced-motion: no-preference)", (context) => {
         const state = { current: 0 };
 
-        gsap.to(state, {
-          current: countable.number,
-          duration: 1.5,
-          ease: "power2.out",
-          snap: { current: 1 },
-          scrollTrigger: {
-            trigger: element,
-            scroller: scroller(),
-            start: "top 88%",
-            // Counts back down on the way up, like everything else on the
-            // page — but see onReverseComplete: it never rests on zero.
-            toggleActions: "play none none reverse",
-          },
-          onUpdate: () => {
-            element.textContent = `${countable.prefix}${state.current}${countable.suffix}`;
-          },
-          onComplete: () => {
-            element.textContent = value;
-          },
-          onReverseComplete: () => {
-            element.textContent = value;
-          },
+        // A figure already in view would count behind the page curtain, so the
+        // trigger is only created once the page is open.
+        const release = onPageReveal(() => {
+          context.add(() => {
+            gsap.to(state, {
+              current: countable.number,
+              duration: 1.5,
+              ease: "power2.out",
+              snap: { current: 1 },
+              scrollTrigger: {
+                trigger: element,
+                scroller: scroller(),
+                start: "top 88%",
+                // Counts back down on the way up, like everything else on the
+                // page — but see onReverseComplete: it never rests on zero.
+                toggleActions: "play none none reverse",
+              },
+              onUpdate: () => {
+                element.textContent = `${countable.prefix}${state.current}${countable.suffix}`;
+              },
+              onComplete: () => {
+                element.textContent = value;
+              },
+              onReverseComplete: () => {
+                element.textContent = value;
+              },
+            });
+          });
         });
 
         // If the tween is torn down part-way, leave the real figure behind.
         return () => {
+          release();
           element.textContent = value;
         };
       });

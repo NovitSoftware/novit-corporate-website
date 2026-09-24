@@ -32,7 +32,7 @@
       animation: customer-map-pulse 3.6s var(--ease-out-quart) var(--pulse-delay, 0s) infinite;
     }
 
-    html[data-motion="on"]:has(.intro-overlay) .customer-map_pulse {
+    html[data-curtain] .customer-map_pulse {
       animation-play-state: paused;
     }
   }
