@@ -7,34 +7,27 @@ type IconBadgeProps = {
 };
 
 /**
- * An icon on a tinted plate — the mark at the top of a card.
+ * An icon on a plate — the mark at the top of a card.
  *
  * It gives each card something to be recognised by before a word of it is read.
  * A grid of cards opening on text labels alone reads as an undifferentiated
  * wall: nothing tells one from another at a glance, so the reader has to start
  * reading to find out which is which.
  *
- * ## A thinner pane on the pane
+ * ## The badge's material, not the card's
  *
- * The plate is the same material as the card — a white film at 7% behind a 12%
- * edge — so it reads as a chip of the same glass sitting on it rather than as a
- * colour field. A solid accent plate would be invisible on glass.
- *
- * The glyph takes `--card-ink`, the title's ink rather than the label's: the
- * mark and the heading it stands beside are one object, so they move together
- * and neither is named at this call site.
+ * The plate used to be the card's own glass again — a white film at 7% on a
+ * 25% white card — and a mark that is the same pane twice is a mark nobody
+ * sees. It is `.icon-plate` now, the dark plate and celeste edge `Badge` is
+ * made of (`styles/badge.css`), so the pill and the plate read as one family
+ * and the celeste glyph has a ground it holds on.
  *
  * One treatment and no `tone` prop. There is nothing here for a caller to
  * choose.
  */
 export function IconBadge({ name, className }: IconBadgeProps) {
   return (
-    <span
-      className={cn(
-        "card-ink grid size-10 shrink-0 place-items-center rounded-card border border-blanco/12 bg-blanco/[0.07]",
-        className,
-      )}
-    >
+    <span className={cn("icon-plate", className)}>
       <Icon name={name} size="badge" />
     </span>
   );

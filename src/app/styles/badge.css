@@ -1,0 +1,71 @@
+/* Badges — the pill that tags a fact, and the plate that carries a card's mark. */
+
+@layer components {
+  /*
+   * One material for both, and no variants of it.
+   *
+   * The pills were celeste type on the gradient, in two treatments — an
+   * outline and a 15% celeste fill — and neither held: celeste on the ground's
+   * middle stop is about 3:1 and on its light end 1.6:1, so the badges faded
+   * into whatever part of the gradient they happened to sit on. The icon
+   * plate had the opposite problem: a 7% white film on a 25% white card is
+   * the same glass twice.
+   *
+   * A dark plate is the one thing that stands off every stop of both ramps
+   * and off the card's glass too, so the badge is ink at 42% with a celeste
+   * edge, and what is written on it is white. Celeste is left to the glyph
+   * and the edge, which is what the accent is for on a dark ground. The inset
+   * line is the pane's lit edge, the same one the card draws; nothing casts.
+   */
+  .badge,
+  .icon-plate {
+    background-color: rgb(var(--rgb-ink) / 0.42);
+    /* The edge is what outlines the plate on the gradient's deep end, where
+       the dark fill alone is dark on dark. */
+    border: 1px solid rgb(var(--rgb-celeste) / 0.75);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1);
+  }
+
+  /* --- The pill ------------------------------------------------------------
+   * Always with its glyph (`Badge` requires one): an icon is what makes the
+   * pill read as a tag at a glance instead of as a scrap of small caps. The
+   * type is the eyebrow's, 11px rather than the old 10px, and the start
+   * padding is a step shorter because the glyph's own box carries air.
+   */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    max-width: 100%;
+    border-radius: var(--chip-radius);
+    padding: 0.5rem 0.95rem 0.5rem 0.75rem;
+    color: var(--on-link);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .badge_icon {
+    color: var(--celeste);
+  }
+
+  /* --- The plate -----------------------------------------------------------
+   * The card's mark. Same material as the pill so the two read as one family;
+   * the glyph is celeste on it, since the dark plate is what lets the accent
+   * hold on the glass (on the bare card it is 1.9:1).
+   */
+  .icon-plate {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--card-radius);
+    color: var(--celeste);
+  }
+}
