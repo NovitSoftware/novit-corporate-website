@@ -4,6 +4,7 @@ import { withBasePath } from "@/lib/base-path";
 import { motion } from "motion/react";
 import { SceneAtmosphere } from "@/components/layout/SceneAtmosphere";
 import { Container } from "@/components/ui/Container";
+import { IconBadge } from "@/components/ui/IconBadge";
 import {
   MailIcon,
   SOCIAL_ICONS,
@@ -135,7 +136,15 @@ function MenuRow({
            own rhythm and the baseline the clause sits on. */
         className="menu-row group grid gap-y-2 py-5 focus-visible:outline-offset-4 sm:py-6 lg:items-baseline"
       >
-        <span className="menu-row_name display-xl">{item.label}</span>
+        {/* The route's mark, on the badge plate, beside its name: the same
+            glyph the footers list the page with. Centred on the name's first
+            line, so a name that wraps on a phone keeps it at the top. */}
+        <span className="menu-row_name display-xl flex items-start gap-4 sm:gap-5">
+          <span className="flex h-[1lh] shrink-0 items-center">
+            <IconBadge name={item.icon} />
+          </span>
+          <span>{item.label}</span>
+        </span>
         {/* Flush right, so the clauses stand on the same margin as the close
             button above and the channels below, and the row is used end to
             end. Balanced wrapping is for the narrow end of `lg`, where a

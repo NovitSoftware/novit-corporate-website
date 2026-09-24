@@ -3,21 +3,23 @@
    themselves live beside the page each one indexes.
    ========================================================================== */
 
-import { navigation } from "@/content/navigation";
+import type { IconName } from "@/components/ui/Icon";
+import { homeLink, navigation } from "@/content/navigation";
 
 /**
  * What the footer needs, whichever route is rendering it.
  *
  * A `link` with no `href` is a fact rather than a destination — the edition's
  * dates, say. The footer renders those as text instead of inventing an anchor
- * for them.
+ * for them. `icon` is optional per link, but every link in one column should
+ * agree.
  */
 export type FooterContent = {
   /** Optional: a route whose footer is a short index reads better without it. */
   mission?: string;
   columns: ReadonlyArray<{
     title: string;
-    links: ReadonlyArray<{ label: string; href?: string }>;
+    links: ReadonlyArray<{ label: string; href?: string; icon?: IconName }>;
   }>;
   legal: ReadonlyArray<{ label: string; href: string }>;
   social: ReadonlyArray<{
@@ -52,9 +54,9 @@ export type FooterContent = {
 export function exploreColumn(current: string) {
   return {
     title: "Explorá",
-    links: [{ label: "Inicio", href: "/" }, ...navigation]
+    links: [homeLink, ...navigation]
       .filter((item) => item.href !== current)
-      .map((item) => ({ label: item.label, href: item.href })),
+      .map(({ label, href, icon }) => ({ label, href, icon })),
   };
 }
 
