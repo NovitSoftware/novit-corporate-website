@@ -1,5 +1,6 @@
 import { PageOpener } from "@/components/layout/PageOpener";
 import { servicesPageContent } from "@/content/inteligencia-artificial";
+import { AgentSnake } from "../_components/AgentSnake";
 
 /**
  * The opener: the claim, and the door.
@@ -18,10 +19,20 @@ import { servicesPageContent } from "@/content/inteligencia-artificial";
  *
  * So this band does the one thing an opener does: says what Novit is, and
  * offers the way in. The shape itself is `PageOpener`, shared with the other
- * two routes that open this way.
+ * two routes that open this way. Beside the claim, where the home page has
+ * its map and the Academia its board, an agent plays on its own with its
+ * audit next to it — see `AgentSnake`.
  */
 export function ServicesOpener() {
   const { eyebrow, title, lead, cta } = servicesPageContent;
 
-  return <PageOpener eyebrow={eyebrow} title={title} lead={lead} cta={cta} />;
+  return (
+    <PageOpener
+      eyebrow={eyebrow}
+      title={title}
+      lead={lead}
+      cta={cta}
+      figure={<AgentSnake />}
+    />
+  );
 }
