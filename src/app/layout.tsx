@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Lato } from "next/font/google";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { PageTransitions } from "@/components/providers/PageTransitions";
 import { SceneAtmosphere } from "@/components/layout/SceneAtmosphere";
+import { CurtainGround, CurtainMark } from "@/components/layout/PageCurtain";
 import { metadataContent, site } from "@/content/site";
 import "./globals.css";
 
@@ -48,26 +50,29 @@ export const viewport: Viewport = {
 };
 
 /**
- * One flag, stamped before the first paint.
+ * Two flags, stamped before the first paint.
  *
  * `data-motion="on"` says scripts are running and motion is welcome. The
  * resting states of every reveal in `globals.css` hang off it, so a visitor
  * without JavaScript, a crawler, or anyone who asked for reduced motion gets
  * the finished page instead of a hidden one.
  *
+ * `data-curtain="intro"` closes the page behind the curtain for the opening
+ * (see `PageTransitions` and curtain.css), under the same condition.
+ *
  * It has to be inline and it has to be here, before the body parses: set from
  * an effect it would paint the finished page and then hide it.
  */
-const PRE_PAINT_SCRIPT = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.dataset.motion="on"}}catch(e){}`;
+const PRE_PAINT_SCRIPT = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement.dataset;d.motion="on";d.curtain="intro"}}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     /*
      * `suppressHydrationWarning` is here for PRE_PAINT_SCRIPT below, and
      * only for that. The script runs before React hydrates and stamps
-     * `data-motion="on"` onto this element, which React rendered on the
-     * server without it — so hydration finds an attribute on the DOM that is
-     * not in its tree and logs a mismatch.
+     * `data-motion` and `data-curtain` onto this element, which React
+     * rendered on the server without them — so hydration finds attributes on
+     * the DOM that are not in its tree and logs a mismatch.
      * React named it exactly:
      *
      *     <html lang="es" className="...">
@@ -93,16 +98,27 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#contenido" className="skip-link">
           Saltar al contenido
         </a>
-        {/*
-          The atmosphere. Order here is the only thing stacking these: they are
-          all `position: fixed` with no z-index, so they paint in tree order,
-          above `body`'s gradient and below the scroll shell's content. Moving
-          one after <SmoothScroll> hides it behind the page; giving one a
-          z-index forces explicit stacking on all of them, and a negative one
-          drops it behind the canvas background entirely. See globals.css.
-        */}
-        <SceneAtmosphere />
-        <SmoothScroll>{children}</SmoothScroll>
+        {/* The curtain's ground under the page and its mark over it, so the
+            page opens out of one while the logo leaves above it. */}
+        <CurtainGround />
+        <div data-page-stage className="page-stage scene-ground">
+          <div data-page-lens className="page-lens">
+            {/*
+              The atmosphere. Order here is the only thing stacking these: they
+              are all `position: fixed` with no z-index, so they paint in tree
+              order, above the stage's gradient and below the scroll shell's
+              content. Moving one after <SmoothScroll> hides it behind the
+              page; giving one a z-index forces explicit stacking on all of
+              them. See scene.css.
+            */}
+            <SceneAtmosphere />
+            <SmoothScroll>
+              <PageTransitions />
+              {children}
+            </SmoothScroll>
+          </div>
+        </div>
+        <CurtainMark />
       </body>
     </html>
   );

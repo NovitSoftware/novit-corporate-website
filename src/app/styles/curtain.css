@@ -1,0 +1,241 @@
+@layer components {
+
+  /* --- The page stage ------------------------------------------------------
+   * Everything the site paints sits in these two boxes, so the curtain can
+   * clip and zoom the page as one piece. The stage carries the scene ground
+   * that used to be `body`'s, because the curtain ground sits between the two
+   * and would otherwise show through the page wherever it is transparent.
+   *
+   * Both are the viewport exactly, so a `position: fixed` layer inside keeps
+   * its place while the lens carries a transform.
+   */
+  .page-stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .page-lens {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 50%;
+  }
+
+  /* While the page is closed or opening it is not there to be used. */
+  html[data-curtain="opening"] .page-stage,
+  html[data-curtain="nav"] .page-stage {
+    pointer-events: none;
+  }
+
+  /* Own layers for the length of the curtain, so the zoom and the fades are
+     composited rather than repainting the whole page on every frame. */
+  html[data-curtain] .page-stage {
+    will-change: opacity;
+  }
+
+  html[data-curtain] .page-lens,
+  html[data-curtain] [data-curtain-stack] {
+    will-change: transform, opacity;
+  }
+
+  /* --- The curtain ---------------------------------------------------------
+   * The ground under the stage and the mark over it. Only in the tree while
+   * `data-curtain` is set, which only a script sets, so with no JavaScript or
+   * with reduced motion neither ever shows.
+   */
+  .page-curtain {
+    display: none;
+  }
+
+  html[data-curtain] .page-curtain {
+    display: block;
+    position: fixed;
+    inset: 0;
+  }
+
+  html[data-curtain] .page-curtain-mark {
+    pointer-events: none;
+  }
+
+  /* --- The ground ----------------------------------------------------------
+   * The brandbook's two gradients, exactly as novit-design-system.md sets
+   * them: 100deg, their own stops, a flat fallback under each. Cabecera is
+   * "where the piece enters", so the curtain opens on it; PageTransitions
+   * fades cierre — the ramp for Novit speaking — up over it as the logo takes
+   * the stage, so the blue page opens out of violet. The two are never side
+   * by side, only one after the other.
+   *
+   * Movement is transform and opacity only: the ramps are oversized and
+   * drift along their own axis, so the gradient flows without being
+   * re-rastered on any frame. The slow loops run from first paint, before any
+   * script, so the ground is alive while the page is still loading; on top of
+   * them PageTransitions plays a beat as the badge lands and another just
+   * before the page opens.
+   */
+  .curtain-ground {
+    overflow: hidden;
+    background-color: #1b4bb9;
+  }
+
+  /* Carries the step each beat takes; the loop below is on the ramps inside,
+     so the two movements add up instead of fighting over one transform. */
+  .curtain-ramps {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+  }
+
+  .curtain-ramp {
+    position: absolute;
+    inset: 0 -14%;
+    will-change: transform;
+  }
+
+  .curtain-ramp-cabecera {
+    background-color: #1b4bb9;
+    background-image: linear-gradient(100deg,
+        #0d0b92 0%, #1b4bb9 34%, #4f8ed5 74%, #3398dc 100%);
+    animation: curtain-flow 9s cubic-bezier(0.37, 0, 0.63, 1) -2s infinite alternate;
+  }
+
+  .curtain-ramp-cierre {
+    background-color: #510371;
+    background-image: linear-gradient(100deg,
+        #0f0086 0%, #2c037b 28%, #510371 62%, #85067b 100%);
+    opacity: 0;
+    animation: curtain-flow 11s cubic-bezier(0.37, 0, 0.63, 1) -7s infinite alternate-reverse;
+  }
+
+  /* Celeste, the brand's most constant colour, as the light in the room. */
+  .curtain-bloom {
+    position: absolute;
+    left: -18%;
+    top: -24%;
+    width: 78%;
+    height: 92%;
+    background-image: radial-gradient(ellipse farthest-side at 50% 50%,
+        rgb(var(--rgb-celeste) / 0.34) 0%,
+        rgb(var(--rgb-celeste) / 0.12) 45%,
+        transparent 80%);
+    will-change: transform;
+    animation: curtain-bloom-drift 13s cubic-bezier(0.37, 0, 0.63, 1) -3s infinite alternate;
+  }
+
+  /* Behind the badge, brought up by the timeline as it opens. Centred by
+     margin rather than a transform, which the timeline uses for the swell. */
+  .curtain-glow {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(1100px, 150vw);
+    height: min(560px, 70vh);
+    background-image: radial-gradient(closest-side,
+        rgb(var(--rgb-celeste) / 0.3) 0%,
+        rgb(var(--rgb-celeste) / 0.1) 55%,
+        transparent 100%);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  /* The badge's edge again, sized to it by PageTransitions and sent outwards
+     on a beat. */
+  .curtain-ripple {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 0;
+    height: 0;
+    box-sizing: border-box;
+    border: 1.5px solid rgb(var(--rgb-celeste) / 0.9);
+    border-radius: 24px;
+    box-shadow:
+      0 0 32px rgb(var(--rgb-celeste) / 0.35),
+      inset 0 0 24px rgb(var(--rgb-celeste) / 0.2);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  @keyframes curtain-flow {
+    from {
+      transform: translate3d(-6%, 0, 0);
+    }
+
+    to {
+      transform: translate3d(6%, 0, 0);
+    }
+  }
+
+  @keyframes curtain-bloom-drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(34%, 22%, 0);
+    }
+  }
+
+  /* --- The mark ------------------------------------------------------------ */
+
+  /* Clipped to the page's frame by PageTransitions, so the logo is uncovered
+     by the badge opening round it. */
+  .page-curtain-window {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* The isotipo's own element: a bar, drawn from the centre. */
+  .curtain-rule {
+    height: 1px;
+    background: linear-gradient(90deg,
+        rgb(var(--rgb-celeste) / 0) 0%,
+        rgb(var(--rgb-celeste) / 0.9) 50%,
+        rgb(var(--rgb-celeste) / 0) 100%);
+    transform: scaleX(0);
+  }
+
+  /* Sits exactly on the stage's clip; its box is written by PageTransitions. */
+  .page-curtain-outline {
+    position: absolute;
+    box-sizing: border-box;
+    border: 2.5px solid var(--blanco);
+    border-radius: 24px;
+    opacity: 0;
+  }
+
+  /*
+   * First paint: the page and the logo closed, before any script has run.
+   * `intro` is set by the pre-paint script and handed over to the timeline as
+   * soon as it exists.
+   *
+   * If it never is — the bundle failed, hydration threw — the page opens on
+   * its own after a few seconds rather than staying behind the curtain.
+   */
+  html[data-curtain="intro"] .page-stage {
+    clip-path: inset(50% 50% 50% 50% round 24px);
+    animation: curtain-failsafe-open 0.9s var(--ease-in-out-quint) 6s forwards;
+  }
+
+  html[data-curtain="intro"] .page-curtain-window {
+    clip-path: inset(50% 50% 50% 50%);
+  }
+
+  html[data-curtain="intro"] .page-curtain-mark {
+    animation: curtain-failsafe-hide 0.4s ease-out 6s forwards;
+  }
+
+  @keyframes curtain-failsafe-open {
+    to {
+      clip-path: inset(0% 0% 0% 0% round 0px);
+    }
+  }
+
+  @keyframes curtain-failsafe-hide {
+    to {
+      opacity: 0;
+    }
+  }
+}
