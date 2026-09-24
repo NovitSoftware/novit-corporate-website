@@ -4,6 +4,7 @@ import { CaseLogo } from "@/components/cards/CaseLogo";
 import { Container } from "@/components/ui/Container";
 import { Flag } from "@/components/ui/Flag";
 import { IconLine } from "@/components/ui/Icon";
+import { IconBadge } from "@/components/ui/IconBadge";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/section/Section";
 import { SectionIntro } from "@/components/section/SectionIntro";
@@ -59,9 +60,14 @@ export function CasesWork() {
                 </div>
 
                 <div data-anim-block className="mt-20 lg:mt-24">
+                  {/* A conversation is what the invitation offers, so that is
+                      its mark. */}
+                  <div data-anim="rise">
+                    <IconBadge name="chat" />
+                  </div>
                   <h3
                     data-anim="rise"
-                    className="display-m max-w-[24ch] text-blanco"
+                    className="display-m mt-6 max-w-[24ch] text-blanco"
                   >
                     {closing.title}
                   </h3>

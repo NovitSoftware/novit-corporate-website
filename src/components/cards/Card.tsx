@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { IconName } from "@/components/ui/Icon";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { IconBadge } from "@/components/ui/IconBadge";
 import { cn } from "@/lib/cn";
 import { variantClass } from "@/lib/variants";
@@ -49,6 +49,8 @@ type CardProps = {
    */
   footer?: {
     label?: string;
+    /** A mark in front of `label`, in the voice's ink. */
+    icon?: IconName;
     text: string;
     ruleWidth?: string;
     minLines?: 2;
@@ -194,7 +196,8 @@ export function Card({
               }
             >
               {footer.label ? (
-                <span className="eyebrow card-ink-voice block">
+                <span className="eyebrow card-ink-voice flex items-center gap-2">
+                  {footer.icon ? <Icon name={footer.icon} size="micro" /> : null}
                   {footer.label}
                 </span>
               ) : null}

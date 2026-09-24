@@ -29,7 +29,11 @@ export function CaseCard({ study, className }: CaseCardProps) {
       icon={study.icon}
       label={study.area}
       title={study.title}
-      footer={{ label: casesContent.resultLabel, text: study.result }}
+      footer={{
+        label: casesContent.resultLabel,
+        icon: "metric",
+        text: study.result,
+      }}
       className={className}
     >
       <CardText>{study.description}</CardText>

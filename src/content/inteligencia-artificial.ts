@@ -51,10 +51,10 @@ export const servicesPageContent = {
     lead: "Un RAG corporativo centralizado, una identidad única y una capa de integración común: cada agente nuevo se apoya en lo ya construido y cuesta menos que el anterior.",
     agentsLabel: "Agentes de la empresa",
     agents: [
-      "Agentes de proceso",
-      "Asistentes de consulta",
-      "Agentes por área",
-      "Low-code del negocio",
+      { label: "Agentes de proceso", icon: "agent" },
+      { label: "Asistentes de consulta", icon: "chat" },
+      { label: "Agentes por área", icon: "team" },
+      { label: "Low-code del negocio", icon: "blocks" },
     ],
     sharedLabel: "Todos consumen los mismos servicios",
     shared: [
