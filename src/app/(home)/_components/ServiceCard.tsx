@@ -1,7 +1,7 @@
 import type { Service } from "@/content/home";
 import { Card, CardText } from "@/components/cards/Card";
 import { CardList } from "@/components/cards/CardList";
-import { IconLine } from "@/components/ui/Icon";
+import { Icon, IconLine, type IconName } from "@/components/ui/Icon";
 
 type ServiceCardProps = {
   service: Service;
@@ -43,7 +43,10 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
 function ServiceLayers({
   layers,
 }: {
-  layers: { top: string; base: readonly string[] };
+  layers: {
+    top: string;
+    base: readonly { label: string; icon: IconName }[];
+  };
 }) {
   return (
     <div className="mt-6">
@@ -51,21 +54,18 @@ function ServiceLayers({
         <IconLine name="agent" size="micro" />
         {layers.top}
       </span>
-      {/* The separator trails its item rather than leading the next one: on a
-          wrap a trailing middot reads as "continues below", a leading one as a
-          stray mark in the margin. */}
-      <ul className="card-divide mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-3">
-        {layers.base.map((item, index) => (
+      {/* Each capability leads with its mark, which is also what separates it
+          from the one before: the middots that did that went with the icons.
+          Two by two, because with the marks the four no longer fit one line
+          of the card, and a wrapped row left one of them alone under three. */}
+      <ul className="card-divide mt-3 grid grid-cols-[repeat(2,max-content)] gap-x-6 gap-y-2.5 pt-3">
+        {layers.base.map((item) => (
           <li
-            key={item}
-            className="eyebrow card-ink-body flex items-center gap-4"
+            key={item.label}
+            className="eyebrow card-ink-body flex items-center gap-2"
           >
-            {item}
-            {index < layers.base.length - 1 ? (
-              <span aria-hidden="true" className="opacity-40">
-                ·
-              </span>
-            ) : null}
+            <Icon name={item.icon} size="micro" />
+            {item.label}
           </li>
         ))}
       </ul>

@@ -99,7 +99,12 @@ export const services = [
       "Sistemas agénticos integrados a tu operación real sin exponer datos sensibles, con permisos estrictos y trazabilidad de lo que hace cada agente. Construidos sobre una infraestructura pensada para escalar y mantenerla en el tiempo.",
     layers: {
       top: "Agentes en producción",
-      base: ["Estrategia", "Infraestructura", "Gobierno", "Seguridad"],
+      base: [
+        { label: "Estrategia", icon: "strategy" },
+        { label: "Infraestructura", icon: "layers" },
+        { label: "Gobierno", icon: "eye" },
+        { label: "Seguridad", icon: "shield" },
+      ],
     },
   },
   {
@@ -160,10 +165,11 @@ export const closingContent = {
   description:
     "Una primera conversación alcanza para ver si hay un caso por dónde empezar.",
   fields: {
-    name: { label: "Nombre", placeholder: "Cómo te llamás" },
-    email: { label: "Email", placeholder: "nombre@empresa.com" },
+    name: { label: "Nombre", placeholder: "Cómo te llamás", icon: "user" },
+    email: { label: "Email", placeholder: "nombre@empresa.com", icon: "mail" },
     message: {
       label: "Mensaje",
+      icon: "chat",
       placeholder: "Qué proceso querés resolver, y con qué se sostiene hoy.",
     },
   },
