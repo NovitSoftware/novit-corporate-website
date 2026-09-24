@@ -140,6 +140,25 @@ const ICONS = {
       <path d="M13.5 7h7" />
     </>
   ),
+  /** Points scattered on a plane. Embeddings: text placed as coordinates. */
+  scatter: (
+    <>
+      <path d="M3.5 20.5h17" />
+      <path d="M3.5 20.5v-17" />
+      <circle cx="8.5" cy="14.5" r="1.4" />
+      <circle cx="12.5" cy="9.5" r="1.4" />
+      <circle cx="16.5" cy="13" r="1.4" />
+      <circle cx="17.5" cy="6.5" r="1.4" />
+    </>
+  ),
+  /** A page cut into pieces. Chunking: documents split before embedding. */
+  chunks: (
+    <>
+      <rect x="4.5" y="3" width="15" height="5" rx="1.2" />
+      <rect x="4.5" y="9.5" width="15" height="5" rx="1.2" />
+      <rect x="4.5" y="16" width="10" height="5" rx="1.2" />
+    </>
+  ),
   /** A rosette. A track record: since 2015. */
   award: (
     <>
@@ -276,6 +295,15 @@ const ICONS = {
 } as const satisfies Record<string, ReactNode>;
 
 export type IconName = keyof typeof ICONS;
+
+/**
+ * The bare strokes of an icon, for drawing it inside another SVG — the
+ * Academia's board places them in its own coordinates. Colour and weight are
+ * the caller's; the glyph is on the same 24-unit grid as `Icon`.
+ */
+export function iconGlyph(name: IconName): ReactNode {
+  return ICONS[name];
+}
 
 /**
  * Four sizes, each paired with the text size it labels — and each carrying the
