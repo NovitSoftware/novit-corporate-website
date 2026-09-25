@@ -337,6 +337,37 @@ export const casesPageContent = {
   },
 } as const;
 
+/** One point per country, on its capital. */
+const COUNTRY_POINTS: Record<string, { lat: number; lon: number }> = {
+  Argentina: { lat: -34.6, lon: -58.38 },
+  Brasil: { lat: -15.79, lon: -47.88 },
+  Chile: { lat: -33.45, lon: -70.67 },
+  Colombia: { lat: 4.71, lon: -74.07 },
+  España: { lat: 40.42, lon: -3.7 },
+  "Estados Unidos": { lat: 38.9, lon: -77.04 },
+};
+
+/** Where Novit works from: the map draws this country in and sends every
+ *  route from its point. */
+export const customerHome = "Argentina";
+
+/**
+ * The opener map's points: every country the recorrido names, so a client
+ * added there shows up on the map. A country without a point fails the build
+ * rather than going missing from it.
+ */
+export const customerCountries = [
+  ...new Set(
+    casesPageContent.work.groups.flatMap((group) =>
+      group.items.flatMap((item) => item.country.split(" y ")),
+    ),
+  ),
+].map((name) => {
+  const point = COUNTRY_POINTS[name];
+  if (!point) throw new Error(`No map point for "${name}"`);
+  return { name, ...point };
+});
+
 /** The footer on `/casos-de-exito`: this page's two bands, and the channels. */
 export const casesFooterContent: FooterContent = {
   mission: footerMission,

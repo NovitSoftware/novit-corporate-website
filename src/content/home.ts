@@ -1,4 +1,3 @@
-import { casesPageContent } from "@/content/casos-de-exito";
 import { exploreColumn, footerMission } from "@/content/footer";
 import { siteContact } from "@/content/site";
 
@@ -44,33 +43,6 @@ export const heroContent = {
     href: "/academianovit",
   },
 } as const;
-
-/** One point per country, on its capital. */
-const COUNTRY_POINTS: Record<string, { lat: number; lon: number }> = {
-  Argentina: { lat: -34.6, lon: -58.38 },
-  Brasil: { lat: -15.79, lon: -47.88 },
-  Chile: { lat: -33.45, lon: -70.67 },
-  Colombia: { lat: 4.71, lon: -74.07 },
-  España: { lat: 40.42, lon: -3.7 },
-  "Estados Unidos": { lat: 38.9, lon: -77.04 },
-};
-
-/**
- * The hero map's dots: every country the recorrido on `/casos-de-exito`
- * names, so a client added there shows up here. A country without a point
- * fails the build rather than going missing from the map.
- */
-export const customerCountries = [
-  ...new Set(
-    casesPageContent.work.groups.flatMap((group) =>
-      group.items.flatMap((item) => item.country.split(" y ")),
-    ),
-  ),
-].map((name) => {
-  const point = COUNTRY_POINTS[name];
-  if (!point) throw new Error(`No map point for "${name}"`);
-  return { name, ...point };
-});
 
 /**
  * §3 · Qué hacemos. The reference names the band and then goes straight to

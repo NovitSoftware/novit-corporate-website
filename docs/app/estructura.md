@@ -13,10 +13,10 @@ src/
       _sections/    Hero · Stats · Services · Contact
       _components/  IntroOverlay · HeroScene · ServiceCard · FormField
       _lib/         intro.ts · form.ts · useUnsentForm.ts
-    inteligencia-artificial/  page.tsx · _sections/
+    inteligencia-artificial/  page.tsx · _sections/ · _components/ · _lib/
     desarrollo-y-consultoria/ page.tsx · _sections/
-    academianovit/            page.tsx · _sections/
-    casos-de-exito/           page.tsx · _sections/
+    academianovit/            page.tsx · _sections/ · _components/ · _lib/
+    casos-de-exito/           page.tsx · _sections/ · _components/ · _lib/
   components/
     layout/     SiteShell · SiteHeader · MenuPanel · SiteFooter · PageOpener
     section/    Section · SectionIntro · SectionLabel · PinnedIntro ·
@@ -45,8 +45,9 @@ sin props: era un archivo y un salto de más por ruta.
 **El guión bajo no es estilo, es la regla de Next.** Una carpeta que empieza
 con `_` queda fuera del ruteo, ella y todo lo que cuelga. Por eso `_sections/`
 y `_components/` conviven con `page.tsx` sin generar URLs. Adentro va lo que
-renderiza una sola ruta; el home es el único con `_components/` y `_lib/`
-porque es el único con piezas propias que no son bandas.
+renderiza una sola ruta; `_components/` y `_lib/` aparecen en las rutas que
+tienen piezas propias que no son bandas — la figura animada de cada una y su
+movimiento.
 
 **Cada carpeta de `components/` contesta una pregunta distinta**, que es lo
 que `shared/` no hacía:
