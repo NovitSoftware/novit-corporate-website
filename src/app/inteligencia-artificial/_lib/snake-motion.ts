@@ -26,13 +26,14 @@ import { COLS, MOVES, ROWS, SnakeAgent, type Point, type SnakeEvent } from "./sn
 
 /** Milliseconds per move at 1×; the speed control divides it. */
 const STEP_MS = 160;
-/** How fast a thought streams at 1×, in characters a second: a model's pace,
- *  and still one a reader can follow. */
-const THOUGHT_CPS = 110;
+/** How fast a thought streams at 1×, in characters a second: a fast model's
+ *  pace, so a thought is out in well under a second and keeps up with the
+ *  game — at a reader's pace it fell behind every capture. */
+const THOUGHT_CPS = 300;
 /** "Pensando" alone, before the first word; and how long a finished thought
  *  stays before the next one replaces it. Both at 1×. */
-const THOUGHT_LEAD_MS = 240;
-const THOUGHT_REST_MS = 900;
+const THOUGHT_LEAD_MS = 100;
+const THOUGHT_REST_MS = 450;
 /** Steps a swallowed target takes to go from white back to the body's celeste. */
 const DIGESTION = 9;
 /** How long the last position holds before the next game fades in, and the fade. */
