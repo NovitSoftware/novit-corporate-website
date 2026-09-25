@@ -2,9 +2,8 @@
 
 import { useRef, type ReactNode } from "react";
 import { iconGlyph, type IconName } from "@/components/ui/Icon";
-import { Slate } from "@/components/ui/Slate";
 import { academyBoard } from "@/content/academianovit";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, motionConditions, useGSAP } from "@/lib/gsap";
 import { cn } from "@/lib/cn";
 import { mountBoard } from "../_lib/board-motion";
 
@@ -14,7 +13,7 @@ import { mountBoard } from "../_lib/board-motion";
 const WIDTH = 640;
 /** The written title above the diagram. */
 const HEADER = 72;
-/** The slate's own margin round the drawing. */
+/** Air round the drawing, for the captions and rings at its edges. */
 const MARGIN = 26;
 /** An icon plate: the badge material, drawn. */
 const PLATE = 30;
@@ -111,24 +110,27 @@ const GOV_PITCH = 128;
 const HEIGHT = RULE_Y + 40;
 
 /**
- * The Academia's whiteboard, as the site draws things.
+ * The agent architecture, drawn straight onto the page.
  *
- * It was a picture of a whiteboard — a grey stand on castors, marker strokes,
- * a handwriting face — and next to glass cards set in Lato it read as a
- * picture from somewhere else. Now it is a board made of the page's own
- * materials — the card's glass for the frame, the gradient's darkest end for
- * the slate, the icon set and Lato for the drawing, violet only on Novit's two
- * notes — and it still behaves like a board: it is drawn in front of you,
- * part by part, in the order it would be drawn in class.
+ * It was a whiteboard — first a picture of one, then a dark slate in a glass
+ * frame on a stand — and either way it was an object standing in front of
+ * the page. Now there is no surface under it: the lines, the plates and the
+ * words are set on the scene gradient itself, in the customer map's material
+ * — hairlines, translucent white, celeste for what moves — so the diagram is
+ * part of the band rather than a panel placed on it. It is still drawn in
+ * front of you, part by part, in the order it would be drawn in class.
  *
- * Then it keeps working, the way the customer map keeps pulsing: a request
+ * Then it keeps working, the way the customer map keeps sending: a request
  * comes down from each channel in turn, through the orchestrator to an agent,
  * into the RAG and back, and out to a system. Point at any part and the
- * board shows that part's route instead. The motion is `board-motion.ts`;
+ * diagram shows that part's route instead. The motion is `board-motion.ts`;
  * this is the drawing, with every part named for it.
  *
- * Reduced motion gets the finished drawing, and hovering still lights a
- * route; nothing travels. Without JavaScript it is the finished drawing.
+ * Under `md` it is the band's ground instead of a figure — `OpenerFigure`
+ * sets it behind the copy, and board.css leaves only the lines, with a
+ * request still travelling them. Reduced motion gets the finished drawing,
+ * and hovering still lights a route; nothing travels. Without JavaScript it
+ * is the finished drawing.
  */
 export function AcademyBoard({ className }: { className?: string }) {
   const ref = useRef<HTMLElement>(null);
@@ -142,19 +144,10 @@ export function AcademyBoard({ className }: { className?: string }) {
       }
 
       const media = gsap.matchMedia();
-      // Only where the board is shown (`md`).
-      media.add(
-        {
-          wide: "(min-width: 48rem)",
-          motion: "(prefers-reduced-motion: no-preference)",
-        },
-        (context) => {
-          const { wide, motion } = context.conditions ?? {};
-          if (!wide) {
-            return;
-          }
-          return mountBoard(root, Boolean(motion), context);
-        },
+      // At every width: on a phone it is the ground behind the copy, and a
+      // request still crosses it there.
+      media.add(motionConditions, (context) =>
+        mountBoard(root, Boolean(context.conditions?.motion), context),
       );
 
       return () => media.revert();
@@ -164,429 +157,379 @@ export function AcademyBoard({ className }: { className?: string }) {
 
   return (
     <figure ref={ref} data-anim="card" className={cn("academy-board", className)}>
-      {/* The board: a glass frame round a dark slate, and the ledge the
-          markers sit on. The frame is the card's own material, so the board
-          belongs to the page; the slate is what makes it a board. */}
-      <Slate ruled>
-        <svg
-          viewBox={`${-MARGIN} ${-MARGIN} ${WIDTH + 2 * MARGIN} ${HEADER + HEIGHT + 2 * MARGIN}`}
-          role="img"
-          aria-label={`${board.title}. ${board.description}`}
-          className="academy-board_art block h-auto w-full"
-        >
-          <defs>
-            {/* Uncovers the title left to right, the way it is written. */}
-            <clipPath id="board-writing">
-              <rect className="board-writing" x={-4} y={-4} width={700} height={HEADER} />
-            </clipPath>
-            {/* Novit's voice: cierre, from its violet end up to voz-suave. */}
-            <linearGradient id="board-voice-bar" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0" stopColor="#85067b" />
-              <stop offset="1" stopColor="#f1ebfb" />
-            </linearGradient>
-          </defs>
+      <svg
+        viewBox={`${-MARGIN} ${-MARGIN} ${WIDTH + 2 * MARGIN} ${HEADER + HEIGHT + 2 * MARGIN}`}
+        role="img"
+        aria-label={`${board.title}. ${board.description}`}
+        className="academy-board_art block h-auto w-full"
+      >
+        <defs>
+          {/* Uncovers the title left to right, the way it is written. */}
+          <clipPath id="board-writing">
+            <rect className="board-writing" x={-4} y={-4} width={700} height={HEADER} />
+          </clipPath>
+          {/* Novit's voice: cierre, from its violet end up to voz-suave. */}
+          <linearGradient id="board-voice-bar" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stopColor="#85067b" />
+            <stop offset="1" stopColor="#f1ebfb" />
+          </linearGradient>
+        </defs>
 
-          {/* 0 · The title, written first, and underlined. */}
-          <g data-board-step="title">
-            <g clipPath="url(#board-writing)">
-              <text className="board-title" x={0} y={20}>
-                {board.title}
-              </text>
-              <text className="board-subtitle" x={0} y={48}>
-                {board.subtitle}
-              </text>
-            </g>
-            <path className="board-draw board-underline" d="M-2 31 C60 34 150 29 236 32" />
+        {/* 0 · The title, written first, and underlined. */}
+        <g data-board-step="title">
+          <g clipPath="url(#board-writing)">
+            <text className="board-title" x={0} y={20}>
+              {board.title}
+            </text>
+            <text className="board-subtitle" x={0} y={48}>
+              {board.subtitle}
+            </text>
+          </g>
+          <path className="board-draw board-underline" d="M-2 31 C60 34 150 29 236 32" />
+        </g>
+
+        <g transform={`translate(0 ${HEADER})`}>
+          {/* 1 · Where the work comes in. */}
+          <g data-board-step="channels">
+            <Heading x={RAIL_X} y={CH_TOP + HALF + 3.5}>
+              {board.channels.label}
+            </Heading>
+            {board.channels.items.map((item, index) => (
+              <Node
+                key={item.label}
+                part={`ch-${index}`}
+                x={chX(index) - HALF}
+                y={CH_TOP}
+                icon={item.icon}
+                caption="above"
+                reach={96}
+              >
+                {item.label}
+              </Node>
+            ))}
           </g>
 
-          <g transform={`translate(0 ${HEADER})`}>
-            {/* 1 · Where the work comes in. */}
-            <g data-board-step="channels">
-              <Heading x={RAIL_X} y={CH_TOP + HALF + 3.5}>
-                {board.channels.label}
-              </Heading>
-              {board.channels.items.map((item, index) => (
-                <Node
-                  key={item.label}
-                  part={`ch-${index}`}
-                  x={chX(index) - HALF}
-                  y={CH_TOP}
-                  icon={item.icon}
-                  caption="above"
-                  reach={96}
-                >
-                  {item.label}
-                </Node>
-              ))}
-            </g>
-
-            {/* Each channel ticks down to one bus, and the bus comes down to
-                the orchestrator; the answers go back up the same way. */}
-            <g data-board-step="in">
-              {board.channels.items.map((item, index) => (
-                <g key={item.label} data-part={`in-${index}`}>
-                  <path
-                    data-route={`in-${index}`}
-                    className="board-draw board-link"
-                    d={`M${chX(index)} ${CH_TOP + PLATE + 3} V${CH_BUS} H${CX} V${HEX.top - 3}`}
-                  />
-                  {/* Two-way: the answer goes back out the channel the
-                      request came in by. */}
-                  <Arrowhead x={chX(index)} y={CH_TOP + PLATE + 1} up />
-                  <Arrowhead x={CX} y={HEX.top - 1} down />
-                </g>
-              ))}
-            </g>
-
-            {/* 2 · Who decides. */}
-            <g data-board-step="orchestrator">
-              <Heading x={RAIL_X} y={HEX_MID + 3.5}>
-                {board.orchestrator.label}
-              </Heading>
-              <g data-part="hex" data-node="hex">
+          {/* Each channel ticks down to one bus, and the bus comes down to
+              the orchestrator; the answers go back up the same way. */}
+          <g data-board-step="in">
+            {board.channels.items.map((item, index) => (
+              <g key={item.label} data-part={`in-${index}`}>
                 <path
-                  className="board-draw board-fill board-hex"
-                  d={`M${HEX.left} ${HEX_MID} L${HEX.left + HEX.inset} ${HEX.top} H${HEX.right - HEX.inset} L${HEX.right} ${HEX_MID} L${HEX.right - HEX.inset} ${HEX.bottom} H${HEX.left + HEX.inset} Z`}
-                />
-                <Glyph name="spark" x={CX - 66} y={HEX_MID - 16} size={14} />
-                <text className="board-text board-hex-title" x={CX + 9} y={HEX_MID - 4} textAnchor="middle">
-                  {board.orchestrator.title}
-                </text>
-                <text className="board-text board-detail" x={CX} y={HEX_MID + 14} textAnchor="middle">
-                  {board.orchestrator.detail.join(" ")}
-                </text>
-              </g>
-            </g>
-
-            {/* It hands the work down to the agents, and takes the results
-                back up. */}
-            <g data-board-step="out">
-              {board.agents.items.map((item, index) => (
-                <g key={item.label} data-part={`out-${index}`}>
-                  <path
-                    data-route={`out-${index}`}
-                    className="board-draw board-link board-link-accent"
-                    d={`M${CX} ${HEX.bottom + 3} V${AG_BUS} H${agX(index)} V${AG_TOP - 3}`}
-                  />
-                  <Arrowhead x={agX(index)} y={AG_TOP - 1} accent down />
-                  {/* Two-way: each agent's result comes back to be merged. */}
-                  <Arrowhead x={CX} y={HEX.bottom + 1} accent up />
-                </g>
-              ))}
-            </g>
-
-            {/* 3 · Who does it: three agents, one team, one model. */}
-            <g data-board-step="agents">
-              <Heading x={RAIL_X} y={AG_TOP + HALF + 3.5}>
-                {board.agents.label}
-              </Heading>
-              <rect
-                data-part="agents"
-                className="board-draw board-group"
-                x={AGENTS_BOX.x}
-                y={AGENTS_BOX.y}
-                width={AGENTS_BOX.right - AGENTS_BOX.x}
-                height={AGENTS_BOTTOM - AGENTS_BOX.y}
-                rx={12}
-              />
-              {board.agents.items.map((item, index) => (
-                <Node
-                  key={item.label}
-                  part={`ag-${index}`}
-                  x={agX(index) - HALF}
-                  y={AG_TOP}
-                  icon={item.icon}
-                  caption="below"
-                  reach={100}
-                >
-                  {item.label}
-                </Node>
-              ))}
-              <g data-part="llm" data-node="llm">
-                <rect
-                  className="board-draw board-fill board-plate"
-                  x={LLM.x + 0.5}
-                  y={LLM.top + 0.5}
-                  width={LLM.right - LLM.x - 1}
-                  height={LLM.bottom - LLM.top - 1}
-                  rx={8}
-                />
-                <Glyph name="spark" x={CX - 46} y={LLM_Y - 8} size={GLYPH} />
-                <text className="board-text board-label" x={CX - 22} y={LLM_Y + 4}>
-                  {board.agents.model.label}
-                  <tspan className="board-detail" dx={6}>
-                    {board.agents.model.detail}
-                  </tspan>
-                </text>
-              </g>
-            </g>
-
-            {/* 4 · What they touch, both ways, down one bus. */}
-            <g data-board-step="systems">
-              <Heading x={RAIL_X} y={BAND + 10}>
-                {board.systems.label}
-              </Heading>
-              {/* The model acting on the systems and hearing back — its own
-                  part, so indexing, which runs along the bus without it,
-                  does not light it. */}
-              <g data-part="act">
-                <path
-                  className="board-draw board-link board-link-accent"
-                  d={`M${BUS_X} ${LLM.bottom + 3} V${sysY(0)}`}
-                />
-                <Arrowhead x={BUS_X} y={LLM.bottom + 1} accent up />
-                {/* What the link is: tool calls, executed by the agent. */}
-                <text className="board-text board-flow-label" x={BUS_X + 8} y={FLOW_LABEL_Y}>
-                  {board.systems.via}
-                </text>
-              </g>
-              <path
-                data-part="bus"
-                className="board-draw board-link"
-                d={`M${BUS_X} ${sysY(0)} V${sysY(board.systems.items.length - 1)}`}
-              />
-              {board.systems.items.map((item, index) => (
-                <g key={item.label}>
-                  <g data-part={`tick-${index}`}>
-                    <path className="board-draw board-link" d={`M${BUS_X} ${sysY(index)} H${SYS_EDGE + 2}`} />
-                    <Arrowhead x={SYS_EDGE} y={sysY(index)} flip />
-                  </g>
-                  {/* The way an action reaches this system: out of the model,
-                      down the bus, in at its row — and the way this system's
-                      data reaches the RAG. Never drawn. */}
-                  <path
-                    data-route={`sys-${index}`}
-                    className="board-route"
-                    d={`M${BUS_X} ${LLM.bottom + 3} V${sysY(index)} H${SYS_EDGE + 1}`}
-                  />
-                  <path
-                    data-route={`ingest-${index}`}
-                    className="board-route"
-                    d={`M${SYS_EDGE + 1} ${sysY(index)} H${BUS_X} V${LOWER_Y} H${col(0) - HALF - 4}`}
-                  />
-                  <Node
-                    part={`sys-${index}`}
-                    x={SYS_X}
-                    y={sysTop(index)}
-                    icon={item.icon}
-                    caption="left"
-                    reach={SYS_X + PLATE + 10}
-                  >
-                    {item.label}
-                  </Node>
-                </g>
-              ))}
-            </g>
-
-            {/* 5 · What they know: asked for, handed back — straight down
-                from the model and straight back up. */}
-            <g data-board-step="rag-links">
-              <g data-part="ask">
-                <path
-                  data-route="ask"
-                  className="board-draw board-link board-link-accent"
-                  d={`M${ASK_X} ${LLM.bottom + 3} V${UPPER_TOP - 3}`}
-                />
-                <Arrowhead x={ASK_X} y={UPPER_TOP - 1} accent down />
-                <text
-                  className="board-text board-flow-label"
-                  x={ASK_X - 8}
-                  y={FLOW_LABEL_Y}
-                  textAnchor="end"
-                >
-                  {board.rag.ask}
-                </text>
-              </g>
-              <g data-part="answer">
-                <path
-                  data-route="answer"
-                  className="board-draw board-link board-link-accent"
-                  d={`M${ANSWER_X} ${UPPER_TOP - 2} V${LLM.bottom + 3}`}
-                />
-                <Arrowhead x={ANSWER_X} y={LLM.bottom + 1} accent up />
-                <text
-                  className="board-text board-flow-label"
-                  x={ANSWER_X - 8}
-                  y={FLOW_LABEL_Y}
-                  textAnchor="end"
-                >
-                  {board.rag.answer}
-                </text>
-              </g>
-            </g>
-
-            <g data-board-step="rag">
-              <g data-part="rag" data-node="rag">
-                <rect
-                  className="board-draw board-fill board-tray"
-                  x={TRAY.x}
-                  y={TRAY.y}
-                  width={WIDTH - TRAY.x - 0.5}
-                  height={TRAY_BOTTOM - TRAY.y}
-                  rx={14}
-                />
-                <text className="board-text board-tray-title" x={TRAY.x + 16} y={TRAY.y + 24}>
-                  {board.rag.label}
-                  <tspan className="board-detail" dx={6}>
-                    · {board.rag.detail}
-                  </tspan>
-                </text>
-              </g>
-              {/* The joins: the indexing along the foot, then the lookup up
-                  into the retriever and on to the context. */}
-              {[1, 2, 3].map((index) => (
-                <g key={index} data-part={`pipe-${index}`}>
-                  <path
-                    data-route={`pipe-${index}`}
-                    className="board-draw board-link"
-                    d={`M${col(index - 1) + HALF + 8} ${LOWER_Y} H${col(index) - HALF - 10}`}
-                  />
-                  <Arrowhead x={col(index) - HALF - 7} y={LOWER_Y} />
-                </g>
-              ))}
-              {/* The lookup goes both ways. */}
-              <g data-part="pipe-4">
-                <path
-                  data-route="pipe-4"
-                  className="board-draw board-link board-link-accent"
-                  d={`M${ASK_X} ${LOWER_TOP - 4} V${UPPER_TOP + PLATE + 4}`}
-                />
-                <Arrowhead x={ASK_X} y={UPPER_TOP + PLATE + 2} accent up />
-                <Arrowhead x={ASK_X} y={LOWER_TOP - 2} accent down />
-              </g>
-              <g data-part="pipe-5">
-                <path
-                  data-route="pipe-5"
-                  className="board-draw board-link board-link-accent"
-                  d={`M${ASK_X + HALF + 8} ${UPPER_Y} H${ANSWER_X - HALF - 10}`}
-                />
-                <Arrowhead x={ANSWER_X - HALF - 7} y={UPPER_Y} accent />
-              </g>
-              {board.rag.steps.map((step, index) => {
-                const at = STEPS[index];
-                return (
-                  <Node
-                    key={step.label}
-                    part={`rag-${index}`}
-                    x={at.x - HALF}
-                    y={at.top}
-                    icon={step.icon}
-                    caption={at.caption}
-                    reach={at.caption === "left" ? 104 : 80}
-                    text="board-caption"
-                  >
-                    {step.label}
-                  </Node>
-                );
-              })}
-            </g>
-
-            {/* The client's systems feeding the knowledge base: off the bus,
-                into Documents. */}
-            <g data-board-step="ingest">
-              <g data-part="ingest">
-                <path
+                  data-route={`in-${index}`}
                   className="board-draw board-link"
-                  d={`M${BUS_X} ${sysY(board.systems.items.length - 1)} V${LOWER_Y} H${col(0) - HALF - 5}`}
+                  d={`M${chX(index)} ${CH_TOP + PLATE + 3} V${CH_BUS} H${CX} V${HEX.top - 3}`}
                 />
-                <Arrowhead x={col(0) - HALF - 3} y={LOWER_Y} />
-                <text
-                  className="board-text board-flow-label board-flow-label-quiet"
-                  x={BUS_X + 8}
-                  y={LOWER_Y - 7}
-                >
-                  {board.rag.ingest}
-                </text>
+                {/* Two-way: the answer goes back out the channel the
+                    request came in by. */}
+                <Arrowhead x={chX(index)} y={CH_TOP + PLATE + 1} up />
+                <Arrowhead x={CX} y={HEX.top - 1} down />
               </g>
-            </g>
-
-            {/* Novit's two remarks, written on the board in its own voice. */}
-            <g data-board-step="notes">
-              <Note
-                part="note-hex"
-                x={HEX.right + 14}
-                y={HEX_MID + 11 - (board.notes.orchestrator.length * 15) / 2}
-                lines={board.notes.orchestrator}
-              />
-              {/* About the whole box — indexed once, read by every agent — so
-                  it stands in the box's free corner and points at no one step. */}
-              <Note part="note-rag" x={TRAY.x + 16} y={TRAY.y + 50} lines={board.notes.rag} />
-            </g>
-
-            {/* 6 · The rules round all of it. */}
-            <g data-board-step="governance">
-              <path className="board-draw board-rule" d={`M0 ${RULE_Y} H${WIDTH}`} />
-              {board.governance.map((item, index) => {
-                const x = index * GOV_PITCH;
-                return (
-                  <g key={item.label} data-part={`gov-${index}`} data-node={`gov-${index}`}>
-                    <rect className="board-hit" x={x - 6} y={RULE_Y + 8} width={GOV_PITCH - 6} height={30} />
-                    <Glyph name={item.icon} x={x} y={RULE_Y + 16} size={GLYPH} />
-                    <text className="board-text board-label" x={x + 24} y={RULE_Y + 28}>
-                      {item.label}
-                    </text>
-                  </g>
-                );
-              })}
-            </g>
-
-            {/* What travels: a request, several at once where work fans
-                out, and the ring each leaves where it arrives. */}
-            {[0, 1, 2, 3].map((index) => (
-              <circle key={`ring-${index}`} className="board-ring" r={4} cx={0} cy={0} />
-            ))}
-            {[0, 1, 2, 3].map((index) => (
-              <circle key={`pulse-${index}`} className="board-pulse" r={4} cx={0} cy={0} />
             ))}
           </g>
-        </svg>
-      </Slate>
-      <Ledge />
-    </figure>
-  );
-}
 
-/**
- * The tray along the foot of the board, and what is on it: a marker in each
- * of the board's three inks — white for the parts, celeste for the path a
- * request takes, violet for Novit's notes — and the eraser.
- */
-function Ledge() {
-  return (
-    <div aria-hidden="true" className="academy-board_ledge">
-      <svg viewBox="0 0 800 96" className="block h-auto w-full">
-        {/* The stand: two legs splayed out to castors, one crossbar. */}
-        <g className="board-stand">
-          <path d="M150 20 L112 84" />
-          <path d="M650 20 L688 84" />
-          <path d="M128 58 H672" />
-          <path d="M84 86 H140" />
-          <path d="M660 86 H716" />
-        </g>
-        <g className="board-castor">
-          <circle cx={92} cy={91} r={4.5} />
-          <circle cx={132} cy={91} r={4.5} />
-          <circle cx={668} cy={91} r={4.5} />
-          <circle cx={708} cy={91} r={4.5} />
-        </g>
-        <rect className="board-ledge_shelf" x={24} y={12} width={752} height={10} rx={5} />
-        <Marker x={90} ink="board-ink-white" />
-        <Marker x={180} ink="board-ink-celeste" />
-        <Marker x={270} ink="board-ink-violet" />
-        <g className="board-eraser">
-          <rect x={620} y={1} width={80} height={12} rx={3} className="board-eraser_body" />
-          <rect x={620} y={10} width={80} height={3.5} rx={1.5} className="board-eraser_felt" />
+          {/* 2 · Who decides. */}
+          <g data-board-step="orchestrator">
+            <Heading x={RAIL_X} y={HEX_MID + 3.5}>
+              {board.orchestrator.label}
+            </Heading>
+            <g data-part="hex" data-node="hex">
+              <path
+                className="board-draw board-fill board-hex"
+                d={`M${HEX.left} ${HEX_MID} L${HEX.left + HEX.inset} ${HEX.top} H${HEX.right - HEX.inset} L${HEX.right} ${HEX_MID} L${HEX.right - HEX.inset} ${HEX.bottom} H${HEX.left + HEX.inset} Z`}
+              />
+              <Glyph name="spark" x={CX - 66} y={HEX_MID - 16} size={14} />
+              <text className="board-text board-hex-title" x={CX + 9} y={HEX_MID - 4} textAnchor="middle">
+                {board.orchestrator.title}
+              </text>
+              <text className="board-text board-detail" x={CX} y={HEX_MID + 14} textAnchor="middle">
+                {board.orchestrator.detail.join(" ")}
+              </text>
+            </g>
+          </g>
+
+          {/* It hands the work down to the agents, and takes the results
+              back up. */}
+          <g data-board-step="out">
+            {board.agents.items.map((item, index) => (
+              <g key={item.label} data-part={`out-${index}`}>
+                <path
+                  data-route={`out-${index}`}
+                  className="board-draw board-link board-link-accent"
+                  d={`M${CX} ${HEX.bottom + 3} V${AG_BUS} H${agX(index)} V${AG_TOP - 3}`}
+                />
+                <Arrowhead x={agX(index)} y={AG_TOP - 1} accent down />
+                {/* Two-way: each agent's result comes back to be merged. */}
+                <Arrowhead x={CX} y={HEX.bottom + 1} accent up />
+              </g>
+            ))}
+          </g>
+
+          {/* 3 · Who does it: three agents, one team, one model. */}
+          <g data-board-step="agents">
+            <Heading x={RAIL_X} y={AG_TOP + HALF + 3.5}>
+              {board.agents.label}
+            </Heading>
+            <rect
+              data-part="agents"
+              className="board-draw board-group"
+              x={AGENTS_BOX.x}
+              y={AGENTS_BOX.y}
+              width={AGENTS_BOX.right - AGENTS_BOX.x}
+              height={AGENTS_BOTTOM - AGENTS_BOX.y}
+              rx={12}
+            />
+            {board.agents.items.map((item, index) => (
+              <Node
+                key={item.label}
+                part={`ag-${index}`}
+                x={agX(index) - HALF}
+                y={AG_TOP}
+                icon={item.icon}
+                caption="below"
+                reach={100}
+              >
+                {item.label}
+              </Node>
+            ))}
+            <g data-part="llm" data-node="llm">
+              <rect
+                className="board-draw board-fill board-plate"
+                x={LLM.x + 0.5}
+                y={LLM.top + 0.5}
+                width={LLM.right - LLM.x - 1}
+                height={LLM.bottom - LLM.top - 1}
+                rx={8}
+              />
+              <Glyph name="spark" x={CX - 46} y={LLM_Y - 8} size={GLYPH} />
+              <text className="board-text board-label" x={CX - 22} y={LLM_Y + 4}>
+                {board.agents.model.label}
+                <tspan className="board-detail" dx={6}>
+                  {board.agents.model.detail}
+                </tspan>
+              </text>
+            </g>
+          </g>
+
+          {/* 4 · What they touch, both ways, down one bus. */}
+          <g data-board-step="systems">
+            <Heading x={RAIL_X} y={BAND + 10}>
+              {board.systems.label}
+            </Heading>
+            {/* The model acting on the systems and hearing back — its own
+                part, so indexing, which runs along the bus without it,
+                does not light it. */}
+            <g data-part="act">
+              <path
+                className="board-draw board-link board-link-accent"
+                d={`M${BUS_X} ${LLM.bottom + 3} V${sysY(0)}`}
+              />
+              <Arrowhead x={BUS_X} y={LLM.bottom + 1} accent up />
+              {/* What the link is: tool calls, executed by the agent. */}
+              <text className="board-text board-flow-label" x={BUS_X + 8} y={FLOW_LABEL_Y}>
+                {board.systems.via}
+              </text>
+            </g>
+            <path
+              data-part="bus"
+              className="board-draw board-link"
+              d={`M${BUS_X} ${sysY(0)} V${sysY(board.systems.items.length - 1)}`}
+            />
+            {board.systems.items.map((item, index) => (
+              <g key={item.label}>
+                <g data-part={`tick-${index}`}>
+                  <path className="board-draw board-link" d={`M${BUS_X} ${sysY(index)} H${SYS_EDGE + 2}`} />
+                  <Arrowhead x={SYS_EDGE} y={sysY(index)} flip />
+                </g>
+                {/* The way an action reaches this system: out of the model,
+                    down the bus, in at its row — and the way this system's
+                    data reaches the RAG. Never drawn. */}
+                <path
+                  data-route={`sys-${index}`}
+                  className="board-route"
+                  d={`M${BUS_X} ${LLM.bottom + 3} V${sysY(index)} H${SYS_EDGE + 1}`}
+                />
+                <path
+                  data-route={`ingest-${index}`}
+                  className="board-route"
+                  d={`M${SYS_EDGE + 1} ${sysY(index)} H${BUS_X} V${LOWER_Y} H${col(0) - HALF - 4}`}
+                />
+                <Node
+                  part={`sys-${index}`}
+                  x={SYS_X}
+                  y={sysTop(index)}
+                  icon={item.icon}
+                  caption="left"
+                  reach={SYS_X + PLATE + 10}
+                >
+                  {item.label}
+                </Node>
+              </g>
+            ))}
+          </g>
+
+          {/* 5 · What they know: asked for, handed back — straight down
+              from the model and straight back up. */}
+          <g data-board-step="rag-links">
+            <g data-part="ask">
+              <path
+                data-route="ask"
+                className="board-draw board-link board-link-accent"
+                d={`M${ASK_X} ${LLM.bottom + 3} V${UPPER_TOP - 3}`}
+              />
+              <Arrowhead x={ASK_X} y={UPPER_TOP - 1} accent down />
+              <text
+                className="board-text board-flow-label"
+                x={ASK_X - 8}
+                y={FLOW_LABEL_Y}
+                textAnchor="end"
+              >
+                {board.rag.ask}
+              </text>
+            </g>
+            <g data-part="answer">
+              <path
+                data-route="answer"
+                className="board-draw board-link board-link-accent"
+                d={`M${ANSWER_X} ${UPPER_TOP - 2} V${LLM.bottom + 3}`}
+              />
+              <Arrowhead x={ANSWER_X} y={LLM.bottom + 1} accent up />
+              <text
+                className="board-text board-flow-label"
+                x={ANSWER_X - 8}
+                y={FLOW_LABEL_Y}
+                textAnchor="end"
+              >
+                {board.rag.answer}
+              </text>
+            </g>
+          </g>
+
+          <g data-board-step="rag">
+            <g data-part="rag" data-node="rag">
+              <rect
+                className="board-draw board-fill board-tray"
+                x={TRAY.x}
+                y={TRAY.y}
+                width={WIDTH - TRAY.x - 0.5}
+                height={TRAY_BOTTOM - TRAY.y}
+                rx={14}
+              />
+              <text className="board-text board-tray-title" x={TRAY.x + 16} y={TRAY.y + 24}>
+                {board.rag.label}
+                <tspan className="board-detail" dx={6}>
+                  · {board.rag.detail}
+                </tspan>
+              </text>
+            </g>
+            {/* The joins: the indexing along the foot, then the lookup up
+                into the retriever and on to the context. */}
+            {[1, 2, 3].map((index) => (
+              <g key={index} data-part={`pipe-${index}`}>
+                <path
+                  data-route={`pipe-${index}`}
+                  className="board-draw board-link"
+                  d={`M${col(index - 1) + HALF + 8} ${LOWER_Y} H${col(index) - HALF - 10}`}
+                />
+                <Arrowhead x={col(index) - HALF - 7} y={LOWER_Y} />
+              </g>
+            ))}
+            {/* The lookup goes both ways. */}
+            <g data-part="pipe-4">
+              <path
+                data-route="pipe-4"
+                className="board-draw board-link board-link-accent"
+                d={`M${ASK_X} ${LOWER_TOP - 4} V${UPPER_TOP + PLATE + 4}`}
+              />
+              <Arrowhead x={ASK_X} y={UPPER_TOP + PLATE + 2} accent up />
+              <Arrowhead x={ASK_X} y={LOWER_TOP - 2} accent down />
+            </g>
+            <g data-part="pipe-5">
+              <path
+                data-route="pipe-5"
+                className="board-draw board-link board-link-accent"
+                d={`M${ASK_X + HALF + 8} ${UPPER_Y} H${ANSWER_X - HALF - 10}`}
+              />
+              <Arrowhead x={ANSWER_X - HALF - 7} y={UPPER_Y} accent />
+            </g>
+            {board.rag.steps.map((step, index) => {
+              const at = STEPS[index];
+              return (
+                <Node
+                  key={step.label}
+                  part={`rag-${index}`}
+                  x={at.x - HALF}
+                  y={at.top}
+                  icon={step.icon}
+                  caption={at.caption}
+                  reach={at.caption === "left" ? 104 : 80}
+                  text="board-caption"
+                >
+                  {step.label}
+                </Node>
+              );
+            })}
+          </g>
+
+          {/* The client's systems feeding the knowledge base: off the bus,
+              into Documents. */}
+          <g data-board-step="ingest">
+            <g data-part="ingest">
+              <path
+                className="board-draw board-link"
+                d={`M${BUS_X} ${sysY(board.systems.items.length - 1)} V${LOWER_Y} H${col(0) - HALF - 5}`}
+              />
+              <Arrowhead x={col(0) - HALF - 3} y={LOWER_Y} />
+              <text
+                className="board-text board-flow-label board-flow-label-quiet"
+                x={BUS_X + 8}
+                y={LOWER_Y - 7}
+              >
+                {board.rag.ingest}
+              </text>
+            </g>
+          </g>
+
+          {/* Novit's two remarks, written on the board in its own voice. */}
+          <g data-board-step="notes">
+            <Note
+              part="note-hex"
+              x={HEX.right + 14}
+              y={HEX_MID + 11 - (board.notes.orchestrator.length * 15) / 2}
+              lines={board.notes.orchestrator}
+            />
+            {/* About the whole box — indexed once, read by every agent — so
+                it stands in the box's free corner and points at no one step. */}
+            <Note part="note-rag" x={TRAY.x + 16} y={TRAY.y + 50} lines={board.notes.rag} />
+          </g>
+
+          {/* 6 · The rules round all of it. */}
+          <g data-board-step="governance">
+            <path className="board-draw board-rule" d={`M0 ${RULE_Y} H${WIDTH}`} />
+            {board.governance.map((item, index) => {
+              const x = index * GOV_PITCH;
+              return (
+                <g key={item.label} data-part={`gov-${index}`} data-node={`gov-${index}`}>
+                  <rect className="board-hit" x={x - 6} y={RULE_Y + 8} width={GOV_PITCH - 6} height={30} />
+                  <Glyph name={item.icon} x={x} y={RULE_Y + 16} size={GLYPH} />
+                  <text className="board-text board-label" x={x + 24} y={RULE_Y + 28}>
+                    {item.label}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+
+          {/* What travels: a request, several at once where work fans
+              out, and the ring each leaves where it arrives. */}
+          {[0, 1, 2, 3].map((index) => (
+            <circle key={`ring-${index}`} className="board-ring" r={4} cx={0} cy={0} />
+          ))}
+          {[0, 1, 2, 3].map((index) => (
+            <circle key={`pulse-${index}`} className="board-pulse" r={4} cx={0} cy={0} />
+          ))}
         </g>
       </svg>
-    </div>
-  );
-}
-function Marker({ x, ink }: { x: number; ink: string }) {
-  return (
-    <g className={cn("board-marker", ink)}>
-      <rect x={x} y={4} width={62} height={8} rx={4} className="board-marker_body" />
-      <rect x={x + 44} y={3.5} width={22} height={9} rx={4.5} className="board-marker_cap" />
-    </g>
+    </figure>
   );
 }
 

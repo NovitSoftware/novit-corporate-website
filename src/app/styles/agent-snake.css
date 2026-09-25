@@ -1,4 +1,4 @@
-/* The agent beside the `/inteligencia-artificial` opener — a snake that plays itself, on the slate, and its audit. */
+/* The agent beside the `/inteligencia-artificial` opener — a snake that plays itself, drawn on the page, and its audit. */
 
 @layer components {
   /*
@@ -13,16 +13,19 @@
     --snake-body: var(--celeste);
     --snake-head: var(--blanco);
     --snake-target: var(--blanco);
-    --snake-grid: rgb(255 255 255 / 0.07);
-    --snake-edge: rgb(255 255 255 / 0.24);
+    /* The field's points at full strength — the canvas takes them down to a
+       third and brings up only those round the head — and its hairline. */
+    --snake-grid: rgb(255 255 255 / 0.5);
+    --snake-edge: rgb(255 255 255 / 0.18);
     position: relative;
     /* Its width beside the copy at `xl`. Under the copy it would otherwise
        take the whole band and grow a board twice the size it reads at. */
     max-width: 46rem;
   }
 
+  /* No panel: the figure is set on the gradient like the copy beside it,
+     and a hairline under the header is all that says where it starts. */
   .agent-snake_inner {
-    padding: 1.25rem 1.375rem 1.375rem;
     color: var(--blanco);
   }
 
@@ -114,6 +117,8 @@
     grid-template-columns: minmax(0, 1fr) 14.5rem;
     gap: 1.25rem;
     margin-top: 1.125rem;
+    padding-top: 1.125rem;
+    border-top: 1px solid rgb(255 255 255 / 0.14);
   }
 
   /* The board's headings, at the site's micro-label. */
@@ -417,6 +422,37 @@
   @media (prefers-reduced-motion: reduce) {
     .agent-snake_bar {
       transition: none;
+    }
+  }
+
+  /* --- The ground ---------------------------------------------------------
+   * Under `md` it is not a figure but the ground behind the opener's copy
+   * (`OpenerFigure`), and `snake-motion.ts` draws only the line there — no
+   * field, no audit. Everything round the canvas goes, so nothing is laid
+   * out that is not seen. The breakpoint is the one `OpenerFigure` uses.
+   */
+  @media (max-width: 47.99rem) {
+    /* A small field at the top right, not the width of the band: a line
+       wandering behind the headline, gone before the lead. */
+    .agent-snake {
+      width: 62%;
+      max-width: none;
+      margin-right: 21%;
+      margin-left: auto;
+    }
+
+    .agent-snake_header,
+    .agent-snake_pane-heading,
+    .agent-snake_audit,
+    .agent-snake_note {
+      display: none;
+    }
+
+    .agent-snake_panes {
+      display: block;
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
     }
   }
 }

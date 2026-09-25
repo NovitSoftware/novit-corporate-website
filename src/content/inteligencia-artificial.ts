@@ -219,7 +219,7 @@ export const agentSnake = {
   },
   moves: ["LEFT", "RIGHT", "UP", "DOWN"],
   /**
-   * Its thinking: streamed before it moves, the way a model's reasoning
+   * Its thinking: streamed while it moves, the way a model's reasoning
    * arrives, and in the first person, because it is the agent working it out
    * for itself. Every figure in it is one the planner found — `snake-sim.ts`
    * — so it never says anything it did not work out.

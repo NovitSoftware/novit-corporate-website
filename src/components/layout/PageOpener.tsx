@@ -14,14 +14,15 @@ type PageOpenerProps = {
   cta: { label: string; href: string };
   /** Anything the page wants under the button. */
   children?: ReactNode;
-  /** Art beside the copy from `xl`, bled to the window edge like the home hero's map. */
+  /** Art beside the copy from `xl`, bled to the window edge; below that, the
+   *  ground the copy is set on. See `.opener-aside` in opener.css. */
   aside?: ReactNode;
   /**
    * A figure that is read, not glanced at, laid out as the Academia's board
    * is: the wider of the two columns from `xl`, with the headline stepped down
    * to fit its own and the copy held beside it as it scrolls; under the copy
-   * at full width from `md`; left out on a phone, where its labels would be
-   * too small to read.
+   * at full width from `md`; on a phone, the ground behind the copy — see
+   * `OpenerFigure`.
    */
   figure?: ReactNode;
 };
@@ -31,7 +32,7 @@ type PageOpenerProps = {
  * lead, and the one door.
  *
  * Not `HeroScene` and not `Section`. `HeroScene` is choreographed for the home
- * hero's own parts — badge, pillars, map — which no other opener has;
+ * hero's own parts — badge, pillars, currents — which no other opener has;
  * `Section` carries the standard vertical rhythm, where an opener has to clear
  * the fixed header instead.
  *
@@ -69,11 +70,12 @@ export function PageOpener({
               view while the taller figure scrolls past. */}
           <div
             data-anim-block
-            className={
+            className={cn(
+              "relative z-[1]",
               figure
                 ? "xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
-                : "max-w-[54rem]"
-            }
+                : "max-w-[54rem]",
+            )}
           >
             <SectionLabel name={eyebrow} />
             <h1
@@ -106,13 +108,23 @@ export function PageOpener({
             {children}
           </div>
           {aside && (
-            <div className="hidden xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))] xl:block">
+            <div className="opener-aside xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))]">
               <div data-anim="fade">{aside}</div>
             </div>
           )}
-          {figure && <div className="mt-14 hidden md:block xl:mt-0">{figure}</div>}
+          {figure && <OpenerFigure>{figure}</OpenerFigure>}
         </Container>
       </Scene>
     </section>
   );
+}
+
+/**
+ * Where an opener's figure stands: its own column from `xl`, under the copy
+ * from `md`, and on a phone the ground behind the copy rather than a figure
+ * too small to read — see opener.css. The copy beside it has to be lifted
+ * over it with `relative z-[1]`.
+ */
+export function OpenerFigure({ children }: { children: ReactNode }) {
+  return <div className="opener-figure">{children}</div>;
 }

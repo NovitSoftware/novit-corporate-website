@@ -6,6 +6,7 @@ import { SectionLabel } from "@/components/section/SectionLabel";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { StatRow } from "@/components/section/StatRow";
 import { academyPageContent, academyProgram } from "@/content/academianovit";
+import { OpenerFigure } from "@/components/layout/PageOpener";
 import { AcademyBoard } from "../_components/AcademyBoard";
 
 /**
@@ -37,8 +38,8 @@ export function AcademyOpener() {
     >
       <Scene className="relative">
         <Container>
-          {/* The copy and the board share the band, the way the home hero
-              shares it with the customer map — the headline included, so
+          {/* The copy and the board share the band, the way the other
+              openers share it with their art — the headline included, so
               the board stands beside the claim it illustrates rather than
               under it. The board is the wider of the two: its labels are set
               at reading size and it cannot go below about 640px without them
@@ -50,12 +51,13 @@ export function AcademyOpener() {
               past, rather than floating at its middle.
 
               Below `xl` the board follows the copy at full width, and on a
-              phone it is left out, as the map is: at that width it would be
-              a picture of labels too small to read. */}
+              phone it becomes the ground behind the copy, as every opener's
+              figure does: at that width it would be a picture of labels too
+              small to read. */}
           <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] xl:items-start xl:gap-12">
             <div
               data-anim-block
-              className="xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
+              className="relative z-[1] xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
             >
               <SectionLabel name={eyebrow} />
               <h1
@@ -90,11 +92,13 @@ export function AcademyOpener() {
               </div>
             </div>
 
-            <AcademyBoard className="mt-14 hidden md:flex xl:mt-0" />
+            <OpenerFigure>
+              <AcademyBoard />
+            </OpenerFigure>
           </div>
 
           {/* The load, across the band under both, in the row the button
-              closes — as the home hero's pillars run under its copy and map.
+              closes — as the home hero's pillars run under its copy.
               The figures live in `academyProgram.format.facts`, which is also
               what the hero's announcement strip reads: one source, no second
               copy of the numbers. */}
