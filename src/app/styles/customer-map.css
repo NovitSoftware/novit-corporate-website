@@ -1,7 +1,14 @@
-/* The hero's customer map — white outlines on the gradient, a celeste dot per country. */
+/* The customer map on `/casos-de-exito` — the world's outlines on the gradient, Argentina drawn in, a route from it to every client. */
 
 @layer components {
-  /* The crop runs through land on every side, so the edges fade instead of cutting. */
+  /*
+   * The map is the reference for every drawn thing on the site: hairlines,
+   * translucent white, celeste for home and for whatever is moving, nothing
+   * opaque. The crop runs through land on every side, so the edges fade
+   * instead of cutting.
+   *
+   * Sizes are in viewBox units; the map renders at about 0.7px to the unit.
+   */
   .customer-map {
     mask-image:
       linear-gradient(to right, transparent, var(--negro) 10%, var(--negro) 90%, transparent),
@@ -9,31 +16,101 @@
     mask-composite: intersect;
   }
 
+  .customer-map_art {
+    overflow: visible;
+    font-family: var(--font-lato), "Lato", sans-serif;
+  }
+
+  /* Every element ignores the pointer except the reach round each point, so
+     a route or a label never takes the hover off the point under it. */
+  .customer-map_art * {
+    pointer-events: none;
+  }
+
+  .customer-map_hit {
+    fill: transparent;
+    pointer-events: auto;
+    cursor: default;
+  }
+
   .customer-map_land {
-    opacity: 0.3;
+    opacity: 0.26;
+  }
+
+  /* Home: the one country with an ink of its own. */
+  .customer-map_home-land {
+    fill: rgb(var(--rgb-celeste) / 0.14);
+    stroke: rgb(var(--rgb-celeste) / 0.9);
+    stroke-width: 2.2;
+    stroke-linejoin: round;
+  }
+
+  .customer-map_route {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.3);
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    transition:
+      stroke var(--dur-base) var(--ease-in-out-quad),
+      opacity var(--dur-base) var(--ease-in-out-quad);
+  }
+
+  /* The run of light down a route — see `trail` in @/lib/signal. */
+  .customer-map_trail {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    opacity: 0;
+  }
+
+  .customer-map_signal {
+    fill: var(--blanco);
+    stroke: var(--celeste);
+    stroke-width: 2;
+    opacity: 0;
   }
 
   .customer-map_dot {
     fill: var(--celeste);
   }
 
+  .customer-map_home {
+    fill: var(--blanco);
+    stroke: var(--celeste);
+    stroke-width: 3;
+  }
+
   .customer-map_pulse {
     fill: none;
     stroke: var(--celeste);
-    stroke-width: 3;
+    stroke-width: 2;
     opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
   }
 
-  /* Transform and opacity only, so the rings composite without repainting the map. */
-  @media (prefers-reduced-motion: no-preference) {
-    .customer-map_pulse {
-      animation: customer-map-pulse 3.6s var(--ease-out-quart) var(--pulse-delay, 0s) infinite;
-    }
+  /* A country's name, shown while it is pointed at: the eyebrow's type. */
+  .customer-map_label {
+    fill: var(--blanco);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-in-out-quad);
+  }
 
-    html[data-curtain] .customer-map_pulse {
-      animation-play-state: paused;
-    }
+  /* --- Pointing -----------------------------------------------------------
+   * The pointed-at route comes up in celeste and the rest step back — the
+   * board's highlight, on the map's routes.
+   */
+  .customer-map_art[data-focus] .customer-map_route:not(.is-lit) {
+    opacity: 0.35;
+  }
+
+  .customer-map_route.is-lit {
+    stroke: rgb(var(--rgb-celeste) / 0.85);
+  }
+
+  .customer-map_place.is-lit .customer-map_label {
+    opacity: 1;
   }
 }

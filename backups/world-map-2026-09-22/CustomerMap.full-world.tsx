@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { customerCountries } from "@/content/home";
+import { customerCountries } from "@/content/casos-de-exito";
 import { cn } from "@/lib/cn";
 import { robinson } from "@/lib/robinson";
 
