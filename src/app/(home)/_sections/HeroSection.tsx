@@ -1,8 +1,8 @@
 import { withBasePath } from "@/lib/base-path";
 import { Badge } from "@/components/ui/Badge";
 import { ChipButton } from "@/components/ui/ChipButton";
-import { CustomerMap } from "@/components/ui/CustomerMap";
 import { Container } from "@/components/ui/Container";
+import { HeroCurrents } from "../_components/HeroCurrents";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";
 import { SplitWords } from "@/components/motion/SplitWords";
@@ -15,6 +15,10 @@ import { heroContent } from "@/content/home";
  * Its copy sits at the bottom of the band, which is what excludes it from
  * `SectionHandoff` — the exit window that suits every other band would dim the
  * headline while it is still the most prominent thing on the page.
+ *
+ * Under the copy, the band's ground moves: `HeroCurrents`. The customer map
+ * that used to stand beside the headline belongs to `/casos-de-exito`, the
+ * band that says who the clients are.
  */
 export function HeroSection() {
   return (
@@ -25,55 +29,43 @@ export function HeroSection() {
         data-tone="dark"
         className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco sm:pb-14"
       >
+        <HeroCurrents />
         <Container className="relative">
-          <div className="xl:grid xl:grid-cols-[minmax(0,52rem)_minmax(0,1fr)] xl:items-center xl:gap-8">
-            <div data-hero="copy" className="max-w-[52rem]">
-              <AcademyAnnouncement />
+          <div data-hero="copy" className="max-w-[52rem]">
+            <AcademyAnnouncement />
 
-              <Badge
-                icon="award"
-                data-anim="chip"
-                data-hero="badge"
-                className="mb-7"
-              >
-                {heroContent.eyebrow}
-              </Badge>
-              {/* `20ch` is the measure the headline is fitted to, and the same
-                  cap `AcademyOpener` uses. */}
-              <h1
-                data-anim="words"
-                data-hero="title"
-                className="display-hero max-w-[20ch]"
-              >
-                <SplitWords text={heroContent.title} />
-              </h1>
-              <p
-                data-anim="rise"
-                data-hero="lead"
-                className="mt-7 max-w-[46ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
-              >
-                {heroContent.statement}
-              </p>
-              <div
-                data-anim="rise"
-                data-hero="cta"
-                className="mt-9 flex flex-wrap items-center gap-3"
-              >
-                <ChipButton href={heroContent.primaryCta.href} variant="light">
-                  {heroContent.primaryCta.label}
-                </ChipButton>
-              </div>
-            </div>
-
-            {/* Two wrappers: the scroll fade must not start from the entrance's hidden resting state.
-                Below xl the copy leaves it no room; past the 1440px container it bleeds to the window edge. */}
-            <div
-              data-hero="map"
-              className="hidden xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))] xl:block"
+            <Badge
+              icon="award"
+              data-anim="chip"
+              data-hero="badge"
+              className="mb-7"
             >
-              <div data-anim="fade" data-hero="map-art">
-                <CustomerMap />
-              </div>
+              {heroContent.eyebrow}
+            </Badge>
+            {/* `20ch` is the measure the headline is fitted to, and the same
+                cap `AcademyOpener` uses. */}
+            <h1
+              data-anim="words"
+              data-hero="title"
+              className="display-hero max-w-[20ch]"
+            >
+              <SplitWords text={heroContent.title} />
+            </h1>
+            <p
+              data-anim="rise"
+              data-hero="lead"
+              className="mt-7 max-w-[46ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
+            >
+              {heroContent.statement}
+            </p>
+            <div
+              data-anim="rise"
+              data-hero="cta"
+              className="mt-9 flex flex-wrap items-center gap-3"
+            >
+              <ChipButton href={heroContent.primaryCta.href} variant="light">
+                {heroContent.primaryCta.label}
+              </ChipButton>
             </div>
           </div>
 
