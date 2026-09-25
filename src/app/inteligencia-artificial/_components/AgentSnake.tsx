@@ -2,9 +2,8 @@
 
 import { useId, useRef, type ReactNode } from "react";
 import { Icon } from "@/components/ui/Icon";
-import { Slate } from "@/components/ui/Slate";
 import { agentSnake } from "@/content/inteligencia-artificial";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, motionConditions, useGSAP } from "@/lib/gsap";
 import { cn } from "@/lib/cn";
 import { mountSnake } from "../_lib/snake-motion";
 
@@ -18,19 +17,20 @@ const LOG_ROWS = 8;
  *
  * The reference was a standalone demo — a snake played by a decision model,
  * with the model's four probabilities beside it, over a violet target. Here it
- * is drawn in the page's material: the Academia board's slate, celeste for
- * what the agent does, white for the board and the target, and violet only on
- * Novit's one remark. It thinks before it acts: at each new target or change
- * of plan it stops, its reasoning streams into the audit, and the route it is
- * weighing draws itself on the board — faintly, too, any route it turns
- * down. Beside the game the panel is what an audit of it would read: its
- * confidence in each move and which were vetoed, its thinking, and a log of
- * what changed — the traceability the page promises.
+ * is drawn in the page's material and straight onto the page, with no panel
+ * under it: celeste for what the agent does, white for the field and the
+ * target, violet only on Novit's one remark. It thinks while it moves: at
+ * each new target or change of plan its reasoning streams into the audit and
+ * the route it is weighing draws itself ahead of it — faintly, too, any route
+ * it turns down. Beside the game the audit is what an audit of it would
+ * read: its confidence in each move and which were vetoed, its thinking, and
+ * a log of what changed — the traceability the page promises.
  *
  * It plays in a loop and starts again when a game ends, at the pace the
- * speed control sets. The motion is
- * `snake-motion.ts`; the policy is `snake-sim.ts`. Reduced motion gets one
- * still position with its audit. Below `md` it is left out, as the board is.
+ * speed control sets. The motion is `snake-motion.ts`; the policy is
+ * `snake-sim.ts`. Reduced motion gets one still position with its audit.
+ * Under `md` it is the ground behind the opener's copy — `OpenerFigure` —
+ * and only the line plays, with no field and no audit.
  */
 export function AgentSnake({ className }: { className?: string }) {
   const ref = useRef<HTMLElement>(null);
@@ -44,18 +44,15 @@ export function AgentSnake({ className }: { className?: string }) {
       }
 
       const media = gsap.matchMedia();
-      // Only where it is shown (`md`).
       media.add(
         {
-          wide: "(min-width: 48rem)",
-          motion: "(prefers-reduced-motion: no-preference)",
+          ...motionConditions,
+          // The breakpoint `OpenerFigure` turns it into the ground at.
+          compact: "(max-width: 47.99rem)",
         },
         (context) => {
-          const { wide, motion } = context.conditions ?? {};
-          if (!wide) {
-            return;
-          }
-          return mountSnake(root, Boolean(motion));
+          const { motion, compact } = context.conditions ?? {};
+          return mountSnake(root, { motion: Boolean(motion), compact: Boolean(compact) });
         },
       );
 
@@ -66,103 +63,101 @@ export function AgentSnake({ className }: { className?: string }) {
 
   return (
     <figure ref={ref} data-anim="card" className={cn("agent-snake", className)}>
-      <Slate>
-        <div className="agent-snake_inner">
-          <header className="agent-snake_header">
-            <div>
-              <p className="agent-snake_title">{copy.title}</p>
-              <p className="agent-snake_subtitle">{copy.subtitle}</p>
-            </div>
-            <SpeedControl />
-          </header>
+      <div className="agent-snake_inner">
+        <header className="agent-snake_header">
+          <div>
+            <p className="agent-snake_title">{copy.title}</p>
+            <p className="agent-snake_subtitle">{copy.subtitle}</p>
+          </div>
+          <SpeedControl />
+        </header>
 
-          {/* The game and its audit change several times a second, so they
-              are one image to assistive technology, described once, rather
-              than a region that never stops talking. */}
-          <div role="img" aria-label={copy.description} className="agent-snake_panes">
-            <div>
-              <PaneHeading label={copy.board.label}>
-                {copy.board.game} <span data-snake-game>01</span>
-              </PaneHeading>
-              <div className="agent-snake_stage">
-                <canvas className="agent-snake_canvas" />
-              </div>
-            </div>
-
-            <div className="agent-snake_audit">
-              <PaneHeading label={copy.audit.label}>
-                {copy.audit.step} <span data-snake-step>000</span>
-              </PaneHeading>
-
-              <ul className="agent-snake_moves">
-                {copy.moves.map((move, index) => (
-                  <li key={move} data-snake-move={index} className="agent-snake_move">
-                    <span className="agent-snake_move-row">
-                      <span className="agent-snake_move-label">
-                        <Icon name="arrow" size="micro" className={TURN[index]} />
-                        {move}
-                      </span>
-                      <span data-snake-value className="agent-snake_value">
-                        0%
-                      </span>
-                    </span>
-                    <span className="agent-snake_track">
-                      <span data-snake-bar className="agent-snake_bar" />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Its thinking, the way a model's arrives: "Pensando" while it
-                  works it out, the words streaming in behind it, and once it
-                  has decided, what it weighed. */}
-              <div data-snake-thinking className="agent-snake_thinking">
-                <p className="agent-snake_thinking-head">
-                  <span className="agent-snake_heading">{copy.thinking.label}</span>
-                  <span className="agent-snake_status">
-                    <span data-snake-status />
-                    <span aria-hidden="true" className="agent-snake_dots">
-                      <span>.</span>
-                      <span>.</span>
-                      <span>.</span>
-                    </span>
-                  </span>
-                </p>
-                <p className="agent-snake_thought">
-                  <span data-snake-thought />
-                  <span aria-hidden="true" className="agent-snake_caret" />
-                </p>
-              </div>
-
-              <div className="agent-snake_log">
-                <p className="agent-snake_heading">{copy.audit.log}</p>
-                <ol data-snake-log>
-                  {Array.from({ length: LOG_ROWS }, (_, index) => (
-                    <li key={index} data-kind="">
-                      <span className="agent-snake_log-step" />
-                      <span className="agent-snake_log-label" />
-                      <span className="agent-snake_log-detail" />
-                    </li>
-                  ))}
-                </ol>
-              </div>
-
-              <dl className="agent-snake_totals">
-                <div>
-                  <dt>{copy.audit.captures}</dt>
-                  <dd data-snake-captures>00</dd>
-                </div>
-                <div>
-                  <dt>{copy.audit.avoided}</dt>
-                  <dd data-snake-avoided>00</dd>
-                </div>
-              </dl>
+        {/* The game and its audit change several times a second, so they
+            are one image to assistive technology, described once, rather
+            than a region that never stops talking. */}
+        <div role="img" aria-label={copy.description} className="agent-snake_panes">
+          <div>
+            <PaneHeading label={copy.board.label}>
+              {copy.board.game} <span data-snake-game>01</span>
+            </PaneHeading>
+            <div className="agent-snake_stage">
+              <canvas className="agent-snake_canvas" />
             </div>
           </div>
 
-          <p className="agent-snake_note">{copy.note}</p>
+          <div className="agent-snake_audit">
+            <PaneHeading label={copy.audit.label}>
+              {copy.audit.step} <span data-snake-step>000</span>
+            </PaneHeading>
+
+            <ul className="agent-snake_moves">
+              {copy.moves.map((move, index) => (
+                <li key={move} data-snake-move={index} className="agent-snake_move">
+                  <span className="agent-snake_move-row">
+                    <span className="agent-snake_move-label">
+                      <Icon name="arrow" size="micro" className={TURN[index]} />
+                      {move}
+                    </span>
+                    <span data-snake-value className="agent-snake_value">
+                      0%
+                    </span>
+                  </span>
+                  <span className="agent-snake_track">
+                    <span data-snake-bar className="agent-snake_bar" />
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Its thinking, the way a model's arrives: "Pensando" while it
+                works it out, the words streaming in behind it, and once it
+                has decided, what it weighed. */}
+            <div data-snake-thinking className="agent-snake_thinking">
+              <p className="agent-snake_thinking-head">
+                <span className="agent-snake_heading">{copy.thinking.label}</span>
+                <span className="agent-snake_status">
+                  <span data-snake-status />
+                  <span aria-hidden="true" className="agent-snake_dots">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                  </span>
+                </span>
+              </p>
+              <p className="agent-snake_thought">
+                <span data-snake-thought />
+                <span aria-hidden="true" className="agent-snake_caret" />
+              </p>
+            </div>
+
+            <div className="agent-snake_log">
+              <p className="agent-snake_heading">{copy.audit.log}</p>
+              <ol data-snake-log>
+                {Array.from({ length: LOG_ROWS }, (_, index) => (
+                  <li key={index} data-kind="">
+                    <span className="agent-snake_log-step" />
+                    <span className="agent-snake_log-label" />
+                    <span className="agent-snake_log-detail" />
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <dl className="agent-snake_totals">
+              <div>
+                <dt>{copy.audit.captures}</dt>
+                <dd data-snake-captures>00</dd>
+              </div>
+              <div>
+                <dt>{copy.audit.avoided}</dt>
+                <dd data-snake-avoided>00</dd>
+              </div>
+            </dl>
+          </div>
         </div>
-      </Slate>
+
+        <p className="agent-snake_note">{copy.note}</p>
+      </div>
     </figure>
   );
 }

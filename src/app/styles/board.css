@@ -1,4 +1,4 @@
-/* The Academia's board — the architecture diagram on a card, in the site's own strokes. */
+/* The agent architecture — drawn straight onto the scene gradient, in the customer map's hairlines. */
 
 @layer components {
   /*
@@ -7,73 +7,17 @@
    * structure, celeste the path a request takes, violet only Novit's notes —
    * the same three jobs the colours have everywhere else.
    *
-   * Sizes are in viewBox units; the opener renders the board at roughly one
+   * There is no surface under it. It used to be drawn on a dark slate, which
+   * let it carry every ink at full strength and made it a panel in front of
+   * the page; set on the gradient, the structure steps back to translucent
+   * white — plates are a film of it, the regions a hairline — and only what
+   * moves keeps its full strength.
+   *
+   * Sizes are in viewBox units; the opener renders the diagram at roughly one
    * unit to the pixel, so these read as the site's own 10–13px labels.
-   */
-  /* --- The object ----------------------------------------------------------
-   * A whiteboard on a stand, built from the page's own materials: the frame
-   * and the ruled slate are `Slate` (slate.css), and the ledge, markers and
-   * stand are the same glass at the weight of a hairline.
    */
   .academy-board {
     position: relative;
-    flex-direction: column;
-  }
-
-  /* The shelf sits in front of the frame's foot, as a tray does. */
-  .academy-board_ledge {
-    position: relative;
-    z-index: 2;
-    margin-top: -0.625rem;
-  }
-
-  .board-ledge_shelf {
-    fill: rgb(255 255 255 / 0.26);
-    stroke: rgb(255 255 255 / 0.4);
-    stroke-width: 1;
-  }
-
-  .board-stand {
-    fill: none;
-    stroke: rgb(255 255 255 / 0.3);
-    stroke-width: 5;
-    stroke-linecap: round;
-  }
-
-  .board-castor {
-    fill: rgb(var(--rgb-ink) / 0.6);
-    stroke: rgb(255 255 255 / 0.3);
-    stroke-width: 1.5;
-  }
-
-  .board-marker_body {
-    fill: rgb(255 255 255 / 0.85);
-  }
-
-  .board-marker_cap {
-    fill: var(--board-ink);
-  }
-
-  .board-ink-white {
-    --board-ink: var(--blanco);
-  }
-
-  .board-ink-celeste {
-    --board-ink: var(--celeste);
-  }
-
-  .board-ink-violet {
-    --board-ink: var(--violeta);
-  }
-
-  .board-eraser_body {
-    fill: rgb(var(--rgb-ink) / 0.75);
-    stroke: rgb(255 255 255 / 0.25);
-    stroke-width: 1;
-  }
-
-  .board-eraser_felt {
-    fill: rgb(255 255 255 / 0.55);
   }
 
   /* --- The drawing --------------------------------------------------------- */
@@ -94,33 +38,31 @@
     stroke-width: 1.5;
   }
 
-  /* The badge material, drawn: ink plate, celeste edge. */
-  /* On the slate the badge's ink plate would be ink on ink, so the plate is
-     drawn the way a marker would draw it: a celeste outline, barely filled. */
+  /* A part: a film of white with a hairline edge, the glass the site's cards
+     are cut from at the weight of a drawing. */
   .board-plate {
-    fill: rgb(var(--rgb-celeste) / 0.08);
-    stroke: rgb(var(--rgb-celeste) / 0.8);
-    stroke-width: 1.2;
+    fill: rgb(255 255 255 / 0.07);
+    stroke: rgb(255 255 255 / 0.5);
+    stroke-width: 1;
   }
 
   .board-hex {
-    fill: rgb(var(--rgb-celeste) / 0.1);
-    stroke: var(--celeste);
-    stroke-width: 1.4;
+    fill: rgb(255 255 255 / 0.07);
+    stroke: rgb(var(--rgb-celeste) / 0.9);
+    stroke-width: 1.2;
   }
 
-  /* A panel inside the panel, the card's own edge at half weight. */
-  /* A region boxed in white marker. */
+  /* A region: the faintest film, and a hairline round it. */
   .board-tray {
-    fill: rgb(255 255 255 / 0.03);
-    stroke: rgb(255 255 255 / 0.4);
-    stroke-width: 1.25;
+    fill: rgb(255 255 255 / 0.035);
+    stroke: rgb(255 255 255 / 0.24);
+    stroke-width: 1;
   }
 
   .board-link {
     fill: none;
-    stroke: rgb(255 255 255 / 0.7);
-    stroke-width: 1.4;
+    stroke: rgb(255 255 255 / 0.5);
+    stroke-width: 1.1;
   }
 
   .board-link-accent {
@@ -128,7 +70,7 @@
   }
 
   .board-rule {
-    stroke: rgb(255 255 255 / 0.28);
+    stroke: rgb(255 255 255 / 0.2);
     stroke-width: 1;
   }
 
@@ -148,7 +90,7 @@
   .board-underline {
     fill: none;
     stroke: var(--celeste);
-    stroke-width: 3;
+    stroke-width: 1.6;
   }
 
   /* The four inks of the card, by job. */
@@ -203,11 +145,11 @@
     fill: rgb(255 255 255 / 0.6);
   }
 
-  /* The agents' group, in the same white marker as the RAG's box. */
+  /* The agents' group, in the same hairline as the RAG's box. */
   .board-group {
     fill: none;
-    stroke: rgb(255 255 255 / 0.28);
-    stroke-width: 1.1;
+    stroke: rgb(255 255 255 / 0.2);
+    stroke-width: 1;
   }
 
   /* Novit's remark: a violet bar, voz-suave words, an arrow in the same ink. */
@@ -280,7 +222,7 @@
   .is-lit .board-link,
   .board-link.is-lit {
     stroke: var(--celeste);
-    stroke-width: 1.8;
+    stroke-width: 1.5;
   }
 
   .is-lit .board-plate {
@@ -289,11 +231,11 @@
 
   .is-glow .board-plate {
     stroke: var(--blanco);
-    fill: rgb(var(--rgb-celeste) / 0.32);
+    fill: rgb(var(--rgb-celeste) / 0.26);
   }
 
   .is-glow .board-hex {
-    fill: rgb(var(--rgb-celeste) / 0.3);
+    fill: rgb(var(--rgb-celeste) / 0.22);
     stroke: var(--blanco);
   }
 
@@ -304,14 +246,15 @@
     stroke: rgb(var(--rgb-celeste) / 0.85);
   }
 
-  /* Only ever shown by the flow, which reduced motion never builds. */
+  /* Only ever shown by the flow, which reduced motion never builds. No
+     filter: a drop shadow on a dot that moves every frame is a blur re-run
+     every frame, and the ring it leaves already says where it arrived. */
   .board-pulse {
     fill: var(--blanco);
     stroke: var(--celeste);
-    stroke-width: 2;
+    stroke-width: 1.5;
     opacity: 0;
     pointer-events: none;
-    filter: drop-shadow(0 0 5px rgb(var(--rgb-celeste) / 0.95));
   }
 
   .board-ring {
@@ -320,5 +263,19 @@
     stroke-width: 1.5;
     opacity: 0;
     pointer-events: none;
+  }
+
+  /* --- The ground ---------------------------------------------------------
+   * Under `md` the diagram is not read: `OpenerFigure` sets it behind the
+   * opener's copy, and what is left is the architecture as lines — every
+   * word gone, a request still crossing it. The breakpoint is the one
+   * `OpenerFigure` switches at.
+   */
+  @media (max-width: 47.99rem) {
+    .academy-board .board-text,
+    .academy-board .board-note,
+    .academy-board [data-board-step="title"] {
+      display: none;
+    }
   }
 }
