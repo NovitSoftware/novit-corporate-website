@@ -2,13 +2,16 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 /** The one scroll container on the page — see `.scroll-shell` in globals. */
 const SHELL = ".scroll-shell";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
+  // DrawSVG draws the site's lines in: the Academia's architecture, the
+  // customer map's routes, the home hero's currents.
+  gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, useGSAP);
 }
 
 let shell: HTMLElement | null = null;
@@ -31,5 +34,18 @@ export function scroller(): HTMLElement | undefined {
   }
   return shell ?? undefined;
 }
+
+/**
+ * The motion preference as `gsap.matchMedia()` conditions, for a figure that
+ * mounts either way and reads `context.conditions.motion` to decide how.
+ *
+ * Both halves are needed: matchMedia only calls a conditions callback when at
+ * least one condition matches, so `motion` alone never runs it under reduced
+ * motion — and the figure never gets its still frame or its hover.
+ */
+export const motionConditions = {
+  motion: "(prefers-reduced-motion: no-preference)",
+  reduced: "(prefers-reduced-motion: reduce)",
+} as const;
 
 export { gsap, ScrollTrigger, useGSAP };

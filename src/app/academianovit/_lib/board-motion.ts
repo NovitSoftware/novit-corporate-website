@@ -1,10 +1,6 @@
-import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { gsap, scroller, ScrollTrigger } from "@/lib/gsap";
 import { onPageReveal } from "@/lib/page-reveal";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(DrawSVGPlugin);
-}
+import { endOf, ripple, travel } from "@/lib/signal";
 
 /*
  * The board's motion: the drawing, the request that keeps crossing it, and
@@ -319,32 +315,12 @@ export function mountBoard(root: HTMLElement, motion: boolean, context: gsap.Con
     });
   };
 
-  /** The ring a request leaves where it arrives. Written out every frame,
-   *  like the dot: a `fromTo` on its attributes lost its position after a
-   *  remount, when GSAP handed the ring back its markup (0, 0), and it burst
-   *  in the drawing's top-left corner, on no route at all. */
+  /** The ring a request leaves where it arrives, on the next ring free. */
   const burst = (timeline: gsap.core.Timeline, path: SVGPathElement, at: number, reverse: boolean) => {
-    const point = path.getPointAtLength(reverse ? 0 : path.getTotalLength());
     const target = rings[ring++ % rings.length];
-    if (!target) {
-      return;
+    if (target) {
+      ripple(timeline, target, endOf(path, reverse), at);
     }
-    const spread = { t: 0 };
-    timeline.fromTo(spread, { t: 0 }, {
-      t: 1,
-      duration: 0.7,
-      ease: "power2.out",
-      immediateRender: false,
-      onUpdate: () => {
-        target.setAttribute("cx", point.x.toFixed(2));
-        target.setAttribute("cy", point.y.toFixed(2));
-        target.setAttribute("r", (4 + 13 * spread.t).toFixed(2));
-        target.style.opacity = (0.85 * (1 - spread.t)).toFixed(3);
-      },
-      onComplete: () => {
-        target.style.opacity = "0";
-      },
-    }, at);
   };
 
   /** Lays a route out on a timeline: laps in order, steps in order, the legs
@@ -367,33 +343,11 @@ export function mountBoard(root: HTMLElement, motion: boolean, context: gsap.Con
             return;
           }
           const reverse = step.reverse ?? false;
-          const length = path.getTotalLength();
-          const travel = Math.min(LEG_MAX, Math.max(LEG_MIN, length / SPEED));
-          longest = Math.max(longest, travel);
-          const progress = { t: 0 };
-          // The dot is placed from the path's own geometry every frame. It
-          // shares the path's coordinate space, so it cannot drift off it —
-          // MotionPath's `align` carried each leg's offset into the next and
-          // left the dot up to 40px off its line.
-          //
-          // Position first, then visibility, both from the same tick, so the
-          // dot never shows for a frame where the last leg left it.
-          timeline
-            .fromTo(progress, { t: 0 }, {
-              t: 1,
-              duration: travel,
-              ease: "sine.inOut",
-              immediateRender: false,
-              onUpdate: () => {
-                const point = path.getPointAtLength((reverse ? 1 - progress.t : progress.t) * length);
-                pulse.setAttribute("cx", point.x.toFixed(2));
-                pulse.setAttribute("cy", point.y.toFixed(2));
-              },
-            }, at)
-            .to(pulse, { opacity: 1, duration: 0.1, ease: "none" }, at)
-            .to(pulse, { opacity: 0, duration: 0.12, ease: "none" }, at + travel - 0.1);
+          const duration = Math.min(LEG_MAX, Math.max(LEG_MIN, path.getTotalLength() / SPEED));
+          longest = Math.max(longest, duration);
+          travel(timeline, path, pulse, { at, duration, reverse });
           if (index === 0) {
-            burst(timeline, path, at + travel - 0.05, reverse);
+            burst(timeline, path, at + duration - 0.05, reverse);
           }
         });
         if (process.env.NODE_ENV !== "production") {
@@ -483,7 +437,7 @@ export function mountBoard(root: HTMLElement, motion: boolean, context: gsap.Con
     if (node) {
       setFocus(node);
     } else {
-      // Crossing the slate between two parts should not drop the route.
+      // Crossing the gap between two parts should not drop the route.
       leaving = gsap.delayedCall(0.18, clearFocus);
     }
   };
