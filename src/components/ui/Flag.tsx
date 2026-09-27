@@ -14,9 +14,9 @@ type FlagProps = {
  * The files are novitsoftware.com/experiencia-novit's own — the standing
  * site's country badges, not the Unicode regional-indicator flag emoji,
  * which Windows renders as bare letter codes rather than pictures. That page
- * carries five of the six countries the recorrido names; España isn't one of
- * its cases, so `espana.png` is drawn to match the other five's rounded-rect
- * crop rather than scraped.
+ * carries five of the seven countries the recorrido names; España and México
+ * aren't among its cases, so `espana.png` and `mexico.png` are drawn to match
+ * the other five's rounded-rect crop rather than scraped.
  */
 export function Flag({ country, className }: FlagProps) {
   const names = country.split(" y ");
@@ -52,4 +52,5 @@ const FLAGS: Record<string, string> = {
   "Estados Unidos": "/flags/estados-unidos.png",
   Colombia: "/flags/colombia.png",
   Brasil: "/flags/brasil.png",
+  México: "/flags/mexico.png",
 };

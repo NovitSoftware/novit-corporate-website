@@ -268,7 +268,7 @@ export const casesPageContent = {
         title: "Equipos, soporte e integraciones",
         items: [
           {
-            country: "Estados Unidos",
+            country: "México y Estados Unidos",
             description:
               "Staff augmentation para healthcare: talento experto en tiempo récord y a un costo competitivo",
             logo: {
@@ -315,7 +315,7 @@ export const casesPageContent = {
             },
           },
           {
-            country: "Colombia y Brasil",
+            country: "Brasil",
             description: "Integraciones con entidades bancarias de la región",
             logo: {
               name: "product minds",
@@ -342,19 +342,23 @@ const COUNTRY_POINTS: Record<string, { lat: number; lon: number }> = {
   Argentina: { lat: -34.6, lon: -58.38 },
   Brasil: { lat: -15.79, lon: -47.88 },
   Chile: { lat: -33.45, lon: -70.67 },
-  Colombia: { lat: 4.71, lon: -74.07 },
   España: { lat: 40.42, lon: -3.7 },
   "Estados Unidos": { lat: 38.9, lon: -77.04 },
+  México: { lat: 19.43, lon: -99.13 },
 };
+
+/** Named on a card but not drawn on the map, at the client's request:
+ *  City Parking keeps its country, the map shows México instead. */
+const OFF_MAP = new Set(["Colombia"]);
 
 /** Where Novit works from: the map draws this country in and sends every
  *  route from its point. */
 export const customerHome = "Argentina";
 
 /**
- * The opener map's points: every country the recorrido names, so a client
- * added there shows up on the map. A country without a point fails the build
- * rather than going missing from it.
+ * The opener map's points: every country the recorrido names but those in
+ * `OFF_MAP`, so a client added there shows up on the map. A country without
+ * a point fails the build rather than going missing from it.
  */
 export const customerCountries = [
   ...new Set(
@@ -362,11 +366,13 @@ export const customerCountries = [
       group.items.flatMap((item) => item.country.split(" y ")),
     ),
   ),
-].map((name) => {
-  const point = COUNTRY_POINTS[name];
-  if (!point) throw new Error(`No map point for "${name}"`);
-  return { name, ...point };
-});
+]
+  .filter((name) => !OFF_MAP.has(name))
+  .map((name) => {
+    const point = COUNTRY_POINTS[name];
+    if (!point) throw new Error(`No map point for "${name}"`);
+    return { name, ...point };
+  });
 
 /** The footer on `/casos-de-exito`: this page's two bands, and the channels. */
 export const casesFooterContent: FooterContent = {
