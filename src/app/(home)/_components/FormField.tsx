@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { fieldId } from "../_lib/form";
 
@@ -18,14 +17,12 @@ type FormFieldProps = {
 };
 
 /**
- * Label, control and error in one block, for both forms on the site.
+ * Label, control and error in one block.
  *
- * This was `ContactSection`'s own `Field`. The Academia's registration form
- * needs the same three parts wired the same way, and the wiring is the part
- * worth not writing twice: the error owns a permanent node so appearing does
- * not reflow the fields below it, and `aria-describedby` points at it
- * unconditionally — an id that resolves to empty text is read as nothing,
- * whereas an id that appears and disappears is not always picked up.
+ * The wiring is the part worth getting right once: the error owns a permanent
+ * node so appearing does not reflow what is below it, and `aria-describedby`
+ * points at it unconditionally — an id that resolves to empty text is read as
+ * nothing, whereas an id that appears and disappears is not always picked up.
  *
  * Styling is `.field` / `.field-label` in globals.css, built for the one
  * ground these sit on: the glass reading panel.
@@ -71,24 +68,5 @@ export function FormField({
         {error ?? ""}
       </p>
     </div>
-  );
-}
-
-/**
- * What the form says after a valid submit.
- *
- * Polite, not assertive: this is the outcome of an action the visitor just
- * took, so it does not need to interrupt what they are reading. The node is
- * permanent and starts empty — an `aria-live` region has to be in the
- * document before the text arrives for the text to be announced.
- */
-export function FormStatus({ children }: { children?: ReactNode }) {
-  return (
-    <p
-      aria-live="polite"
-      className="card-ink-body text-[0.875rem] leading-relaxed"
-    >
-      {children}
-    </p>
   );
 }

@@ -50,8 +50,8 @@ export function ChipButton({
 }
 
 /**
- * The arrow block, shared so the one hand-built `chip-cta` on the page — the
- * contact form's submit, which has to be a `<button>` and cannot use
+ * The arrow block, shared so the hand-built `chip-cta`s on the page — the
+ * contact form's two submits, which have to be `<button>`s and cannot use
  * `ChipButton` — cannot drift away from this one.
  *
  * Two blocks, one parked at each end of the chip, of which only one is ever

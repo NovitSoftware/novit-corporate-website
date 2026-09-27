@@ -125,8 +125,11 @@ export type Service = (typeof services)[number];
  * is this page's own word for the anchor the hero CTA, the footer and the
  * menu all point at.
  *
- * The form does not send. Validation is real and `useUnsentForm` is the one
- * place to wire an endpoint; until there is one, a valid submit says so.
+ * The form asks for the message and nothing else: there is no endpoint to
+ * post it to, so it hands it to one of the two channels that do exist —
+ * WhatsApp or the inbox — already written, and whoever sends it is who
+ * Novit answers. No name and no email: WhatsApp and the mail client both
+ * carry who it is from.
  */
 export const closingContent = {
   id: "contacto",
@@ -136,23 +139,20 @@ export const closingContent = {
   title: "¿En qué proceso te ayudamos a reducir costos?",
   description:
     "Una primera conversación alcanza para ver si hay un caso por dónde empezar.",
-  fields: {
-    name: { label: "Nombre", placeholder: "Cómo te llamás", icon: "user" },
-    email: { label: "Email", placeholder: "nombre@empresa.com", icon: "mail" },
-    message: {
-      label: "Mensaje",
-      icon: "chat",
-      placeholder: "Qué proceso querés resolver, y con qué se sostiene hoy.",
-    },
+  message: {
+    label: "Mensaje",
+    icon: "chat",
+    placeholder: "Qué proceso querés resolver, y con qué se sostiene hoy.",
+    error: "Contanos brevemente qué necesitás.",
   },
-  submit: "Enviar mensaje",
-  pending:
-    "Este formulario todavía no está conectado, así que el mensaje no se envió. Estamos terminando de configurar la dirección de contacto.",
-  errors: {
-    name: "Escribí tu nombre.",
-    email: "Escribí un email válido.",
-    message: "Contanos brevemente qué necesitás.",
+  /** One button per channel, WhatsApp first: it is the line the rest of the
+   *  site sends people to. */
+  send: {
+    whatsapp: "Enviar por WhatsApp",
+    email: "Enviar por correo",
   },
+  /** The subject the mail client opens with; the body is the message. */
+  subject: "Consulta desde novitsoftware.com",
 } as const;
 
 /** The footer on `/`. Every route has one, and it indexes that page. */
