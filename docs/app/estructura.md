@@ -10,30 +10,31 @@ src/
     layout.tsx  globals.css  styles/  opengraph-image.tsx  icon.png
     (home)/
       page.tsx      metadata y el orden de las bandas
-      _sections/    Hero · Stats · Services · Contact
-      _components/  IntroOverlay · HeroScene · ServiceCard · FormField
-      _lib/         intro.ts · form.ts · useUnsentForm.ts
+      _sections/    Hero · Services · Contact
+      _components/  HeroScene · HeroFlow · ServiceCard · FormField
+      _lib/         hero-flow.ts · form.ts
     inteligencia-artificial/  page.tsx · _sections/ · _components/ · _lib/
     desarrollo-y-consultoria/ page.tsx · _sections/
     academianovit/            page.tsx · _sections/ · _components/ · _lib/
     casos-de-exito/           page.tsx · _sections/ · _components/ · _lib/
   components/
-    layout/     SiteShell · SiteHeader · MenuPanel · SiteFooter · PageOpener
+    layout/     SiteShell · SiteHeader · MenuPanel · SiteFooter · PageOpener ·
+                PageCurtain · SceneAtmosphere
     section/    Section · SectionIntro · SectionLabel · PinnedIntro ·
                 ReadingPanel · PanelRow · StatRow
     cards/      Card · CardGrid · CardList · CaseCard · CaseLogo
     motion/     Scene · SplitWords · ScrollWords · SectionHandoff ·
                 CountUp · Parallax
-    ui/         Container · Divider · ChipButton · Icon · IconBadge ·
-                Logo · Image · Illustration · ContactIcons · BarField
-    providers/  SmoothScroll
+    ui/         Container · Divider · ChipButton · Badge · Icon · IconBadge ·
+                Logo · Image · Illustration · ContactIcons · Flag · SquareGrid
+    providers/  SmoothScroll · PageTransitions
   content/    site · navigation · cases · footer · home ·
               inteligencia-artificial · desarrollo-y-consultoria ·
               academianovit · casos-de-exito
   hooks/      usePrefersReducedMotion · useKeyboardScroll ·
               useSceneGradient · useScrollNavigation
-  lib/        cn · gsap · motion · variants · illustrations ·
-              brand-logo · brand-mark
+  lib/        cn · gsap · motion · variants · illustrations · brand-logo ·
+              base-path · image-loader · page-reveal · signal · robinson
 ```
 
 ## Las reglas
@@ -47,14 +48,14 @@ con `_` queda fuera del ruteo, ella y todo lo que cuelga. Por eso `_sections/`
 y `_components/` conviven con `page.tsx` sin generar URLs. Adentro va lo que
 renderiza una sola ruta; `_components/` y `_lib/` aparecen en las rutas que
 tienen piezas propias que no son bandas — la figura animada de cada una y su
-movimiento.
+movimiento, y en la home el campo del formulario y su validación.
 
 **Cada carpeta de `components/` contesta una pregunta distinta**, que es lo
 que `shared/` no hacía:
 
 | | |
 |---|---|
-| `layout/` | envuelve una ruta entera — header, footer, el shell, el opener |
+| `layout/` | envuelve una ruta entera — header, footer, el shell, el opener, el telón entre rutas y el fondo de escena |
 | `section/` | arma una banda: la `<section>`, su encabezado, sus paneles y filas |
 | `cards/` | la familia de tarjetas |
 | `motion/` | las primitivas de animación; todas son client components |
@@ -63,9 +64,9 @@ que `shared/` no hacía:
 
 **Todo el texto está en `content/`**, un archivo por ruta más los que no son
 de ninguna: la empresa y sus canales (`site.ts`), el menú (`navigation.ts`),
-los dos agentes en producción que rinden tres rutas (`cases.ts`) y la forma de
-un pie con la línea que los cinco comparten (`footer.ts`). El pie de cada ruta
-va en el archivo de esa ruta, al lado de la página que indexa.
+los dos agentes en producción de `/inteligencia-artificial` (`cases.ts`) y la
+forma de un pie con la línea que los cinco comparten (`footer.ts`). El pie de
+cada ruta va en el archivo de esa ruta, al lado de la página que indexa.
 
 **No hay barril.** Todo se importa por alias y por path completo
 (`@/content/home`, `@/components/section/SectionIntro`). El import dice de
