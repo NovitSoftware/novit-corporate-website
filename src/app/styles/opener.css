@@ -1,25 +1,25 @@
-/* An opener's art — a column of its own where the band has room for one, the ground the copy is set on where it does not. */
+/* An opener's art — a column of its own where the band has room for one, under the copy where it does not. */
 
 @layer components {
   /*
    * The art beside an opener's claim — the Academia's architecture, the
-   * agent, the customer map — is only a figure where it can be read as one.
-   * Squeezed under a phone's copy it was a picture of labels too small to
-   * read, so it was left out and the band lost what made it move.
-   *
-   * So below its breakpoint it changes job instead of shrinking: it goes
-   * behind the upper copy, bled off the right edge, faded towards the words
-   * and the foot of the band, and stops answering the pointer. The copy is
-   * lifted over it (`relative z-[1]` on the copy block), the section's
-   * `overflow-x: clip` takes the bleed, and each figure's own stylesheet
-   * drops its words at the same breakpoint, so what is left is lines and a
-   * signal crossing them.
+   * agent, the customer map. On a phone it used to go behind the copy as its
+   * ground, faded towards the words and cut off before the lead, so what was
+   * left was the top of a drawing: a few lines with nothing to say what they
+   * were. It stays a figure there instead, whole, under the copy, scaled to
+   * the width — small, but all of it.
    */
 
-  /* A figure: its own column from `xl`, under the copy from `md`. */
+  /* A figure: its own column from `xl`, under the copy below that. */
   .opener-figure {
     position: relative;
     margin-top: 3.5rem;
+  }
+
+  @media (max-width: 47.99rem) {
+    .opener-figure {
+      margin-top: 2.5rem;
+    }
   }
 
   @media (min-width: 80rem) {
@@ -28,31 +28,11 @@
     }
   }
 
-  /* On a phone it stands behind the label and the headline and is gone
-     before the lead: the mask is set in lengths from its top, not in
-     percentages of a figure whose height changes with what it is. */
-  @media (max-width: 47.99rem) {
-    .opener-figure {
-      position: absolute;
-      z-index: 0;
-      top: -4.5rem;
-      right: -30%;
-      width: 125%;
-      margin-top: 0;
-      opacity: 0.32;
-      pointer-events: none;
-      mask-image:
-        linear-gradient(to bottom, var(--negro) 6rem, transparent 19rem),
-        linear-gradient(to right, transparent 4%, var(--negro) 44%);
-      mask-composite: intersect;
-    }
-  }
-
   /* The aside — the customer map: beside the copy from `xl`, bled to the
-     window edge. Below that it is anchored to the foot of the opener, so the
-     south of the map — home — lands beside and under the button, where the
-     band is empty, and the north fades out behind the lead. */
-  @media (max-width: 79.99rem) {
+     window edge. On a tablet it is anchored to the foot of the opener, so
+     the south of the map — home — lands beside and under the button, where
+     the band is empty, and the north fades out behind the lead. */
+  @media (min-width: 48rem) and (max-width: 79.99rem) {
     .opener-aside {
       position: absolute;
       z-index: 0;
@@ -65,12 +45,11 @@
     }
   }
 
+  /* On a phone the whole map, under the button, like a figure. */
   @media (max-width: 47.99rem) {
     .opener-aside {
-      right: -22%;
-      bottom: -6rem;
-      width: 104%;
-      opacity: 0.6;
+      position: relative;
+      margin-top: 2rem;
     }
   }
 }

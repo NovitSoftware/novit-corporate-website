@@ -4,8 +4,8 @@
   /*
    * Everything is drawn in the icon set's idiom: round caps and joins, one
    * flat colour, a stroke close to the set's 1.25px. White carries the
-   * structure, celeste the path a request takes, violet only Novit's notes —
-   * the same three jobs the colours have everywhere else.
+   * structure and celeste the path a request takes — the same jobs the
+   * colours have everywhere else.
    *
    * There is no surface under it. It used to be drawn on a dark slate, which
    * let it carry every ink at full strength and made it a panel in front of
@@ -74,25 +74,6 @@
     stroke-width: 1;
   }
 
-  .board-title {
-    fill: var(--blanco);
-    font-size: 21px;
-    font-weight: 900;
-    letter-spacing: -0.01em;
-  }
-
-  .board-subtitle {
-    fill: rgb(255 255 255 / 0.72);
-    font-size: 11.5px;
-    font-weight: 400;
-  }
-
-  .board-underline {
-    fill: none;
-    stroke: var(--celeste);
-    stroke-width: 1.6;
-  }
-
   /* The four inks of the card, by job. */
   .board-heading {
     fill: rgb(255 255 255 / 0.62);
@@ -150,23 +131,6 @@
     fill: none;
     stroke: rgb(255 255 255 / 0.2);
     stroke-width: 1;
-  }
-
-  /* Novit's remark: a violet bar, voz-suave words, an arrow in the same ink. */
-  .board-note_bar {
-    fill: url(#board-voice-bar);
-  }
-
-  .board-note_text {
-    fill: var(--voz-suave);
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .board-note_arrow {
-    fill: none;
-    stroke: rgb(241 235 251 / 0.75);
-    stroke-width: 1.4;
   }
 
   /* Paths a request travels but nobody draws, and the areas that answer the
@@ -263,19 +227,5 @@
     stroke-width: 1.5;
     opacity: 0;
     pointer-events: none;
-  }
-
-  /* --- The ground ---------------------------------------------------------
-   * Under `md` the diagram is not read: `OpenerFigure` sets it behind the
-   * opener's copy, and what is left is the architecture as lines — every
-   * word gone, a request still crossing it. The breakpoint is the one
-   * `OpenerFigure` switches at.
-   */
-  @media (max-width: 47.99rem) {
-    .academy-board .board-text,
-    .academy-board .board-note,
-    .academy-board [data-board-step="title"] {
-      display: none;
-    }
   }
 }

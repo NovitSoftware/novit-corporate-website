@@ -6,8 +6,8 @@ import { endOf, ripple, travel } from "@/lib/signal";
  * The board's motion: the drawing, the request that keeps crossing it, and
  * the route a hovered part lights up.
  *
- * Everything addresses the drawing by name. A part of it — a node, a link,
- * a note — carries `data-part`; a path a request can travel carries
+ * Everything addresses the drawing by name. A part of it — a node or a
+ * link — carries `data-part`; a path a request can travel carries
  * `data-route`; a part that answers the pointer carries `data-node`. The
  * routes below are written in those names, so the geometry lives in the
  * component and the story lives here.
@@ -120,7 +120,7 @@ function indexing(system: number): Lap {
   return {
     lit: [
       `sys-${system}`, `tick-${system}`, "bus", "ingest", "rag",
-      "rag-0", "pipe-1", "rag-1", "pipe-2", "rag-2", "pipe-3", "rag-3", "note-rag",
+      "rag-0", "pipe-1", "rag-1", "pipe-2", "rag-2", "pipe-3", "rag-3",
     ],
     steps: [
       { legs: [], glow: [`sys-${system}`] },
@@ -133,7 +133,7 @@ function indexing(system: number): Lap {
 }
 
 const query: Lap = {
-  lit: ["agents", "llm", "ask", "rag", "rag-3", "pipe-4", "rag-4", "pipe-5", "rag-5", "answer", "note-rag"],
+  lit: ["agents", "llm", "ask", "rag", "rag-3", "pipe-4", "rag-4", "pipe-5", "rag-5", "answer"],
   steps: [...inside(), { legs: ["answer"], glow: ["llm"] }],
 };
 
@@ -174,7 +174,7 @@ function routeFor(node: string): Route | null {
           {
             lit: [
               ...range(CHANNELS).flatMap((c) => [`ch-${c}`, `in-${c}`]),
-              "hex", "note-hex", "agents",
+              "hex", "agents",
               ...range(AGENTS).flatMap((a) => [`out-${a}`, `ag-${a}`]),
             ],
             // Orchestrator-workers in full: split, delegate, merge, answer.
@@ -453,25 +453,20 @@ export function mountBoard(root: HTMLElement, motion: boolean, context: gsap.Con
 
   if (motion) {
     const strokes = q(".board-draw, .board-glyph > *");
-    const writing = q(".board-writing");
     gsap.set(strokes, { drawSVG: "0%" });
     gsap.set(q(".board-fill"), { fillOpacity: 0 });
     gsap.set(q(".board-text"), { opacity: 0, y: 4 });
-    gsap.set(q(".board-note"), { opacity: 0, y: 6 });
-    gsap.set(writing, { attr: { width: 0 } });
 
     drawing = gsap.timeline({
       paused: true,
       onComplete: () => {
         // Hand opacity back to the stylesheet, which is what dims a part
         // off the hovered route; an inline 1 would outrank it.
-        gsap.set(q(".board-text, .board-note"), { clearProps: "opacity,transform" });
+        gsap.set(q(".board-text"), { clearProps: "opacity,transform" });
         drawn = true;
         playIdle();
       },
     });
-    // The title is written before anything is drawn under it.
-    drawing.to(writing, { attr: { width: 700 }, duration: 0.9, ease: "power1.inOut" }, 0);
     q("[data-board-step]").forEach((step, index) => addStep(drawing!, step, index));
 
     // Drawn once, when the page is open and the board is in view. On the wide
@@ -564,5 +559,4 @@ function addStep(timeline: gsap.core.Timeline, step: Element, index: number) {
   add(q(".board-fill"), { fillOpacity: 1, duration: 0.5, ease: "sine.out" }, 0.05, 0.2);
   add(q(".board-glyph > *"), { drawSVG: "100%", duration: 0.5, ease: "power2.out" }, 0.02, 0.15);
   add(q(".board-text"), { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.04, 0.3);
-  add(q(".board-note"), { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.15, 0);
 }

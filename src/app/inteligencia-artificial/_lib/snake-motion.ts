@@ -24,8 +24,10 @@ import { COLS, MOVES, ROWS, SnakeAgent, type Point, type SnakeEvent } from "./sn
  * and nowhere here.
  */
 
-/** Milliseconds per move at 1×; the speed control divides it. */
+/** Milliseconds per move at 1×, and the pace it plays at: twice that. The
+ *  times below are all at 1× and scale with it. */
 const STEP_MS = 160;
+const SPEED = 2;
 /** How fast a thought streams at 1×, in characters a second: a fast model's
  *  pace, so a thought is out in well under a second and keeps up with the
  *  game — at a reader's pace it fell behind every capture. */
@@ -95,11 +97,9 @@ const dirOf = (a: Point, b: Point): Dir => [Math.sign(b[0] - a[0]), Math.sign(b[
  *
  * `motion` false is reduced motion: the game is played a stretch in silence
  * and shown as one still position, its thinking and audit filled in; nothing
- * moves after that. `compact` is the phone, where the figure is the ground
- * behind the opener's copy: the field and the audit are left out and only
- * the line is drawn.
+ * moves after that.
  */
-export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boolean; compact: boolean }): () => void {
+export function mountSnake(root: HTMLElement, motion: boolean): () => void {
   const canvas = root.querySelector<HTMLCanvasElement>(".agent-snake_canvas");
   const context = canvas?.getContext("2d");
   const stage = canvas?.parentElement;
@@ -137,7 +137,7 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
   /* ------------------------------------------------------------ the audit */
 
   const writeLog = (events: SnakeEvent[]) => {
-    if (compact || !events.length) {
+    if (!events.length) {
       return;
     }
     entries.unshift(...events.map(logEntry).reverse());
@@ -162,9 +162,6 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
   };
 
   const writeAudit = () => {
-    if (compact) {
-      return;
-    }
     const { decision } = agent;
     moveRows.forEach((row, index) => {
       const { veto } = decision.options[index];
@@ -184,7 +181,7 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
 
   /* ---------------------------------------------------------- the thought */
 
-  let stepMs = STEP_MS;
+  const stepMs = STEP_MS / SPEED;
   let thinking: Thinking | null = null;
   /** What happened while it was still thinking about something else. */
   let queued: SnakeEvent[] | null = null;
@@ -237,7 +234,7 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
    * thought is never cut off, and never about a moment already past.
    */
   const prompt = (events: SnakeEvent[], now: number) => {
-    if (compact || !promptsThought(events)) {
+    if (!promptsThought(events)) {
       return;
     }
     const urgent = events.some((event) => event.kind === "start" || event.kind === "end");
@@ -400,40 +397,38 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
     const tailF = growing ? 0 : t;
     const [hx, hy] = pointOn(body[n], t);
 
-    if (!compact) {
-      paintField(hx, hy);
+    paintField(hx, hy);
 
-      const { path, rejected } = agent.decision;
-      const head = cells[n];
-      /** A route from the head's cell, on the same curve the body keeps. */
-      const plan = (route: readonly Point[], from: number, k: number) => {
-        if (!route.length || k <= 0) {
-          return;
-        }
-        const all = [head, ...route];
-        stroke(piecesOf(all, headIn, dirOf(all[all.length - 2], all[all.length - 1])), from, 0.5, k);
-      };
-      // The route it found and turned down, because eating there would have
-      // boxed it in: faint and still, so it reads as considered, not taken.
-      // It is thought of first, so it draws in the first half of the thought.
-      if (rejected) {
-        ctx.setLineDash([1, 5]);
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = inks.target;
-        ctx.globalAlpha = 0.3;
-        plan(rejected, 0.5, clamp(reveal * 2));
+    const { path, rejected } = agent.decision;
+    const head = cells[n];
+    /** A route from the head's cell, on the same curve the body keeps. */
+    const plan = (route: readonly Point[], from: number, k: number) => {
+      if (!route.length || k <= 0) {
+        return;
       }
-      // The route it means to take — to the target, or round to its own
-      // tail — leaving from the head and running the way it will.
-      ctx.setLineDash([1, 7]);
-      ctx.lineDashOffset = -now / 30;
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = inks.body;
-      ctx.globalAlpha = 0.6;
-      plan(path, t, rejected ? clamp(reveal * 2 - 1) : reveal);
-      ctx.setLineDash([]);
-      ctx.globalAlpha = 1;
+      const all = [head, ...route];
+      stroke(piecesOf(all, headIn, dirOf(all[all.length - 2], all[all.length - 1])), from, 0.5, k);
+    };
+    // The route it found and turned down, because eating there would have
+    // boxed it in: faint and still, so it reads as considered, not taken.
+    // It is thought of first, so it draws in the first half of the thought.
+    if (rejected) {
+      ctx.setLineDash([1, 5]);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = inks.target;
+      ctx.globalAlpha = 0.3;
+      plan(rejected, 0.5, clamp(reveal * 2));
     }
+    // The route it means to take — to the target, or round to its own
+    // tail — leaving from the head and running the way it will.
+    ctx.setLineDash([1, 7]);
+    ctx.lineDashOffset = -now / 30;
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = inks.body;
+    ctx.globalAlpha = 0.6;
+    plan(path, t, rejected ? clamp(reveal * 2 - 1) : reveal);
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
 
     // The target: the one just taken shrinking into the head as it arrives,
     // the new one settling in once it has.
@@ -500,21 +495,8 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
     ctx.stroke();
   };
 
-  /* ------------------------------------------------------------ the speed */
-
-  const setSpeed = (factor: number) => {
-    stepMs = STEP_MS / (factor > 0 ? factor : 1);
-    root.style.setProperty("--snake-step", `${stepMs}ms`);
-  };
-  const speed = root.querySelector<HTMLInputElement>("[data-snake-speed] input:checked");
-  setSpeed(Number(speed?.value ?? 1));
-  const onSpeed = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    if (input.checked && input.closest("[data-snake-speed]")) {
-      setSpeed(Number(input.value));
-    }
-  };
-  root.addEventListener("change", onSpeed);
+  // The bars keep pace with the step.
+  root.style.setProperty("--snake-step", `${stepMs}ms`);
 
   /* ------------------------------------------------------------- the loop */
 
@@ -635,9 +617,7 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
       writeLog(agent.advance());
     }
     // Mid-route, so the thought is about the plan, not about what just happened.
-    if (!compact) {
-      conclude(think(agent, []));
-    }
+    conclude(think(agent, []));
   }
   writeAudit();
   paint(0, 0, motion ? 0 : 1);
@@ -675,7 +655,6 @@ export function mountSnake(root: HTMLElement, { motion, compact }: { motion: boo
     release();
     resize.disconnect();
     seen?.disconnect();
-    root.removeEventListener("change", onSpeed);
     root.style.removeProperty("--snake-step");
     canvas.style.opacity = "";
     if (host.disposeSnake === dispose) {

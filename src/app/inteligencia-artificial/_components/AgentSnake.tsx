@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode, type RefObject } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { agentSnake } from "@/content/inteligencia-artificial";
 import { gsap, motionConditions, useGSAP } from "@/lib/gsap";
@@ -18,19 +18,19 @@ const LOG_ROWS = 8;
  * The reference was a standalone demo — a snake played by a decision model,
  * with the model's four probabilities beside it, over a violet target. Here it
  * is drawn in the page's material and straight onto the page, with no panel
- * under it: celeste for what the agent does, white for the field and the
- * target, violet only on Novit's one remark. It thinks while it moves: at
- * each new target or change of plan its reasoning streams into the audit and
- * the route it is weighing draws itself ahead of it — faintly, too, any route
- * it turns down. Beside the game the audit is what an audit of it would
- * read: its confidence in each move and which were vetoed, its thinking, and
- * a log of what changed — the traceability the page promises.
+ * under it and no title over it: celeste for what the agent does, white for
+ * the field and the target. It thinks while it moves: at each new target or
+ * change of plan its reasoning streams into the audit and the route it is
+ * weighing draws itself ahead of it — faintly, too, any route it turns down.
+ * Beside the game the audit is what an audit of it would read: its confidence
+ * in each move and which were vetoed, its thinking, and a log of what changed
+ * — the traceability the page promises.
  *
- * It plays in a loop and starts again when a game ends, at the pace the
- * speed control sets. The motion is `snake-motion.ts`; the policy is
- * `snake-sim.ts`. Reduced motion gets one still position with its audit.
- * Under `md` it is the ground behind the opener's copy — `OpenerFigure` —
- * and only the line plays, with no field and no audit.
+ * It plays in a loop and starts again when a game ends. The motion is
+ * `snake-motion.ts`; the policy is `snake-sim.ts`. Reduced motion gets one
+ * still position with its audit. On a phone it keeps the layout it has
+ * beside the copy and is scaled down to fit, board and audit together — see
+ * `useFit`.
  */
 export function AgentSnake({ className }: { className?: string }) {
   const ref = useRef<HTMLElement>(null);
@@ -44,34 +44,19 @@ export function AgentSnake({ className }: { className?: string }) {
       }
 
       const media = gsap.matchMedia();
-      media.add(
-        {
-          ...motionConditions,
-          // The breakpoint `OpenerFigure` turns it into the ground at.
-          compact: "(max-width: 47.99rem)",
-        },
-        (context) => {
-          const { motion, compact } = context.conditions ?? {};
-          return mountSnake(root, { motion: Boolean(motion), compact: Boolean(compact) });
-        },
+      media.add(motionConditions, (context) =>
+        mountSnake(root, Boolean(context.conditions?.motion)),
       );
 
       return () => media.revert();
     },
     { scope: ref },
   );
+  useFit(ref);
 
   return (
     <figure ref={ref} data-anim="card" className={cn("agent-snake", className)}>
       <div className="agent-snake_inner">
-        <header className="agent-snake_header">
-          <div>
-            <p className="agent-snake_title">{copy.title}</p>
-            <p className="agent-snake_subtitle">{copy.subtitle}</p>
-          </div>
-          <SpeedControl />
-        </header>
-
         {/* The game and its audit change several times a second, so they
             are one image to assistive technology, described once, rather
             than a region that never stops talking. */}
@@ -155,43 +140,42 @@ export function AgentSnake({ className }: { className?: string }) {
             </dl>
           </div>
         </div>
-
-        <p className="agent-snake_note">{copy.note}</p>
       </div>
     </figure>
   );
 }
 
 /**
- * How fast the game runs. Plain radios, so it is a keyboard control with no
- * script of its own; `snake-motion.ts` listens for the change. Shown only
- * where the game moves — see agent-snake.css.
+ * Scales the figure down to the width it is given, where agent-snake.css
+ * lays it out wider than that — on a phone, at the width it has beside the
+ * copy. A transform leaves the figure taking the space of the unscaled one,
+ * so its height is set to what the scaled one covers. `--snake-fit` is 1
+ * wherever the figure has its own width, and the stylesheet only reads it
+ * on a phone.
  */
-function SpeedControl() {
-  const id = useId();
-  const { speed } = agentSnake;
+function useFit(ref: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const root = ref.current;
+    const inner = root?.firstElementChild;
+    if (!root || !(inner instanceof HTMLElement)) {
+      return;
+    }
 
-  return (
-    <div data-snake-speed className="agent-snake_speed">
-      <span id={`${id}-label`} className="agent-snake_heading">
-        {speed.label}
-      </span>
-      <div role="radiogroup" aria-labelledby={`${id}-label`} className="agent-snake_speed-options">
-        {speed.options.map((option) => (
-          <label key={option.value}>
-            <input
-              type="radio"
-              name={`${id}-speed`}
-              value={option.value}
-              defaultChecked={option.value === speed.initial}
-              className="sr-only"
-            />
-            <span>{option.label}</span>
-          </label>
-        ))}
-      </div>
-    </div>
-  );
+    const fit = () => {
+      const scale = Math.min(1, root.clientWidth / inner.offsetWidth);
+      root.style.setProperty("--snake-fit", String(scale));
+      root.style.height = scale < 1 ? `${inner.offsetHeight * scale}px` : "";
+    };
+    const observer = new ResizeObserver(fit);
+    observer.observe(root);
+    observer.observe(inner);
+
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--snake-fit");
+      root.style.height = "";
+    };
+  }, [ref]);
 }
 
 function PaneHeading({ label, children }: { label: string; children: ReactNode }) {

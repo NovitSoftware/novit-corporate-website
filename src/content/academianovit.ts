@@ -174,23 +174,18 @@ export const academyProgram = {
  * The board beside the opener: the architecture the cursada builds, drawn the
  * way it is drawn in class.
  *
- * Its source is the Academia's own whiteboard drawing: the same parts and the
- * same two notes, redrawn in the site's material — glass, Lato, the icon set —
- * instead of marker on a stand. The two `notes` are the
- * only violet on it, because they are the only lines on it that are Novit's
- * opinion rather than a part of the system.
+ * Its source is the Academia's own whiteboard drawing: the same parts,
+ * redrawn in the site's material — glass, Lato, the icon set — instead of
+ * marker on a stand. It is a picture beside the claim, so it carries no title
+ * and none of the whiteboard's notes: only the parts and their names.
  */
 export const academyBoard = {
-  title: "Arquitectura de agentes",
-  subtitle: "Orquestación · recuperación sobre datos propios · gobierno",
   description:
     "Diagrama de una arquitectura de agentes. Los pedidos llegan por canales a un orquestador que divide el trabajo, lo reparte entre agentes y reúne los resultados. Cada agente razona con un LLM: consulta un RAG con el conocimiento del cliente —documentos de sus sistemas, divididos en fragmentos, convertidos en embeddings y guardados en un vector store— y actúa sobre los sistemas del cliente mediante tools. La respuesta vuelve por el mismo canal. Todo bajo guardrails, permisos mínimos, trazabilidad, evaluación y costo por tarea.",
   /*
    * The parts of the diagram are labelled in English, the way the field
    * names them and the way they are taught in the cursada — nobody says
-   * "recuperador" for a retriever. What frames the diagram is Spanish: the
-   * title, the subtitle and Novit's two notes, which are Novit talking to
-   * the reader rather than naming a component.
+   * "recuperador" for a retriever.
    */
   channels: {
     label: "Channels",
@@ -253,11 +248,6 @@ export const academyBoard = {
       { label: "Retriever", icon: "search" },
       { label: "Context", icon: "clipboardCheck" },
     ],
-  },
-  notes: {
-    orchestrator: ["Sin esto son", "agentes sueltos,", "cada uno con", "su abono."],
-    /* "Una vez" is per document, not forever: the index follows the sources. */
-    rag: ["Se indexa una vez", "—y se mantiene al día—", "y lo usan todos los agentes."],
   },
   governance: [
     /* Prompt injection and input filtering: first on the OWASP LLM list and
