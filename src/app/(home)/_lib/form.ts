@@ -1,13 +1,9 @@
 /**
- * Validation for the site's two forms — the contact enquiry and the Academia
- * registration.
+ * Validation for the site's forms — today, the contact message.
  *
- * Both were going to need the same three checks, the same "first invalid field
- * takes focus" behaviour and the same not-connected-yet message, so the rules
- * are declared as data here and the behaviour lives in `useUnsentForm`. The
- * alternative was a second copy of `ContactSection`'s submit handler, which is
- * how the two forms would have drifted: a stricter email pattern on one, a
- * different minimum on the other, and no way to tell which was intended.
+ * The rules are declared as data here and checked on submit, so a form states
+ * what each field needs and the checks, the order they run in and the "first
+ * invalid field takes focus" behaviour are written once.
  */
 
 /**

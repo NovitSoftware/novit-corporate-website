@@ -14,10 +14,10 @@ export const site = {
 /**
  * The channels that actually exist, pulled from the standing corporate site
  * at novitsoftware.com — the phone number, the inbox, and the two social
- * accounts it links from its header. Nothing here is invented: the contact
- * form still doesn't send (see `contactContent`), because a submit needs a
- * receiving endpoint and a published phone number isn't one, but the header
- * menu and the footer can point at real channels in the meantime.
+ * accounts it links from its header. Nothing here is invented. There is no
+ * endpoint to post a form to, so the contact form hands its message to the
+ * first two — see `closingContent` — and the header menu and the footer
+ * point at them directly.
  *
  * The phone number opens WhatsApp rather than the dialer — novitsoftware.com
  * itself only exposes this number as a WhatsApp icon, never as a `tel:`

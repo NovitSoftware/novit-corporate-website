@@ -1,38 +1,79 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import { ChipArrow } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { FormField, FormStatus } from "../_components/FormField";
+import { MailIcon, WhatsAppIcon } from "@/components/ui/ContactIcons";
+import { FormField } from "../_components/FormField";
 import { ReadingPanel } from "@/components/section/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { ScrollWords } from "@/components/motion/ScrollWords";
 import { Section } from "@/components/section/Section";
 import { SectionLabel } from "@/components/section/SectionLabel";
 import { closingContent } from "@/content/home";
-import { useUnsentForm } from "../_lib/useUnsentForm";
-import type { FieldRules } from "../_lib/form";
+import { siteContact } from "@/content/site";
+import { fieldId, firstInvalid, validateFields, type FieldErrors, type FieldRules } from "../_lib/form";
 
 const PREFIX = "contact";
 
-/**
- * Declared out here rather than inline: `useUnsentForm` memoizes its handler
- * on this object, so a fresh one every render would rebuild it every render.
- */
-const RULES: FieldRules<"name" | "email" | "message"> = {
-  name: { min: 2, message: closingContent.errors.name },
-  email: { email: true, message: closingContent.errors.email },
-  message: { min: 10, message: closingContent.errors.message },
+const RULES: FieldRules<"message"> = {
+  message: { min: 10, message: closingContent.message.error },
 };
+
+/** Where each button hands the message: a chat with the line, or a mail to
+ *  the inbox, opened with the message already written. */
+const CHANNELS = [
+  {
+    id: "whatsapp",
+    label: closingContent.send.whatsapp,
+    Icon: WhatsAppIcon,
+    href: (message: string) => `${siteContact.phone.href}?text=${encodeURIComponent(message)}`,
+  },
+  {
+    id: "email",
+    label: closingContent.send.email,
+    Icon: MailIcon,
+    href: (message: string) =>
+      `${siteContact.email.href}?subject=${encodeURIComponent(closingContent.subject)}&body=${encodeURIComponent(message)}`,
+  },
+] as const;
 
 /**
  * El cierre, and the form it asks for. It is the last band on the page, so the
  * statement of the ask and the ask itself are one section.
  *
- * The form does not send — see `useUnsentForm` for why, and for the one place
- * to wire it.
+ * The form holds the message and nothing else, and it has no endpoint: each
+ * button opens its channel — WhatsApp in a new tab, the inbox in the mail
+ * client — with the message written, for the visitor to send from there.
+ * Validation runs on submit, not on every keystroke: a box that turns red
+ * while someone is still typing is telling them they are wrong when they are
+ * simply not finished.
  */
 export function ContactSection() {
-  const { errors, sent, onSubmit } = useUnsentForm(PREFIX, RULES);
+  const [errors, setErrors] = useState<FieldErrors<"message">>({});
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const data = new FormData(event.currentTarget);
+    const next = validateFields(RULES, data);
+    setErrors(next);
+
+    const invalid = firstInvalid(RULES, next);
+    if (invalid) {
+      document.getElementById(fieldId(PREFIX, invalid))?.focus();
+      return;
+    }
+
+    const submitter = (event.nativeEvent as SubmitEvent).submitter;
+    const channel = CHANNELS.find((item) => item.id === submitter?.getAttribute("value")) ?? CHANNELS[0];
+    const href = channel.href(String(data.get("message")).trim());
+    if (channel.id === "whatsapp") {
+      window.open(href, "_blank", "noopener");
+    } else {
+      window.location.href = href;
+    }
+  };
 
   return (
     <Section id={closingContent.id}>
@@ -78,45 +119,31 @@ export function ContactSection() {
               <form onSubmit={onSubmit} noValidate className="space-y-5">
                 <FormField
                   prefix={PREFIX}
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  label={closingContent.fields.name.label}
-                  icon={closingContent.fields.name.icon}
-                  placeholder={closingContent.fields.name.placeholder}
-                  error={errors.name}
-                />
-                <FormField
-                  prefix={PREFIX}
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  label={closingContent.fields.email.label}
-                  icon={closingContent.fields.email.icon}
-                  placeholder={closingContent.fields.email.placeholder}
-                  error={errors.email}
-                />
-                <FormField
-                  prefix={PREFIX}
                   name="message"
                   multiline
-                  label={closingContent.fields.message.label}
-                  icon={closingContent.fields.message.icon}
-                  placeholder={closingContent.fields.message.placeholder}
+                  label={closingContent.message.label}
+                  icon={closingContent.message.icon}
+                  placeholder={closingContent.message.placeholder}
                   error={errors.message}
                 />
 
                 {/* Hand-built rather than `ChipButton`, because a submit has
                     to be a `<button>`. The arrow comes from the same component
-                    the links use, so the hover cannot diverge. */}
-                <button type="submit" className="chip-cta chip-cta-dark">
-                  <span className="chip-cta_label">
-                    <span>{closingContent.submit}</span>
-                  </span>
-                  <ChipArrow />
-                </button>
-
-                <FormStatus>{sent ? closingContent.pending : null}</FormStatus>
+                    the links use, so the hover cannot diverge. Which one was
+                    pressed is the channel. */}
+                <div className="flex flex-wrap gap-3">
+                  {CHANNELS.map(({ id, label, Icon }) => (
+                    <button key={id} type="submit" value={id} className="chip-cta chip-cta-dark">
+                      <span className="chip-cta_label">
+                        <span className="inline-flex items-center gap-2">
+                          <Icon className="size-3.5 shrink-0" />
+                          {label}
+                        </span>
+                      </span>
+                      <ChipArrow />
+                    </button>
+                  ))}
+                </div>
               </form>
             </ReadingPanel>
           </div>
