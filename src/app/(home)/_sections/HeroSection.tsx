@@ -2,7 +2,7 @@ import { withBasePath } from "@/lib/base-path";
 import { Badge } from "@/components/ui/Badge";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { HeroCurrents } from "../_components/HeroCurrents";
+import { HeroFlow } from "../_components/HeroFlow";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";
 import { SplitWords } from "@/components/motion/SplitWords";
@@ -16,9 +16,10 @@ import { heroContent } from "@/content/home";
  * `SectionHandoff` — the exit window that suits every other band would dim the
  * headline while it is still the most prominent thing on the page.
  *
- * Under the copy, the band's ground moves: `HeroCurrents`. The customer map
- * that used to stand beside the headline belongs to `/casos-de-exito`, the
- * band that says who the clients are.
+ * Beside the copy, the band's ground moves: `HeroFlow`, an agentic process at
+ * work and the throughput it adds. The customer map that used to stand
+ * beside the headline belongs to `/casos-de-exito`, the band that says who
+ * the clients are.
  */
 export function HeroSection() {
   return (
@@ -29,7 +30,7 @@ export function HeroSection() {
         data-tone="dark"
         className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco sm:pb-14"
       >
-        <HeroCurrents />
+        <HeroFlow />
         <Container className="relative">
           <div data-hero="copy" className="max-w-[52rem]">
             <AcademyAnnouncement />

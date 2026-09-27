@@ -1,0 +1,175 @@
+/* The home hero's flow — an agentic process drawn in the board's hairlines, and its throughput. */
+
+@layer components {
+  /*
+   * The ground of the one band whose copy is set straight on the gradient.
+   * The drawing is the board's: round caps, a film of white for the plates,
+   * translucent white for the wiring, celeste for what moves and for what is
+   * working. It is kept a step under the board, since the headline beside it
+   * is what is read first.
+   *
+   * Sizes are in viewBox units, about one CSS pixel each beside the copy.
+   */
+  .hero-flow {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-flow_art {
+    position: absolute;
+    display: block;
+    overflow: visible;
+    font-family: var(--font-lato), "Lato", sans-serif;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    word-spacing: 0.05em;
+  }
+
+  /* Beside the copy: the band's right column, from under the header to above
+     the pillars, as tall as that leaves room for. */
+  @media (min-width: 80rem) {
+    .hero-flow_art {
+      top: calc(var(--header-height) + 3.5rem);
+      right: max(2.25rem, calc((100vw - 1440px) / 2 + 2.25rem));
+      height: min(41rem, calc(100% - var(--header-height) - 12rem));
+      width: auto;
+      aspect-ratio: 600 / 656;
+    }
+  }
+
+  /* Below `xl` the copy takes the band's width, so the drawing goes behind
+     its upper half, fainter, and fades out before the lead. */
+  @media (max-width: 79.99rem) {
+    .hero-flow_art {
+      top: calc(var(--header-height) + 1rem);
+      right: 1.5rem;
+      width: min(30rem, 56%);
+      height: auto;
+      opacity: 0.42;
+      mask-image: linear-gradient(to bottom, var(--negro) 55%, transparent 100%);
+    }
+
+    .hero-flow_text {
+      display: none;
+    }
+  }
+
+  /* On a phone, all of it, as wide as the band allows. */
+  @media (max-width: 47.99rem) {
+    .hero-flow_art {
+      right: 50%;
+      width: calc(100% - 2rem);
+      translate: 50% 0;
+      opacity: 0.34;
+      mask-image: none;
+    }
+  }
+
+  .hero-flow_route {
+    fill: none;
+    stroke: none;
+  }
+
+  .hero-flow_wire,
+  .hero-flow_queue {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.3);
+    stroke-width: 1.1;
+  }
+
+  .hero-flow_plate-edge {
+    fill: rgb(255 255 255 / 0.06);
+    stroke: rgb(255 255 255 / 0.45);
+    stroke-width: 1;
+  }
+
+  .hero-flow_hex {
+    fill: rgb(255 255 255 / 0.06);
+    stroke: rgb(var(--rgb-celeste) / 0.85);
+    stroke-width: 1.2;
+  }
+
+  /* The film a part lights with when an item reaches it; the model sets its
+     opacity. */
+  .hero-flow_glow {
+    fill: rgb(var(--rgb-celeste) / 0.3);
+    stroke: var(--blanco);
+    stroke-width: 1;
+    opacity: 0;
+  }
+
+  .hero-flow_glow-hex {
+    fill: rgb(var(--rgb-celeste) / 0.22);
+  }
+
+  .hero-flow_glyph {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 1.5;
+  }
+
+  /* An agent at work: a ring filling round its plate. */
+  .hero-flow_progress {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 1.5;
+    stroke-dasharray: 131.95;
+    stroke-dashoffset: 131.95;
+    opacity: 0;
+  }
+
+  .hero-flow_heading {
+    fill: rgb(255 255 255 / 0.6);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+
+  .hero-flow_caption {
+    fill: rgb(255 255 255 / 0.6);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-flow_baseline {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.45);
+    stroke-width: 1;
+    stroke-dasharray: 2 5;
+  }
+
+  .hero-flow_trend {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 1.6;
+  }
+
+  .hero-flow_area {
+    fill: url(#hero-flow-area);
+  }
+
+  .hero-flow_head {
+    fill: var(--blanco);
+    stroke: var(--celeste);
+    stroke-width: 1.5;
+  }
+
+  /* An item, as the board's request is drawn: white, a celeste edge. Only
+     the model shows one. */
+  .hero-flow_job {
+    fill: var(--blanco);
+    stroke: var(--celeste);
+    stroke-width: 1.5;
+    opacity: 0;
+  }
+
+  .hero-flow_ring {
+    fill: none;
+    stroke: var(--celeste);
+    stroke-width: 1.5;
+    opacity: 0;
+  }
+}
