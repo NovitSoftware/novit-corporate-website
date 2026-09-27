@@ -10,7 +10,7 @@ const SHELL = ".scroll-shell";
 
 if (typeof window !== "undefined") {
   // DrawSVG draws the site's lines in: the Academia's architecture, the
-  // customer map's routes, the home hero's currents.
+  // customer map's routes, the home hero's flow.
   gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, useGSAP);
 }
 

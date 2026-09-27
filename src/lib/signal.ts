@@ -1,9 +1,9 @@
 /*
  * The site's travelling signal, in three marks: a dot carried along a path,
  * a short run of light moving down a line, and the ring left where either
- * arrives. The Academia's board, the customer map and the home hero all move
- * with these, so a request on the board, a route on the map and a current in
- * the hero read as the same thing.
+ * arrives. The Academia's board and the customer map move with these, so a
+ * request on the board and a route on the map read as the same thing; the
+ * home hero's flow draws the same dot and ring from its own model's clock.
  *
  * Each one writes attributes from the path's own geometry on every frame
  * instead of tweening them: a dot placed from `getPointAtLength` shares the
