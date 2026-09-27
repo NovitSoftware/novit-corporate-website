@@ -26,6 +26,7 @@ export function DevelopmentConsulting() {
         <Container>
           <SectionIntro
             eyebrow={consulting.eyebrow}
+            icon={consulting.icon}
             title={consulting.title}
             aside={
               <p

@@ -31,7 +31,7 @@ export const metadata: Metadata = {
  * one entry, so they share a page here.
  */
 export default function DesarrolloYConsultoria() {
-  const { eyebrow, title, lead, cta } = developmentPageContent;
+  const { eyebrow, icon, title, lead, cta } = developmentPageContent;
 
   return (
     <SiteShell footer={developmentFooterContent}>
@@ -39,6 +39,7 @@ export default function DesarrolloYConsultoria() {
           builds, the same one the cursada teaches. */}
       <PageOpener
         eyebrow={eyebrow}
+        icon={icon}
         title={title}
         lead={lead}
         cta={cta}

@@ -42,6 +42,7 @@ export function CasesWork() {
         <Container>
           <SectionIntro
             eyebrow={work.eyebrow}
+            icon={work.icon}
             title={work.title}
             aside={
               <p

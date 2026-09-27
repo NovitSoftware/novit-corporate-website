@@ -44,6 +44,7 @@ export function AcademySchedule() {
         <Container>
           <PinnedIntro
             eyebrow={schedule.eyebrow}
+            icon={schedule.icon}
             title={schedule.title}
             beside={
               <ReadingPanel as="section">

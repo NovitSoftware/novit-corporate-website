@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ChipButton } from "@/components/ui/ChipButton";
+import type { IconName } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/Container";
 import { Scene } from "@/components/motion/Scene";
 import { SectionLabel } from "@/components/section/SectionLabel";
@@ -8,6 +9,8 @@ import { cn } from "@/lib/cn";
 
 type PageOpenerProps = {
   eyebrow: string;
+  /** The route's mark, beside `eyebrow` — see `routeIcon`. */
+  icon: IconName;
   title: string;
   lead: string;
   /** The way in. Off-site hrefs — the WhatsApp line — open in a new tab. */
@@ -42,6 +45,7 @@ type PageOpenerProps = {
  */
 export function PageOpener({
   eyebrow,
+  icon,
   title,
   lead,
   cta,
@@ -77,7 +81,7 @@ export function PageOpener({
                 : "max-w-[54rem]",
             )}
           >
-            <SectionLabel name={eyebrow} />
+            <SectionLabel name={eyebrow} icon={icon} />
             <h1
               data-anim="words"
               className={cn(

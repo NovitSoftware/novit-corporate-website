@@ -29,6 +29,7 @@ export function ServicesSection() {
             <SectionLabel
               index={servicesIntro.index}
               name={servicesIntro.eyebrow}
+              icon={servicesIntro.icon}
               className="lg:sticky lg:top-[calc(var(--header-height)+2.5rem)] lg:self-start"
             />
 

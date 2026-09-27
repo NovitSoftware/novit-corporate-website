@@ -24,7 +24,7 @@ import { AcademyBoard } from "../_components/AcademyBoard";
  * page curtain opens, so this arrives with the page.
  */
 export function AcademyOpener() {
-  const { eyebrow, title, lead, cta } = academyPageContent;
+  const { eyebrow, icon, title, lead, cta } = academyPageContent;
 
   return (
     <section
@@ -57,7 +57,7 @@ export function AcademyOpener() {
               data-anim-block
               className="relative z-[1] xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
             >
-              <SectionLabel name={eyebrow} />
+              <SectionLabel name={eyebrow} icon={icon} />
               <h1
                 data-anim="words"
                 className="display-hero mt-7 max-w-[20ch] text-balance text-blanco xl:text-[clamp(3.25rem,4.6vw,4.5rem)]"

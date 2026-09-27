@@ -52,6 +52,7 @@ export const servicesIntro = {
   id: "servicios",
   index: "01",
   eyebrow: "Qué hacemos",
+  icon: "blocks",
 } as const;
 
 /**
@@ -135,6 +136,7 @@ export const closingContent = {
   id: "contacto",
   index: "02",
   eyebrow: "Contacto",
+  icon: "chat",
   kicker: { lead: "Más de 11 años", strong: "haciendo simple lo complejo" },
   title: "¿En qué proceso te ayudamos a reducir costos?",
   description:
@@ -163,8 +165,8 @@ export const homeFooterContent = {
       /* This page's own bands, which is what every route's footer indexes. */
       title: "En esta página",
       links: [
-        { label: "Qué hacemos", href: "/#servicios" },
-        { label: "Contacto", href: "/#contacto" },
+        { label: servicesIntro.eyebrow, href: "/#servicios", icon: servicesIntro.icon },
+        { label: closingContent.eyebrow, href: "/#contacto", icon: closingContent.icon },
       ],
     },
     exploreColumn("/"),

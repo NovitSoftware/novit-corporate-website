@@ -32,12 +32,13 @@ export const metadata: Metadata = {
  * behind it.
  */
 export default function CasosDeExito() {
-  const { eyebrow, title, lead, cta } = casesPageContent;
+  const { eyebrow, icon, title, lead, cta } = casesPageContent;
 
   return (
     <SiteShell footer={casesFooterContent}>
       <PageOpener
         eyebrow={eyebrow}
+        icon={icon}
         title={title}
         lead={lead}
         cta={cta}

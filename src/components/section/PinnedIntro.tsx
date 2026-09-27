@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import { SectionIntro } from "@/components/section/SectionIntro";
+import type { IconName } from "@/components/ui/Icon";
 import { cn } from "@/lib/cn";
 
 type PinnedIntroProps = {
   index?: string;
   eyebrow: string;
+  icon: IconName;
   title: string;
   /** The reading that belongs with the statement, inside the pinned column. */
   children?: ReactNode;
@@ -32,6 +34,7 @@ type PinnedIntroProps = {
 export function PinnedIntro({
   index,
   eyebrow,
+  icon,
   title,
   children,
   beside,
@@ -48,6 +51,7 @@ export function PinnedIntro({
         <SectionIntro
           index={index}
           eyebrow={eyebrow}
+          icon={icon}
           title={title}
           layout="stacked"
         >

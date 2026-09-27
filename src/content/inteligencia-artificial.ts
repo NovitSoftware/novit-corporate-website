@@ -1,4 +1,5 @@
 import { exploreColumn, footerMission, type FooterContent } from "@/content/footer";
+import { routeIcon } from "@/content/navigation";
 import { siteContact } from "@/content/site";
 
 /**
@@ -22,6 +23,7 @@ export const servicesPageContent = {
       "Estrategia, infraestructura y agentes de IA sobre una arquitectura reutilizable en la red privada de tu empresa.",
   },
   eyebrow: "Servicios",
+  icon: routeIcon("/inteligencia-artificial"),
   title: "Inteligencia Artificial y Software Agéntico",
   lead: "Te acompañamos a definir la estrategia, montar la infraestructura, construir los agentes de inteligencia artificial y a sostenerlos en el tiempo. Sobre una arquitectura reutilizable en la red privada de tu empresa.",
   /* WhatsApp, como `/academianovit` va al inbox de la Academia: cada página
@@ -47,6 +49,7 @@ export const servicesPageContent = {
   architecture: {
     id: "infraestructura",
     eyebrow: "Infraestructura",
+    icon: "layers",
     title: "Una arquitectura de IA compartida",
     lead: "Un RAG corporativo centralizado, una identidad única y una capa de integración común: cada agente nuevo se apoya en lo ya construido y cuesta menos que el anterior.",
     agentsLabel: "Agentes de la empresa",
@@ -85,6 +88,7 @@ export const servicesPageContent = {
   partner: {
     id: "nuestro-rol",
     eyebrow: "Nuestro rol",
+    icon: "strategy",
     title: "Qué aporta un partner de transformación IA",
     lead: "Acompañamos a la dirección en cuatro decisiones que ningún proyecto aislado resuelve, con el mismo equipo disponible a lo largo del tiempo.",
     /**
@@ -131,6 +135,7 @@ export const servicesPageContent = {
   evolution: {
     id: "evolucion",
     eyebrow: "Evolución",
+    icon: "target",
     title: "Del primer agente a la estrategia corporativa",
     /* "Estas empresas", and the band sits directly under the four of them.
        It read "las empresas de acá abajo" while Evolución came *before*
@@ -179,6 +184,7 @@ export const servicesPageContent = {
   cases: {
     id: "casos-en-produccion",
     eyebrow: "Casos de éxito",
+    icon: "briefcase",
     title: "Agentes que ya están trabajando",
     lead: "Dos agentes en producción, cada uno sobre un proceso concreto de una empresa distinta: qué resuelve y qué cambió al ponerlo a andar.",
   },
@@ -272,16 +278,26 @@ export const servicesFooterContent: FooterContent = {
     {
       title: "En esta página",
       links: [
-        { label: servicesPageContent.partner.eyebrow, href: "#nuestro-rol" },
+        {
+          label: servicesPageContent.partner.eyebrow,
+          href: "#nuestro-rol",
+          icon: servicesPageContent.partner.icon,
+        },
         {
           label: servicesPageContent.architecture.eyebrow,
           href: "#infraestructura",
+          icon: servicesPageContent.architecture.icon,
         },
         {
           label: servicesPageContent.cases.eyebrow,
           href: "#casos-en-produccion",
+          icon: servicesPageContent.cases.icon,
         },
-        { label: servicesPageContent.evolution.eyebrow, href: "#evolucion" },
+        {
+          label: servicesPageContent.evolution.eyebrow,
+          href: "#evolucion",
+          icon: servicesPageContent.evolution.icon,
+        },
       ],
     },
     exploreColumn("/inteligencia-artificial"),

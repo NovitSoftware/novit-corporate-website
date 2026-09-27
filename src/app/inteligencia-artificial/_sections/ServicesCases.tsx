@@ -24,6 +24,7 @@ export function ServicesCases() {
         <Container>
           <SectionIntro
             eyebrow={cases.eyebrow}
+            icon={cases.icon}
             title={cases.title}
             aside={
               <p

@@ -34,6 +34,7 @@ export function AcademyEvaluation() {
         <Container>
           <SectionIntro
             eyebrow={evaluation.eyebrow}
+            icon={evaluation.icon}
             title={evaluation.title}
             aside={
               <p

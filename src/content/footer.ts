@@ -12,7 +12,8 @@ import { homeLink, navigation } from "@/content/navigation";
  * A `link` with no `href` is a fact rather than a destination — the edition's
  * dates, say. The footer renders those as text instead of inventing an anchor
  * for them. `icon` is optional per link, but every link in one column should
- * agree.
+ * agree — and every column so far has one: the route's mark, the section's,
+ * the fact's.
  */
 export type FooterContent = {
   /** Optional: a route whose footer is a short index reads better without it. */

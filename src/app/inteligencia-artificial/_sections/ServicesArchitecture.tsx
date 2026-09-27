@@ -50,6 +50,7 @@ export function ServicesArchitecture() {
         <Container>
           <SectionIntro
             eyebrow={architecture.eyebrow}
+            icon={architecture.icon}
             title={architecture.title}
             aside={
               <p
@@ -61,7 +62,8 @@ export function ServicesArchitecture() {
             }
             below={
               <figure data-anim-block>
-                <p className="text-[0.625rem] font-bold uppercase tracking-[0.18em] text-on-label">
+                <p className="flex items-center gap-2 text-[0.625rem] font-bold uppercase tracking-[0.18em] text-on-label">
+                  <Icon name="agent" size="micro" className="text-celeste" />
                   {architecture.agentsLabel}
                 </p>
 

@@ -18,8 +18,9 @@
  * Each is a reduction of that route's own `meta.description`, so the menu and
  * the page it opens say the same thing.
  *
- * `icon` is the route's mark wherever it is listed — the menu and every
- * footer's "Explorá" column — so a page is the same glyph everywhere.
+ * `icon` is the route's mark wherever it is listed — the menu, every footer's
+ * "Explorá" column and the label over the route's own opener — so a page is
+ * the same glyph everywhere.
  */
 export const navigation = [
   {
@@ -57,3 +58,8 @@ export const navigation = [
 export const homeLink = { label: "Inicio", href: "/", icon: "home" } as const;
 
 export type NavigationItem = (typeof navigation)[number];
+
+/** A route's mark, for the label its own opener carries. */
+export function routeIcon(href: NavigationItem["href"]) {
+  return navigation.find((item) => item.href === href)!.icon;
+}
