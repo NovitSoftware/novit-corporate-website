@@ -194,21 +194,9 @@ export const servicesPageContent = {
  * `{n}` and `{move}` are filled in by `snake-motion.ts`.
  */
 export const agentSnake = {
-  title: "Agente autónomo",
-  subtitle: "Simulación: juega solo, paso a paso.",
   description:
     "Simulación de un agente que juega a la víbora por su cuenta. En cada paso busca la ruta más corta al objetivo alrededor de su propio cuerpo y comprueba que, después de comer, todavía pueda llegar a su cola; si quedaría encerrado, sigue su cola hasta que se abra un camino seguro. En el tablero se dibuja la ruta que planea. Al lado, la auditoría de cada decisión: la confianza en cada movimiento, su razonamiento y un registro de eventos.",
   board: { label: "Entorno", game: "Partida" },
-  /** How fast the game runs, against its normal pace. */
-  speed: {
-    label: "Velocidad",
-    initial: 1,
-    options: [
-      { value: 0.5, label: "0,5×" },
-      { value: 1, label: "1×" },
-      { value: 2, label: "2×" },
-    ],
-  },
   audit: {
     label: "Auditoría",
     step: "Paso",
@@ -266,8 +254,6 @@ export const agentSnake = {
     resume: { label: "Retoma", one: "ruta de 1 paso", other: "ruta de {n} pasos" },
     end: { label: "Fin", one: "1 captura", other: "{n} capturas" },
   },
-  /** Novit's one remark on it, in its own voice. */
-  note: "Cada decisión queda registrada: qué vio, qué eligió y por qué.",
 } as const;
 
 /**

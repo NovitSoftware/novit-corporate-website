@@ -14,15 +14,15 @@ type PageOpenerProps = {
   cta: { label: string; href: string };
   /** Anything the page wants under the button. */
   children?: ReactNode;
-  /** Art beside the copy from `xl`, bled to the window edge; below that, the
-   *  ground the copy is set on. See `.opener-aside` in opener.css. */
+  /** Art beside the copy from `xl`, bled to the window edge; on a tablet,
+   *  the ground the copy is set on; on a phone, under the copy. See
+   *  `.opener-aside` in opener.css. */
   aside?: ReactNode;
   /**
    * A figure that is read, not glanced at, laid out as the Academia's board
    * is: the wider of the two columns from `xl`, with the headline stepped down
    * to fit its own and the copy held beside it as it scrolls; under the copy
-   * at full width from `md`; on a phone, the ground behind the copy — see
-   * `OpenerFigure`.
+   * at full width below that — see `OpenerFigure`.
    */
   figure?: ReactNode;
 };
@@ -32,7 +32,7 @@ type PageOpenerProps = {
  * lead, and the one door.
  *
  * Not `HeroScene` and not `Section`. `HeroScene` is choreographed for the home
- * hero's own parts — badge, pillars, currents — which no other opener has;
+ * hero's own parts — badge, pillars, flow — which no other opener has;
  * `Section` carries the standard vertical rhythm, where an opener has to clear
  * the fixed header instead.
  *
@@ -121,9 +121,7 @@ export function PageOpener({
 
 /**
  * Where an opener's figure stands: its own column from `xl`, under the copy
- * from `md`, and on a phone the ground behind the copy rather than a figure
- * too small to read — see opener.css. The copy beside it has to be lifted
- * over it with `relative z-[1]`.
+ * below that, whole and scaled to the width on a phone — see opener.css.
  */
 export function OpenerFigure({ children }: { children: ReactNode }) {
   return <div className="opener-figure">{children}</div>;

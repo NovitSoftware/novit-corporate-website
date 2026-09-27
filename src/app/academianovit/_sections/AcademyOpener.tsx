@@ -50,10 +50,8 @@ export function AcademyOpener() {
               with its top edge and stays in view while the board scrolls
               past, rather than floating at its middle.
 
-              Below `xl` the board follows the copy at full width, and on a
-              phone it becomes the ground behind the copy, as every opener's
-              figure does: at that width it would be a picture of labels too
-              small to read. */}
+              Below `xl` the board follows the copy at full width, on a phone
+              too, scaled to it, as every opener's figure does. */}
           <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] xl:items-start xl:gap-12">
             <div
               data-anim-block

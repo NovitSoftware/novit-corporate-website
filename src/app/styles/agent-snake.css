@@ -2,11 +2,11 @@
 
 @layer components {
   /*
-   * The board's three inks, with the board's jobs: white for the board and
-   * what is on it, celeste for what the agent does, violet only for Novit's
-   * remark. The reference demo had the target in violet; on this site violet
-   * is Novit's voice and nothing else, so the target is white and the colour
-   * a swallowed one leaves in the body fades from white back to celeste.
+   * The board's inks, with the board's jobs: white for the board and what is
+   * on it, celeste for what the agent does. The reference demo had the target
+   * in violet; on this site violet is Novit's voice and nothing else, so the
+   * target is white and the colour a swallowed one leaves in the body fades
+   * from white back to celeste.
    */
   .agent-snake {
     /* The canvas's inks, read by `snake-motion.ts`. Hex, so they can be mixed. */
@@ -23,91 +23,10 @@
     max-width: 46rem;
   }
 
-  /* No panel: the figure is set on the gradient like the copy beside it,
-     and a hairline under the header is all that says where it starts. */
+  /* No panel and no title: the figure is set on the gradient like the copy
+     beside it, and starts with its panes. */
   .agent-snake_inner {
     color: var(--blanco);
-  }
-
-  .agent-snake_header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .agent-snake_title {
-    font-size: 1.0625rem;
-    font-weight: 900;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-
-  .agent-snake_subtitle {
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    color: rgb(255 255 255 / 0.72);
-  }
-
-  /* --- The speed ----------------------------------------------------------
-   * A segmented control in the board's hairline: one pill, the chosen pace
-   * lit in celeste like the chosen move. Only where the game moves — without
-   * scripts or with reduced motion there is nothing for it to change.
-   */
-  .agent-snake_speed {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    gap: 0.625rem;
-  }
-
-  html:not([data-motion="on"]) .agent-snake_speed {
-    display: none;
-  }
-
-  .agent-snake_speed-options {
-    display: flex;
-    padding: 2px;
-    border: 1px solid rgb(255 255 255 / 0.2);
-    border-radius: var(--chip-radius);
-  }
-
-  .agent-snake_speed-options label {
-    position: relative;
-    cursor: pointer;
-  }
-
-  .agent-snake_speed-options span {
-    display: block;
-    min-width: 2.5rem;
-    padding: 0.375rem 0.625rem;
-    border-radius: var(--chip-radius);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.04em;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-    color: rgb(255 255 255 / 0.72);
-    transition:
-      color var(--dur-base) var(--ease-in-out-quad),
-      background-color var(--dur-base) var(--ease-in-out-quad);
-  }
-
-  @media (hover: hover) {
-    .agent-snake_speed-options label:hover span {
-      color: var(--blanco);
-    }
-  }
-
-  .agent-snake_speed-options input:checked + span {
-    background-color: rgb(var(--rgb-celeste) / 0.2);
-    color: var(--celeste);
-  }
-
-  .agent-snake_speed-options input:focus-visible + span {
-    outline: 2px solid var(--celeste);
-    outline-offset: 1px;
   }
 
   /* The game and its audit side by side: the audit is the narrow column, and
@@ -116,9 +35,6 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) 14.5rem;
     gap: 1.25rem;
-    margin-top: 1.125rem;
-    padding-top: 1.125rem;
-    border-top: 1px solid rgb(255 255 255 / 0.14);
   }
 
   /* The board's headings, at the site's micro-label. */
@@ -396,63 +312,24 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Novit's remark, as the board writes its notes: a violet bar for whose
-     voice it is, the words in voz-suave. */
-  .agent-snake_note {
-    position: relative;
-    margin-top: 1.125rem;
-    padding-left: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1.4;
-    color: var(--voz-suave);
-  }
-
-  .agent-snake_note::before {
-    content: "";
-    position: absolute;
-    top: 0.1em;
-    bottom: 0.1em;
-    left: 0;
-    width: 3px;
-    border-radius: 1.5px;
-    background: linear-gradient(to top, var(--violeta), var(--voz-suave));
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .agent-snake_bar {
       transition: none;
     }
   }
 
-  /* --- The ground ---------------------------------------------------------
-   * Under `md` it is not a figure but the ground behind the opener's copy
-   * (`OpenerFigure`), and `snake-motion.ts` draws only the line there — no
-   * field, no audit. Everything round the canvas goes, so nothing is laid
-   * out that is not seen. The breakpoint is the one `OpenerFigure` uses.
+  /* --- On a phone ---------------------------------------------------------
+   * The whole figure, board and audit, at the width that holds both — about
+   * what it has beside the copy at `xl`'s narrowest — scaled down to the
+   * phone's by `useFit` in `AgentSnake`, which also sets the height the
+   * scaled figure covers. Dropping the audit left a game with nothing said
+   * about it; stacking it under the board made the figure two screens tall.
    */
   @media (max-width: 47.99rem) {
-    /* A small field at the top right, not the width of the band: a line
-       wandering behind the headline, gone before the lead. */
-    .agent-snake {
-      width: 62%;
-      max-width: none;
-      margin-right: 21%;
-      margin-left: auto;
-    }
-
-    .agent-snake_header,
-    .agent-snake_pane-heading,
-    .agent-snake_audit,
-    .agent-snake_note {
-      display: none;
-    }
-
-    .agent-snake_panes {
-      display: block;
-      margin-top: 0;
-      padding-top: 0;
-      border-top: 0;
+    .agent-snake_inner {
+      width: 39rem;
+      transform: scale(var(--snake-fit, 1));
+      transform-origin: top left;
     }
   }
 }
