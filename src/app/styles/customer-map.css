@@ -88,12 +88,14 @@
     opacity: 0;
   }
 
-  /* A country's name, shown while it is pointed at: the eyebrow's type. */
+  /* A country's name, shown while it is pointed at: a caption beside the
+     dot, well under the eyebrow — at the eyebrow's size and weight the names
+     outweighed the routes they label. About 8px as the map renders. */
   .customer-map_label {
-    fill: var(--blanco);
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    fill: rgb(255 255 255 / 0.85);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
     opacity: 0;
     transition: opacity var(--dur-base) var(--ease-in-out-quad);
   }

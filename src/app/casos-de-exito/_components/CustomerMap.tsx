@@ -37,6 +37,8 @@ const label = `Clientes en ${new Intl.ListFormat("es", { type: "conjunction" }).
 /** The dot's radius, and how far round it the pointer counts as on it. */
 const DOT = 7;
 const REACH = 30;
+/** From a dot's centre to its name. */
+const LABEL_GAP = 13;
 
 /**
  * The map of where Novit's clients are, drawn from where Novit is.
@@ -109,8 +111,8 @@ export function CustomerMap({ className }: { className?: string }) {
             <circle className="customer-map_dot" cx={point.x} cy={point.y} r={DOT} />
             <text
               className="customer-map_label"
-              x={point.left ? point.x - 16 : point.x + 16}
-              y={point.y + 6}
+              x={point.left ? point.x - LABEL_GAP : point.x + LABEL_GAP}
+              y={point.y + 4}
               textAnchor={point.left ? "end" : "start"}
             >
               {point.name.toLocaleUpperCase("es")}
@@ -122,7 +124,7 @@ export function CustomerMap({ className }: { className?: string }) {
           <circle className="customer-map_hit" cx={home.x} cy={home.y} r={REACH} />
           <circle className="customer-map_pulse" cx={home.x} cy={home.y} r={DOT} />
           <circle className="customer-map_home" cx={home.x} cy={home.y} r={DOT} />
-          <text className="customer-map_label" x={home.x + 16} y={home.y + 6}>
+          <text className="customer-map_label" x={home.x + LABEL_GAP} y={home.y + 4}>
             {home.name.toLocaleUpperCase("es")}
           </text>
         </g>
