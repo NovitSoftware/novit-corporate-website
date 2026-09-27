@@ -1,4 +1,5 @@
 import { exploreColumn, footerMission, type FooterContent } from "@/content/footer";
+import { routeIcon } from "@/content/navigation";
 import { siteContact } from "@/content/site";
 
 /**
@@ -24,6 +25,7 @@ export const developmentPageContent = {
       "Software a medida por etapas, con entregables propios en cada una, y consultoría sobre el proceso de desarrollo: métricas, KPI y optimización.",
   },
   eyebrow: "Servicios",
+  icon: routeIcon("/desarrollo-y-consultoria"),
   /* NBSP between "Consultoría" y "IT": el h1 envuelve a 22ch, y con espacio
      normal "IT" quedaba huérfano en una tercera línea. Con el NBSP el corte
      cae después de "y", y "Consultoría IT" baja junto a la segunda línea. */
@@ -43,6 +45,8 @@ export const developmentPageContent = {
   build: {
     id: "desarrollo",
     eyebrow: "Desarrollo de software",
+    /* Not `code`: that is the route's own mark, on the opener right above. */
+    icon: "blocks",
     title: "Creamos software único para los procesos de tu empresa",
     lead: "La inteligencia artificial incrementó la productividad de la industria del software en general y la nuestra en particular en un orden de magnitud. Hoy ofrecemos servicios de calidad a una fracción del costo de años atrás. Vendemos el desarrollo a medida por etapas que se compran individualmente, con entregables tangibles que alimentan a la siguiente.",
     stages: [
@@ -87,6 +91,7 @@ export const developmentPageContent = {
   consulting: {
     id: "consultoria",
     eyebrow: "Consultoría IT",
+    icon: "metric",
     title: "Optimizamos el proceso de desarrollo de tu equipo",
     lead: "Accedé a conocimiento experto y estrategias a medida en el momento en que lo requieras, para incrementar la productividad del equipo y optimizar los procesos con los que trabaja.",
     helpLabel: "Te ayudamos a",
@@ -148,10 +153,15 @@ export const developmentFooterContent: FooterContent = {
     {
       title: "En esta página",
       links: [
-        { label: developmentPageContent.build.eyebrow, href: "#desarrollo" },
+        {
+          label: developmentPageContent.build.eyebrow,
+          href: "#desarrollo",
+          icon: developmentPageContent.build.icon,
+        },
         {
           label: developmentPageContent.consulting.eyebrow,
           href: "#consultoria",
+          icon: developmentPageContent.consulting.icon,
         },
       ],
     },

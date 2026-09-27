@@ -38,6 +38,7 @@ export function ServicesRole() {
         <Container>
           <PinnedIntro
             eyebrow={partner.eyebrow}
+            icon={partner.icon}
             title={partner.title}
             beside={
               <CardGrid columns={2}>

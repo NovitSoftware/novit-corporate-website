@@ -1,4 +1,5 @@
 import { exploreColumn, footerMission, type FooterContent } from "@/content/footer";
+import { routeIcon } from "@/content/navigation";
 import { siteContact } from "@/content/site";
 
 /**
@@ -35,6 +36,7 @@ export const casesPageContent = {
       "Agentes de IA en producción y una década de proyectos: sistemas de gestión, plataformas web y mobile, consultoría de procesos y equipos integrados.",
   },
   eyebrow: "Casos de éxito",
+  icon: routeIcon("/casos-de-exito"),
   title: "Empresas que confían en Novit",
   lead: "Desde 2015, con clientes activos en cinco países. Más de una década siendo partners de empresas en el mundo.",
   cta: { label: "Consultanos", href: siteContact.phone.href },
@@ -48,6 +50,8 @@ export const casesPageContent = {
   work: {
     id: "recorrido",
     eyebrow: "Recorrido",
+    /* A decade of it; `briefcase` is the route's mark, on the opener. */
+    icon: "calendar",
     title: "Una década de proyectos",
     /* El cap. 01 sigue fijando qué se dice de cada país, pero ahora es la
        bandera de cada card la que lo dice, no esta oración: Colombia y
@@ -381,10 +385,11 @@ export const casesFooterContent: FooterContent = {
     {
       title: "En esta página",
       links: [
-        { label: casesPageContent.work.eyebrow, href: "#recorrido" },
+        { label: casesPageContent.work.eyebrow, href: "#recorrido", icon: casesPageContent.work.icon },
         ...casesPageContent.work.groups.map((group) => ({
           label: group.title,
           href: `#${group.id}`,
+          icon: group.icon,
         })),
       ],
     },

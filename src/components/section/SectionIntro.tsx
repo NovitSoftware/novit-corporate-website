@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 import { ScrollWords } from "@/components/motion/ScrollWords";
 import { SectionLabel } from "@/components/section/SectionLabel";
+import type { IconName } from "@/components/ui/Icon";
 import { cn } from "@/lib/cn";
 
 type SectionIntroProps = {
   index?: string;
   eyebrow: string;
+  /** The section's mark, beside `eyebrow` in the label. */
+  icon: IconName;
   /** The large statement, brought up word by word as the section passes. */
   title: string;
   /**
@@ -74,6 +77,7 @@ type SectionIntroProps = {
 export function SectionIntro({
   index,
   eyebrow,
+  icon,
   title,
   layout = "rail",
   children,
@@ -96,6 +100,7 @@ export function SectionIntro({
       <SectionLabel
         index={index}
         name={eyebrow}
+        icon={icon}
         className={cn(
           /* The label is a running head, not a stamp: it says where in the
              argument you are, so it stays on screen for the argument it names.

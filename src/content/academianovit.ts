@@ -6,6 +6,7 @@
    ========================================================================== */
 
 import { exploreColumn, type FooterContent } from "@/content/footer";
+import { routeIcon } from "@/content/navigation";
 import { siteContact } from "@/content/site";
 
 /**
@@ -288,6 +289,7 @@ export const academyPageContent = {
       "Cursada de 32 horas sobre diseño y construcción de sistemas agénticos: arquitectura, orquestación, contexto, costos, seguridad y observabilidad.",
   },
   eyebrow: "Academia Novit",
+  icon: routeIcon("/academianovit"),
   title: "Desarrollo de Agentes IA y Software Agéntico",
   lead: "Una cursada de 32 horas sobre cómo se diseña, se construye y se sostiene un sistema agéntico: arquitectura, orquestación, contexto, costos, seguridad y observabilidad.",
   /* Not "Inscribirse" and not "Cuándo abre la inscripción": the first promises
@@ -299,12 +301,15 @@ export const academyPageContent = {
     schedule: {
       id: "cursada",
       eyebrow: "Cursada",
+      /* The temario; `academy` is the route's mark, on the opener. */
+      icon: "document",
       title: "Sistemas agénticos: diseño, arquitectura y producción",
       lead: "La cursada trabaja el diseño y la construcción de sistemas agénticos: cómo está hecho un agente por dentro, qué patrones lo orquestan, y con qué criterio se elige proveedor de modelo, estrategia de recuperación, modo de ejecución y nivel de autonomía según el problema, el costo, el tiempo de respuesta y el riesgo. Teoría y práctica en la misma clase, más dos talleres de consulta para las entregas. Todo online.",
     },
     evaluation: {
       id: "evaluacion",
       eyebrow: "Evaluación",
+      icon: "clipboardCheck",
       title: "Un trabajo integrador del sector energético",
     },
   },
@@ -323,10 +328,12 @@ export const academyFooterContent: FooterContent = {
         {
           label: academyPageContent.sections.schedule.eyebrow,
           href: `#${academyPageContent.sections.schedule.id}`,
+          icon: academyPageContent.sections.schedule.icon,
         },
         {
           label: academyPageContent.sections.evaluation.eyebrow,
           href: `#${academyPageContent.sections.evaluation.id}`,
+          icon: academyPageContent.sections.evaluation.icon,
         },
       ],
     },

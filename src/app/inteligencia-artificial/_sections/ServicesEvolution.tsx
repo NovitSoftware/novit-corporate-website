@@ -39,6 +39,7 @@ export function ServicesEvolution() {
         <Container>
           <SectionIntro
             eyebrow={evolution.eyebrow}
+            icon={evolution.icon}
             title={evolution.title}
             aside={
               <p

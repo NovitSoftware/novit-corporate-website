@@ -90,6 +90,7 @@ export function ContactSection() {
               <SectionLabel
                 index={closingContent.index}
                 name={closingContent.eyebrow}
+                icon={closingContent.icon}
               />
               <div>
                 {/* The volanta, with the accent on the half the reference

@@ -29,6 +29,7 @@ export function DevelopmentStages() {
         <Container>
           <SectionIntro
             eyebrow={build.eyebrow}
+            icon={build.icon}
             title={build.title}
             aside={
               <p

@@ -24,11 +24,12 @@ import { AgentSnake } from "../_components/AgentSnake";
  * with its audit next to it — see `AgentSnake`.
  */
 export function ServicesOpener() {
-  const { eyebrow, title, lead, cta } = servicesPageContent;
+  const { eyebrow, icon, title, lead, cta } = servicesPageContent;
 
   return (
     <PageOpener
       eyebrow={eyebrow}
+      icon={icon}
       title={title}
       lead={lead}
       cta={cta}
