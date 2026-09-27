@@ -49,7 +49,7 @@ function ServiceLayers({
   };
 }) {
   return (
-    <div className="mt-6">
+    <div className="@container mt-6">
       <span className="eyebrow card-ink-voice inline-flex items-center gap-2">
         <IconLine name="agent" size="micro" />
         {layers.top}
@@ -57,8 +57,11 @@ function ServiceLayers({
       {/* Each capability leads with its mark, which is also what separates it
           from the one before: the middots that did that went with the icons.
           Two by two, because with the marks the four no longer fit one line
-          of the card, and a wrapped row left one of them alone under three. */}
-      <ul className="card-divide mt-3 grid grid-cols-[repeat(2,max-content)] gap-x-6 gap-y-2.5 pt-3">
+          of the card, and a wrapped row left one of them alone under three.
+          The pair needs about 17.5rem; in a narrower card — a 320px phone,
+          either column of the grid just past 640px — the tracks cannot shrink
+          and pushed the card past its column, so there they stack in one. */}
+      <ul className="card-divide mt-3 grid grid-cols-1 gap-x-6 gap-y-2.5 pt-3 @2xs:grid-cols-[repeat(2,max-content)]">
         {layers.base.map((item) => (
           <li
             key={item.label}

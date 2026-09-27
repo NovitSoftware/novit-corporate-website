@@ -14,8 +14,10 @@ import { site } from "@/content/site";
 import { type FooterContent } from "@/content/footer";
 import { cn } from "@/lib/cn";
 
+/* On a touch screen each link takes some height of its own, so a 20px line of
+   type is not the whole target for a thumb. A mouse keeps the tighter list. */
 const footerLink =
-  "link-rule inline-flex w-fit items-center gap-2 text-on-link hover:text-celeste";
+  "link-rule inline-flex w-fit items-center gap-2 text-on-link hover:text-celeste pointer-coarse:py-1.5";
 
 /** One track per column the route has, beside the brand block. */
 const GRID_COLUMNS = {

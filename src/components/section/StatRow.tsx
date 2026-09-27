@@ -37,7 +37,9 @@ export function StatRow({ items, className }: StatRowProps) {
     <dl
       data-anim-batch
       className={cn(
-        "grid gap-8 sm:grid-cols-2",
+        /* Two across from the narrowest phone: each fact is one short line,
+           and stacked one per row the four took a screen of their own. */
+        "grid grid-cols-2 gap-8",
         items.length > 3 ? "lg:grid-cols-4" : "lg:grid-cols-3",
         className,
       )}
