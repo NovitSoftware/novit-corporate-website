@@ -10,7 +10,7 @@ import { variantClass } from "@/lib/variants";
 const columnsClass = {
   1: "",
   2: "sm:grid-cols-2",
-  3: "md:grid-cols-3",
+  3: "sm:grid-cols-2 lg:grid-cols-3",
   4: "sm:grid-cols-2 lg:grid-cols-4",
 } as const;
 

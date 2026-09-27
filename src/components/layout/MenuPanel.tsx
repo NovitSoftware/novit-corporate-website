@@ -55,38 +55,55 @@ export function MenuPanel({
       animate={{ clipPath: open ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)" }}
       transition={{ duration: reduced ? 0 : 0.75, ease: PANEL_EASE }}
       className={cn(
-        "scene-ground fixed inset-0 z-0 flex h-dvh flex-col justify-center overflow-hidden",
+        "scene-ground fixed inset-0 z-0 h-dvh overflow-hidden",
         open ? "pointer-events-auto" : "pointer-events-none",
       )}
     >
       {/* The page's own background, so opening the menu does not change it. */}
       <SceneAtmosphere />
 
-      <Container className="relative pb-10 pt-header">
-        <nav aria-label="Principal">
-          <ul className="menu-list border-b border-blanco/12">
-            {navigation.map((item, index) => (
-              <li key={item.id}>
-                <MenuRow
-                  item={item}
-                  /* `trailingSlash` makes the pathname `/ruta/`; the hrefs have none. */
-                  current={pathname.replace(/(.)\/$/, "$1") === item.href}
-                  open={open}
-                  reduced={reduced}
-                  index={index}
-                  onClick={onNavigate}
-                />
-              </li>
-            ))}
-          </ul>
-        </nav>
+      {/* The rows scroll on their own when they are taller than the screen —
+          a phone in landscape, an iPhone SE — and start under the header rail,
+          so none of them passes beneath the logo or the close button. The auto
+          margins centre the rows while they fit and let them run from the top
+          once they do not; `justify-center` clipped both ends instead. Lenis is
+          stopped while the menu is open and cancels touch and wheel events
+          unless their path carries `data-lenis-prevent`.
 
-        <Channels
-          open={open}
-          reduced={reduced}
-          delay={ROW_DELAY + navigation.length * ROW_STEP}
-        />
-      </Container>
+          Rows scrolling up fade out over the top 1.25rem instead of being cut
+          at the rail, and `pt-5` keeps the first row's rule clear of that fade
+          at rest. The bottom pad is the old 2.5rem plus that top one, so where
+          the rows fit they centre exactly where they always did. */}
+      <div
+        data-lenis-prevent
+        className="absolute inset-x-0 top-header bottom-0 flex flex-col overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,var(--negro)_1.25rem)]"
+      >
+        <Container className="relative my-auto pb-15 pt-5">
+          <nav aria-label="Principal">
+            <ul className="menu-list border-b border-blanco/12">
+              {navigation.map((item, index) => (
+                <li key={item.id}>
+                  <MenuRow
+                    item={item}
+                    /* `trailingSlash` makes the pathname `/ruta/`; the hrefs have none. */
+                    current={pathname.replace(/(.)\/$/, "$1") === item.href}
+                    open={open}
+                    reduced={reduced}
+                    index={index}
+                    onClick={onNavigate}
+                  />
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <Channels
+            open={open}
+            reduced={reduced}
+            delay={ROW_DELAY + navigation.length * ROW_STEP}
+          />
+        </Container>
+      </div>
     </motion.div>
   );
 }
@@ -188,14 +205,14 @@ function Channels({
         href={siteContact.phone.href}
         target="_blank"
         rel="noreferrer"
-        className="link-rule inline-flex items-center gap-2 text-on-link hover:text-celeste"
+        className="link-rule inline-flex items-center gap-2 text-on-link hover:text-celeste pointer-coarse:py-1.5"
       >
         <WhatsAppIcon className="size-4 shrink-0" />
         {siteContact.phone.label}
       </a>
       <a
         href={siteContact.email.href}
-        className="link-rule inline-flex items-center gap-2 text-on-link hover:text-celeste"
+        className="link-rule inline-flex items-center gap-2 text-on-link hover:text-celeste pointer-coarse:py-1.5"
       >
         <MailIcon className="size-4 shrink-0" />
         {siteContact.email.label}
@@ -210,7 +227,7 @@ function Channels({
               href={item.href}
               target="_blank"
               rel="noreferrer"
-              className="link-rule inline-flex items-center gap-2 text-on-detail hover:text-celeste"
+              className="link-rule inline-flex items-center gap-2 text-on-detail hover:text-celeste pointer-coarse:py-1.5"
             >
               <Icon className="size-4 shrink-0" />
               {item.label}

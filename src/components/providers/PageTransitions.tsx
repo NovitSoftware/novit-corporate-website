@@ -23,6 +23,8 @@ const LEAD = 0.35;
 const FLOW = 5;
 /** How long a beat moves the shared ground layers, in s. */
 const BEAT = 0.6;
+/** How far an echo of the badge's edge travels, as a scale of the badge. */
+const RIPPLE = 1.9;
 /** How long a page takes to fold back into the badge, in s. */
 const SHRINK = 0.6;
 /** When a closing page is fully covered and the next route can be swapped in. */
@@ -507,10 +509,14 @@ function addBeat(
   // element of its own; the shared layers finish inside BEAT, and should one
   // beat still catch the last of another, the newer takes the property over.
   const shared = { overwrite: "auto" as const };
+  // No wider than the screen. On a phone the badge is most of the width, and
+  // at the full scale only the echo's top and bottom stayed on screen — two
+  // lines crossing the ground rather than an edge going out.
+  const reach = Math.min(RIPPLE, parts.stage.clientWidth / ripple.offsetWidth);
 
   timeline
     .set(ripple, { scale: 1, opacity: 0 }, at)
-    .to(ripple, { scale: 1.9, duration: 1, ease: ease.outSoft }, at)
+    .to(ripple, { scale: reach, duration: 1, ease: ease.outSoft }, at)
     .to(ripple, { opacity: 0.75, duration: 0.18, ease: "sine.out" }, at)
     .to(ripple, { opacity: 0, duration: 0.8, ease: "sine.in" }, at + 0.18)
     .to(

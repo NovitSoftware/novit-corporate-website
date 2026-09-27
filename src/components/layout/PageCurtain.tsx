@@ -49,7 +49,12 @@ export function CurtainMark() {
           data-curtain-stack
           className="flex flex-col items-center gap-7 px-6"
         >
-          <div className="w-[15rem] sm:w-[20rem]">
+          {/* On a phone the logo follows the width: the badge is the logo
+              plus 6rem of margin, and at a flat 15rem it took nine tenths of
+              a 375px screen and all of a 320px one — a band across the
+              ground, its edge on the screen's. Under half the width keeps it
+              a badge, about seven tenths across. */}
+          <div className="w-[min(15rem,46vw)] sm:w-[20rem]">
             <Image
               src={BRAND_LOGO.lockup.white}
               alt=""
