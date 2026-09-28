@@ -11,8 +11,9 @@ src/
     (home)/
       page.tsx      metadata y el orden de las bandas
       _sections/    Hero · Services · Contact
-      _components/  HeroScene · HeroFlow · ServiceCard · FormField
-      _lib/         hero-flow.ts
+      _components/  HeroScene · HeroOffice · ServiceCard · FormField
+      _lib/         hero-office-scene.ts · hero-office-gl.ts ·
+                    hero-office-atlas.ts · hero-office-logo.ts
     inteligencia-artificial/  page.tsx · _sections/ · _components/ · _lib/
     desarrollo-y-consultoria/ page.tsx · _sections/
     academianovit/            page.tsx · _sections/ · _components/ · _lib/

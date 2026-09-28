@@ -20,7 +20,7 @@ const target = (name: string) => `[data-hero="${name}"]`;
  * page opens.
  *
  * It also owns the hero's scroll behaviour: the opening copy settling back
- * as the section leaves. The ground beside the copy — `HeroFlow` — keeps its
+ * as the section leaves. The ground beside the copy — `HeroOffice` — keeps its
  * own motion.
  */
 export function HeroScene({ children, className }: HeroSceneProps) {

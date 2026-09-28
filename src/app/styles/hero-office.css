@@ -1,0 +1,64 @@
+/* The home hero's walk through the office — a WebGL canvas of hairlines, with no ground of its own. */
+
+@layer components {
+  /*
+   * The canvas paints lines only; every pixel between them is transparent,
+   * so the band's gradient is the drawing's background. It is support for
+   * the headline, so it is set back as a whole and faded towards every edge:
+   * nothing it draws ends on a hard line or reaches the copy.
+   *
+   * From `xl` it stands in the band's right column, beside the copy.
+   * Below that there is no column for it, and it takes no room at all: it
+   * lies faint across the whole band, behind the copy — filling a wide
+   * screen, only a texture on a narrow one.
+   */
+  .hero-office {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-office_canvas {
+    position: absolute;
+    display: block;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+    mask-image: radial-gradient(closest-side at 50% 46%, #000 60%, transparent 100%);
+    mask-repeat: no-repeat;
+  }
+
+  .hero-office_canvas[data-ready] {
+    opacity: 0.72;
+  }
+
+  @media (min-width: 80rem) {
+    .hero-office_canvas {
+      top: calc(var(--header-height) + 3.5rem);
+      right: max(2.25rem, calc((100vw - 1440px) / 2 + 2.25rem));
+      height: min(41rem, calc(100% - var(--header-height) - 12rem));
+      width: auto;
+      aspect-ratio: 600 / 656;
+    }
+  }
+
+  @media (max-width: 79.99rem) {
+    .hero-office_canvas {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 48%, #000 35%, transparent 100%);
+    }
+
+    .hero-office_canvas[data-ready] {
+      opacity: 0.26;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-office_canvas {
+      transition: none;
+    }
+  }
+}

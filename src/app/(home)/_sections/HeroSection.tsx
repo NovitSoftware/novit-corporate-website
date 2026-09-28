@@ -2,7 +2,7 @@ import { withBasePath } from "@/lib/base-path";
 import { Badge } from "@/components/ui/Badge";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { HeroFlow } from "../_components/HeroFlow";
+import { HeroOffice } from "../_components/HeroOffice";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";
 import { SplitWords } from "@/components/motion/SplitWords";
@@ -16,15 +16,15 @@ import { heroContent } from "@/content/home";
  * from `SectionHandoff` — the exit window that suits every other band would
  * dim the headline while it is still the most prominent thing on the page.
  *
- * Beside the copy, the band's ground moves: `HeroFlow`, an agentic process at
- * work and the throughput it adds. Below `xl` the copy takes the band's width
- * and there is no side for the drawing to stand on: anchored to the foot of a
- * full-height band, the copy left the top half to the drawing and the
- * headline sat low on the screen. There the copy starts under the header, as
- * every other route's opener does, and the drawing follows it, whole, before
- * the pillars — the three blocks are ordered for it. The customer map that used to stand
- * beside the headline belongs to `/casos-de-exito`, the band that says who
- * the clients are.
+ * Beside the copy, the band's ground moves: `HeroOffice`, a walk through the
+ * office drawn in lines. Below `xl` the copy takes the band's width and
+ * there is no side for the drawing to stand on — anchored to the foot of a
+ * full-height band, the copy left the top half empty and the headline sat
+ * low on the screen. There the copy starts under the header, as every other
+ * route's opener does, and the drawing takes no room of its own: it lies
+ * faint behind the copy, across the whole band. The customer map that used
+ * to stand beside the headline belongs to `/casos-de-exito`, the band that
+ * says who the clients are.
  */
 export function HeroSection() {
   return (
@@ -35,13 +35,10 @@ export function HeroSection() {
         data-tone="dark"
         className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco max-xl:justify-start max-xl:pt-[calc(var(--header-height)+2rem)] sm:pb-14"
       >
-        {/* First, so from `xl` — out of the flow, beside the copy — it is
-            drawn under it. Not positioned itself: from `xl` the drawing is
-            placed against the band. */}
-        <Container className="max-xl:order-2">
-          <HeroFlow />
-        </Container>
-        <Container className="relative max-xl:order-1">
+        {/* First, and out of the flow at every width, so it is drawn under
+            the copy: beside it from `xl`, behind it below that. */}
+        <HeroOffice />
+        <Container className="relative">
           <div data-hero="copy" className="max-w-[52rem]">
             <AcademyAnnouncement />
 
@@ -81,7 +78,7 @@ export function HeroSection() {
           </div>
         </Container>
 
-        <Container className="relative max-xl:order-3">
+        <Container className="relative">
           <div
             data-anim="bar"
             data-hero="pillars-rule"
