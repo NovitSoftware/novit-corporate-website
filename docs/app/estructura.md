@@ -12,7 +12,7 @@ src/
       page.tsx      metadata y el orden de las bandas
       _sections/    Hero · Services · Contact
       _components/  HeroScene · HeroFlow · ServiceCard · FormField
-      _lib/         hero-flow.ts · form.ts
+      _lib/         hero-flow.ts
     inteligencia-artificial/  page.tsx · _sections/ · _components/ · _lib/
     desarrollo-y-consultoria/ page.tsx · _sections/
     academianovit/            page.tsx · _sections/ · _components/ · _lib/
@@ -48,7 +48,7 @@ con `_` queda fuera del ruteo, ella y todo lo que cuelga. Por eso `_sections/`
 y `_components/` conviven con `page.tsx` sin generar URLs. Adentro va lo que
 renderiza una sola ruta; `_components/` y `_lib/` aparecen en las rutas que
 tienen piezas propias que no son bandas — la figura animada de cada una y su
-movimiento, y en la home el campo del formulario y su validación.
+movimiento, y en la home el campo del mensaje de contacto.
 
 **Cada carpeta de `components/` contesta una pregunta distinta**, que es lo
 que `shared/` no hacía:

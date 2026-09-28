@@ -126,11 +126,10 @@ export type Service = (typeof services)[number];
  * is this page's own word for the anchor the hero CTA, the footer and the
  * menu all point at.
  *
- * The form asks for the message and nothing else: there is no endpoint to
- * post it to, so it hands it to one of the two channels that do exist —
- * WhatsApp or the inbox — already written, and whoever sends it is who
- * Novit answers. No name and no email: WhatsApp and the mail client both
- * carry who it is from.
+ * It asks for the message and nothing else: there is no endpoint to post it
+ * to, so it hands it to one of the two channels that do exist — WhatsApp or
+ * the inbox — already written, and whoever sends it is who Novit answers. No
+ * name and no email: WhatsApp and the mail client both carry who it is from.
  */
 export const closingContent = {
   id: "contacto",
@@ -145,7 +144,6 @@ export const closingContent = {
     label: "Mensaje",
     icon: "chat",
     placeholder: "Qué proceso querés resolver, y con qué se sostiene hoy.",
-    error: "Contanos brevemente qué necesitás.",
   },
   /** One button per channel, WhatsApp first: it is the line the rest of the
    *  site sends people to. */
