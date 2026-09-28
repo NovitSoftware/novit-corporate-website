@@ -560,7 +560,15 @@ export function mountFlow(root: HTMLElement, motion: boolean, context: gsap.Cont
 
   const release = onPageReveal(() => {
     context.add(() => {
-      entrance.play();
+      // Drawn in once it is in view: beside the copy that is as the page
+      // opens; below `xl`, where it follows the copy, when it is scrolled to.
+      ScrollTrigger.create({
+        trigger: root,
+        scroller: scroller(),
+        start: "top 85%",
+        once: true,
+        onEnter: () => entrance.play(),
+      });
       // Nothing runs while the band is out of view.
       ScrollTrigger.create({
         trigger: root,
