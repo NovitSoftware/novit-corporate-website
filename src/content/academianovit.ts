@@ -184,9 +184,10 @@ export const academyBoard = {
   description:
     "Diagrama de una arquitectura de agentes. Los pedidos llegan por canales a un orquestador que divide el trabajo, lo reparte entre agentes y reúne los resultados. Cada agente razona con un LLM: consulta un RAG con el conocimiento del cliente —documentos de sus sistemas, divididos en fragmentos, convertidos en embeddings y guardados en un vector store— y actúa sobre los sistemas del cliente mediante tools. La respuesta vuelve por el mismo canal. Todo bajo guardrails, permisos mínimos, trazabilidad, evaluación y costo por tarea.",
   /*
-   * The parts of the diagram are labelled in English, the way the field
-   * names them and the way they are taught in the cursada — nobody says
-   * "recuperador" for a retriever.
+   * Every `label` — the layers and the parts — is in English, the way the
+   * field names them and the way they are taught in the cursada: nobody says
+   * "recuperador" for a retriever. What describes them is Spanish: the
+   * orchestrator's line, the model's, the RAG's and the flows between them.
    */
   channels: {
     label: "Channels",
@@ -207,8 +208,8 @@ export const academyBoard = {
    */
   orchestrator: {
     label: "Orchestrator",
-    title: "Decides & routes",
-    detail: ["splits the work,", "merges the results"],
+    title: "Decide y deriva",
+    detail: ["divide el trabajo", "y une los resultados"],
   },
   agents: {
     label: "Agents",
@@ -219,7 +220,7 @@ export const academyBoard = {
     ],
     /** What the agents reason with: it writes the query, reads the context
      *  that comes back and decides what to do with it. */
-    model: { label: "LLM", detail: "reasoning" },
+    model: { label: "LLM", detail: "razonamiento" },
   },
   systems: {
     label: "Systems",
@@ -236,11 +237,11 @@ export const academyBoard = {
   },
   rag: {
     label: "RAG",
-    detail: "the client's knowledge",
-    ask: "query",
-    answer: "context",
+    detail: "el conocimiento del cliente",
+    ask: "consulta",
+    answer: "contexto",
     /** The client's systems feeding the knowledge base. */
-    ingest: "ingest",
+    ingest: "ingesta",
     steps: [
       { label: "Documents", icon: "document" },
       { label: "Chunking", icon: "chunks" },
