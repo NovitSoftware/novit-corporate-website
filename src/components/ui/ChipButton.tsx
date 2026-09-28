@@ -50,9 +50,7 @@ export function ChipButton({
 }
 
 /**
- * The arrow block, shared so the hand-built `chip-cta`s on the page — the
- * contact form's two submits, which have to be `<button>`s and cannot use
- * `ChipButton` — cannot drift away from this one.
+ * The arrow block.
  *
  * Two blocks, one parked at each end of the chip, of which only one is ever
  * inside it: the trailing one slides out past the end edge as the leading one
@@ -63,7 +61,7 @@ export function ChipButton({
  * An SVG triangle rather than a "▸" — cap. 06 of the design system is explicit
  * that arrows are not a typographic character here.
  */
-export function ChipArrow() {
+function ChipArrow() {
   return (
     <>
       <span className="chip-cta_arrow chip-cta_arrow-lead" aria-hidden="true">

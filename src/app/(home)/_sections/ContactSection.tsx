@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { ChipArrow } from "@/components/ui/ChipButton";
+import { useState } from "react";
+import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
 import { MailIcon, WhatsAppIcon } from "@/components/ui/ContactIcons";
 import { FormField } from "../_components/FormField";
@@ -12,68 +12,47 @@ import { Section } from "@/components/section/Section";
 import { SectionLabel } from "@/components/section/SectionLabel";
 import { closingContent } from "@/content/home";
 import { siteContact } from "@/content/site";
-import { fieldId, firstInvalid, validateFields, type FieldErrors, type FieldRules } from "../_lib/form";
 
 const PREFIX = "contact";
 
-const RULES: FieldRules<"message"> = {
-  message: { min: 10, message: closingContent.message.error },
-};
+const encode = encodeURIComponent;
 
-/** Where each button hands the message: a chat with the line, or a mail to
- *  the inbox, opened with the message already written. */
+/** Where each link hands the message: a chat with the line, or a mail to the
+ *  inbox, opened with the message already written — or with nothing written,
+ *  when the box is empty, rather than not at all. */
 const CHANNELS = [
   {
     id: "whatsapp",
     label: closingContent.send.whatsapp,
     Icon: WhatsAppIcon,
-    href: (message: string) => `${siteContact.phone.href}?text=${encodeURIComponent(message)}`,
+    href: (message: string) => (message ? `${siteContact.phone.href}?text=${encode(message)}` : siteContact.phone.href),
+    external: true,
   },
   {
     id: "email",
     label: closingContent.send.email,
     Icon: MailIcon,
     href: (message: string) =>
-      `${siteContact.email.href}?subject=${encodeURIComponent(closingContent.subject)}&body=${encodeURIComponent(message)}`,
+      `${siteContact.email.href}?subject=${encode(closingContent.subject)}${message ? `&body=${encode(message)}` : ""}`,
+    external: false,
   },
 ] as const;
 
 /**
- * El cierre, and the form it asks for. It is the last band on the page, so the
- * statement of the ask and the ask itself are one section.
+ * El cierre, and the message it asks for. It is the last band on the page, so
+ * the statement of the ask and the ask itself are one section.
  *
- * The form holds the message and nothing else, and it has no endpoint: each
- * button opens its channel — WhatsApp in a new tab, the inbox in the mail
- * client — with the message written, for the visitor to send from there.
- * Validation runs on submit, not on every keystroke: a box that turns red
- * while someone is still typing is telling them they are wrong when they are
- * simply not finished.
+ * There is no endpoint, so there is no submit: the two sends are links, and
+ * their hrefs are rebuilt from the box as it is typed in — WhatsApp in a new
+ * tab, the inbox in the mail client, with the message written, for the visitor
+ * to send from there. Links rather than buttons that open a window from a
+ * script: they need nothing to have run first, so they work before the page
+ * has hydrated, and they are never refused — an earlier version held the
+ * message to ten characters, and a "hola" did nothing but show an error.
  */
 export function ContactSection() {
-  const [errors, setErrors] = useState<FieldErrors<"message">>({});
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const data = new FormData(event.currentTarget);
-    const next = validateFields(RULES, data);
-    setErrors(next);
-
-    const invalid = firstInvalid(RULES, next);
-    if (invalid) {
-      document.getElementById(fieldId(PREFIX, invalid))?.focus();
-      return;
-    }
-
-    const submitter = (event.nativeEvent as SubmitEvent).submitter;
-    const channel = CHANNELS.find((item) => item.id === submitter?.getAttribute("value")) ?? CHANNELS[0];
-    const href = channel.href(String(data.get("message")).trim());
-    if (channel.id === "whatsapp") {
-      window.open(href, "_blank", "noopener");
-    } else {
-      window.location.href = href;
-    }
-  };
+  const [message, setMessage] = useState("");
+  const text = message.trim();
 
   return (
     <Section id={closingContent.id}>
@@ -117,35 +96,34 @@ export function ContactSection() {
             </div>
 
             <ReadingPanel as="div">
-              <form onSubmit={onSubmit} noValidate className="space-y-5">
+              <div className="space-y-6">
                 <FormField
                   prefix={PREFIX}
                   name="message"
-                  multiline
                   label={closingContent.message.label}
                   icon={closingContent.message.icon}
                   placeholder={closingContent.message.placeholder}
-                  error={errors.message}
+                  value={message}
+                  onChange={setMessage}
                 />
 
-                {/* Hand-built rather than `ChipButton`, because a submit has
-                    to be a `<button>`. The arrow comes from the same component
-                    the links use, so the hover cannot diverge. Which one was
-                    pressed is the channel. */}
                 <div className="flex flex-wrap gap-3">
-                  {CHANNELS.map(({ id, label, Icon }) => (
-                    <button key={id} type="submit" value={id} className="chip-cta chip-cta-dark">
-                      <span className="chip-cta_label">
-                        <span className="inline-flex items-center gap-2">
-                          <Icon className="size-3.5 shrink-0" />
-                          {label}
-                        </span>
+                  {CHANNELS.map(({ id, label, Icon, href, external }) => (
+                    <ChipButton
+                      key={id}
+                      href={href(text)}
+                      variant="dark"
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noreferrer" : undefined}
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <Icon className="size-3.5 shrink-0" />
+                        {label}
                       </span>
-                      <ChipArrow />
-                    </button>
+                    </ChipButton>
                   ))}
                 </div>
-              </form>
+              </div>
             </ReadingPanel>
           </div>
         </Container>

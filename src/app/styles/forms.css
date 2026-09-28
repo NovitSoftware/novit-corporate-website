@@ -35,14 +35,6 @@
     box-shadow: 0 0 0 1px var(--celeste);
   }
 
-  /* Set by the form only after a failed submit attempt, never on first paint:
-     a field that is red before anyone has typed in it is scolding the visitor
-     for not having started. */
-  .field[aria-invalid="true"] {
-    border-color: var(--voz-suave);
-    box-shadow: 0 0 0 1px var(--voz-suave);
-  }
-
   /* `.field-row` carries no styling of its own — it is the wrapper the label
      and the field share, and it exists so `:has` below can reach back up to
      it from the field. Label and field are siblings in that order, and there

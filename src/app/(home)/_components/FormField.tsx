@@ -1,31 +1,28 @@
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { fieldId } from "../_lib/form";
 
 type FormFieldProps = {
-  /** Namespaces the id, so two forms can share a page. See `lib/form.ts`. */
+  /** Namespaces the id, so another field on the page cannot take it. */
   prefix: string;
   name: string;
   label: string;
-  /** The field's mark, in front of its label: who, where to answer, what. */
+  /** The field's mark, in front of its label. */
   icon: IconName;
   placeholder: string;
-  error?: string;
-  multiline?: boolean;
+  value: string;
+  onChange: (value: string) => void;
   rows?: number;
-  type?: string;
-  autoComplete?: string;
 };
 
 /**
- * Label, control and error in one block.
+ * A label and the box it names: the contact message.
  *
- * The wiring is the part worth getting right once: the error owns a permanent
- * node so appearing does not reflow what is below it, and `aria-describedby`
- * points at it unconditionally — an id that resolves to empty text is read as
- * nothing, whereas an id that appears and disappears is not always picked up.
+ * Controlled, because what is typed is what the send links carry — see
+ * `ContactSection`. There is no error state: nothing typed here is ever
+ * refused, since the message is sent, and can still be edited, from WhatsApp
+ * or the mail client.
  *
- * Styling is `.field` / `.field-label` in globals.css, built for the one
- * ground these sit on: the glass reading panel.
+ * Styling is `.field` / `.field-label` in forms.css, built for the one ground
+ * it sits on: the glass reading panel.
  */
 export function FormField({
   prefix,
@@ -33,22 +30,11 @@ export function FormField({
   label,
   icon,
   placeholder,
-  error,
-  multiline = false,
+  value,
+  onChange,
   rows = 5,
-  type = "text",
-  autoComplete,
 }: FormFieldProps) {
-  const id = fieldId(prefix, name);
-  const shared = {
-    id,
-    name,
-    placeholder,
-    autoComplete,
-    className: "field",
-    "aria-invalid": error ? true : undefined,
-    "aria-describedby": `${id}-error`,
-  } as const;
+  const id = `${prefix}-${name}`;
 
   return (
     <div className="field-row">
@@ -56,17 +42,15 @@ export function FormField({
         <Icon name={icon} size="micro" className="field-label_icon" />
         {label}
       </label>
-      {multiline ? (
-        <textarea {...shared} rows={rows} />
-      ) : (
-        <input {...shared} type={type} />
-      )}
-      <p
-        id={`${id}-error`}
-        className="card-ink-voice mt-2 min-h-[1.25rem] text-[0.8125rem] font-bold"
-      >
-        {error ?? ""}
-      </p>
+      <textarea
+        id={id}
+        name={name}
+        rows={rows}
+        placeholder={placeholder}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="field"
+      />
     </div>
   );
 }
