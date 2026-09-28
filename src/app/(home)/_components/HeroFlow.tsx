@@ -58,8 +58,8 @@ const RAIL = [
  * way the board names its parts: a word per layer on a rail, in English, as
  * the field says them.
  *
- * Set beside the copy from `xl`; below that, behind it, fainter and without
- * its words. The model is `hero-flow.ts`. Reduced motion, and no JavaScript,
+ * Set beside the copy from `xl`; below that, under it, whole — and on a
+ * phone without its words. The model is `hero-flow.ts`. Reduced motion, and no JavaScript,
  * get the drawing with every lane online and the chart already climbed.
  */
 export function HeroFlow() {

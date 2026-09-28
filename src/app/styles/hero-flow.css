@@ -39,31 +39,34 @@
     }
   }
 
-  /* Below `xl` the copy takes the band's width, so the drawing goes behind
-     its upper half, fainter, and fades out before the lead. */
+  /* Below `xl` the copy takes the band's width, so the drawing follows it
+     instead of standing beside it: whole, as wide as the band allows up to
+     about the size it has beside the copy, between the button and the
+     pillars. On a phone it is scaled to the width and its words go. */
   @media (max-width: 79.99rem) {
+    .hero-flow {
+      position: relative;
+      inset: auto;
+      width: min(100%, 34rem);
+      aspect-ratio: 600 / 656;
+      margin-top: 3rem;
+      overflow: visible;
+    }
+
     .hero-flow_art {
-      top: calc(var(--header-height) + 1rem);
-      right: 1.5rem;
-      width: min(30rem, 56%);
-      height: auto;
-      opacity: 0.42;
-      mask-image: linear-gradient(to bottom, var(--negro) 55%, transparent 100%);
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero-flow {
+      margin-top: 2.5rem;
     }
 
     .hero-flow_text {
       display: none;
-    }
-  }
-
-  /* On a phone, all of it, as wide as the band allows. */
-  @media (max-width: 47.99rem) {
-    .hero-flow_art {
-      right: 50%;
-      width: calc(100% - 2rem);
-      translate: 50% 0;
-      opacity: 0.34;
-      mask-image: none;
     }
   }
 

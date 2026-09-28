@@ -12,12 +12,17 @@ import { heroContent } from "@/content/home";
  * The cabecera: the one band where the gradient is the surface rather than the
  * ground, and the only one whose copy is set on it directly.
  *
- * Its copy sits at the bottom of the band, which is what excludes it from
- * `SectionHandoff` — the exit window that suits every other band would dim the
- * headline while it is still the most prominent thing on the page.
+ * From `xl` its copy sits at the bottom of the band, which is what excludes it
+ * from `SectionHandoff` — the exit window that suits every other band would
+ * dim the headline while it is still the most prominent thing on the page.
  *
  * Beside the copy, the band's ground moves: `HeroFlow`, an agentic process at
- * work and the throughput it adds. The customer map that used to stand
+ * work and the throughput it adds. Below `xl` the copy takes the band's width
+ * and there is no side for the drawing to stand on: anchored to the foot of a
+ * full-height band, the copy left the top half to the drawing and the
+ * headline sat low on the screen. There the copy starts under the header, as
+ * every other route's opener does, and the drawing follows it, whole, before
+ * the pillars — the three blocks are ordered for it. The customer map that used to stand
  * beside the headline belongs to `/casos-de-exito`, the band that says who
  * the clients are.
  */
@@ -28,10 +33,15 @@ export function HeroSection() {
         id="inicio"
         data-band
         data-tone="dark"
-        className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco sm:pb-14"
+        className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco max-xl:justify-start max-xl:pt-[calc(var(--header-height)+2rem)] sm:pb-14"
       >
-        <HeroFlow />
-        <Container className="relative">
+        {/* First, so from `xl` — out of the flow, beside the copy — it is
+            drawn under it. Not positioned itself: from `xl` the drawing is
+            placed against the band. */}
+        <Container className="max-xl:order-2">
+          <HeroFlow />
+        </Container>
+        <Container className="relative max-xl:order-1">
           <div data-hero="copy" className="max-w-[52rem]">
             <AcademyAnnouncement />
 
@@ -69,7 +79,9 @@ export function HeroSection() {
               </ChipButton>
             </div>
           </div>
+        </Container>
 
+        <Container className="relative max-xl:order-3">
           <div
             data-anim="bar"
             data-hero="pillars-rule"
