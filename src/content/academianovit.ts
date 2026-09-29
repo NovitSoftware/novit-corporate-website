@@ -190,7 +190,7 @@ export const academyBoard = {
    * orchestrator's line, the model's, the RAG's and the flows between them.
    */
   channels: {
-    label: "Channels",
+    label: "Canales",
     items: [
       { label: "WhatsApp", icon: "chat" },
       { label: "Web", icon: "globe" },
@@ -207,12 +207,12 @@ export const academyBoard = {
    * in its LLM loop — the board said "which tool" here and that was wrong.
    */
   orchestrator: {
-    label: "Orchestrator",
+    label: "Orquestador",
     title: "Decide y deriva",
     detail: ["divide el trabajo", "y une los resultados"],
   },
   agents: {
-    label: "Agents",
+    label: "Agentes",
     items: [
       { label: "Classifier", icon: "agent" },
       { label: "Extractor", icon: "agent" },
@@ -223,7 +223,7 @@ export const academyBoard = {
     model: { label: "LLM", detail: "razonamiento" },
   },
   systems: {
-    label: "Systems",
+    label: "Sistemas",
     /** How agents reach them: the model chooses a tool call and the agent
      *  runtime executes it, with the agent's identity and scoped
      *  permissions — the model never touches a system itself. */
