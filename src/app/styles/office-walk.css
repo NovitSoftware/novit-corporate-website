@@ -7,9 +7,9 @@
    * the claim beside it, so it is set back as a whole and faded towards
    * every edge: nothing it draws ends on a hard line.
    *
-   * Its box is the opener's aside, at the drawing's own proportion: beside
-   * the copy from `xl`, at the foot of the band on a tablet, under the copy
-   * on a phone — see `.opener-aside` in opener.css.
+   * Its box is the opener's art, at the drawing's own proportion: beside the
+   * copy from `xl`, faint behind it below that — see `.opener-art` in
+   * opener.css.
    */
   .office-walk {
     position: relative;

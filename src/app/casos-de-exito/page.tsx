@@ -42,7 +42,7 @@ export default function CasosDeExito() {
         title={title}
         lead={lead}
         cta={cta}
-        aside={<CustomerMap />}
+        art={<CustomerMap />}
       />
       <CasesWork />
     </SiteShell>

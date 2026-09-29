@@ -318,18 +318,17 @@
     }
   }
 
-  /* --- On a phone ---------------------------------------------------------
-   * The whole figure, board and audit, at the width that holds both — about
-   * what it has beside the copy at `xl`'s narrowest — scaled down to the
-   * phone's by `useFit` in `AgentSnake`, which also sets the height the
-   * scaled figure covers. Dropping the audit left a game with nothing said
-   * about it; stacking it under the board made the figure two screens tall.
+  /* --- Fitted to what it is given -----------------------------------------
+   * The whole figure, board and audit, laid out at the width that holds both
+   * and scaled down to whatever the opener gives it — its column beside the
+   * copy at `xl`, the band behind the copy below that — by `useFit` in
+   * `AgentSnake`, which also sets the height the scaled figure covers.
+   * Dropping the audit left a game with nothing said about it; stacking it
+   * under the board made the figure two screens tall.
    */
-  @media (max-width: 47.99rem) {
-    .agent-snake_inner {
-      width: 39rem;
-      transform: scale(var(--snake-fit, 1));
-      transform-origin: top left;
-    }
+  .agent-snake_inner {
+    width: 39rem;
+    transform: scale(var(--snake-fit, 1));
+    transform-origin: top left;
   }
 }

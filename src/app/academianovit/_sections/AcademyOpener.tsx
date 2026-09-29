@@ -6,7 +6,7 @@ import { SectionLabel } from "@/components/section/SectionLabel";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { StatRow } from "@/components/section/StatRow";
 import { academyPageContent, academyProgram } from "@/content/academianovit";
-import { OpenerFigure } from "@/components/layout/PageOpener";
+import { OPENER_WITH_ART, OpenerArt } from "@/components/layout/PageOpener";
 import { AcademyBoard } from "../_components/AcademyBoard";
 
 /**
@@ -38,29 +38,17 @@ export function AcademyOpener() {
     >
       <Scene className="relative">
         <Container>
-          {/* The copy and the board share the band, the way the other
-              openers share it with their art — the headline included, so
-              the board stands beside the claim it illustrates rather than
-              under it. The board is the wider of the two: its labels are set
-              at reading size and it cannot go below about 640px without them
-              going below it. The headline steps down to fit its column there
-              and breaks into three even lines.
-
-              The board is the taller of the two, so the copy starts level
-              with its top edge and stays in view while the board scrolls
-              past, rather than floating at its middle.
-
-              Below `xl` the board follows the copy at full width, on a phone
-              too, scaled to it, as every opener's figure does. */}
-          <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] xl:items-start xl:gap-12">
-            <div
-              data-anim-block
-              className="relative z-[1] xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
-            >
+          {/* The copy and the board share the band the way every opener
+              shares it with its art: the copy's measure first, the board in
+              what is left and set back — support for the claim, not a second
+              one beside it. Below `xl` it lies faint behind the copy. See
+              `OpenerArt`. */}
+          <div className={`relative ${OPENER_WITH_ART}`}>
+            <div data-anim-block className="relative z-[1] max-w-[54rem]">
               <SectionLabel name={eyebrow} icon={icon} />
               <h1
                 data-anim="words"
-                className="display-hero mt-7 max-w-[20ch] text-balance text-blanco xl:text-[clamp(3.25rem,4.6vw,4.5rem)]"
+                className="display-hero mt-7 max-w-[20ch] text-balance text-blanco"
               >
                 <SplitWords text={title} />
               </h1>
@@ -90,9 +78,9 @@ export function AcademyOpener() {
               </div>
             </div>
 
-            <OpenerFigure>
+            <OpenerArt>
               <AcademyBoard />
-            </OpenerFigure>
+            </OpenerArt>
           </div>
 
           {/* The load, across the band under both, in the row the button

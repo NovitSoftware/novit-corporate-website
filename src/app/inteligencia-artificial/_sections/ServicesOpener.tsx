@@ -33,7 +33,7 @@ export function ServicesOpener() {
       title={title}
       lead={lead}
       cta={cta}
-      figure={<AgentSnake />}
+      art={<AgentSnake />}
     />
   );
 }

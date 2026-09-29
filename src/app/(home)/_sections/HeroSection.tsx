@@ -19,10 +19,10 @@ import { heroContent } from "@/content/home";
  * Beside the copy from `xl`, the customer map — the one `/casos-de-exito`
  * opens with — so the first screen already says where the clients are. Below
  * `xl` the copy takes the band's width and there is no side for the map to
- * stand on, so it is left to that page; and anchored to the foot of a
- * full-height band, the copy left the top half empty and the headline sat
- * low on the screen, so there it starts under the header, as every other
- * route's opener does.
+ * stand on, so it lies faint behind the copy, as every opener's art does
+ * there. Anchored to the foot of a full-height band, the copy left the top
+ * half empty and the headline sat low on the screen, so below `xl` it starts
+ * under the header, as every other route's opener does.
  */
 export function HeroSection() {
   return (
@@ -34,7 +34,7 @@ export function HeroSection() {
         className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco max-xl:justify-start max-xl:pt-[calc(var(--header-height)+2rem)] sm:pb-14"
       >
         <Container className="relative xl:grid xl:grid-cols-[minmax(0,52rem)_minmax(0,1fr)] xl:items-center xl:gap-8">
-          <div data-hero="copy" className="max-w-[52rem]">
+          <div data-hero="copy" className="relative z-[1] max-w-[52rem]">
             <AcademyAnnouncement />
 
             <Badge
@@ -72,12 +72,13 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Two wrappers: the scroll fade must not start from the entrance's
-              hidden resting state. Past the 1440px container it bleeds to the
-              window edge, as the opener's aside does on `/casos-de-exito`. */}
+          {/* Set as every opener's art is — beside the copy from `xl`, faint
+              behind it below that; see `.opener-art` in opener.css. Two
+              wrappers: the scroll fade must not start from the entrance's
+              hidden resting state. */}
           <div
             data-hero="map"
-            className="hidden xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))] xl:block"
+            className="opener-art xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))]"
           >
             <div data-anim="fade" data-hero="map-art">
               <CustomerMap />

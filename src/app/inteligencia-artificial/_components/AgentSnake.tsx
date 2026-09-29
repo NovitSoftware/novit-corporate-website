@@ -28,9 +28,9 @@ const LOG_ROWS = 8;
  *
  * It plays in a loop and starts again when a game ends. The motion is
  * `snake-motion.ts`; the policy is `snake-sim.ts`. Reduced motion gets one
- * still position with its audit. On a phone it keeps the layout it has
- * beside the copy and is scaled down to fit, board and audit together — see
- * `useFit`.
+ * still position with its audit. Wherever it stands — its column beside the
+ * copy, or faint behind the copy on a narrower screen — it keeps the one
+ * layout and is scaled to fit, board and audit together; see `useFit`.
  */
 export function AgentSnake({ className }: { className?: string }) {
   const ref = useRef<HTMLElement>(null);
@@ -147,11 +147,10 @@ export function AgentSnake({ className }: { className?: string }) {
 
 /**
  * Scales the figure down to the width it is given, where agent-snake.css
- * lays it out wider than that — on a phone, at the width it has beside the
- * copy. A transform leaves the figure taking the space of the unscaled one,
- * so its height is set to what the scaled one covers. `--snake-fit` is 1
- * wherever the figure has its own width, and the stylesheet only reads it
- * on a phone.
+ * lays it out at the one width that holds the board and its audit. A
+ * transform leaves the figure taking the space of the unscaled one, so its
+ * height is set to what the scaled one covers. `--snake-fit` is 1 wherever
+ * the figure has that width or more.
  */
 function useFit(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {

@@ -44,7 +44,7 @@ export default function DesarrolloYConsultoria() {
         title={title}
         lead={lead}
         cta={cta}
-        aside={<OfficeWalk />}
+        art={<OfficeWalk />}
       />
       <DevelopmentStages />
       <DevelopmentConsulting />

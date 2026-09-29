@@ -1,55 +1,72 @@
-/* An opener's art — a column of its own where the band has room for one, under the copy where it does not. */
+/* An opener's art — beside the copy where the band has room for a column, faint behind it where it does not. */
 
 @layer components {
   /*
-   * The art beside an opener's claim — the Academia's architecture, the
-   * agent, the customer map. On a phone it used to go behind the copy as its
-   * ground, faded towards the words and cut off before the lead, so what was
-   * left was the top of a drawing: a few lines with nothing to say what they
-   * were. It stays a figure there instead, whole, under the copy, scaled to
-   * the width — small, but all of it.
+   * The art beside an opener's claim — the customer map, the office walk, the
+   * agent, the Academia's architecture. It is support for the copy, never the
+   * message, so it never outweighs the words.
+   *
+   * From `xl` it stands in its own column, set back from the copy's strength.
+   * Below that there is no column for it, and it takes no room of its own:
+   * under the copy it pushed the rest of the band a screen down on a phone,
+   * and dropped the page lost its picture. It lies behind the copy instead,
+   * faint enough to read through and faded towards every edge, and nothing on
+   * it answers the pointer there.
+   *
+   * Each drawing carries its own inks — the map is mostly hairlines at a
+   * quarter of white, the board labels in full white — so each is set back by
+   * its own amount, to the same presence.
    */
-
-  /* A figure: its own column from `xl`, under the copy below that. */
-  .opener-figure {
+  .opener-art {
     position: relative;
-    margin-top: 3.5rem;
+    opacity: 0.8;
   }
 
-  @media (max-width: 47.99rem) {
-    .opener-figure {
-      margin-top: 2.5rem;
-    }
+  .opener-art:has(.agent-snake) {
+    opacity: 0.66;
   }
 
-  @media (min-width: 80rem) {
-    .opener-figure {
-      margin-top: 0;
-    }
+  .opener-art:has(.academy-board) {
+    opacity: 0.5;
   }
 
-  /* The aside — the customer map: beside the copy from `xl`, bled to the
-     window edge. On a tablet it is anchored to the foot of the opener, so
-     the south of the map — home — lands beside and under the button, where
-     the band is empty, and the north fades out behind the lead. */
-  @media (min-width: 48rem) and (max-width: 79.99rem) {
-    .opener-aside {
+  @media (max-width: 79.99rem) {
+    .opener-art {
       position: absolute;
       z-index: 0;
-      right: -6%;
-      bottom: -5rem;
-      width: min(80vw, 34rem);
-      opacity: 0.7;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: hidden;
+      opacity: 0.3;
       pointer-events: none;
-      mask-image: linear-gradient(to bottom, transparent 18%, var(--negro) 58%);
+      mask-image: radial-gradient(ellipse 70% 62% at 62% 50%, var(--negro) 30%, transparent 100%);
     }
-  }
 
-  /* On a phone the whole map, under the button, like a figure. */
-  @media (max-width: 47.99rem) {
-    .opener-aside {
-      position: relative;
-      margin-top: 2rem;
+    .opener-art > * {
+      flex: none;
+      width: min(100%, 40rem);
+    }
+
+    .opener-art:has(.customer-map) {
+      opacity: 0.5;
+    }
+
+    .opener-art:has(.office-walk) {
+      opacity: 0.45;
+    }
+
+    .opener-art:has(.agent-snake) {
+      opacity: 0.22;
+    }
+
+    .opener-art:has(.academy-board) {
+      opacity: 0.18;
+    }
+
+    .opener-art * {
+      pointer-events: none !important;
     }
   }
 }

@@ -5,7 +5,6 @@ import { Container } from "@/components/ui/Container";
 import { Scene } from "@/components/motion/Scene";
 import { SectionLabel } from "@/components/section/SectionLabel";
 import { SplitWords } from "@/components/motion/SplitWords";
-import { cn } from "@/lib/cn";
 
 type PageOpenerProps = {
   eyebrow: string;
@@ -17,17 +16,9 @@ type PageOpenerProps = {
   cta: { label: string; href: string };
   /** Anything the page wants under the button. */
   children?: ReactNode;
-  /** Art beside the copy from `xl`, bled to the window edge; on a tablet,
-   *  the ground the copy is set on; on a phone, under the copy. See
-   *  `.opener-aside` in opener.css. */
-  aside?: ReactNode;
-  /**
-   * A figure that is read, not glanced at, laid out as the Academia's board
-   * is: the wider of the two columns from `xl`, with the headline stepped down
-   * to fit its own and the copy held beside it as it scrolls; under the copy
-   * at full width below that — see `OpenerFigure`.
-   */
-  figure?: ReactNode;
+  /** The art beside the claim — the customer map, the office walk, the
+   *  agent. Support for the claim, never the message — see `OpenerArt`. */
+  art?: ReactNode;
 };
 
 /**
@@ -50,15 +41,9 @@ export function PageOpener({
   lead,
   cta,
   children,
-  aside,
-  figure,
+  art,
 }: PageOpenerProps) {
   const external = cta.href.startsWith("http");
-  const layout = figure
-    ? "xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] xl:items-start xl:gap-12"
-    : aside
-      ? "xl:grid xl:grid-cols-[minmax(0,54rem)_minmax(0,1fr)] xl:items-center xl:gap-8"
-      : undefined;
 
   return (
     <section
@@ -69,28 +54,10 @@ export function PageOpener({
       className="relative scroll-mt-anchor overflow-x-clip pb-16 pt-[calc(var(--header-height)+3.5rem)] text-blanco sm:pb-20 lg:pt-[calc(var(--header-height)+5rem)]"
     >
       <Scene className="relative">
-        <Container className={layout}>
-          {/* Beside a figure the copy starts level with its top and stays in
-              view while the taller figure scrolls past. */}
-          <div
-            data-anim-block
-            className={cn(
-              "relative z-[1]",
-              figure
-                ? "xl:sticky xl:top-[calc(var(--header-height)+2.5rem)] xl:self-start"
-                : "max-w-[54rem]",
-            )}
-          >
+        <Container className={art ? OPENER_WITH_ART : undefined}>
+          <div data-anim-block className="relative z-[1] max-w-[54rem]">
             <SectionLabel name={eyebrow} icon={icon} />
-            <h1
-              data-anim="words"
-              className={cn(
-                "display-hero mt-7 text-blanco",
-                figure
-                  ? "max-w-[20ch] text-balance xl:text-[clamp(3.25rem,4.6vw,4.5rem)]"
-                  : "max-w-[22ch]",
-              )}
-            >
+            <h1 data-anim="words" className="display-hero mt-7 max-w-[22ch] text-blanco">
               <SplitWords text={title} />
             </h1>
             <p
@@ -111,22 +78,32 @@ export function PageOpener({
             </div>
             {children}
           </div>
-          {aside && (
-            <div className="opener-aside xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))]">
-              <div data-anim="fade">{aside}</div>
-            </div>
-          )}
-          {figure && <OpenerFigure>{figure}</OpenerFigure>}
+          {art && <OpenerArt>{art}</OpenerArt>}
         </Container>
       </Scene>
     </section>
   );
 }
 
+/** The copy and its art side by side from `xl`: the copy's measure first,
+ *  the art in what is left. */
+export const OPENER_WITH_ART =
+  "xl:grid xl:grid-cols-[minmax(0,54rem)_minmax(0,1fr)] xl:items-center xl:gap-8";
+
 /**
- * Where an opener's figure stands: its own column from `xl`, under the copy
- * below that, whole and scaled to the width on a phone — see opener.css.
+ * Where an opener's art stands. It is support for the claim beside it, and is
+ * set back as such: in its own column from `xl`, bled to the window's edge
+ * past the 1440px container, at a strength short of the copy's; below that it
+ * takes no room of its own and is not dropped either — it lies faint behind
+ * the copy, where it cannot get in the way of reading it. See opener.css.
+ *
+ * Two wrappers: the scroll-in fade must not start from the stepped-back
+ * strength, or the art would arrive at a fraction of it.
  */
-export function OpenerFigure({ children }: { children: ReactNode }) {
-  return <div className="opener-figure">{children}</div>;
+export function OpenerArt({ children }: { children: ReactNode }) {
+  return (
+    <div className="opener-art xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))]">
+      <div data-anim="fade">{children}</div>
+    </div>
+  );
 }
