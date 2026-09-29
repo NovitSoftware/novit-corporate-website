@@ -4,20 +4,24 @@ import { useEffect, useRef } from "react";
 import { onPageReveal } from "@/lib/page-reveal";
 import { paintAtlas } from "../_lib/hero-office-atlas";
 import { createRenderer } from "../_lib/hero-office-gl";
-import { LOOP, SCENE, STILL_REVEAL, STILL_TIME, cameraAt } from "../_lib/hero-office-scene";
+import { LOOP, STILL_REVEAL, STILL_TIME, buildRooms, cameraAt, outsideAt, takeView, viewPieces } from "../_lib/hero-office-scene";
 
 /**
- * The hero's ground: a walk through four rooms of the office, drawn in lines
- * — development, the server room, the lounge, the meeting room. Support for
- * the headline, never competing with it: beside the copy on a wide screen,
- * and on a narrower one faint behind it, without its words.
+ * The hero's ground: a walk round a floor of the office, drawn in lines —
+ * development, the server room, the lounge over 9 de Julio and the
+ * Obelisco, the meeting room and the Academia's classroom. Support for the
+ * headline, never competing with it: beside the copy on a wide screen, and
+ * on a narrower one faint behind it, without its words.
  *
- * The scene is `hero-office-scene.ts`, what its walls and screens show is
+ * The scene is `hero-office-scene.ts` — its city `hero-office-city.ts`, its
+ * furniture `hero-office-furniture.ts` — what its walls and screens show is
  * `hero-office-atlas.ts`, and the renderer `hero-office-gl.ts`; this only
- * runs them. The walk's clock only moves while the canvas can be seen and
- * after the page has opened, so it never runs unseen. Reduced motion gets
- * one frame — the development room, its screens drawn — and no loop. Without
- * WebGL 2 there is no drawing, and the band is the copy alone.
+ * runs them. The rooms are built here, when the drawing starts, rather than
+ * when the page loads, and the city after them, a piece at a time while the
+ * page is idle. The walk's clock only moves while the canvas can be seen
+ * and after the page has opened, so it never runs unseen. Reduced motion
+ * gets one frame — the lounge, the avenue down to the Obelisco — and no
+ * loop. Without WebGL 2 there is no drawing, and the band is the copy alone.
  */
 export function HeroOffice() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -25,7 +29,7 @@ export function HeroOffice() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const renderer = createRenderer(canvas, SCENE);
+    const renderer = createRenderer(canvas, buildRooms());
     if (!renderer) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -41,7 +45,8 @@ export function HeroOffice() {
 
     const draw = () => {
       const still = reduced.matches;
-      renderer.render(cameraAt(still ? STILL_TIME : clock), still ? STILL_REVEAL : clock, LOOP, wide.matches ? 0.62 : 0);
+      const at = still ? STILL_TIME : clock;
+      renderer.render(cameraAt(at), still ? STILL_REVEAL : clock, LOOP, wide.matches ? 0.62 : 0, outsideAt(at));
     };
 
     // The words and charts are painted in the page's own Lato, once it has
@@ -57,6 +62,26 @@ export function HeroOffice() {
         renderer.setAtlas(atlas);
         draw();
       });
+
+    // The city is built a few pieces at a time whenever the page is idle, so
+    // no frame of the walk waits for it; it is not in view before the lounge.
+    const idle = "requestIdleCallback" in window;
+    const pieces = viewPieces();
+    let pending = 0;
+    const later = () => {
+      pending = idle ? window.requestIdleCallback(buildCity, { timeout: 1000 }) : window.setTimeout(buildCity, 50);
+    };
+    const buildCity = (deadline?: IdleDeadline) => {
+      if (disposed) return;
+      const until = performance.now() + Math.min(12, Math.max(6, deadline?.timeRemaining() ?? 0));
+      do pieces.shift()?.();
+      while (pieces.length && performance.now() < until);
+      if (pieces.length) return later();
+      renderer.setOutside(takeView());
+      draw();
+    };
+    later();
+
     const tick = (now: number) => {
       // A hidden tab or a long frame moves the walk on one short step.
       const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
@@ -103,6 +128,8 @@ export function HeroOffice() {
 
     return () => {
       disposed = true;
+      if (idle) window.cancelIdleCallback(pending);
+      else window.clearTimeout(pending);
       stop();
       visibility.disconnect();
       size.disconnect();

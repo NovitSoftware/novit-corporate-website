@@ -28,6 +28,12 @@ const SIZES: Size[] = [
   { name: "lounge-tv", w: 448, h: 252 },
   { name: "status", w: 448, h: 252 },
   ...[0, 1, 2, 3].map((i) => ({ name: `laptop-${i}`, w: 256, h: 160 })),
+  { name: "kanban", w: 640, h: 400 },
+  { name: "transformer", w: 360, h: 520 },
+  { name: "attention", w: 400, h: 400 },
+  { name: "academia", w: 768, h: 432 },
+  { name: "academia-glass", w: 960, h: 96 },
+  { name: "office-sign", w: 832, h: 112 },
 ];
 
 export type Region = { x: number; y: number; w: number; h: number };
@@ -309,6 +315,206 @@ export function paintAtlas(canvas: HTMLCanvasElement, family: string) {
     },
   ];
   laptops.forEach((paint, i) => inRegion(`laptop-${i}`, paint));
+
+  /* Development · the sprint's board: who has each card, the team or one of
+     its agents. */
+  inRegion("kanban", (w) => {
+    title(ctx, font, "Tablero del sprint", 22, 40, 26);
+    const columns: [string, [string, boolean][]][] = [
+      ["Por hacer", [["Conectar ERP", false], ["Evals del agente", true], ["Documentar API", true]]],
+      ["En curso", [["Conciliación", true], ["Cobranzas", false]]],
+      ["Revisión", [["PR de pagos", true], ["Regresión", true]]],
+      ["Hecho", [["Deploy", false], ["Monitoreo", true], ["Datos de prueba", false]]],
+    ];
+    const gap = 14;
+    const cw = (w - 44 - gap * 3) / 4;
+    columns.forEach(([name, cards], i) => {
+      const x = 22 + i * (cw + gap);
+      text(ctx, font(700, 16), SOFT, name, x, 80);
+      ctx.fillStyle = FAINT;
+      ctx.fillRect(x, 90, cw, 2);
+      cards.forEach(([label, agent], k) => {
+        const y = 104 + k * 88;
+        ctx.strokeStyle = agent ? "rgba(61,176,228,0.55)" : "rgba(255,255,255,0.3)";
+        ctx.lineWidth = 1.6;
+        roundRect(ctx, x, y, cw, 74, 5);
+        ctx.stroke();
+        text(ctx, font(400, 15), INK, label, x + 10, y + 26);
+        const tag = agent ? "agente" : "equipo";
+        ctx.font = font(700, 12);
+        const tw = ctx.measureText(tag).width + 16;
+        ctx.strokeStyle = agent ? CELESTE : SOFT;
+        ctx.lineWidth = 1.2;
+        roundRect(ctx, x + 10, y + 40, tw, 22, 11);
+        ctx.stroke();
+        text(ctx, font(700, 12), agent ? CELESTE : SOFT, tag, x + 18, y + 55);
+      });
+    });
+  });
+
+  /* The lounge · a print of the transformer: the block that the agents on
+     every screen here are made of, drawn the way its paper drew it. */
+  inRegion("transformer", (w, h) => {
+    const cx = w / 2;
+    const block = (label: string, y: number, bw: number, fill: string | null, weight = 400) => {
+      if (fill) {
+        ctx.fillStyle = fill;
+        roundRect(ctx, cx - bw / 2, y - 17, bw, 34, 6);
+        ctx.fill();
+      }
+      ctx.strokeStyle = SOFT;
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, cx - bw / 2, y - 17, bw, 34, 6);
+      ctx.stroke();
+      text(ctx, font(weight, 14), INK, label, cx, y + 5, "center");
+    };
+    const arrow = (y0: number, y1: number, x = cx) => {
+      ctx.strokeStyle = SOFT;
+      ctx.lineWidth = 1.4;
+      segment(ctx, x, y0, x, y1 + 6);
+      ctx.fillStyle = SOFT;
+      ctx.beginPath();
+      ctx.moveTo(x - 5, y1 + 8);
+      ctx.lineTo(x + 5, y1 + 8);
+      ctx.lineTo(x, y1);
+      ctx.closePath();
+      ctx.fill();
+    };
+    title(ctx, font, "Transformer", 24, 40, 22);
+    const rows = { out: 78, soft: 124, lin: 170, group: 212, norm2: 240, ff: 290, norm1: 342, att: 392, pos: 450, emb: 492 };
+    // The group that repeats, and its count.
+    ctx.strokeStyle = "rgba(255,255,255,0.28)";
+    ctx.lineWidth = 1.4;
+    roundRect(ctx, cx - 120, rows.group, 240, rows.att - rows.group + 30, 10);
+    ctx.stroke();
+    text(ctx, font(700, 15), SOFT, "N×", cx + 140, rows.ff + 5);
+    block("Salida", rows.out, 150, null, 700);
+    block("Softmax", rows.soft, 170, "rgba(255,255,255,0.05)");
+    block("Lineal", rows.lin, 170, "rgba(255,255,255,0.05)");
+    block("Suma y normalización", rows.norm2, 200, null);
+    block("Feed-forward", rows.ff, 200, "rgba(255,255,255,0.07)");
+    block("Suma y normalización", rows.norm1, 200, null);
+    block("Atención multi-cabeza", rows.att, 200, "rgba(61,176,228,0.22)", 700);
+    block("Embeddings", rows.emb, 170, null);
+    arrow(rows.soft - 17, rows.out + 17);
+    arrow(rows.lin - 17, rows.soft + 17);
+    arrow(rows.norm2 - 17, rows.lin + 17);
+    arrow(rows.ff - 17, rows.norm2 + 17);
+    arrow(rows.norm1 - 17, rows.ff + 17);
+    arrow(rows.att - 17, rows.norm1 + 17);
+    arrow(rows.emb - 17, rows.att + 17);
+    // The residual paths round each sub-layer.
+    ctx.strokeStyle = "rgba(255,255,255,0.3)";
+    for (const [from, to] of [[rows.att + 24, rows.norm1], [rows.ff + 24, rows.norm2]]) {
+      ctx.beginPath();
+      ctx.moveTo(cx, from);
+      ctx.lineTo(cx - 108, from);
+      ctx.lineTo(cx - 108, to);
+      ctx.lineTo(cx - 100, to);
+      ctx.stroke();
+    }
+    // Positional encoding, added to the embeddings.
+    ctx.strokeStyle = CELESTE;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(cx, rows.pos, 11, 0, Math.PI * 2);
+    ctx.stroke();
+    segment(ctx, cx - 6, rows.pos, cx + 6, rows.pos);
+    segment(ctx, cx, rows.pos - 6, cx, rows.pos + 6);
+    ctx.beginPath();
+    for (let i = 0; i <= 24; i++) {
+      const x = cx + 30 + i * 2.2;
+      const y = rows.pos + Math.sin(i / 3) * 7;
+      if (i) ctx.lineTo(x, y);
+      else ctx.moveTo(x, y);
+    }
+    ctx.stroke();
+    text(ctx, font(400, 12), SOFT, "posición", cx + 30, rows.pos + 24);
+    text(ctx, font(400, 12), SOFT, "2017", w - 24, h - 14, "right");
+  });
+
+  /* Development · an attention map, hung as a print: which word of a line
+     looks at which. Only its pattern is kept — no figures. */
+  inRegion("attention", (w, h) => {
+    const n = 14;
+    const gap = 3;
+    const size = (Math.min(w, h) - 36 - gap * (n - 1)) / n;
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        const diagonal = Math.exp(-((i - j) ** 2) / 3);
+        const echo = 0.55 * Math.exp(-((i - j - 4) ** 2) / 2) * (i > 5 ? 1 : 0.3);
+        const first = j === 0 ? 0.35 : 0;
+        const k = Math.min(1, diagonal * 0.85 + echo + first + 0.05);
+        ctx.fillStyle = `rgba(61,176,228,${(0.06 + k * 0.72).toFixed(3)})`;
+        ctx.fillRect(18 + j * (size + gap), 18 + i * (size + gap), size, size);
+      }
+    }
+  });
+
+  /* The meeting room · the Academia's class, on the screen of its room. */
+  inRegion("academia", (_, h) => {
+    text(ctx, font(700, 17), CELESTE, "ACADEMIA NOVIT", 40, 58);
+    text(ctx, font(700, 38), "rgba(255,255,255,0.88)", "Agentes de IA en el", 40, 118);
+    text(ctx, font(700, 38), "rgba(255,255,255,0.88)", "ciclo de desarrollo", 40, 164);
+    const steps = ["Planificar", "Ejecutar con herramientas", "Verificar"];
+    const bw = [150, 270, 150];
+    let x = 40;
+    const y = 236;
+    steps.forEach((label, i) => {
+      ctx.strokeStyle = i === 1 ? CELESTE : SOFT;
+      ctx.lineWidth = 2;
+      roundRect(ctx, x, y, bw[i], 54, 6);
+      ctx.stroke();
+      text(ctx, font(700, 17), INK, label, x + bw[i] / 2, y + 33, "center");
+      if (i < steps.length - 1) {
+        ctx.strokeStyle = SOFT;
+        segment(ctx, x + bw[i] + 8, y + 27, x + bw[i] + 34, y + 27);
+        ctx.fillStyle = SOFT;
+        ctx.beginPath();
+        ctx.moveTo(x + bw[i] + 40, y + 27);
+        ctx.lineTo(x + bw[i] + 32, y + 22);
+        ctx.lineTo(x + bw[i] + 32, y + 32);
+        ctx.closePath();
+        ctx.fill();
+      }
+      x += bw[i] + 48;
+    });
+    // What was learnt goes back into the plan.
+    const end = x - 48;
+    ctx.strokeStyle = "rgba(61,176,228,0.6)";
+    ctx.lineWidth = 1.6;
+    ctx.setLineDash([6, 5]);
+    ctx.beginPath();
+    ctx.moveTo(end - 75, y + 60);
+    ctx.lineTo(end - 75, y + 92);
+    ctx.lineTo(115, y + 92);
+    ctx.lineTo(115, y + 62);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    text(ctx, font(400, 16), SOFT, "cada entrega vuelve al plan", (115 + end - 75) / 2, y + 116, "center");
+    text(ctx, font(400, 15), SOFT, "Humanos en el circuito, agentes en producción", 40, h - 30);
+  });
+
+  /* The meeting room · the classroom's name, frosted on its glass. */
+  inRegion("academia-glass", (w, h) => {
+    ctx.filter = "blur(0.8px)";
+    text(ctx, font(700, 58), "rgba(255,255,255,0.5)", "Academia Novit", w / 2, h / 2 + 20, "center");
+    ctx.filter = "none";
+  });
+
+  /* The server room · the office's name, over the end of the aisle. */
+  inRegion("office-sign", (w, h) => {
+    const value = "Oficinas Buenos Aires";
+    let size = 54;
+    ctx.font = font(700, size);
+    while (ctx.measureText(value).width > w - 80 && size > 30) {
+      size -= 2;
+      ctx.font = font(700, size);
+    }
+    ctx.fillStyle = CELESTE;
+    ctx.fillRect(18, 22, 8, h - 44);
+    text(ctx, font(700, size), "rgba(255,255,255,0.82)", value, 50, h / 2 + size * 0.36);
+  });
 }
 
 /* ----------------------------------------------------------------------------
