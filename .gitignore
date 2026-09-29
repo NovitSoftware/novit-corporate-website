@@ -42,3 +42,15 @@ next-env.d.ts
 
 # tooling scratch
 .commandcode/
+
+# not part of the site, and not for a public repo: internal documents
+# (brand, design system, sources), backups, and each developer's own agent
+# and editor setup — `next dev` writes AGENTS.md and CLAUDE.md back on its own
+/docs/
+/backups/
+/.claude/
+AGENTS.md
+CLAUDE.md
+
+# the site installs with npm (package-lock.json); a second lockfile drifts
+bun.lock
