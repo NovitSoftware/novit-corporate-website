@@ -124,7 +124,7 @@ type MenuRowProps = {
  * do not have.
  *
  * `items-baseline` sets the clause on the name's own baseline rather than the
- * top of its box, so a 60px name and a 15px line read as one row.
+ * top of its box, so a 36px name and a 15px line read as one row.
  */
 function MenuRow({
   item,
@@ -151,12 +151,12 @@ function MenuRow({
         aria-current={current ? "page" : undefined}
         /* The columns come from `.menu-list`; what is set here is the row's
            own rhythm and the baseline the clause sits on. */
-        className="menu-row group grid gap-y-2 py-5 focus-visible:outline-offset-4 sm:py-6 lg:items-baseline"
+        className="menu-row group grid gap-y-2 py-4 focus-visible:outline-offset-4 sm:py-5 lg:items-baseline"
       >
         {/* The route's mark, on the badge plate, beside its name: the same
             glyph the footers list the page with. Centred on the name's first
             line, so a name that wraps on a phone keeps it at the top. */}
-        <span className="menu-row_name display-xl flex items-start gap-4 sm:gap-5">
+        <span className="menu-row_name flex items-start gap-4 sm:gap-5">
           <span className="flex h-[1lh] shrink-0 items-center">
             <IconBadge name={item.icon} />
           </span>

@@ -213,8 +213,15 @@
     transform: scaleX(1);
   }
 
+  /* A step under the pages' own displays: the menu is the way round the site,
+     not a headline, and at `display-xl` its names stood taller than the logo
+     over them. */
   .menu-row_name {
     color: var(--blanco);
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
     transition: color var(--dur-base) var(--ease-in-out-quad);
   }
 
