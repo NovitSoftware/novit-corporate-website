@@ -22,7 +22,7 @@ import {
   type Reveal,
   type Surface,
   type V3,
-} from "./hero-office-draw";
+} from "./office-draw";
 
 /*
  * What the rooms are furnished with, each piece drawn in its own place: `u`

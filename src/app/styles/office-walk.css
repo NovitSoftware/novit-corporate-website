@@ -1,0 +1,42 @@
+/* The walk through the office beside the opener of /desarrollo-y-consultoria — a WebGL canvas of hairlines, with no ground of its own. */
+
+@layer components {
+  /*
+   * The canvas paints lines only; every pixel between them is transparent,
+   * so the band's gradient is the drawing's background. It is support for
+   * the claim beside it, so it is set back as a whole and faded towards
+   * every edge: nothing it draws ends on a hard line.
+   *
+   * Its box is the opener's aside, at the drawing's own proportion: beside
+   * the copy from `xl`, at the foot of the band on a tablet, under the copy
+   * on a phone — see `.opener-aside` in opener.css.
+   */
+  .office-walk {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 600 / 656;
+    pointer-events: none;
+  }
+
+  .office-walk_canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+    mask-image: radial-gradient(closest-side at 50% 46%, #000 60%, transparent 100%);
+    mask-repeat: no-repeat;
+  }
+
+  .office-walk_canvas[data-ready] {
+    opacity: 0.72;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .office-walk_canvas {
+      transition: none;
+    }
+  }
+}

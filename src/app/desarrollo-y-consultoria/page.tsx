@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AcademyBoard } from "@/app/academianovit/_components/AcademyBoard";
+import { OfficeWalk } from "./_components/OfficeWalk";
 import { DevelopmentConsulting } from "./_sections/DevelopmentConsulting";
 import { DevelopmentStages } from "./_sections/DevelopmentStages";
 import { PageOpener } from "@/components/layout/PageOpener";
@@ -35,15 +35,16 @@ export default function DesarrolloYConsultoria() {
 
   return (
     <SiteShell footer={developmentFooterContent}>
-      {/* The Academia's board, beside the claim: the architecture Novit
-          builds, the same one the cursada teaches. */}
+      {/* Beside the claim, a walk round the office where the work is done:
+          the desks, the servers, the lounge over the avenue, the meeting
+          room. */}
       <PageOpener
         eyebrow={eyebrow}
         icon={icon}
         title={title}
         lead={lead}
         cta={cta}
-        figure={<AcademyBoard />}
+        aside={<OfficeWalk />}
       />
       <DevelopmentStages />
       <DevelopmentConsulting />

@@ -24,8 +24,8 @@ export const metadata: Metadata = {
 /**
  * Opener, then the recorrido: one decade of projects, IA first.
  *
- * The opener's aside is the customer map, and this is the only band on the
- * site that carries it: it is where the site says who the clients are.
+ * The opener's aside is the customer map: this is where the site says who
+ * the clients are. The home page's hero carries it too, beside the headline.
  *
  * The two agents that used to lead as their own section are now the first
  * group of the recorrido, not a claim standing apart from the evidence

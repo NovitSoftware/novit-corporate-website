@@ -51,11 +51,11 @@ const LABEL_GAP = 13;
  * its route lights, its name shows, and the signal goes only there; point at
  * home and it goes everywhere at once. The motion is `map-motion.ts`.
  *
- * It belongs to `/casos-de-exito` alone: the band it opens is the one that
- * says who the clients are. No surface of its own — the outlines are set
- * straight on the gradient and fade out at the crop, so it reads as the
- * band's ground rather than a map widget. Reduced motion gets the finished
- * drawing, and pointing still lights a route; nothing travels.
+ * It opens `/casos-de-exito`, the band that says who the clients are, and
+ * stands beside the home page's headline from `xl`. No surface of its own —
+ * the outlines are set straight on the gradient and fade out at the crop, so
+ * it reads as the band's ground rather than a map widget. Reduced motion gets
+ * the finished drawing, and pointing still lights a route; nothing travels.
  */
 export function CustomerMap({ className }: { className?: string }) {
   const ref = useRef<HTMLElement>(null);

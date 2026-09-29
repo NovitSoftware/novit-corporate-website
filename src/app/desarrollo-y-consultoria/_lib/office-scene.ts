@@ -1,4 +1,4 @@
-import { OBELISCO, cityPieces } from "./hero-office-city";
+import { OBELISCO, cityPieces } from "./office-city";
 import {
   CELESTE,
   INK,
@@ -28,7 +28,7 @@ import {
   type Surface,
   type V2,
   type V3,
-} from "./hero-office-draw";
+} from "./office-draw";
 import {
   agentPuck,
   arcLamp,
@@ -64,7 +64,7 @@ import {
   sofa,
   succulent,
   tallPlant,
-} from "./hero-office-furniture";
+} from "./office-furniture";
 
 /*
  * The home hero's walk through the office: a floor of a tower on 9 de Julio,
@@ -88,8 +88,8 @@ import {
  *
  * It is support for the headline beside it, not a scene of its own: drawn as
  * lines, the board's material, a step back in strength, with the words and
- * charts as one painted texture (`hero-office-atlas.ts`) set back further
- * still, and the city (`hero-office-city.ts`) further again. Solid walls are
+ * charts as one painted texture (`office-atlas.ts`) set back further
+ * still, and the city (`office-city.ts`) further again. Solid walls are
  * also written as depth-only surfaces, so they hide what is behind them
  * without painting anything — the band's gradient shows through everywhere.
  *

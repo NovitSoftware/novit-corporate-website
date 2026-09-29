@@ -1,5 +1,5 @@
-import { LINE_FLOATS, OCCLUDER_FLOATS, PANEL_FLOATS, POINT_FLOATS, type LayerData } from "./hero-office-draw";
-import type { Camera } from "./hero-office-scene";
+import { LINE_FLOATS, OCCLUDER_FLOATS, PANEL_FLOATS, POINT_FLOATS, type LayerData } from "./office-draw";
+import type { Camera } from "./office-scene";
 
 /*
  * The office walk's renderer: WebGL 2, no library, three passes.

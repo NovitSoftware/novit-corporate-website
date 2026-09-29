@@ -1,5 +1,5 @@
-import { uv } from "./hero-office-atlas";
-import { LOGO_ISOTIPO, LOGO_WORD } from "./hero-office-logo";
+import { uv } from "./office-atlas";
+import { LOGO_ISOTIPO, LOGO_WORD } from "./office-logo";
 
 /*
  * The office walk's drawing kit: the buffers the renderer takes, the few

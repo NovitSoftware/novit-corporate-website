@@ -2,7 +2,7 @@ import { withBasePath } from "@/lib/base-path";
 import { Badge } from "@/components/ui/Badge";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
-import { HeroOffice } from "../_components/HeroOffice";
+import { CustomerMap } from "@/app/casos-de-exito/_components/CustomerMap";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";
 import { SplitWords } from "@/components/motion/SplitWords";
@@ -16,15 +16,13 @@ import { heroContent } from "@/content/home";
  * from `SectionHandoff` — the exit window that suits every other band would
  * dim the headline while it is still the most prominent thing on the page.
  *
- * Beside the copy, the band's ground moves: `HeroOffice`, a walk through the
- * office drawn in lines. Below `xl` the copy takes the band's width and
- * there is no side for the drawing to stand on — anchored to the foot of a
+ * Beside the copy from `xl`, the customer map — the one `/casos-de-exito`
+ * opens with — so the first screen already says where the clients are. Below
+ * `xl` the copy takes the band's width and there is no side for the map to
+ * stand on, so it is left to that page; and anchored to the foot of a
  * full-height band, the copy left the top half empty and the headline sat
- * low on the screen. There the copy starts under the header, as every other
- * route's opener does, and the drawing takes no room of its own: it lies
- * faint behind the copy, across the whole band. The customer map that used
- * to stand beside the headline belongs to `/casos-de-exito`, the band that
- * says who the clients are.
+ * low on the screen, so there it starts under the header, as every other
+ * route's opener does.
  */
 export function HeroSection() {
   return (
@@ -35,10 +33,7 @@ export function HeroSection() {
         data-tone="dark"
         className="relative flex min-h-dvh scroll-mt-anchor flex-col justify-end overflow-x-clip pb-10 pt-header text-blanco max-xl:justify-start max-xl:pt-[calc(var(--header-height)+2rem)] sm:pb-14"
       >
-        {/* First, and out of the flow at every width, so it is drawn under
-            the copy: beside it from `xl`, behind it below that. */}
-        <HeroOffice />
-        <Container className="relative">
+        <Container className="relative xl:grid xl:grid-cols-[minmax(0,52rem)_minmax(0,1fr)] xl:items-center xl:gap-8">
           <div data-hero="copy" className="max-w-[52rem]">
             <AcademyAnnouncement />
 
@@ -74,6 +69,18 @@ export function HeroSection() {
               <ChipButton href={heroContent.primaryCta.href} variant="light">
                 {heroContent.primaryCta.label}
               </ChipButton>
+            </div>
+          </div>
+
+          {/* Two wrappers: the scroll fade must not start from the entrance's
+              hidden resting state. Past the 1440px container it bleeds to the
+              window edge, as the opener's aside does on `/casos-de-exito`. */}
+          <div
+            data-hero="map"
+            className="hidden xl:-mr-[max(2.25rem,calc((100vw_-_1440px)/2_+_2.25rem))] xl:block"
+          >
+            <div data-anim="fade" data-hero="map-art">
+              <CustomerMap />
             </div>
           </div>
         </Container>

@@ -17,7 +17,7 @@ import {
   type Place,
   type V2,
   type V3,
-} from "./hero-office-draw";
+} from "./office-draw";
 
 /*
  * The city out of the windows: downtown Buenos Aires from the thirteenth floor

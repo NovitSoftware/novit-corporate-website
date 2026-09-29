@@ -51,7 +51,7 @@ export const REGIONS: Record<string, Region> = (() => {
       regions[name] = { x: shelf.x, y: shelf.y, w, h };
       shelf.x += w + 2;
     } else {
-      if (top + h > ATLAS_SIZE) throw new Error("hero-office atlas: out of room");
+      if (top + h > ATLAS_SIZE) throw new Error("office atlas: out of room");
       shelves.push({ y: top, h, x: w + 2 });
       regions[name] = { x: 0, y: top, w, h };
       top += h + 2;

@@ -2,28 +2,28 @@
 
 import { useEffect, useRef } from "react";
 import { onPageReveal } from "@/lib/page-reveal";
-import { paintAtlas } from "../_lib/hero-office-atlas";
-import { createRenderer } from "../_lib/hero-office-gl";
-import { LOOP, STILL_REVEAL, STILL_TIME, buildRooms, cameraAt, outsideAt, takeView, viewPieces } from "../_lib/hero-office-scene";
+import { paintAtlas } from "../_lib/office-atlas";
+import { createRenderer } from "../_lib/office-gl";
+import { LOOP, STILL_REVEAL, STILL_TIME, buildRooms, cameraAt, outsideAt, takeView, viewPieces } from "../_lib/office-scene";
 
 /**
- * The hero's ground: a walk round a floor of the office, drawn in lines —
- * development, the server room, the lounge over 9 de Julio and the
- * Obelisco, the meeting room and the Academia's classroom. Support for the
- * headline, never competing with it: beside the copy on a wide screen, and
- * on a narrower one faint behind it, without its words.
+ * The opener's art on `/desarrollo-y-consultoria`: a walk round a floor of
+ * the office, drawn in lines — development, the server room, the lounge over
+ * 9 de Julio and the Obelisco, the meeting room and the Academia's
+ * classroom. Support for the claim beside it, never competing with it; the
+ * words and charts on its walls only show where it stands beside the copy.
  *
- * The scene is `hero-office-scene.ts` — its city `hero-office-city.ts`, its
- * furniture `hero-office-furniture.ts` — what its walls and screens show is
- * `hero-office-atlas.ts`, and the renderer `hero-office-gl.ts`; this only
- * runs them. The rooms are built here, when the drawing starts, rather than
- * when the page loads, and the city after them, a piece at a time while the
- * page is idle. The walk's clock only moves while the canvas can be seen
- * and after the page has opened, so it never runs unseen. Reduced motion
- * gets one frame — the lounge, the avenue down to the Obelisco — and no
- * loop. Without WebGL 2 there is no drawing, and the band is the copy alone.
+ * The scene is `office-scene.ts` — its city `office-city.ts`, its
+ * furniture `office-furniture.ts` — what its walls and screens show is
+ * `office-atlas.ts`, and the renderer `office-gl.ts`; this only runs them.
+ * The rooms are built here, when the drawing starts, rather than when the
+ * page loads, and the city after them, a piece at a time while the page is
+ * idle. The walk's clock only moves while the canvas can be seen and after
+ * the page has opened, so it never runs unseen. Reduced motion gets one
+ * frame — the lounge, the avenue down to the Obelisco — and no loop.
+ * Without WebGL 2 there is no drawing, and the band is the copy alone.
  */
-export function HeroOffice() {
+export function OfficeWalk() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -33,8 +33,8 @@ export function HeroOffice() {
     if (!renderer) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    // Beside the copy the words and charts show, set back; behind the copy,
-    // on a narrower screen, they would sit under the headline, so they go.
+    // Beside the copy the words and charts show, set back; on a narrower
+    // screen the drawing is small or behind the lead, and they go.
     const wide = window.matchMedia("(min-width: 80rem)");
     let clock = 0;
     let last = 0;
@@ -141,8 +141,8 @@ export function HeroOffice() {
   }, []);
 
   return (
-    <div aria-hidden="true" className="hero-office">
-      <canvas ref={canvasRef} className="hero-office_canvas" />
+    <div aria-hidden="true" className="office-walk">
+      <canvas ref={canvasRef} className="office-walk_canvas" />
     </div>
   );
 }

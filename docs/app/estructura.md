@@ -11,13 +11,13 @@ src/
     (home)/
       page.tsx      metadata y el orden de las bandas
       _sections/    Hero · Services · Contact
-      _components/  HeroScene · HeroOffice · ServiceCard · FormField
-      _lib/         hero-office-scene.ts · hero-office-city.ts ·
-                    hero-office-furniture.ts · hero-office-draw.ts ·
-                    hero-office-gl.ts · hero-office-atlas.ts ·
-                    hero-office-logo.ts
+      _components/  HeroScene · ServiceCard · FormField
     inteligencia-artificial/  page.tsx · _sections/ · _components/ · _lib/
-    desarrollo-y-consultoria/ page.tsx · _sections/
+    desarrollo-y-consultoria/ page.tsx · _sections/ · _components/ · _lib/
+      _components/  OfficeWalk
+      _lib/         office-scene.ts · office-city.ts · office-furniture.ts ·
+                    office-draw.ts · office-gl.ts · office-atlas.ts ·
+                    office-logo.ts
     academianovit/            page.tsx · _sections/ · _components/ · _lib/
     casos-de-exito/           page.tsx · _sections/ · _components/ · _lib/
   components/
