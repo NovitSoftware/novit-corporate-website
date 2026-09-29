@@ -2,10 +2,15 @@ import Image from "next/image";
 import { BRAND_LOGO } from "@/lib/brand-logo";
 
 /**
- * The curtain's two layers. The layout puts the ground under the page stage and
- * the mark over it, so the page opens out of the ground while the logo leaves
- * above it. `PageTransitions` drives both; `curtain.css` shows them only while
+ * The curtain's two layers, which only the home page's first load shows. The
+ * layout puts the ground under the page stage and the mark over it, so the
+ * page opens out of the ground while the logo leaves above it.
+ * `PageTransitions` drives both; `curtain.css` shows them only while
  * `html[data-curtain]` is set.
+ *
+ * The badge the logo stands in has no edge drawn round it: it is uncovered by
+ * the frame opening, and the ground's celeste — the glow behind it, the
+ * echoes of its edge going out — is all that marks it.
  *
  * The logo is only ever framed, moved and uncovered — never recoloured and
  * never given an effect, which the brand rules out.
@@ -68,9 +73,6 @@ export function CurtainMark() {
           <span data-curtain-rule className="curtain-rule w-40" />
         </div>
       </div>
-      {/* The page's edge while it is a badge: drawn round the logo, then
-          carried out to the viewport with the clip. */}
-      <div data-curtain-outline className="page-curtain-outline" />
     </div>
   );
 }

@@ -25,10 +25,10 @@ const FLOW = 5;
 const BEAT = 0.6;
 /** How far an echo of the badge's edge travels, as a scale of the badge. */
 const RIPPLE = 1.9;
-/** How long a page takes to fold back into the badge, in s. */
-const SHRINK = 0.6;
-/** When a closing page is fully covered and the next route can be swapped in. */
-const COVERED = 0.85;
+/** Between routes: the page fading out before the next is swapped in, and
+ *  the next fading up as its own entrance plays, in s. */
+const LEAVE = 0.2;
+const ARRIVAL = 0.35;
 /**
  * The curves. Each expand is one tween of the frame with the zoom on the same
  * duration and curve, so the edge and the content never drift apart; and the
@@ -42,14 +42,11 @@ const FADE = "sine.inOut";
 const CIERRE = 0.85;
 /** Past this a navigation is given up on and the browser loads the page itself. */
 const NAVIGATION_TIMEOUT_MS = 6000;
-/** Navigations run the same choreography as the first load, a little quicker. */
-const NAVIGATION_PACE = 0.8;
 
 type Parts = {
   stage: HTMLElement;
   lens: HTMLElement;
   window: HTMLElement;
-  outline: HTMLElement;
   stack: HTMLElement;
   rule: HTMLElement;
   ramps: HTMLElement;
@@ -88,22 +85,24 @@ type TransitionState = {
 };
 
 /**
- * The page curtain, and the one way every page arrives.
+ * How pages arrive.
  *
- * First load: a white-edged frame opens out from the centre to fit the logo,
- * the logo settling inside it; it holds there; then the page opens out of the
- * badge to fill the viewport. The frame is the same one throughout, so the
- * logo and the page arrive by the same gesture.
+ * The home page, loaded, opens behind the curtain: a frame opens out from the
+ * centre to uncover the logo, the ground answering it in celeste; it holds
+ * there; then the page opens out of the badge to fill the viewport. It is the
+ * site's front door, and the only arrival that stops to show the logo — the
+ * pre-paint script in the root layout sets the curtain for that path alone.
  *
- * Every navigation plays it again, shorter: internal links are taken over and
- * routed client-side, the page folds back into the badge, the next route is
- * swapped in behind the logo, and it opens the same way. Back and forward
- * cannot be held while the page closes, so they cut to the badge and open
- * from there.
+ * Every other arrival is the page itself. A route loaded directly opens as it
+ * is, and between routes internal links are taken over and routed
+ * client-side: the page fades out onto the ground, the next route is swapped
+ * in, and it fades up while its own entrance plays. Back and forward cannot
+ * be held while the page fades, so they cut to the ground and fade up the
+ * same way.
  *
  * The page is clipped and zoomed as one piece — `[data-page-stage]` carries
- * the clip, `[data-page-lens]` inside it the zoom — so the header, the
- * atmosphere and the content all arrive together.
+ * the clip, `[data-page-lens]` inside it the zoom and the fades — so the
+ * header, the atmosphere and the content all arrive together.
  *
  * Reduced motion gets none of it: no curtain on arrival (the pre-paint script
  * never sets `data-curtain`) and plain page loads between routes.
@@ -149,7 +148,7 @@ export function PageTransitions() {
     current.busy = true;
     const frame = current.frame;
     const badge = measure(parts, frame);
-    gsap.set([parts.stage, parts.outline], { opacity: 0 });
+    gsap.set(parts.stage, { opacity: 0 });
     gsap.set(parts.lens, { scale: ZOOM });
     Object.assign(frame, { w: 0, h: 0, r: RADIUS });
     paint(parts, frame);
@@ -165,7 +164,7 @@ export function PageTransitions() {
     // to open, so the page comes out in the wake of the second.
     addBeat(timeline, parts, lands - 0.25, parts.ripples[0], FLOW, CIERRE);
     addBeat(timeline, parts, opensAt - LEAD, parts.ripples[1], -FLOW, 1);
-    addOpening(timeline, parts, frame, opensAt, 1);
+    addOpening(timeline, parts, frame, opensAt);
     current.timeline = timeline;
 
     return () => {
@@ -186,21 +185,12 @@ export function PageTransitions() {
 
       current.busy = true;
       coverPage();
-      document.documentElement.dataset.curtain = "nav";
       lenisRef.current?.stop();
 
-      const frame = current.frame;
-      const badge = measure(parts, frame);
-      Object.assign(frame, { w: frame.vw, h: frame.vh, r: 0 });
-      paint(parts, frame);
-      gsap.set([parts.outline, parts.stack, parts.glow, parts.cierre], {
-        opacity: 0,
-      });
-
-      const swap = () => {
-        // Back to an unzoomed page before the next one mounts, so its scenes
-        // measure where things really are.
-        gsap.set(parts.lens, { clearProps: "transform" });
+      // The page fades out onto the ground, and the next route goes in once
+      // it is gone.
+      const timeline = gsap.timeline();
+      timeline.to(parts.lens, { opacity: 0, duration: LEAVE, ease: FADE }).add(() => {
         // A link inside the open menu restarts the scroll as it closes.
         lenisRef.current?.stop();
         lenisRef.current?.scrollTo(0, { immediate: true, force: true });
@@ -209,46 +199,7 @@ export function PageTransitions() {
         current.fallback = window.setTimeout(() => {
           window.location.assign(withBasePath(destination.route));
         }, NAVIGATION_TIMEOUT_MS);
-      };
-
-      // The swap goes in as soon as the page is covered, not when the last
-      // tween happens to end.
-      const timeline = gsap.timeline();
-      timeline.add(swap, COVERED);
-      timeline
-        .to(
-          frame,
-          {
-            w: badge.w,
-            h: badge.h,
-            r: RADIUS,
-            duration: SHRINK,
-            ease: TRAVEL,
-            onUpdate: () => paint(parts, frame),
-          },
-          0,
-        )
-        .to(parts.outline, { opacity: 1, duration: 0.25, ease: FADE }, 0.05)
-        .fromTo(
-          parts.lens,
-          { scale: 1 },
-          { scale: ZOOM, duration: SHRINK, ease: TRAVEL },
-          0,
-        )
-        .to(parts.stage, { opacity: 0, duration: 0.25, ease: FADE }, 0.4);
-      addMark(timeline, parts, 0.35, 0.6);
-      // The ground runs its beat backwards while the page folds away: the
-      // ripple gathers onto the badge as the page lands in it, the ramps flow
-      // back and the violet recedes. The next page opens on the beat forwards.
-      addBeatReversed(
-        timeline,
-        parts,
-        0,
-        SHRINK,
-        parts.ripples[0],
-        nextFlow(parts),
-        CIERRE,
-      );
+      });
       current.timeline = timeline;
       return true;
     };
@@ -300,19 +251,9 @@ export function PageTransitions() {
       current.pending = null;
       current.busy = true;
       coverPage();
-      document.documentElement.dataset.curtain = "nav";
       lenisRef.current?.stop();
-
-      // Straight to the badge, logo up.
-      const frame = current.frame;
-      const badge = measure(parts, frame);
-      Object.assign(frame, { w: badge.w, h: badge.h, r: RADIUS });
-      paint(parts, frame);
-      gsap.set(parts.stage, { opacity: 0 });
-      gsap.set(parts.lens, { clearProps: "transform" });
-      gsap.set([parts.outline, parts.stack, parts.glow], { opacity: 1 });
-      gsap.set(parts.cierre, { opacity: CIERRE });
-      gsap.set(parts.rule, { scaleX: 1 });
+      // Straight to the ground; the next route fades up over it.
+      gsap.set(parts.lens, { opacity: 0 });
 
       window.clearTimeout(current.fallback);
       current.fallback = window.setTimeout(() => {
@@ -320,10 +261,10 @@ export function PageTransitions() {
       }, NAVIGATION_TIMEOUT_MS);
     };
 
-    // The fallback above can leave a closed page in the bfcache.
+    // The fallback above can leave a faded page in the bfcache.
     const onPageShow = (event: PageTransitionEvent) => {
       const parts = findParts();
-      if (event.persisted && parts && document.documentElement.dataset.curtain) {
+      if (event.persisted && parts) {
         current.timeline?.kill();
         settle(parts, current, lenisRef.current);
       }
@@ -344,12 +285,12 @@ export function PageTransitions() {
   }, [router]);
 
   /**
-   * The next route has rendered behind the curtain.
+   * The next route has rendered behind the faded page.
    *
    * A layout effect, because it runs before the new page's own layout effects
    * — its scenes measure themselves in those, and they have to find the page
-   * already scrolled to where it opens. The opening itself waits a frame, for
-   * the same measurements to finish before the zoom goes on.
+   * already scrolled to where it opens. The fade up waits a frame, for the
+   * same measurements to finish.
    */
   useLayoutEffect(() => {
     const current = state.current;
@@ -366,7 +307,7 @@ export function PageTransitions() {
     const parts = findParts();
     land(lenisRef.current, hash);
 
-    if (!parts || !document.documentElement.dataset.curtain) {
+    if (!parts) {
       revealPage();
       return;
     }
@@ -379,9 +320,8 @@ export function PageTransitions() {
           focusArrival(hash);
         },
       });
-      // The second beat, then the page out in its wake.
-      addBeat(timeline, parts, 0, parts.ripples[1], nextFlow(parts), 1);
-      addOpening(timeline, parts, current.frame, 0.2, NAVIGATION_PACE);
+      // The page's own entrance starts with the fade, not after it.
+      timeline.add(revealPage, 0).to(parts.lens, { opacity: 1, duration: ARRIVAL, ease: FADE }, 0);
       current.timeline = timeline;
     });
 
@@ -398,7 +338,6 @@ function findParts(): Parts | null {
     stage: pick("[data-page-stage]"),
     lens: pick("[data-page-lens]"),
     window: pick("[data-curtain-window]"),
-    outline: pick("[data-curtain-outline]"),
     stack: pick("[data-curtain-stack]"),
     rule: pick("[data-curtain-rule]"),
     ramps: pick("[data-curtain-ramps]"),
@@ -431,20 +370,13 @@ function measure(parts: Parts, frame: Frame): Badge {
   return badge;
 }
 
-/** Writes the frame out: the stage's clip, the logo's, and the outline on them. */
+/** Writes the frame out: the stage's clip and the logo's. */
 function paint(parts: Parts, frame: Frame) {
   const x = Math.max(0, (frame.vw - frame.w) / 2);
   const y = Math.max(0, (frame.vh - frame.h) / 2);
   const clip = `inset(${y}px ${x}px ${y}px ${x}px round ${frame.r}px)`;
   parts.stage.style.clipPath = clip;
   parts.window.style.clipPath = clip;
-
-  const outline = parts.outline.style;
-  outline.left = `${x}px`;
-  outline.top = `${y}px`;
-  outline.width = `${frame.vw - x * 2}px`;
-  outline.height = `${frame.vh - y * 2}px`;
-  outline.borderRadius = `${frame.r}px`;
 }
 
 /**
@@ -474,7 +406,6 @@ function addBadge(
       },
       at,
     )
-    .to(parts.outline, { opacity: 1, duration: 0.2, ease: FADE }, at)
     .fromTo(
       parts.stack,
       { opacity: 0, scale: ZOOM },
@@ -540,71 +471,17 @@ function addBeat(
 }
 
 /**
- * The same beat run backwards and fitted into `duration`: the ripple gathers
- * in from the edges onto the badge and the ramps and the violet come back to
- * where they are now. Its first frame is the beat's last, which the full page
- * still covers, so nothing jumps in view.
- */
-function addBeatReversed(
-  timeline: gsap.core.Timeline,
-  parts: Parts,
-  at: number,
-  duration: number,
-  ripple: HTMLElement,
-  flow: number,
-  cierre: number,
-) {
-  const beat = gsap.timeline({ paused: true });
-  addBeat(beat, parts, 0, ripple, flow, cierre);
-  timeline.add(
-    beat.tweenFromTo(beat.duration(), 0, { duration, ease: "none" }),
-    at,
-  );
-}
-
-/** A beat flows the ramps the other way from wherever the last one left them. */
-function nextFlow(parts: Parts): number {
-  return Number(gsap.getProperty(parts.ramps, "xPercent")) > 0 ? -FLOW : FLOW;
-}
-
-/** The logo arriving in a badge that is already there: it settles into it. */
-function addMark(
-  timeline: gsap.core.Timeline,
-  parts: Parts,
-  at: number,
-  pace: number,
-) {
-  timeline
-    .fromTo(
-      parts.stack,
-      { opacity: 0, scale: ZOOM },
-      { opacity: 1, scale: 1, duration: 0.8 * pace, ease: ease.outSoft },
-      at,
-    )
-    .to(parts.glow, { opacity: 1, duration: 0.8 * pace, ease: FADE }, at)
-    .fromTo(
-      parts.rule,
-      { scaleX: 0 },
-      { scaleX: 1, duration: 0.5 * pace, ease: TRAVEL },
-      at + 0.25 * pace,
-    );
-}
-
-/**
  * The page opening: out of the badge to the edges in one move, with the page
- * fading up inside it, the zoom settling, the logo lifting away and the
- * outline letting go as it reaches the viewport. The page's own entrance is
- * released partway, so it is already arriving as the frame opens.
+ * fading up inside it, the zoom settling and the logo lifting away. The
+ * page's own entrance is released partway, so it is already arriving as the
+ * frame opens.
  */
 function addOpening(
   timeline: gsap.core.Timeline,
   parts: Parts,
   frame: Frame,
   at: number,
-  pace: number,
 ) {
-  const travel = pace;
-
   timeline
     .to(
       frame,
@@ -612,7 +489,7 @@ function addOpening(
         w: frame.vw,
         h: frame.vh,
         r: 0,
-        duration: travel,
+        duration: 1,
         ease: TRAVEL,
         onUpdate: () => paint(parts, frame),
       },
@@ -621,22 +498,17 @@ function addOpening(
     .fromTo(
       parts.lens,
       { scale: ZOOM },
-      { scale: 1, duration: travel, ease: TRAVEL, immediateRender: false },
+      { scale: 1, duration: 1, ease: TRAVEL, immediateRender: false },
       at,
     )
-    .to(parts.stage, { opacity: 1, duration: 0.4 * pace, ease: "sine.out" }, at)
+    .to(parts.stage, { opacity: 1, duration: 0.4, ease: "sine.out" }, at)
     .to(
       parts.stack,
-      { opacity: 0, y: -16, scale: 1.04, duration: 0.4 * pace, ease: FADE },
+      { opacity: 0, y: -16, scale: 1.04, duration: 0.4, ease: FADE },
       at,
     )
-    .to(parts.glow, { opacity: 0, duration: 0.5 * pace, ease: FADE }, at)
-    .to(
-      parts.outline,
-      { opacity: 0, duration: 0.35 * pace, ease: FADE },
-      at + 0.6 * pace,
-    )
-    .add(revealPage, at + 0.4 * pace);
+    .to(parts.glow, { opacity: 0, duration: 0.5, ease: FADE }, at)
+    .add(revealPage, at + 0.4);
 }
 
 /** The page is open: hand it back as if the curtain had never been there. */
@@ -645,7 +517,7 @@ function settle(parts: Parts, current: TransitionState, lenis: Lenis | undefined
   // clip under it would close the page for a frame.
   delete document.documentElement.dataset.curtain;
   gsap.set(parts.stage, { clearProps: "clipPath,opacity" });
-  gsap.set(parts.lens, { clearProps: "transform" });
+  gsap.set(parts.lens, { clearProps: "transform,opacity" });
   revealPage();
   current.busy = false;
   current.timeline = null;

@@ -22,8 +22,7 @@
   }
 
   /* While the page is closed or opening it is not there to be used. */
-  html[data-curtain="opening"] .page-stage,
-  html[data-curtain="nav"] .page-stage {
+  html[data-curtain="opening"] .page-stage {
     pointer-events: none;
   }
 
@@ -195,15 +194,6 @@
         rgb(var(--rgb-celeste) / 0.9) 50%,
         rgb(var(--rgb-celeste) / 0) 100%);
     transform: scaleX(0);
-  }
-
-  /* Sits exactly on the stage's clip; its box is written by PageTransitions. */
-  .page-curtain-outline {
-    position: absolute;
-    box-sizing: border-box;
-    border: 2.5px solid var(--blanco);
-    border-radius: 24px;
-    opacity: 0;
   }
 
   /*

@@ -5,6 +5,7 @@ import { PageTransitions } from "@/components/providers/PageTransitions";
 import { SceneAtmosphere } from "@/components/layout/SceneAtmosphere";
 import { CurtainGround, CurtainMark } from "@/components/layout/PageCurtain";
 import { metadataContent, site } from "@/content/site";
+import { basePath } from "@/lib/base-path";
 import "./globals.css";
 
 /**
@@ -58,12 +59,14 @@ export const viewport: Viewport = {
  * the finished page instead of a hidden one.
  *
  * `data-curtain="intro"` closes the page behind the curtain for the opening
- * (see `PageTransitions` and curtain.css), under the same condition.
+ * (see `PageTransitions` and curtain.css), under the same condition and on
+ * the home page alone: the logo opens the site's front door, not every page
+ * someone lands on.
  *
  * It has to be inline and it has to be here, before the body parses: set from
  * an effect it would paint the finished page and then hide it.
  */
-const PRE_PAINT_SCRIPT = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement.dataset;d.motion="on";d.curtain="intro"}}catch(e){}`;
+const PRE_PAINT_SCRIPT = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement.dataset,p=location.pathname,b=${JSON.stringify(basePath)};d.motion="on";if(p===b||p===b+"/"||p===b+"/index.html")d.curtain="intro"}}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
