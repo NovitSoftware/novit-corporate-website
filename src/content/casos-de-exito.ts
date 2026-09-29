@@ -57,7 +57,7 @@ export const casesPageContent = {
        bandera de cada card la que lo dice, no esta oración: Colombia y
        Brasil llevan su marca igual que los cinco con proyectos activos, sin
        reclamar más que "hemos trabajado en". */
-    lead: "Agentes de inteligencia artificial, software a medida, consultoría sobre el proceso de desarrollo y equipos integrados a los del cliente. En industrias como Oil & Gas, Real Estate, Retail, Salud y Educación.",
+    lead: "Agentes de inteligencia artificial, software a medida, consultoría sobre el proceso de desarrollo y equipos integrados a los del cliente. En industrias como Oil & Gas, Real Estate, Retail, Salud y Logística.",
     groups: [
       {
         id: "inteligencia-artificial",
@@ -109,7 +109,7 @@ export const casesPageContent = {
           },
           {
             country: "España",
-            description: "Portal de ventas online",
+            description: "Desarrollo de nuevo e-commerce B2B",
             logo: {
               name: "Gamma Group",
               src: "/logos/gamma-group.png",
@@ -269,7 +269,7 @@ export const casesPageContent = {
       {
         id: "equipos",
         icon: "team",
-        title: "Equipos, soporte e integraciones",
+        title: "Staff Augmentation",
         items: [
           {
             country: "México y Estados Unidos",
@@ -320,7 +320,7 @@ export const casesPageContent = {
           },
           {
             country: "Brasil",
-            description: "Integraciones con entidades bancarias de la región",
+            description: "Integraciones con Bancolombia y Davivienda Brasil",
             logo: {
               name: "product minds",
               src: "/logos/product-minds.png",

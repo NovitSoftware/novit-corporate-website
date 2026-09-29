@@ -18,8 +18,8 @@ import { cn } from "@/lib/cn";
  *
  * ## A sentence per block, and no hours
  *
- * Each row carries one compressed sentence from
- * `docs/novit/academia-novit.md`, because a two-word title describes nothing —
+ * Each row carries one compressed sentence from the Academia's temario,
+ * because a two-word title describes nothing —
  * "Contexto y conocimiento" is unreadable without the temario open. One
  * sentence, not the full syllabus: the twenty-odd topic bullets stay in the
  * temario, where they belong.

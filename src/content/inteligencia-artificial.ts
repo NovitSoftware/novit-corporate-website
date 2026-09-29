@@ -8,8 +8,7 @@ import { siteContact } from "@/content/site";
  * sit at the top level, and the cards under `cases` come from `casesContent`
  * in `@/content/cases`, which two other routes render too.
  *
- * Source is the brochure at
- * `docs/novit/brochures/transformacion-ia-brochure.md`, without its risk band
+ * Source is Novit's transformación IA brochure, without its risk band
  * ("¿por qué no contratar proveedores individuales?") or its workshop closer.
  * The standing site's AI copy — WhatsApp bots, cobranzas, campañas de
  * recontacto — is not here either; it addresses a different buyer.
@@ -137,12 +136,9 @@ export const servicesPageContent = {
     eyebrow: "Evolución",
     icon: "target",
     title: "Del primer agente a la estrategia corporativa",
-    /* "Estas empresas", and the band sits directly under the four of them.
-       It read "las empresas de acá abajo" while Evolución came *before*
-       Casos, so the sentence pointed at a band that was not there yet. The
-       order is the brochure's now — riesgo, rol, infraestructura, casos,
-       evolución — and the pronoun has something to refer to. */
-    lead: "Ninguna de estas empresas arrancó con un plan de IA. Arrancó con un caso puntual, y sobre eso se construyó todo lo demás.",
+    /* Said of how any start goes, not of the companies in the band above:
+       the steps below are the order, whoever takes them. */
+    lead: "No se empieza con una estrategia final, se empieza con un caso puntual, y sobre eso se construye todo lo demás.",
     /** The one genuinely numbered thing on the page: the infrastructure has to
      *  exist before the second agent is cheaper than the first. `leaves` is
      *  what the step installs, which is the whole argument of the band. */
@@ -186,7 +182,7 @@ export const servicesPageContent = {
     eyebrow: "Casos de éxito",
     icon: "briefcase",
     title: "Agentes que ya están trabajando",
-    lead: "Dos agentes en producción, cada uno sobre un proceso concreto de una empresa distinta: qué resuelve y qué cambió al ponerlo a andar.",
+    lead: "Cada uno sobre un proceso concreto de una empresa distinta: qué resuelve y qué cambió al ponerlo a andar.",
   },
 } as const;
 

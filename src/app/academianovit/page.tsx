@@ -40,7 +40,7 @@ export const metadata: Metadata = {
  * is and when it runs, Cursada how it is organised, Evaluación how it is
  * marked. Consultas go to the Academia's inbox, which is the opener's CTA and
  * the footer's — a band of its own repeated the same address three times over.
- * `docs/novit/academia-novit.md` is the source for every word here.
+ * The Academia's temario is the source for every word here.
  *
  * ## No section numbers
  *

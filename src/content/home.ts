@@ -29,8 +29,8 @@ export const heroContent = {
   pillars: [
     { label: "Transformación IA", icon: "agent" },
     { label: "Desarrollo a medida", icon: "code" },
-    { label: "Consultoría CTO as a Service", icon: "metric" },
-    { label: "Células ágiles", icon: "team" },
+    { label: "Consultoría IT / CTOaaS", icon: "metric" },
+    { label: "Staff Augmentation", icon: "team" },
   ],
   /**
    * A news item and nothing else: one date, and the route that explains the
@@ -94,7 +94,7 @@ export const services = [
   {
     id: "cto-as-a-service",
     icon: "metric",
-    label: "Consultoría CTO as a Service",
+    label: "Consultoría IT / CTOaaS",
     title:
       "Optimizamos tus procesos de desarrollo y mejoramos la productividad de tu equipo",
     points: [
@@ -110,7 +110,7 @@ export const services = [
   {
     id: "celulas-agiles",
     icon: "team",
-    label: "Células ágiles",
+    label: "Staff Augmentation",
     title: "Capacidad elástica y multidisciplinaria para el equipo que ya tenés",
     description:
       "Equipos capacitados y comprometidos, células ágiles y staff augmentation que se adapta a tus procesos. Sin costos por escalar o reducir la demanda y con acceso a equipos multidisciplinarios sin tener que contratar cada especialidad.",

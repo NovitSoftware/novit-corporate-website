@@ -194,7 +194,7 @@ const ICONS = {
       <path d="m13.5 4.5-3 15" />
     </>
   ),
-  /** People. Células ágiles, the team, the cohort. */
+  /** People. Staff augmentation, the team, the cohort. */
   team: (
     <>
       <circle cx="9" cy="8" r="3.5" />

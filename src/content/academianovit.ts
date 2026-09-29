@@ -28,7 +28,7 @@ export const academyContact = {
 /**
  * The programme, in full, and the single source for it.
  *
- * Everything here comes from `docs/novit/academia-novit.md`, the temario.
+ * Everything here comes from the Academia's temario.
  *
  * ## What came out, and why it is not recoverable from a comment
  *
@@ -37,9 +37,9 @@ export const academyContact = {
  * were the aim of the course quoted from the temario, the agent/agentic-software
  * distinction, and the four prerequisites with the "no es de nivel inicial"
  * note. Removing them was asked for directly; what is left describes how the
- * course runs rather than arguing who should take it. The temario at
- * `docs/novit/academia-novit.md` is the source and still has every word of it,
- * so restoring a band is a copy from there, not an archaeology exercise.
+ * course runs rather than arguing who should take it. The temario is the
+ * source and still has every word of it, so restoring a band is a copy from
+ * there, not an archaeology exercise.
  *
  * Still no calendar beyond `edition`. Class-by-class dates and delivery
  * deadlines belong to one cohort and would be wrong the moment it closes.
@@ -61,9 +61,9 @@ export const academyProgram = {
      * tell what "Contexto y conocimiento" meant without the temario open — so
      * each block now carries one sentence and its load.
      *
-     * Every `detail` is a compression of that block's bullets in
-     * `docs/novit/academia-novit.md` §Contenidos. Not a new claim: if the
-     * temario changes, these change with it and nothing else here does.
+     * Every `detail` is a compression of that block's bullets in the
+     * temario's Contenidos. Not a new claim: if the temario changes, these
+     * change with it and nothing else here does.
      *
      * No per-block hours. They were here — "3 clases · 6 h" under each title,
      * from §Duración y modalidad — and they turned the panel into a timetable.
@@ -107,7 +107,7 @@ export const academyProgram = {
    *
    * ## This band has no source document, and that is a standing problem
    *
-   * `docs/novit/academia-novit.md` covers the aim, the objectives, the
+   * The temario covers the aim, the objectives, the
    * prerequisites, the load and every module — and says nothing at all about an
    * evaluation. No trabajo integrador, no partial deliveries, no marking
    * scheme, no sector. Its one occurrence of "evaluación" is "evaluación
@@ -274,8 +274,8 @@ export const academyBoard = {
  * ## Three bands
  *
  * The course as it runs: the opener, the five blocks, the marking criteria.
- * `docs/novit/academia-novit.md` carries the rest of the temario, and it is
- * the source for every word here.
+ * The temario carries the rest of the course, and it is the source for every
+ * word here.
  *
  * ## The way in is an inbox
  *

@@ -66,13 +66,10 @@ type CardProps = {
  * ## It is the AI Radar's *ficha*, not the IA deck's tile
  *
  * This went through two wrong versions, both because it was copied from the
- * wrong document. `docs/novit/novit-design-system.md` cap. 07 lists the
- * *Presentación IA 2026* — the six-slide deck in `docs/novit/source/` — as
- * "generada con IA, sin criterio de marca aplicado · rehacer con el sistema",
- * and cap. 00 says the reference piece is the **AI & Tech Radar**: "cuando
- * este documento y el radar no coincidan, gana el radar". The deck's celeste
- * top rule and its two card flavours were being treated as the authority. They
- * are not the authority; they are the thing the system says to redo.
+ * wrong piece: the IA deck, its celeste top rule and its two card flavours
+ * treated as the authority. The design system names the **AI & Tech Radar**
+ * as the reference — "cuando este documento y el radar no coincidan, gana el
+ * radar" — and the deck as a piece still to be brought into the system.
  *
  * The radar's ficha, from cap. 01, is one shape with four jobs of colour:
  *
