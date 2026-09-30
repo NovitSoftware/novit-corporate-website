@@ -2,9 +2,10 @@ import Image from "next/image";
 import { BRAND_LOGO } from "@/lib/brand-logo";
 
 /**
- * The curtain's two layers, which only the home page's first load shows. The
- * layout puts the ground under the page stage and the mark over it, so the
- * page opens out of the ground while the logo leaves above it.
+ * The curtain's two layers, which only arrivals at the home page show — its
+ * load, and a navigation back to it. The layout puts the ground under the page
+ * stage and the mark over it, so the page opens out of the ground while the
+ * logo leaves above it.
  * `PageTransitions` drives both; `curtain.css` shows them only while
  * `html[data-curtain]` is set.
  *

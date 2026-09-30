@@ -87,18 +87,22 @@ type TransitionState = {
 /**
  * How pages arrive.
  *
- * The home page, loaded, opens behind the curtain: a frame opens out from the
- * centre to uncover the logo, the ground answering it in celeste; it holds
- * there; then the page opens out of the badge to fill the viewport. It is the
- * site's front door, and the only arrival that stops to show the logo — the
- * pre-paint script in the root layout sets the curtain for that path alone.
+ * The home page opens behind the curtain: a frame opens out from the centre to
+ * uncover the logo, the ground answering it in celeste; it holds there; then
+ * the page opens out of the badge to fill the viewport. It is the site's front
+ * door, and the only arrival that stops to show the logo — loaded, when the
+ * pre-paint script in the root layout sets the curtain for that path alone,
+ * and come back to from another route, when the page being left fades out
+ * onto the curtain's ground and the home page opens out of it the same way. A
+ * link to one of its sections — Servicios, Contacto — is on its way somewhere,
+ * and arrives as any other route does.
  *
  * Every other arrival is the page itself. A route loaded directly opens as it
  * is, and between routes internal links are taken over and routed
  * client-side: the page fades out onto the ground, the next route is swapped
  * in, and it fades up while its own entrance plays. Back and forward cannot
- * be held while the page fades, so they cut to the ground and fade up the
- * same way.
+ * be held while the page fades, so they cut to the ground — the curtain's, on
+ * the way home — and arrive the same way.
  *
  * The page is clipped and zoomed as one piece — `[data-page-stage]` carries
  * the clip, `[data-page-lens]` inside it the zoom and the fades — so the
@@ -146,25 +150,12 @@ export function PageTransitions() {
     }
 
     current.busy = true;
-    const frame = current.frame;
-    const badge = measure(parts, frame);
-    gsap.set(parts.stage, { opacity: 0 });
-    gsap.set(parts.lens, { scale: ZOOM });
-    Object.assign(frame, { w: 0, h: 0, r: RADIUS });
-    paint(parts, frame);
-    // Hands the stage and the logo over from their CSS resting clips.
-    root.dataset.curtain = "opening";
-
     const timeline = gsap.timeline({
       onComplete: () => settle(parts, current, lenisRef.current),
     });
-    const lands = addBadge(timeline, parts, frame, badge, 0.05);
-    const opensAt = lands + HOLD;
-    // The ground answers the badge landing, then again as the page is about
-    // to open, so the page comes out in the wake of the second.
-    addBeat(timeline, parts, lands - 0.25, parts.ripples[0], FLOW, CIERRE);
-    addBeat(timeline, parts, opensAt - LEAD, parts.ripples[1], -FLOW, 1);
-    addOpening(timeline, parts, frame, opensAt);
+    openCurtain(timeline, parts, current.frame);
+    // Hands the stage and the logo over from their CSS resting clips.
+    root.dataset.curtain = "opening";
     current.timeline = timeline;
 
     return () => {
@@ -188,9 +179,15 @@ export function PageTransitions() {
       lenisRef.current?.stop();
 
       // The page fades out onto the ground, and the next route goes in once
-      // it is gone.
+      // it is gone. On the way home the ground is the curtain's, and the home
+      // page opens out of it.
+      const home = opensBehindCurtain(destination.path, destination.hash);
+      if (home) {
+        drawCurtain(parts);
+      }
+      const leaving = home ? parts.stage : parts.lens;
       const timeline = gsap.timeline();
-      timeline.to(parts.lens, { opacity: 0, duration: LEAVE, ease: FADE }).add(() => {
+      timeline.to(leaving, { opacity: 0, duration: LEAVE, ease: FADE }).add(() => {
         // A link inside the open menu restarts the scroll as it closes.
         lenisRef.current?.stop();
         lenisRef.current?.scrollTo(0, { immediate: true, force: true });
@@ -252,8 +249,16 @@ export function PageTransitions() {
       current.busy = true;
       coverPage();
       lenisRef.current?.stop();
-      // Straight to the ground; the next route fades up over it.
-      gsap.set(parts.lens, { opacity: 0 });
+      // Straight to the ground, and the next route arrives over it: the
+      // curtain's ground on the way home, the stage's own anywhere else —
+      // taking down a curtain this cuts across.
+      if (opensBehindCurtain(currentPath(), window.location.hash)) {
+        drawCurtain(parts);
+        gsap.set(parts.stage, { opacity: 0 });
+      } else {
+        lowerCurtain(parts);
+        gsap.set(parts.lens, { opacity: 0 });
+      }
 
       window.clearTimeout(current.fallback);
       current.fallback = window.setTimeout(() => {
@@ -312,6 +317,8 @@ export function PageTransitions() {
       return;
     }
 
+    // Drawn on the way here when this is the home page.
+    const curtain = document.documentElement.dataset.curtain === "opening";
     const frame = requestAnimationFrame(() => {
       ScrollTrigger.refresh();
       const timeline = gsap.timeline({
@@ -320,8 +327,12 @@ export function PageTransitions() {
           focusArrival(hash);
         },
       });
-      // The page's own entrance starts with the fade, not after it.
-      timeline.add(revealPage, 0).to(parts.lens, { opacity: 1, duration: ARRIVAL, ease: FADE }, 0);
+      if (curtain) {
+        openCurtain(timeline, parts, current.frame);
+      } else {
+        // The page's own entrance starts with the fade, not after it.
+        timeline.add(revealPage, 0).to(parts.lens, { opacity: 1, duration: ARRIVAL, ease: FADE }, 0);
+      }
       current.timeline = timeline;
     });
 
@@ -377,6 +388,28 @@ function paint(parts: Parts, frame: Frame) {
   const clip = `inset(${y}px ${x}px ${y}px ${x}px round ${frame.r}px)`;
   parts.stage.style.clipPath = clip;
   parts.window.style.clipPath = clip;
+}
+
+/**
+ * The curtain opening, as the first load plays it and as a navigation home
+ * plays it again: the page closed to nothing and zoomed, the badge opening
+ * round the logo, the hold, and the page opening out of the badge. The ground
+ * answers the badge landing, then again as the page is about to open, so the
+ * page comes out in the wake of the second.
+ */
+function openCurtain(timeline: gsap.core.Timeline, parts: Parts, frame: Frame) {
+  const badge = measure(parts, frame);
+  gsap.set(parts.stage, { opacity: 0 });
+  // Opacity too: a navigation cut across can leave the lens faded.
+  gsap.set(parts.lens, { scale: ZOOM, opacity: 1 });
+  Object.assign(frame, { w: 0, h: 0, r: RADIUS });
+  paint(parts, frame);
+
+  const lands = addBadge(timeline, parts, frame, badge, 0.05);
+  const opensAt = lands + HOLD;
+  addBeat(timeline, parts, lands - 0.25, parts.ripples[0], FLOW, CIERRE);
+  addBeat(timeline, parts, opensAt - LEAD, parts.ripples[1], -FLOW, 1);
+  addOpening(timeline, parts, frame, opensAt);
 }
 
 /**
@@ -526,6 +559,27 @@ function settle(parts: Parts, current: TransitionState, lenis: Lenis | undefined
   ScrollTrigger.refresh();
 }
 
+/**
+ * The curtain put back up under the page, for a navigation home: the ground
+ * where a load starts it — cabecera, no glow, no echoes, where the last
+ * opening left it turned to cierre — and the logo closed. It is hidden until
+ * now, so nothing is seen to jump; the page is still over it, and uncovers it
+ * as it fades out.
+ */
+function drawCurtain(parts: Parts) {
+  gsap.set([parts.ramps, parts.cierre, parts.glow, ...parts.ripples], {
+    clearProps: "transform,opacity",
+  });
+  parts.window.style.clipPath = "inset(50% 50% 50% 50%)";
+  document.documentElement.dataset.curtain = "opening";
+}
+
+/** The curtain taken down at once, for a navigation that cuts across it. */
+function lowerCurtain(parts: Parts) {
+  delete document.documentElement.dataset.curtain;
+  gsap.set(parts.stage, { clearProps: "clipPath,opacity" });
+}
+
 /** Where the next route opens: its fragment if it names one, else the top. */
 function land(lenis: Lenis | undefined, hash: string) {
   const target =
@@ -586,6 +640,14 @@ function destinationOf(target: EventTarget | null): Destination | null {
   }
 
   return { route: `${path}${url.search}${url.hash}`, path, hash: url.hash };
+}
+
+/**
+ * Whether an arrival opens behind the curtain: the home page, at its top. A
+ * link to one of its sections is on its way to that section, not to the door.
+ */
+function opensBehindCurtain(path: string, hash: string): boolean {
+  return normalize(path) === "/" && hash.length <= 1;
 }
 
 function currentPath(): string {

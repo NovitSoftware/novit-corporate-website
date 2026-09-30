@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { CustomerMap } from "@/app/casos-de-exito/_components/CustomerMap";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";
+import { KeepCase } from "@/components/ui/KeepCase";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { heroContent } from "@/content/home";
 
@@ -106,7 +107,11 @@ export function HeroSection() {
                   className="inline-flex items-center gap-2"
                 >
                   <Icon name={pillar.icon} size="inline" />
-                  {pillar.label}
+                  {/* One flex item, or a kept word would stand apart from
+                      the rest of its label by the row's gap. */}
+                  <span>
+                    <KeepCase text={pillar.label} />
+                  </span>
                 </li>
               ))}
             </ul>

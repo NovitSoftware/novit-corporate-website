@@ -2,6 +2,7 @@ import type { Service } from "@/content/home";
 import { Card, CardText } from "@/components/cards/Card";
 import { CardList } from "@/components/cards/CardList";
 import { Icon, IconLine, type IconName } from "@/components/ui/Icon";
+import { KeepCase } from "@/components/ui/KeepCase";
 
 type ServiceCardProps = {
   service: Service;
@@ -20,7 +21,7 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
   return (
     <Card
       icon={service.icon}
-      label={service.label}
+      label={<KeepCase text={service.label} />}
       title={service.title}
       className={className}
     >
