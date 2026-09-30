@@ -98,7 +98,7 @@ export const casesPageContent = {
           {
             country: "Argentina",
             description:
-              "Sistema de gestión comercial, CRM y plataforma de cobranzas en cuotas para real estate, integrada con entidades bancarias",
+              "Partners IT desde 2017, desarrollo y soporte 24/7 sobre Sistema de gestión comercial, CRM y plataforma de cobranzas integrada con entidades bancarias",
             logo: {
               name: "Consultatio",
               src: "/logos/consultatio.png",
@@ -298,7 +298,7 @@ export const casesPageContent = {
           {
             country: "Chile",
             description:
-              "Soporte y mantenimiento evolutivo de una plataforma SaaS",
+              "Soporte y mantenimiento evolutivo de plataforma SaaS",
             logo: {
               name: "Evidence Based Metrics",
               src: "/logos/evidence-based-metrics.png",
@@ -309,7 +309,7 @@ export const casesPageContent = {
           },
           {
             country: "Argentina",
-            description: "Soporte de una plataforma web educativa",
+            description: "Soporte de plataforma web educativa",
             logo: {
               name: "TEDx Río de la Plata",
               src: "/logos/tedx-rio-de-la-plata.png",
@@ -337,7 +337,7 @@ export const casesPageContent = {
   closing: {
     title: "¿Te interesa conocer un caso en profundidad?",
     description:
-      "Contanos cuál y con qué proceso lo estás comparando. Lo que no está publicado lo contamos en una conversación.",
+      "Coordinamos una reunión y exploramos de que forma trabajar en conjunto.",
   },
 } as const;
 
