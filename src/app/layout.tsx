@@ -51,7 +51,7 @@ export const viewport: Viewport = {
 };
 
 /**
- * Two flags, stamped before the first paint.
+ * Two flags, stamped before the first paint — and the way on to https.
  *
  * `data-motion="on"` says scripts are running and motion is welcome. The
  * resting states of every reveal in `globals.css` hang off it, so a visitor
@@ -65,8 +65,15 @@ export const viewport: Viewport = {
  *
  * It has to be inline and it has to be here, before the body parses: set from
  * an effect it would paint the finished page and then hide it.
+ *
+ * Ahead of both, a visit over plain http to the site's own host goes on to
+ * https before anything paints. GitHub Pages does that itself while "Enforce
+ * HTTPS" is on — but it turns that off whenever the custom domain is set
+ * again, and will not turn it back on until a new certificate is issued, and
+ * meanwhile the site was served over http as "not secure". Only the site's
+ * host, so a local server is left alone.
  */
-const PRE_PAINT_SCRIPT = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement.dataset,p=location.pathname,b=${JSON.stringify(basePath)};d.motion="on";if(p===b||p===b+"/"||p===b+"/index.html")d.curtain="intro"}}catch(e){}`;
+const PRE_PAINT_SCRIPT = `try{var l=location;if(l.protocol==="http:"&&l.host===${JSON.stringify(new URL(site.url).host)})l.replace("https://"+l.host+l.pathname+l.search+l.hash)}catch(e){}try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement.dataset,p=location.pathname,b=${JSON.stringify(basePath)};d.motion="on";if(p===b||p===b+"/"||p===b+"/index.html")d.curtain="intro"}}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
