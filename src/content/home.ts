@@ -143,7 +143,7 @@ export const closingContent = {
   message: {
     label: "Mensaje",
     icon: "chat",
-    placeholder: "Qué proceso querés resolver, y con qué se sostiene hoy.",
+    placeholder: "¿Dónde querés reducir costos?",
   },
   /** One button per channel, WhatsApp first: it is the line the rest of the
    *  site sends people to. */
