@@ -49,7 +49,7 @@ export const servicesPageContent = {
     id: "infraestructura",
     eyebrow: "Infraestructura",
     icon: "layers",
-    title: "Una arquitectura de IA compartida",
+    title: "Una arquitectura de IA reutilizable",
     lead: "Un RAG corporativo centralizado, una identidad única y una capa de integración común: cada agente nuevo se apoya en lo ya construido y cuesta menos que el anterior.",
     agentsLabel: "Agentes de la empresa",
     agents: [
