@@ -48,7 +48,7 @@ export const developmentPageContent = {
     /* Not `code`: that is the route's own mark, on the opener right above. */
     icon: "blocks",
     title: "Creamos software único para los procesos de tu empresa",
-    lead: "La inteligencia artificial incrementó la productividad de la industria del software en general y la nuestra en particular en un orden de magnitud. Hoy ofrecemos servicios de calidad a una fracción del costo de años atrás. Vendemos el desarrollo a medida por etapas que se compran individualmente, con entregables tangibles que alimentan a la siguiente.",
+    lead: "La inteligencia artificial incrementó la productividad de la industria del software y nosotros nos transformamos para ofrecer servicios de calidad a una fracción del costo. Vendemos desarrollo por etapas, con entregables tangibles que alimentan a la siguiente.",
     stages: [
       {
         id: "discovery",
