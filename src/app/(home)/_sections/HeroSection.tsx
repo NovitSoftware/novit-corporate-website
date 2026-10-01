@@ -36,7 +36,12 @@ export function HeroSection() {
       >
         <Container className="relative xl:grid xl:grid-cols-[minmax(0,52rem)_minmax(0,1fr)] xl:items-center xl:gap-8">
           <div data-hero="copy" className="relative z-[1] max-w-[52rem]">
-            <AcademyAnnouncement />
+            {/* Left out of a build made once its date has passed; before
+                that, hidden in the browser when the date comes — see
+                `announcement.until`. */}
+            {Date.now() < Date.parse(heroContent.announcement.until) ? (
+              <AcademyAnnouncement />
+            ) : null}
 
             <Badge
               icon="award"

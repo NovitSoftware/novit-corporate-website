@@ -41,6 +41,13 @@ export const heroContent = {
     kicker: "Academia Novit",
     detail: "Inscripciones abiertas hasta el 6 de octubre",
     href: "/academianovit",
+    /**
+     * When the card goes: once the 6th is over in Buenos Aires. The site is
+     * static and nothing rebuilds it that night, so the page checks the clock
+     * itself — see `PRE_PAINT_SCRIPT` in the root layout — and a build made
+     * after this leaves the card out altogether.
+     */
+    until: "2026-10-07T00:00:00-03:00",
   },
 } as const;
 

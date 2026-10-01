@@ -77,7 +77,7 @@ export function uv(name: string) {
 
 /** The rooms that have a line on their far wall, and the line. */
 export const SLOGANS: Record<"dev" | "lounge" | "meeting", string> = {
-  dev: "Somos partners de transformación IA.",
+  dev: "Somos partners tecnológicos de nuestros clientes.",
   lounge: "Hacemos simple lo complejo.",
   meeting: "Software de calidad a una fracción del costo.",
 };

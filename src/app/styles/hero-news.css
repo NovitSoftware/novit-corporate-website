@@ -70,3 +70,10 @@
   }
 
 }
+
+/* Past the announcement's date the pre-paint script marks the document, and
+   the strip goes. Outside the layer on purpose: the element's `flex` utility
+   outranks anything inside it. */
+html[data-news-over] .hero-news {
+  display: none;
+}

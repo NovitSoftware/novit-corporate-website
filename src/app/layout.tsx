@@ -4,6 +4,7 @@ import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { PageTransitions } from "@/components/providers/PageTransitions";
 import { SceneAtmosphere } from "@/components/layout/SceneAtmosphere";
 import { CurtainGround, CurtainMark } from "@/components/layout/PageCurtain";
+import { heroContent } from "@/content/home";
 import { metadataContent, site } from "@/content/site";
 import { basePath } from "@/lib/base-path";
 import "./globals.css";
@@ -51,7 +52,7 @@ export const viewport: Viewport = {
 };
 
 /**
- * Two flags, stamped before the first paint — and the way on to https.
+ * The flags stamped before the first paint — and the way on to https.
  *
  * `data-motion="on"` says scripts are running and motion is welcome. The
  * resting states of every reveal in `globals.css` hang off it, so a visitor
@@ -72,8 +73,13 @@ export const viewport: Viewport = {
  * again, and will not turn it back on until a new certificate is issued, and
  * meanwhile the site was served over http as "not secure". Only the site's
  * host, so a local server is left alone.
+ *
+ * And `data-news-over`, once the home hero's announcement is past its date
+ * (`heroContent.announcement.until`): the site is static and nothing rebuilds
+ * it the night the date passes, so the browser's clock takes the strip down.
+ * Set on the document, it holds through client-side navigation too.
  */
-const PRE_PAINT_SCRIPT = `try{var l=location;if(l.protocol==="http:"&&l.host===${JSON.stringify(new URL(site.url).host)})l.replace("https://"+l.host+l.pathname+l.search+l.hash)}catch(e){}try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement.dataset,p=location.pathname,b=${JSON.stringify(basePath)};d.motion="on";if(p===b||p===b+"/"||p===b+"/index.html")d.curtain="intro"}}catch(e){}`;
+const PRE_PAINT_SCRIPT = `try{var l=location;if(l.protocol==="http:"&&l.host===${JSON.stringify(new URL(site.url).host)})l.replace("https://"+l.host+l.pathname+l.search+l.hash)}catch(e){}try{if(Date.now()>=${Date.parse(heroContent.announcement.until)})document.documentElement.dataset.newsOver="on"}catch(e){}try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement.dataset,p=location.pathname,b=${JSON.stringify(basePath)};d.motion="on";if(p===b||p===b+"/"||p===b+"/index.html")d.curtain="intro"}}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
