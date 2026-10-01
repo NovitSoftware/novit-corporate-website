@@ -9,20 +9,26 @@ type FlagProps = {
 };
 
 /**
- * The flag(s) beside a recorrido card's country.
+ * A recorrido card's country, as its flag(s) alone: the country's name is not
+ * printed, so it is the flags' accessible name instead.
  *
  * The files are novitsoftware.com/experiencia-novit's own — the standing
  * site's country badges, not the Unicode regional-indicator flag emoji,
  * which Windows renders as bare letter codes rather than pictures. That page
  * carries five of the seven countries the recorrido names; España and México
  * aren't among its cases, so `espana.png` and `mexico.png` are drawn to match
- * the other five's rounded-rect crop rather than scraped.
+ * the other five's rounded-rect crop rather than scraped. All are 180×120, so
+ * they hold up at the size they are shown.
  */
 export function Flag({ country, className }: FlagProps) {
   const names = country.split(" y ");
 
   return (
-    <span className={cn("inline-flex shrink-0 items-center gap-1", className)}>
+    <span
+      role="img"
+      aria-label={country}
+      className={cn("inline-flex shrink-0 items-center gap-2", className)}
+    >
       {names.map((name) => (
         <FlagChip key={name} name={name} />
       ))}
@@ -30,6 +36,8 @@ export function Flag({ country, className }: FlagProps) {
   );
 }
 
+/* A hairline ring and a shadow, so the lighter flags — Argentina, Chile —
+   keep their edge on the card's glass. */
 function FlagChip({ name }: { name: string }) {
   const src = FLAGS[name];
   if (!src) return null;
@@ -38,9 +46,9 @@ function FlagChip({ name }: { name: string }) {
     <Image
       src={src}
       alt=""
-      width={18}
-      height={12}
-      className="h-3 w-[1.1rem] shrink-0 rounded-[2px] object-cover"
+      width={45}
+      height={30}
+      className="h-[1.875rem] w-[2.8125rem] shrink-0 rounded-[4px] object-cover shadow-[0_2px_10px_rgb(0_0_0/0.35)] ring-1 ring-blanco/25"
     />
   );
 }

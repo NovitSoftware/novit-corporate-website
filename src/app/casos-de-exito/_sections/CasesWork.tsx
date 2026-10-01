@@ -24,7 +24,8 @@ type WorkGroup = (typeof casesPageContent.work.groups)[number];
  *
  * The card is the one the whole site uses, with the client's mark in `media`
  * — a credential above the hairline, which is exactly what the slot is for —
- * the flag and the country as the label and the work as the title. No body
+ * with the country's flag at the row's far end, and the work as the title.
+ * The flag carries the country alone, without its name. No body
  * and no footer: the line *is* the card, and a paragraph repeating it would
  * be filler.
  *
@@ -107,12 +108,11 @@ function WorkGroup({ group }: { group: WorkGroup }) {
         {group.items.map((item) => (
           <li key={item.logo.name} data-anim="card">
             <Card
-              media={<CaseLogo logo={item.logo} />}
-              label={
-                <span className="inline-flex items-center gap-1.5">
+              media={
+                <div className="flex items-center justify-between gap-4">
+                  <CaseLogo logo={item.logo} className="min-w-0" />
                   <Flag country={item.country} />
-                  {item.country}
-                </span>
+                </div>
               }
               title={item.description}
               size="base"
