@@ -94,7 +94,7 @@ export const services = [
     title: "Desarrollo Software guiado por IA en todo el ciclo",
     points: [
       "Discovery, Desarrollo, Soporte y Evolución.",
-      "Desarrollo de Software guiado por IA en cada etapa que reduce costos en un 70%.",
+      "Desarrollo de Software guiado por IA en cada etapa.",
       "Procesos y Criterios de Ingeniería que aseguran calidad y seguridad.",
     ],
   },
