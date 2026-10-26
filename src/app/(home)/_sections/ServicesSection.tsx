@@ -28,7 +28,6 @@ export function ServicesSection() {
             className="grid gap-x-10 gap-y-9 lg:grid-cols-[10rem_minmax(0,1fr)] lg:items-start"
           >
             <SectionLabel
-              index={servicesIntro.index}
               name={servicesIntro.eyebrow}
               icon={servicesIntro.icon}
               className="lg:sticky lg:top-[calc(var(--header-height)+2.5rem)] lg:self-start"

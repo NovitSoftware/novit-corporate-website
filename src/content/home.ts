@@ -20,7 +20,7 @@ import { siteContact } from "@/content/site";
  * and the description whole.
  */
 export const heroContent = {
-  eyebrow: "Desde 2015",
+  eyebrow: "Más de una década",
   title: "Desarrollo de Software y Transformación IA",
   statement:
     "Desarrollamos software a medida y agentes de IA integrados al proceso real de tu empresa, con foco en la **reducción de costos** y el mantenimiento a largo plazo.",
@@ -57,7 +57,6 @@ export const heroContent = {
  */
 export const servicesIntro = {
   id: "servicios",
-  index: "01",
   eyebrow: "Qué hacemos",
   icon: "blocks",
 } as const;
@@ -247,7 +246,6 @@ const TEAM_MEDIA: ReadonlyArray<TeamFrame> = [
  */
 export const teamContent = {
   id: "equipo",
-  index: "02",
   eyebrow: "Equipo",
   icon: "team",
   title: "Un equipo con criterio",
@@ -283,7 +281,6 @@ export type PresenceClip = {
 
 export const presenceContent = {
   id: "en-persona",
-  index: "03",
   eyebrow: "En persona",
   icon: "globe",
   title: "La relación con nuestros partners",
@@ -337,7 +334,6 @@ export const presenceContent = {
  */
 export const closingContent = {
   id: "contacto",
-  index: "04",
   eyebrow: "Contacto",
   icon: "chat",
   kicker: { lead: "Más de 11 años", strong: "haciendo simple lo complejo" },

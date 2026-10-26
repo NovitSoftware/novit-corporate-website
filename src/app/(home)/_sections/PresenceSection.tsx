@@ -22,7 +22,6 @@ export function PresenceSection() {
       <Scene>
         <Container>
           <SectionIntro
-            index={presenceContent.index}
             eyebrow={presenceContent.eyebrow}
             icon={presenceContent.icon}
             title={presenceContent.title}

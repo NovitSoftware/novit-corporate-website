@@ -44,7 +44,6 @@ export function TeamSection() {
       <Scene>
         <Container>
           <SectionIntro
-            index={teamContent.index}
             eyebrow={teamContent.eyebrow}
             icon={teamContent.icon}
             title={teamContent.title}

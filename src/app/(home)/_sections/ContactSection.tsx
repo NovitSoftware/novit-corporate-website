@@ -67,7 +67,6 @@ export function ContactSection() {
               className="grid gap-y-9 lg:sticky lg:top-[calc(var(--header-height)+4rem)]"
             >
               <SectionLabel
-                index={closingContent.index}
                 name={closingContent.eyebrow}
                 icon={closingContent.icon}
               />

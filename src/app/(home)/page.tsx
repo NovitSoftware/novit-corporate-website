@@ -40,7 +40,8 @@ const ORGANIZATION = {
 };
 
 /**
- * Hero · 01 Qué hacemos · 02 Equipo · 03 En persona · 04 Contacto.
+ * Hero · Qué hacemos · Equipo · En persona · Contacto. Unnumbered, like
+ * every other route: the numbers added nothing.
  *
  * Equipo and En persona are the bands the page holds beyond
  * `novt-home-texto-final.md`: the people behind the work — without them a
@@ -50,9 +51,6 @@ const ORGANIZATION = {
  * still subjects this page names or links to, not bands it holds. The
  * Academia reaches the reader as the news strip at the top of the hero, which
  * goes to `/academianovit`; the rest are in the menu and in the footer.
- *
- * The indices above are kept in step with `@/content/home` by hand, so change
- * both together.
  */
 export default function Home() {
   return (
