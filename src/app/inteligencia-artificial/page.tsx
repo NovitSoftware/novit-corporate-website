@@ -5,8 +5,9 @@ import { ServicesEvolution } from "./_sections/ServicesEvolution";
 import { ServicesOpener } from "./_sections/ServicesOpener";
 import { ServicesRole } from "./_sections/ServicesRole";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { JsonLd, novitProvider } from "@/components/seo/JsonLd";
 import { servicesFooterContent, servicesPageContent } from "@/content/inteligencia-artificial";
-import { site } from "@/content/site";
+import { site, siteMarkets } from "@/content/site";
 
 /**
  * Its own title, description and link-card title, not the site's: the title
@@ -48,6 +49,17 @@ export const metadata: Metadata = {
 export default function InteligenciaArtificial() {
   return (
     <SiteShell footer={servicesFooterContent}>
+      <JsonLd
+        data={{
+          "@type": "Service",
+          name: servicesPageContent.title,
+          serviceType: "Desarrollo de agentes de inteligencia artificial",
+          description: servicesPageContent.lead,
+          url: `${site.url}/inteligencia-artificial/`,
+          provider: novitProvider,
+          areaServed: siteMarkets.map((name) => ({ "@type": "Country", name })),
+        }}
+      />
       <ServicesOpener />
       <ServicesRole />
       <ServicesArchitecture />

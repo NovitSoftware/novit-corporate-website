@@ -5,7 +5,8 @@ import { PresenceSection } from "./_sections/PresenceSection";
 import { ServicesSection } from "./_sections/ServicesSection";
 import { TeamSection } from "./_sections/TeamSection";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { homeFooterContent, services } from "@/content/home";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { heroContent, homeFooterContent, services } from "@/content/home";
 import { site, siteContact, siteFounders, siteMarkets } from "@/content/site";
 import { BRAND_LOGO } from "@/lib/brand-logo";
 
@@ -21,10 +22,10 @@ export const metadata: Metadata = {
  * say, in a form a machine does not have to infer.
  */
 const ORGANIZATION = {
-  "@context": "https://schema.org",
   "@type": "Organization",
   name: site.name,
   url: site.url,
+  description: heroContent.statement.replaceAll("**", ""),
   logo: `${site.url}${BRAND_LOGO.lockup.colour}`,
   foundingDate: String(site.foundingYear),
   email: siteContact.email.label,
@@ -36,7 +37,17 @@ const ORGANIZATION = {
     jobTitle: founder.role,
   })),
   areaServed: siteMarkets.map((name) => ({ "@type": "Country", name })),
+  address: { "@type": "PostalAddress", addressCountry: "AR" },
+  memberOf: { "@type": "Organization", name: "Anthropic Partner Network" },
   knowsAbout: services.map((service) => service.label),
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Servicios",
+    itemListElement: services.map((service) => ({
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: service.label, description: service.title },
+    })),
+  },
 };
 
 /**
@@ -55,13 +66,7 @@ const ORGANIZATION = {
 export default function Home() {
   return (
     <SiteShell footer={homeFooterContent}>
-      <script
-        type="application/ld+json"
-        // `<` escaped, as the Next.js guide does, so no string can close the tag.
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(ORGANIZATION).replace(/</g, "\\u003c"),
-        }}
-      />
+      <JsonLd data={ORGANIZATION} />
       <HeroSection />
       <ServicesSection />
       <TeamSection />

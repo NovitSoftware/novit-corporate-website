@@ -4,8 +4,9 @@ import { DevelopmentConsulting } from "./_sections/DevelopmentConsulting";
 import { DevelopmentStages } from "./_sections/DevelopmentStages";
 import { PageOpener } from "@/components/layout/PageOpener";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { JsonLd, novitProvider } from "@/components/seo/JsonLd";
 import { developmentFooterContent, developmentPageContent } from "@/content/desarrollo-y-consultoria";
-import { site } from "@/content/site";
+import { site, siteMarkets } from "@/content/site";
 
 /** Its own title, description and link-card title; the title is what the
  *  tab reads and what search results show for this page. */
@@ -36,6 +37,29 @@ export default function DesarrolloYConsultoria() {
 
   return (
     <SiteShell footer={developmentFooterContent}>
+      <JsonLd
+        data={{
+          "@graph": [
+            {
+              "@type": "Service",
+              name: "Desarrollo de software a medida",
+              serviceType: "Desarrollo de software",
+              description: developmentPageContent.build.lead.replaceAll("**", ""),
+            },
+            {
+              "@type": "Service",
+              name: "Consultoría IT",
+              serviceType: "Consultoría en procesos de desarrollo de software",
+              description: developmentPageContent.consulting.lead,
+            },
+          ].map((service) => ({
+            ...service,
+            url: `${site.url}/desarrollo-y-consultoria/`,
+            provider: novitProvider,
+            areaServed: siteMarkets.map((name) => ({ "@type": "Country", name })),
+          })),
+        }}
+      />
       {/* Beside the claim, a walk round the office where the work is done:
           the desks, the servers, the lounge over the avenue, the meeting
           room. */}

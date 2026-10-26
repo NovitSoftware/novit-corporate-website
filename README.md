@@ -30,3 +30,10 @@ Para mostrar cambios antes de que vayan a producción, el sitio se publica en un
   `<nombre>.webp` (portada), recortados al tramo que se muestra, a 360 px y 24 fps.
 - **Resaltados:** en los textos de `src/content`, una frase entre `**dobles asteriscos**`
   se muestra resaltada.
+
+## Para agentes de IA
+
+- `/llms.txt` y `/llms-full.txt` se generan en el build desde `src/content` (`src/lib/llms.ts`):
+  el sitio en Markdown para modelos de lenguaje, con los datos clave escritos para ser citados.
+- `robots.txt` deja entrar a los bots de IA a propósito (`src/app/robots.ts`): queremos que nos citen.
+- Cada página lleva datos estructurados de schema.org (`JsonLd`): Organization, Service y Course.

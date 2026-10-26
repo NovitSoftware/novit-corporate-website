@@ -4,7 +4,8 @@ import { AcademyEvaluation } from "./_sections/AcademyEvaluation";
 import { AcademyOpener } from "./_sections/AcademyOpener";
 import { AcademySchedule } from "./_sections/AcademySchedule";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { academyFooterContent, academyPageContent } from "@/content/academianovit";
+import { JsonLd, novitProvider } from "@/components/seo/JsonLd";
+import { academyFooterContent, academyPageContent, academyProgram } from "@/content/academianovit";
 import { site } from "@/content/site";
 
 /**
@@ -56,6 +57,24 @@ export const metadata: Metadata = {
 export default function AcademiaNovit() {
   return (
     <SiteShell footer={academyFooterContent}>
+      <JsonLd
+        data={{
+          "@type": "Course",
+          name: academyPageContent.title,
+          description: academyPageContent.lead,
+          url: `${site.url}/academianovit/`,
+          inLanguage: "es",
+          isAccessibleForFree: true,
+          provider: novitProvider,
+          offers: { "@type": "Offer", price: 0, priceCurrency: "ARS", category: "Gratuito" },
+          hasCourseInstance: {
+            "@type": "CourseInstance",
+            courseMode: "Online",
+            courseWorkload: "PT32H",
+          },
+          teaches: academyProgram.format.modules.map((module) => module.title),
+        }}
+      />
       <AcademyOpener />
       <AcademySchedule />
       <AcademyClassroom />
