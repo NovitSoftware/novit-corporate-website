@@ -20,7 +20,7 @@ import { siteContact } from "@/content/site";
  * and the description whole.
  */
 export const heroContent = {
-  eyebrow: "Más de una década",
+  eyebrow: "Desde hace más de una década",
   title: "Desarrollo de Software y Transformación IA",
   statement:
     "Desarrollamos software a medida y agentes de IA integrados al proceso real de tu empresa, con foco en la **reducción de costos** y el mantenimiento a largo plazo.",
