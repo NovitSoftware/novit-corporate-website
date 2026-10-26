@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/Badge";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { Container } from "@/components/ui/Container";
 import { CustomerMap } from "@/app/casos-de-exito/_components/CustomerMap";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { HeroScene } from "../_components/HeroScene";
 import { Icon } from "@/components/ui/Icon";
 import { KeepCase } from "@/components/ui/KeepCase";
@@ -65,7 +66,7 @@ export function HeroSection() {
               data-hero="lead"
               className="mt-7 max-w-[46ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
             >
-              {heroContent.statement}
+              <Emphasis text={heroContent.statement} />
             </p>
             <div
               data-anim="rise"

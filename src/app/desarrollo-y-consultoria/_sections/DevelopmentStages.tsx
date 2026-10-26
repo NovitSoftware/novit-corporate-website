@@ -2,7 +2,9 @@ import { Card, CardText } from "@/components/cards/Card";
 import { CardGrid } from "@/components/cards/CardGrid";
 import { CardList } from "@/components/cards/CardList";
 import { Container } from "@/components/ui/Container";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { Icon } from "@/components/ui/Icon";
+import { Image } from "@/components/ui/Image";
 import { ReadingPanel } from "@/components/section/ReadingPanel";
 import { Scene } from "@/components/motion/Scene";
 import { Section } from "@/components/section/Section";
@@ -36,7 +38,7 @@ export function DevelopmentStages() {
                 data-anim="rise"
                 className="max-w-[52ch] text-base leading-7 text-on-detail sm:text-lg sm:leading-8"
               >
-                {build.lead}
+                <Emphasis text={build.lead} />
               </p>
             }
             below={
@@ -54,6 +56,37 @@ export function DevelopmentStages() {
                     </li>
                   ))}
                 </CardGrid>
+
+                {/* The team the second stage names, at work: the photographs
+                    are the office's own, framed as the home page's Equipo. */}
+                <ul
+                  data-anim-batch
+                  className="mt-4 grid gap-3 sm:grid-cols-3 sm:gap-4"
+                >
+                  {build.photos.map((photo, index) => (
+                    <li
+                      key={photo.src}
+                      data-anim="card"
+                      className={
+                        index === 0
+                          ? "team-photo aspect-[2/1] sm:col-span-2"
+                          : "team-photo aspect-[4/3] sm:aspect-auto"
+                      }
+                    >
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        sizes={
+                          index === 0
+                            ? "(min-width: 640px) 760px, 100vw"
+                            : "(min-width: 640px) 380px, 100vw"
+                        }
+                        className="object-cover"
+                      />
+                    </li>
+                  ))}
+                </ul>
 
                 <ReadingPanel as="section" data-anim-block className="mt-4">
                   <h3 className="card-ink-voice eyebrow flex items-center gap-2">

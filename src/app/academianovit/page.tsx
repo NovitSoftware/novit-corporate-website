@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AcademyClassroom } from "./_sections/AcademyClassroom";
 import { AcademyEvaluation } from "./_sections/AcademyEvaluation";
 import { AcademyOpener } from "./_sections/AcademyOpener";
 import { AcademySchedule } from "./_sections/AcademySchedule";
@@ -7,10 +8,8 @@ import { academyFooterContent, academyPageContent } from "@/content/academianovi
 import { site } from "@/content/site";
 
 /**
- * Its own description and link-card title, not the site's — but not its own
- * tab title. The root layout pins `title` to `site.name` so the tab reads
- * "Novit Software" everywhere; leaving `title` out here is what lets that
- * inherit instead of being overridden per route.
+ * Its own title, description and link-card title, not the site's: the title
+ * is what the tab reads and what search results show for this page.
  *
  * `metadataBase` in the root layout is what makes the relative `url` below
  * resolve, and the root layout's `openGraph` block is not inherited field by
@@ -18,6 +17,7 @@ import { site } from "@/content/site";
  * apply (`siteName`, `locale`, `type`) are repeated rather than assumed.
  */
 export const metadata: Metadata = {
+  title: academyPageContent.meta.title,
   description: academyPageContent.meta.description,
   alternates: { canonical: "/academianovit" },
   openGraph: {
@@ -58,6 +58,7 @@ export default function AcademiaNovit() {
     <SiteShell footer={academyFooterContent}>
       <AcademyOpener />
       <AcademySchedule />
+      <AcademyClassroom />
       <AcademyEvaluation />
     </SiteShell>
   );

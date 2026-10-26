@@ -44,18 +44,30 @@ export const siteContact = {
 } as const;
 
 /**
+ * The founders and the countries with active clients, as the brand's table of
+ * official data has them. Search engines read them from the home page's
+ * structured data; the page itself says them in its own words.
+ */
+export const siteFounders = [
+  { name: "Leandro A. Vazquez", role: "Co-founder & CEO" },
+  { name: "Rodrigo H. Vazquez", role: "Co-founder, CTO & COO" },
+] as const;
+
+export const siteMarkets = ["Argentina", "Chile", "España", "México", "Estados Unidos"] as const;
+
+/**
  * The root layout's metadata and the link-preview card. It is the home page's
  * own Meta block from `novt-home-texto-final.md`, and the default the other
  * routes override.
  */
 export const metadataContent = {
-  title: "Novit Software — Desarrollo y Transformación IA",
+  title: "Novit Software — Desarrollo de Software y Transformación IA",
   description:
     "Desarrollamos software a medida y agentes de IA integrados al proceso real de tu empresa, con foco en la reducción de costos y el mantenimiento a largo plazo.",
   /** The card's own two lines: the headline is set at 64px over the logo, so
    *  it takes the title without the company name, and the sentence below is
    *  the cierre's volanta rather than the description, which is the wrong
    *  shape there. */
-  ogHeadline: "Desarrollo y Transformación IA",
+  ogHeadline: "Desarrollo de Software y Transformación IA",
   ogSupporting: "Más de 11 años haciendo simple lo complejo.",
 } as const;

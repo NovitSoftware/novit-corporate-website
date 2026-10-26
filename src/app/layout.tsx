@@ -24,12 +24,12 @@ const lato = Lato({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  /* The tab always reads "Novit Software", on every route: a page-specific
-     title here would need every child route to repeat it (or override it) to
-     keep the tab from drifting per page, and the tab is not where the fuller,
-     descriptive title belongs anyway — that's `openGraph`/`twitter`, for a
-     link card, where there's room for one. */
-  title: site.name,
+  /* The home page's title, and the default of any route without its own.
+     Every other route names its own (`meta.title` in its content), because
+     the tab's title is also the line search results show for the page: one
+     "Novit Software" on every route read the same in the tab and told a
+     search engine nothing about what each page is. */
+  title: metadataContent.title,
   description: metadataContent.description,
   applicationName: site.name,
   openGraph: {

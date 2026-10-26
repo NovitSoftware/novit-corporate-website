@@ -21,6 +21,11 @@ type SectionIntroProps = {
    * Anything that belongs under the statement — normally the reading panel.
    * It goes in the same grid, so it lines up with the statement structurally
    * rather than by a matched margin that has to be kept in step by hand.
+   *
+   * With an `aside` as well, it goes in the statement's own column, straight
+   * under it, and the aside stands beside the two. Under the whole row it
+   * waited for the aside to end, and a tall aside — the portrait clip in
+   * Academia's Clases — left the reading a screen below its statement.
    */
   children?: ReactNode;
   /**
@@ -87,6 +92,15 @@ export function SectionIntro({
 }: SectionIntroProps) {
   const rail = layout === "rail";
   const hasAside = Boolean(aside);
+  const readingBeside = hasAside && Boolean(children);
+
+  const statement = (
+    <ScrollWords
+      as="h2"
+      text={title}
+      className="display-xl max-w-[24ch] text-blanco"
+    />
+  );
 
   return (
     <div
@@ -120,11 +134,14 @@ export function SectionIntro({
               "lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-start",
           )}
         >
-          <ScrollWords
-            as="h2"
-            text={title}
-            className="display-xl max-w-[24ch] text-blanco"
-          />
+          {readingBeside ? (
+            <div className="grid min-w-0 gap-y-9">
+              {statement}
+              <div>{children}</div>
+            </div>
+          ) : (
+            statement
+          )}
           {aside ? (
             /* Nudged down to sit on the statement's first baseline rather than
                its box top: display type carries far more leading than body
@@ -134,7 +151,7 @@ export function SectionIntro({
           ) : null}
         </div>
 
-        {children ? <div>{children}</div> : null}
+        {children && !readingBeside ? <div>{children}</div> : null}
 
         {/* 36px of row gap plus this padding reproduces the `mt-16 lg:mt-20`
             the bands used to carry themselves, so moving content in here does

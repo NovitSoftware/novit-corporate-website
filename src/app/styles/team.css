@@ -1,0 +1,43 @@
+/* The team photographs: the home page's Equipo mosaic and Desarrollo's pair, set on the gradient. */
+
+@layer components {
+  /*
+   * A frame on the card's radius and hairline, so the photographs read as the
+   * same family as the cards around them.
+   *
+   * The photographs keep their colour, taken down a step and cooled by a thin
+   * azul wash, so they sit in the brand's cold palette instead of warm office
+   * light; a deeper azul at the foot closes each frame on the ground. A violet
+   * duotone was tried and read as a filter over the team rather than the team.
+   */
+  .team-photo {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--card-radius);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background-color: var(--azul-deep);
+    isolation: isolate;
+  }
+
+  .team-photo img {
+    filter: saturate(0.72) contrast(1.02) brightness(0.96);
+    transition: transform var(--dur-slow) var(--ease-in-out-quad);
+  }
+
+  .team-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgb(10 0 137 / 0) 45%, rgb(10 0 137 / 0.4) 100%),
+      rgb(27 75 185 / 0.12);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .team-photo:hover img {
+      transform: scale(1.03);
+    }
+  }
+}

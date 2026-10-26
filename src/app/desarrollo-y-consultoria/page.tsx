@@ -7,9 +7,10 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { developmentFooterContent, developmentPageContent } from "@/content/desarrollo-y-consultoria";
 import { site } from "@/content/site";
 
-/** Its own description and link-card title; the tab title is the root
- *  layout's, which pins it to `site.name` on every route. */
+/** Its own title, description and link-card title; the title is what the
+ *  tab reads and what search results show for this page. */
 export const metadata: Metadata = {
+  title: developmentPageContent.meta.title,
   description: developmentPageContent.meta.description,
   alternates: { canonical: "/desarrollo-y-consultoria" },
   openGraph: {

@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# the photographs' web copies, written from media/team by scripts/photos.mjs
+/public/team/
+
 # production
 /build
 

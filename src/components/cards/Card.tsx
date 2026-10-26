@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { IconBadge } from "@/components/ui/IconBadge";
 import { cn } from "@/lib/cn";
@@ -242,5 +243,9 @@ export const cardCopy = "card-ink-body text-[0.9375rem] leading-relaxed";
  * nobody chose and nobody can unsee once the cards are side by side.
  */
 export function CardText({ children }: { children: ReactNode }) {
-  return <p className={cardCopy}>{children}</p>;
+  return (
+    <p className={cardCopy}>
+      {typeof children === "string" ? <Emphasis text={children} /> : children}
+    </p>
+  );
 }

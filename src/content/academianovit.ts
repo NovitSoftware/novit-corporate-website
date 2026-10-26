@@ -313,6 +313,22 @@ export const academyPageContent = {
       icon: "clipboardCheck",
       title: "Un trabajo integrador del sector energético",
     },
+    /**
+     * The classroom, as it runs: a stretch of the Academia's own reel — a
+     * class on a video call, the students' cameras on — played muted. Cut
+     * from the reel at 0.3–8 s; `src` has no extension (see `MutedClip`).
+     */
+    classroom: {
+      id: "clases",
+      eyebrow: "Clases",
+      icon: "team",
+      title: "Enseñamos lo que hacemos todos los días",
+      lead: "Las clases son en vivo y 100% online, con líderes de nuestro equipo al frente: el mismo oficio con el que desarrollamos los sistemas de nuestros clientes, abierto y gratuito, con aval de UTN-FRBA.",
+      clip: {
+        src: "/clips/academia",
+        description: "Una clase de la Academia Novit por videollamada, con los alumnos conectados",
+      },
+    },
   },
 } as const;
 
@@ -330,6 +346,11 @@ export const academyFooterContent: FooterContent = {
           label: academyPageContent.sections.schedule.eyebrow,
           href: `#${academyPageContent.sections.schedule.id}`,
           icon: academyPageContent.sections.schedule.icon,
+        },
+        {
+          label: academyPageContent.sections.classroom.eyebrow,
+          href: `#${academyPageContent.sections.classroom.id}`,
+          icon: academyPageContent.sections.classroom.icon,
         },
         {
           label: academyPageContent.sections.evaluation.eyebrow,

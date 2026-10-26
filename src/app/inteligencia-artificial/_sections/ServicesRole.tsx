@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/Badge";
 import { CardGrid } from "@/components/cards/CardGrid";
 import { Card, CardText } from "@/components/cards/Card";
 import { Container } from "@/components/ui/Container";
@@ -27,7 +28,9 @@ import { servicesPageContent } from "@/content/inteligencia-artificial";
  * round. See `servicesPageContent.partner`.
  *
  * Pinned: the statement holds while the four go past. It earns the pinning
- * here because the claim above them is what they are all evidence for.
+ * here because the claim above them is what they are all evidence for. Under
+ * the lead, the team's training: the Anthropic Partner Network as a badge and
+ * the official courses in a line, so it stays with the statement as it pins.
  */
 export function ServicesRole() {
   const { partner } = servicesPageContent;
@@ -62,6 +65,12 @@ export function ServicesRole() {
             >
               {partner.lead}
             </p>
+            <div data-anim="rise" className="mt-8 grid gap-4">
+              <Badge icon={partner.network.icon}>{partner.network.label}</Badge>
+              <p className="max-w-[46ch] text-base leading-7 text-on-detail">
+                {partner.network.text}
+              </p>
+            </div>
           </PinnedIntro>
         </Container>
       </Scene>

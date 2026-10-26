@@ -7,7 +7,8 @@ import { ServiceCard } from "../_components/ServiceCard";
 import { services, servicesIntro } from "@/content/home";
 
 /**
- * Qué hacemos: the four lines of work, two across.
+ * Qué hacemos: the four lines of work, two across, and Ciberseguridad across
+ * both columns under them.
  *
  * No statement over the grid. The reference names the band and goes straight
  * to the cards, so the rail label is the whole opener — `SectionIntro` is not
@@ -35,7 +36,11 @@ export function ServicesSection() {
 
             <CardGrid columns={2} className="min-w-0">
               {services.map((service) => (
-                <li key={service.id} data-anim="card">
+                <li
+                  key={service.id}
+                  data-anim="card"
+                  className={"wide" in service ? "sm:col-span-2" : undefined}
+                >
                   <ServiceCard service={service} />
                 </li>
               ))}

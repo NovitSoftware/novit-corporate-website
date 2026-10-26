@@ -90,6 +90,13 @@ export const servicesPageContent = {
     icon: "strategy",
     title: "Qué aporta un partner de transformación IA",
     lead: "Acompañamos a la dirección en cuatro decisiones que ningún proyecto aislado resuelve, con el mismo equipo disponible a lo largo del tiempo.",
+    /** Who trains that team, under the lead: the network as the tag, and the
+     *  courses said in a sentence. */
+    network: {
+      label: "Anthropic Partner Network",
+      icon: "award",
+      text: "Somos parte de la red de partners de Anthropic, y nuestro equipo se capacita con sus cursos oficiales.",
+    },
     /**
      * Four decisions held at once, not four steps — so nothing is numbered.
      *
@@ -106,28 +113,28 @@ export const servicesPageContent = {
         label: "Stack",
         title: "Qué construir y sobre qué base",
         description:
-          "Modelos, nube y frameworks elegidos por costo, dependencia y vida útil, con componentes que se reutilizan en vez de rehacerse.",
+          "Modelos, nube y frameworks elegidos por costo, dependencia y vida útil, con **componentes que se reutilizan** en vez de rehacerse.",
       },
       {
         icon: "metric",
         label: "Medición",
         title: "Cómo saber si funciona",
         description:
-          "KPI de precisión, adopción, horas liberadas y costo por operación, definidos antes de desarrollar y monitoreados en producción.",
+          "KPI de precisión, adopción, horas liberadas y **costo por operación**, definidos antes de desarrollar y monitoreados en producción.",
       },
       {
         icon: "shield",
         label: "Seguridad",
         title: "Qué datos salen de la empresa",
         description:
-          "Procesamiento en red privada, identidad corporativa, trazabilidad de cada consulta y cumplimiento de GDPR.",
+          "Procesamiento en red privada, identidad corporativa, trazabilidad de cada consulta y cumplimiento de **GDPR**.",
       },
       {
         icon: "clipboardCheck",
         label: "Proveedores",
         title: "Qué exigirle a terceros",
         description:
-          "Evaluación técnica de software y componentes de IA de terceros: integraciones, propiedad del dato y condiciones contractuales.",
+          "Evaluación técnica de software y componentes de IA de terceros: integraciones, **propiedad del dato** y condiciones contractuales.",
       },
     ],
   },
@@ -148,28 +155,28 @@ export const servicesPageContent = {
         title: "Un primer agente que funciona",
         leaves: "Un resultado medible",
         description:
-          "Un proceso concreto, medible y con dueño dentro de la empresa. Sirve para aprender y para convencer.",
+          "Un proceso concreto, medible y con dueño dentro de la empresa. Sirve para **aprender y para convencer**.",
       },
       {
         icon: "layers",
         title: "La infraestructura queda instalada",
         leaves: "RAG, identidad y capa de integración",
         description:
-          "El segundo agente arranca con la mitad del camino hecho, y el tercero sobre lo que dejó el segundo.",
+          "El segundo agente arranca con **la mitad del camino hecho**, y el tercero sobre lo que dejó el segundo.",
       },
       {
         icon: "shield",
         title: "Gobierno, seguridad y métricas",
         leaves: "Reglas que valen para todos",
         description:
-          "Datos en red privada, trazabilidad por usuario y KPI que valen para todos los agentes, no para uno solo.",
+          "Datos en red privada, trazabilidad por usuario y KPI que **valen para todos los agentes**, no para uno solo.",
       },
       {
         icon: "clipboardCheck",
         title: "Estándares para todo lo que sigue",
         leaves: "Criterio para comprar y para integrar",
         description:
-          "Las apps y los proveedores externos se conectan bajo las reglas que definimos junto a la empresa.",
+          "Las apps y los proveedores externos se conectan **bajo las reglas que definimos** junto a la empresa.",
       },
     ],
   },

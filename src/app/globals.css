@@ -19,8 +19,10 @@
 @import "./styles/curtain.css";
 @import "./styles/type-scale.css";
 @import "./styles/card.css";
+@import "./styles/highlight.css";
 @import "./styles/forms.css";
 @import "./styles/hero-news.css";
+@import "./styles/team.css";
 @import "./styles/customer-map.css";
 @import "./styles/office-walk.css";
 @import "./styles/opener.css";

@@ -1,4 +1,5 @@
 import { cardCopy } from "@/components/cards/Card";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { IconLine } from "@/components/ui/Icon";
 import { cn } from "@/lib/cn";
 
@@ -92,7 +93,9 @@ export function CardList({
           )}
         >
           {glyph}
-          <span>{item}</span>
+          <span>
+            <Emphasis text={item} />
+          </span>
         </li>
       ))}
     </ul>

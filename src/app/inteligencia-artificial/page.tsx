@@ -9,10 +9,8 @@ import { servicesFooterContent, servicesPageContent } from "@/content/inteligenc
 import { site } from "@/content/site";
 
 /**
- * Its own description and link-card title, not the site's — but not its own
- * tab title. The root layout pins `title` to `site.name` so the tab reads
- * "Novit Software" everywhere; leaving `title` out here is what lets that
- * inherit instead of being overridden per route.
+ * Its own title, description and link-card title, not the site's: the title
+ * is what the tab reads and what search results show for this page.
  *
  * `metadataBase` in the root layout is what makes the relative `url` below
  * resolve, and the root layout's `openGraph` block is not inherited field by
@@ -20,6 +18,7 @@ import { site } from "@/content/site";
  * apply (`siteName`, `locale`, `type`) are repeated rather than assumed.
  */
 export const metadata: Metadata = {
+  title: servicesPageContent.meta.title,
   description: servicesPageContent.meta.description,
   alternates: { canonical: "/inteligencia-artificial" },
   openGraph: {

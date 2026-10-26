@@ -48,7 +48,7 @@ export const developmentPageContent = {
     /* Not `code`: that is the route's own mark, on the opener right above. */
     icon: "blocks",
     title: "Creamos software único para los procesos de tu empresa",
-    lead: "La inteligencia artificial incrementó la productividad de la industria del software y nosotros nos transformamos para ofrecer servicios de calidad a una fracción del costo. Vendemos desarrollo por etapas, con entregables tangibles que alimentan a la siguiente.",
+    lead: "La inteligencia artificial incrementó la productividad de la industria del software y nosotros nos transformamos para ofrecer servicios de calidad a una **fracción del costo**. Vendemos desarrollo por etapas, con entregables tangibles que alimentan a la siguiente.",
     stages: [
       {
         id: "discovery",
@@ -56,7 +56,7 @@ export const developmentPageContent = {
         label: "Etapa 01",
         title: "Discovery y planificación",
         description:
-          "Relevamos y analizamos en detalle los requerimientos y las necesidades, definimos la arquitectura técnica del sistema según los objetivos del proyecto y diseñamos la experiencia de usuario con foco en la usabilidad y la navegación.",
+          "Relevamos y **analizamos en detalle** los requerimientos y las necesidades, definimos la arquitectura técnica del sistema según los objetivos del proyecto y diseñamos la experiencia de usuario con **foco en la usabilidad** y la navegación.",
       },
       {
         id: "implementacion",
@@ -64,7 +64,7 @@ export const developmentPageContent = {
         label: "Etapa 02",
         title: "Desarrollo e implementación",
         description:
-          "Convertimos tu visión en realidad. Nuestro equipo de desarrolladores, arquitectos de software, diseñadores UX/UI y QA se encarga integralmente de la solución, o hace sinergia con los squads de desarrollo existentes.",
+          "Convertimos **tu visión en realidad**. Nuestro equipo de desarrolladores, arquitectos de software, diseñadores UX/UI y QA se encarga integralmente de la solución, o hace sinergia con los squads de desarrollo existentes.",
       },
       {
         id: "soporte",
@@ -72,7 +72,19 @@ export const developmentPageContent = {
         label: "Etapa 03",
         title: "Soporte y mantenimiento",
         description:
-          "Una vez en producción, damos soporte y mantenimiento continuo durante todo el ciclo de vida del software: corregimos errores e incorporamos mejoras, nuevas funcionalidades e integraciones para adaptar el sistema a las nuevas necesidades del negocio.",
+          "Una vez en producción, damos soporte y **mantenimiento continuo** durante todo el ciclo de vida del software: corregimos errores e incorporamos mejoras, nuevas funcionalidades e integraciones para adaptar el sistema a las **nuevas necesidades del negocio**.",
+      },
+    ],
+    /** The team the second stage names, at work in the office. The first is
+     *  the wide frame. */
+    photos: [
+      {
+        src: "/team/trabajo.jpg",
+        alt: "Desarrolladores del equipo trabajando en sus puestos de la oficina",
+      },
+      {
+        src: "/team/mate.jpg",
+        alt: "Dos personas del equipo trabajando en la oficina, con el mate en la mesa",
       },
     ],
     deliverablesLabel: "Entregables del discovery",
@@ -96,11 +108,11 @@ export const developmentPageContent = {
     lead: "Accedé a conocimiento experto y estrategias a medida en el momento en que lo requieras, para incrementar la productividad del equipo y optimizar los procesos con los que trabaja.",
     helpLabel: "Te ayudamos a",
     help: [
-      "Implementar métricas de calidad y performance (KPI)",
-      "Identificar ineficiencias y reducir costos",
+      "Implementar **métricas de calidad** y performance (KPI)",
+      "Identificar ineficiencias y **reducir costos**",
       "Generar código mantenible",
       "Implementar mejores prácticas de la ingeniería de software",
-      "Reducir tiempos de delivery",
+      "**Reducir tiempos de delivery**",
       "Automatizar pipelines de desarrollo",
       "Contratar y motivar a los mejores recursos y proveedores",
     ],
@@ -112,7 +124,7 @@ export const developmentPageContent = {
         label: "01",
         title: "Diagnóstico",
         description:
-          "Analizamos los procesos de desarrollo de software de tu empresa para encontrar oportunidades de mejora en herramientas, marcos de trabajo y metodologías.",
+          "Analizamos los procesos de desarrollo de software de tu empresa para encontrar **oportunidades de mejora** en herramientas, marcos de trabajo y metodologías.",
       },
       {
         id: "kpi",
@@ -120,7 +132,7 @@ export const developmentPageContent = {
         label: "02",
         title: "Definición de KPI",
         description:
-          "Definimos y establecemos KPI alineados con tus objetivos de negocio para medir el rendimiento del equipo de desarrollo, el soporte a clientes, el área de QA y los proveedores de tecnología.",
+          "Definimos y establecemos KPI alineados con **tus objetivos de negocio** para medir el rendimiento del equipo de desarrollo, el soporte a clientes, el área de QA y los proveedores de tecnología.",
       },
       {
         id: "optimizacion",
@@ -128,7 +140,7 @@ export const developmentPageContent = {
         label: "03",
         title: "Optimización de procesos",
         description:
-          "Trabajamos en estrecha colaboración con tus equipos de desarrollo para optimizar los procesos, identificar cuellos de botella e implementar las mejores prácticas de la ingeniería de software.",
+          "Trabajamos en estrecha colaboración con tus equipos de desarrollo para **optimizar los procesos**, identificar cuellos de botella e implementar las mejores prácticas de la ingeniería de software.",
       },
       {
         id: "resultados",
@@ -136,7 +148,7 @@ export const developmentPageContent = {
         label: "04",
         title: "Análisis de resultados",
         description:
-          "Aseguramos que las mejoras implementadas están generando el impacto deseado, con un monitoreo continuo.",
+          "Aseguramos que las mejoras implementadas están generando **el impacto deseado**, con un monitoreo continuo.",
       },
     ],
   },

@@ -93,11 +93,13 @@ type Countable = {
  * Pulls a countable quantity out of a label like "~30 profesionales".
  *
  * Figures above 999 are left alone: a year such as 2015 ticking up from zero
- * reads as a glitch rather than an achievement.
+ * reads as a glitch rather than an achievement. So is a value with more than
+ * one number in it, such as "24/7": counting its first half up from zero reads
+ * "3/7" on the way.
  */
 function parseCountable(value: string): Countable | null {
   const match = /\d+/.exec(value);
-  if (!match || match.index === undefined) {
+  if (!match || match.index === undefined || /\d+\D+\d/.test(value)) {
     return null;
   }
 
